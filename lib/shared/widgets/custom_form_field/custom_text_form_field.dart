@@ -29,9 +29,7 @@ class CustomTextFormField extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final AutovalidateMode? validation;
   final bool? isFilled;
-  final InputBorder? enableBorder;
-  final InputBorder? focusBorder;
-  final InputBorder? border;
+  final BorderSide? border;
   final FloatingLabelBehavior? floatingLabelBehavior;
   final Color? fillColor;
   final int? maxLength;
@@ -45,6 +43,7 @@ class CustomTextFormField extends StatelessWidget {
   final double? borderRadius;
   final double? borderWidth;
   final Color? borderColor;
+  final FontWeight? labelFontWeight;
 
   const CustomTextFormField({
     super.key,
@@ -70,8 +69,6 @@ class CustomTextFormField extends StatelessWidget {
     this.margin,
     this.validation,
     this.isFilled,
-    this.enableBorder,
-    this.focusBorder,
     this.border,
     this.floatingLabelBehavior,
     this.fillColor,
@@ -85,7 +82,9 @@ class CustomTextFormField extends StatelessWidget {
     this.focusNode,
     this.borderRadius,
     this.borderWidth,
-     this.labelColor, this.borderColor, this.labelFontSize,
+    this.labelColor,
+    this.borderColor,
+    this.labelFontSize, this.labelFontWeight,
   });
 
   @override
@@ -123,8 +122,9 @@ class CustomTextFormField extends StatelessWidget {
             labelTextWidget ??
             CustomPrimaryText(
               text: labelText ?? "",
-              color:labelColor?? AppColors.fieldTextColor,
+              color: labelColor ?? AppColors.fieldTextColor,
               fontSize: labelFontSize ?? 16.sp,
+              fontWeight: labelFontWeight,
             ),
         hint:
             hintTextWidget ??
@@ -138,39 +138,39 @@ class CustomTextFormField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0),
         prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0),
-        border:
-            border ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
-              borderSide: BorderSide(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+          borderSide:
+              border ??
+              BorderSide(
                 width: borderWidth ?? 1.r,
                 color: isDark
-                    ?borderColor?? AppColors.fieldBorderColorLight
-                    :borderColor?? AppColors.fieldBorderColorLight,
+                    ? borderColor ?? AppColors.fieldBorderColorLight
+                    : borderColor ?? AppColors.fieldBorderColorLight,
               ),
-            ),
-        focusedBorder:
-            focusBorder ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
-              borderSide: BorderSide(
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+          borderSide:
+              border ??
+              BorderSide(
                 width: borderWidth ?? 1.r,
                 color: isDark
-                    ?borderColor?? AppColors.fieldBorderColorLight
-                    :borderColor?? AppColors.fieldBorderColorLight,
+                    ? borderColor ?? AppColors.fieldBorderColorLight
+                    : borderColor ?? AppColors.fieldBorderColorLight,
               ),
-            ),
-        enabledBorder:
-            enableBorder ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
-              borderSide: BorderSide(
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+          borderSide:
+              border ??
+              BorderSide(
                 width: borderWidth ?? 1.r,
                 color: isDark
-                    ?borderColor?? AppColors.fieldBorderColorLight
-                    :borderColor?? AppColors.fieldBorderColorLight,
+                    ? borderColor ?? AppColors.fieldBorderColorLight
+                    : borderColor ?? AppColors.fieldBorderColorLight,
               ),
-            ),
+        ),
         filled: isFilled ?? true,
         fillColor: isDark
             ? fillColor ?? AppColors.whiteColor

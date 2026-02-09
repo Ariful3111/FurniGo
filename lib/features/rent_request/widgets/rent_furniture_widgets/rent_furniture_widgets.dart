@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_furniture_controller.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+
+class RentFurnitureWidgets extends StatelessWidget {
+  const RentFurnitureWidgets({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    RentFurnitureController rentFurnitureController = Get.find();
+    return Obx(
+      () => Column(
+        children: List.generate(rentFurnitureController.widgets.length, (
+          index,
+        ) {
+          final item = rentFurnitureController.widgets[index];
+          final isSelected = rentFurnitureController.isOpenList[index];
+          return Column(
+            key: ValueKey(index),
+            children: [
+              SharedContainer(
+                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
+                radius: 16.r,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomPrimaryText(
+                          text: item['title'],
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.darkColor,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            rentFurnitureController.isOpenList[index] =
+                                !rentFurnitureController.isOpenList[index];
+                          },
+                          child: AnimatedRotation(
+                            turns: isSelected ? 1 : 0,
+                            duration: const Duration(milliseconds: 300),
+                            child: Image.asset(
+                              isSelected
+                                  ? IconsPath.upArrow
+                                  : IconsPath.downArrow,
+                              height: 20.h,
+                              width: 20.w,
+                              color: AppColors.darkColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    AnimatedSize(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.linear,
+                      child: isSelected
+                          ? Padding(
+                              padding: EdgeInsetsGeometry.only(top: 20.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                key: ValueKey('widgets'),
+                                children: [
+                                  CustomPrimaryText(
+                                    text: 'Furniture Required:',
+                                    fontSize: 14.sp,
+                                    color: AppColors.darkColor,
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  item['child'],
+                                ],
+                              ),
+                            )
+                          : SizedBox.shrink(),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16.h),
+            ],
+          );
+        }),
+      ),
+    );
+  }
+}
