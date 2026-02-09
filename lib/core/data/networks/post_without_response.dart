@@ -26,6 +26,8 @@ class PostWithoutResponse {
           response.statusCode == 202) {
         return Right(true);
       }
+      // ignore: avoid_print
+      print(response.body);
       try {
         return left(
           ErrorModel.fromHttp(

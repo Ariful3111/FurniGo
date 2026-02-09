@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:zb_dezign/core/constant/networks_path.dart';
 import 'package:zb_dezign/core/data/global_models/error_model.dart';
@@ -19,13 +18,13 @@ class PostWithResponse {
         headers: headers,
         body: (body),
       );
-      debugPrint(response.body);
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202) {
         return Right(fromJson(jsonDecode(response.body)));
         
       }
+      // ignore: avoid_print
       print(response.body);
       try {
         return left(

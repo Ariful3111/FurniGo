@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_period_widgets/rent_period_discount_payment.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_period_widgets/rent_period_suggestion.dart';
+import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+
+class RentPeriodDiscount extends StatelessWidget {
+  const RentPeriodDiscount({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SharedContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(child: PageCount(text: 'Rental Period & Budget')),
+          SizedBox(height: 20.h),
+          propertyDivider(),
+          SizedBox(height: 44.h),
+          CustomPrimaryText(
+            text: 'Rental term (days) *',
+            color: AppColors.titleTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 16.sp,
+          ),
+          SizedBox(height: 8.h),
+          RentPeriodSuggestion(),
+          SizedBox(height: 8.h),
+          CustomPrimaryText(
+            text: 'Discount tiers apply automatically.',
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF6A7282),
+          ),
+          SizedBox(height: 12.h),
+          Container(
+            padding: EdgeInsets.all(20.r),
+            decoration: BoxDecoration(
+              color: Color(0xFFE6FBF7),
+              border: Border.all(width: 1.01.r, color: Color(0xFF00DAB2)),
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Row(
+              children: [
+                Image.asset(IconsPath.discount, height: 20.h, width: 20.w),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: CustomPrimaryText(
+                    text:
+                        'A 10% discount has been applied for selecting a 90-day rental period.',
+                    color: Color(0xFF212121),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 32.h),
+          RentPeriodDiscountPayment(),
+        ],
+      ),
+    );
+  }
+}
