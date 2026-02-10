@@ -5,6 +5,8 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/auth/controller/signup_controller.dart';
 import 'package:zb_dezign/features/auth/controller/user_mode_controller.dart';
 import 'package:zb_dezign/features/auth/widgets/auth_helper.dart';
+import 'package:zb_dezign/shared/extensions/validators/abn_validator.dart';
+import 'package:zb_dezign/shared/extensions/validators/confirm_password_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/email_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/name_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/password_validator.dart';
@@ -57,6 +59,15 @@ class SignupForm extends StatelessWidget {
           ),
           SizedBox(height: 22.h),
           authField(
+            text: 'Confirm Password *',
+            labelText: 'Re-Enter your password',
+            controller: signupController.confirmPasswordController,
+            icon: IconsPath.pass,
+            validation: AutovalidateMode.onUserInteraction,
+            validator: (value)=>confirmPasswordValidation(signupController.passwordController.text, value),
+          ),
+          SizedBox(height: 22.h),
+          authField(
             text: 'Phone Number *',
             labelText: userModeController.selectedIndex.value == 0
                 ? 'Enter your phone number'
@@ -75,6 +86,7 @@ class SignupForm extends StatelessWidget {
               controller: signupController.abnController,
               icon: IconsPath.file,
               validation: AutovalidateMode.onUserInteraction,
+              validator: abnValidation,
             ),
         ],
       ),

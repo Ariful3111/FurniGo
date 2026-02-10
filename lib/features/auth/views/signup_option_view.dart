@@ -13,6 +13,7 @@ import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dar
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
+import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
 class SignupOptionView extends StatelessWidget {
   const SignupOptionView({super.key});
@@ -81,11 +82,20 @@ class SignupOptionView extends StatelessWidget {
             ),
           ),
           SizedBox(height: 32.h),
-          CustomPrimaryButton(
-            text: 'Continue',
-            onPressed: () {
-              Get.toNamed(AppRoutes.signUpView);
-            },
+          Obx(
+            () => CustomPrimaryButton(
+              text: 'Continue',
+              backgroundColor: !signupOptionController.isChecked.value
+                  ? AppColors.buttonTextColor
+                  : null,
+              onPressed: () {
+                if (signupOptionController.isChecked.value) {
+                  Get.toNamed(AppRoutes.signUpView);
+                } else {
+                  ErrorSnackbar.show(description: 'Please Agree to the Terms & Privacy Policy');
+                }
+              },
+            ),
           ),
         ],
       ),

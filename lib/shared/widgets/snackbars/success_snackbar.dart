@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+
+class SuccessSnackbar {
+  static SnackbarController show({
+    required String description,
+    double? maxWidth,
+  }) {
+    Get.closeAllSnackbars();
+    return Get.showSnackbar(
+      GetSnackBar(
+        maxWidth: maxWidth,
+        borderRadius: 16.r,
+        margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
+        backgroundColor: AppColors.whiteColor,
+        leftBarIndicatorColor: Colors.transparent,
+        borderColor: Colors.transparent,
+        borderWidth: 0,
+        boxShadows: [
+          BoxShadow(
+            color: const Color(0xFF6BFFB4).withValues(alpha: 0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+            spreadRadius: 2,
+          ),
+        ],
+        icon: Padding(
+          padding: EdgeInsets.only(right: 12.w),
+          child: Container(
+            width: 48.w,
+            height: 48.w,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 37, 207, 122),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Center(
+              child: Icon(
+                Icons.check,
+                color: AppColors.whiteColor,
+                size: 28.sp,
+              ),
+            ),
+          ),
+        ),
+        messageText: CustomPrimaryText(
+          text: description,
+          fontSize: 14.sp,
+          textAlign: TextAlign.start,
+          textOverflow: TextOverflow.visible,
+        ),
+        duration: const Duration(seconds: 4),
+        snackPosition: SnackPosition.BOTTOM,
+        forwardAnimationCurve: Curves.easeOutCubic,
+        reverseAnimationCurve: Curves.easeInCubic,
+        animationDuration: const Duration(milliseconds: 400),
+      ),
+    );
+  }
+}

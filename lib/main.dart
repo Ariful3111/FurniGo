@@ -14,7 +14,6 @@ void main()async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: 'ZB DEZIGN',
         debugShowCheckedModeBanner: false,
         initialBinding: AuthBindings(),
-        initialRoute: AppRoutes.rentBusinessIdentification,
+        initialRoute: AppRoutes.rentalView,
         getPages: appRoutes,
       ),
     );

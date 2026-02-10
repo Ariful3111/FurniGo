@@ -13,6 +13,7 @@ import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
+import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
 class SignupView extends StatelessWidget {
   const SignupView({super.key});
@@ -68,8 +69,11 @@ class SignupView extends StatelessWidget {
                   ? ButtonLoading()
                   : CustomPrimaryButton(
                       text: 'Sign Up',
+                      backgroundColor:signupController.isChecked.value?null:AppColors.buttonTextColor ,
                       onPressed: () async {
-                        await signupController.register(formKey: fromKey);
+                        if(signupController.isChecked.value){await signupController.register(formKey: fromKey);}else{
+                          ErrorSnackbar.show(description: 'Please Agree to the Terms & Privacy Policy');
+                        }
                       },
                     );
             }),
