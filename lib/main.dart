@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: 'ZB DEZIGN',
         debugShowCheckedModeBanner: false,
         initialBinding: AuthBindings(),
-        initialRoute: AppRoutes.onboardingView,
+        initialRoute: AppRoutes.rentBusinessIdentification,
         getPages: appRoutes,
       ),
     );

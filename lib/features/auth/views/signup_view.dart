@@ -69,10 +69,18 @@ class SignupView extends StatelessWidget {
                   ? ButtonLoading()
                   : CustomPrimaryButton(
                       text: 'Sign Up',
-                      backgroundColor:signupController.isChecked.value?null:AppColors.buttonTextColor ,
+                      backgroundColor: signupController.isChecked.value
+                          ? null
+                          : AppColors.buttonTextColor,
                       onPressed: () async {
-                        if(signupController.isChecked.value){await signupController.register(formKey: fromKey);}else{
-                          ErrorSnackbar.show(description: 'Please Agree to the Terms & Privacy Policy');
+                        if (signupController.isChecked.value) {
+                          await signupController.register(formKey: fromKey);
+                        } else {
+                          ErrorSnackbar.show(
+                            description:
+                                'Please Agree to the Terms & Privacy Policy',
+                          );
+                          Get.toNamed(AppRoutes.emailVerificationView);
                         }
                       },
                     );

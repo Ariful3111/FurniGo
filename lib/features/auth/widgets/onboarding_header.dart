@@ -53,7 +53,7 @@ class OnboardingHeader extends StatelessWidget {
                   onTap: () {
                     if (onboardingController.pageController.hasClients) {
                       onboardingController.pageController.animateToPage(
-                        page - 1,
+                        page - 2,
                         duration: Duration(milliseconds:onboardingController.currentIndex.value==page-3?500 :onboardingController.currentIndex.value==page-2? 300:800),
                         curve: Curves.linear,
                       );

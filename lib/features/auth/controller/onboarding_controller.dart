@@ -50,8 +50,10 @@ class OnboardingController extends GetxController {
             curve: Curves.easeInOut,
           );
           Get.toNamed(AppRoutes.signInView);
-          dragOffset.value = 0.0;
         }
+        Future.delayed(Duration(milliseconds: 500),(){
+          dragOffset.value = 0.0;
+        });
       });
       dragOffset.value = maxDragDistance;
     } else {

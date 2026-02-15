@@ -26,6 +26,7 @@ class RentPeriodTypeBudget extends StatelessWidget {
           controller: rentPeriodController.otherController,
           width: 179.w,
           labelText: 'Enter Budget',
+          keyboardType: TextInputType.numberWithOptions(),
         ),
         SizedBox(height: 12.h),
         RentErrorContainer(

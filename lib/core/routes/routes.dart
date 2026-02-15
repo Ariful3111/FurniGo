@@ -1,7 +1,11 @@
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/auth/bindings/auth_bindings.dart';
+import 'package:zb_dezign/features/auth/views/email_verification_view.dart';
+import 'package:zb_dezign/features/auth/views/forgot_password_view.dart';
+import 'package:zb_dezign/features/auth/views/new_password_view.dart';
 import 'package:zb_dezign/features/auth/views/onboarding_view.dart';
+import 'package:zb_dezign/features/auth/views/otp_view.dart';
 import 'package:zb_dezign/features/auth/views/signin_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_option_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_view.dart';
@@ -46,5 +50,25 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.rentalView,
     page: () => RentalView(),
     binding: RentalBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.forgotPasswordView,
+    page: () => ForgotPasswordView(),
+    binding: AuthBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.otpView,
+    page: () => OtpView(),
+    binding: AuthBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.newPasswordView,
+    page: () => NewPasswordView(),
+    binding: AuthBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.emailVerificationView,
+    page: () => EmailVerificationView(),
+    binding: AuthBindings(),
   ),
 ];

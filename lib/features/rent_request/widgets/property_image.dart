@@ -6,8 +6,9 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class PropertyImage extends StatelessWidget {
   final String title;
-  final VoidCallback onTap;
-  const PropertyImage({super.key, required this.title, required this.onTap});
+  final VoidCallback onGallery;
+  final VoidCallback onCamera;
+  const PropertyImage({super.key, required this.title, required this.onGallery, required this.onCamera});
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +34,39 @@ class PropertyImage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16.h),
-          GestureDetector(
-            onTap: onTap,
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
-              decoration: BoxDecoration(
-                color: AppColors.whiteColor,
-                border: Border.all(width: 1.r, color: Color(0xFFD1D7E0)),
-                borderRadius: BorderRadius.circular(100.r),
-              ),
-              child: CustomPrimaryText(
-                text: 'Choose File',
-                color: AppColors.labelColor,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              imageUpload(onTap: onGallery, icon: IconsPath.gallery, title: 'Chose from Gallery'),
+              imageUpload(onTap: onCamera, icon: IconsPath.camera, title: 'Capture Image'),
+          ],),
         ],
+      ),
+    );
+  }
+
+  Widget imageUpload({required VoidCallback onTap,required String icon,required String title}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          border: Border.all(width: 1.r, color: Color(0xFFD1D7E0)),
+          borderRadius: BorderRadius.circular(100.r),
+        ),
+        child: Row(
+          children: [
+            CustomPrimaryText(
+              text: title,
+              color: AppColors.labelColor,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+            ),
+            SizedBox(width: 4.w,),
+            Image.asset(icon,height: 16.h,width: 16.w,),
+          ],
+        ),
       ),
     );
   }

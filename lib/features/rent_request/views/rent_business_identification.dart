@@ -19,6 +19,7 @@ class RentBusinessIdentification extends StatelessWidget {
     RentBusinessIdentificationController controller = Get.find();
     return CustomContainer(
       child: ListView(
+        controller: controller.rentController,
         children: [
           SizedBox(height: 20.h,),
           CustomAppbar(title: 'Rent', onDrawerTap: () {}),
@@ -34,6 +35,11 @@ class RentBusinessIdentification extends StatelessWidget {
                 border: Border.all(color: Color(0xFFD1D7E0), width: 1.r),
                 onTap: () {
                   if (controller.currentIndex.value > 0) {
+                    controller.rentController.animateTo(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.linear,
+                    controller.rentController.position.minScrollExtent,
+                  );
                     controller.currentIndex.value--;
                   }
                 },

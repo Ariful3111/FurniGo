@@ -3,9 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_business_identification_controller.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_submit_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
 class RentBusinessNext extends StatelessWidget {
   const RentBusinessNext({super.key});
@@ -13,14 +15,14 @@ class RentBusinessNext extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RentBusinessIdentificationController controller = Get.find();
-
+    RentPropertyTypeController propertyTypeController = Get.find();
     return Obx(() {
       final isLast =
           controller.currentIndex.value < controller.rentWidgets.length - 1;
       return controller.currentIndex.value == controller.rentWidgets.length - 1
           ? myButton(
               color: AppColors.acceptButtonColor,
-              onTap: () { 
+              onTap: () {
                 showDialog(
                   context: context,
                   builder: (context) => RentSubmitDialog(),
@@ -35,9 +37,41 @@ class RentBusinessNext extends StatelessWidget {
           : myButton(
               color: AppColors.primaryColor,
               onTap: () {
-                if (isLast) {
+                if (controller.currentIndex.value == 0) {
+                  if (controller.formKey.currentState!.validate()) {
+                    controller.currentIndex.value++;
+                  }
+                } else if (controller.currentIndex.value == 1) {
+                  if (propertyTypeController
+                      .selectedPropertyType
+                      .value
+                      .isEmpty) {
+                    ErrorSnackbar.show(
+                      description: 'Please select Property Type',
+                    );
+                  } else if (propertyTypeController
+                      .selectedPropertyUse
+                      .value
+                      .isEmpty) {
+                    ErrorSnackbar.show(
+                      description: 'Please select Property Use',
+                    );
+                  } else {
+                    controller.currentIndex.value++;
+                  }
+                }else if(controller.currentIndex.value==2){
+                  if (controller.formKey.currentState!.validate()) {
+                    controller.currentIndex.value++;
+                  }
+                } else if (isLast) {
+                  controller.rentController.animateTo(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.linear,
+                    controller.rentController.position.minScrollExtent,
+                  );
                   controller.currentIndex.value++;
                 }
+                //controller.currentIndex.value++;
               },
               child: Row(
                 children: [

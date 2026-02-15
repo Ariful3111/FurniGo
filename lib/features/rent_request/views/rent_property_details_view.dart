@@ -12,7 +12,9 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentPropertyDetailsView extends StatelessWidget {
-  const RentPropertyDetailsView({super.key});
+  final GlobalKey<FormState> formKey;
+
+  const RentPropertyDetailsView({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class RentPropertyDetailsView extends StatelessWidget {
             color: AppColors.darkColor,
           ),
           SizedBox(height: 20.h),
-          PropertyDetailsField(),
+          PropertyDetailsField(formKey: formKey,),
           SizedBox(height: 20.h),
           CustomPrimaryText(
             text: 'Space Breakdown',

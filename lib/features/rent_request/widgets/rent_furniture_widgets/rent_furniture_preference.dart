@@ -16,27 +16,40 @@ class RentFurniturePreference extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...List.generate(rentFurnitureController.preference.length, (index) {
-          return Row(
-            children: [
-              Obx(
-                () => CustomRadioButton(
-                  value: index,
-                  groupValue: rentFurnitureController.selectedPreference.value,
-                  onChange: (value) {
-                    rentFurnitureController.selectedPreference.value = value!;
-                  },
+        GridView.builder(
+          itemCount: rentFurnitureController.preference.length,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 5,
+          ),
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Obx(
+                  () => CustomRadioButton(
+                    value: index,
+                    groupValue:
+                        rentFurnitureController.selectedPreference.value,
+                    onChange: (value) {
+                      rentFurnitureController.selectedPreference.value = value!;
+                    },
+                  ),
                 ),
-              ),
-              CustomPrimaryText(
-                text: rentFurnitureController.preference[index],
-                fontSize: 14.sp,
-                color: AppColors.darkColor,
-                fontWeight: FontWeight.w400,
-              ),
-            ],
-          );
-        }),
+                Expanded(
+                  child: CustomPrimaryText(
+                    text: rentFurnitureController.preference[index],
+                    fontSize: 14.sp,
+                    color: AppColors.darkColor,
+                    fontWeight: FontWeight.w400,
+                    textOverflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
         SizedBox(height: 20.h),
         CustomPrimaryText(
           text: 'Style Preference:',
@@ -44,22 +57,31 @@ class RentFurniturePreference extends StatelessWidget {
           color: AppColors.darkColor,
         ),
         SizedBox(height: 12.h),
-        ...List.generate(rentFurnitureController.stylePreference.length, (
-          index,
-        ) {
-          return Obx(
-            () => propertyCheckBox(
-              context: context,
-              isLastIndex:
-                  rentFurnitureController.stylePreference.length - 1 == index,
-              isChecked: rentFurnitureController.isChecked[index],
-              onChange: (value) {
-                rentFurnitureController.isChecked[index] = value!;
-              },
-              title: rentFurnitureController.stylePreference[index],
-            ),
-          );
-        }),
+        GridView.builder(
+          itemCount: rentFurnitureController.stylePreference.length,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 12.h,
+            crossAxisSpacing: 12.w,
+            childAspectRatio: 2.5
+          ),
+          itemBuilder: (context, index) {
+            return Obx(
+              () => propertyCheckBox(
+                context: context,
+                isLastIndex:
+                    rentFurnitureController.stylePreference.length - 1 == index,
+                isChecked: rentFurnitureController.checkedPreference[index],
+                onChange: (value) {
+                  rentFurnitureController.checkedPreference[index] = value!;
+                },
+                title: rentFurnitureController.stylePreference[index],
+              ),
+            );
+          },
+        ),
       ],
     );
   }
