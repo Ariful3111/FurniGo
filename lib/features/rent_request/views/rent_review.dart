@@ -37,8 +37,13 @@ class RentReview extends StatelessWidget {
           ),
           SizedBox(height: 26.h),
           RentReviewModel(
-            title: 'Property Details',
+            title: 'Property Type',
             data: rentReviewController.propertyType,
+          ),
+          SizedBox(height: 26.h),
+          RentReviewModel(
+            title: 'Property details',
+            data: rentReviewController.propertyDetails,
           ),
           SizedBox(height: 26.h),
           RentReviewModel(

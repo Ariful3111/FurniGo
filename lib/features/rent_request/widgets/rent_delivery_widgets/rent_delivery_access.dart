@@ -25,27 +25,32 @@ class RentDeliveryAccess extends StatelessWidget {
               color: AppColors.titleTextColor,
             ),
             SizedBox(height: 12.h),
-            ...List.generate(item['Option'].length, (index) {
-              return Row(
-                children: [
-                  Obx(
-                    () => CustomRadioButton(
-                      value: index,
-                      groupValue: item['selectedOption'].value,
-                      onChange: (value) {
-                        item['selectedOption'].value = value!;
-                      },
+            Row(
+              children: List.generate(item['Option'].length, (index) {
+              return SizedBox(
+                width: 171.w,
+                child: Row(
+                  children: [
+                    Obx(
+                      () => CustomRadioButton(
+                        value: index,
+                        groupValue: item['selectedOption'].value,
+                        onChange: (value) {
+                          item['selectedOption'].value = value!;
+                        },
+                      ),
                     ),
-                  ),
-                  CustomPrimaryText(
-                    text: item['Option'][index],
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.darkColor,
-                  ),
-                ],
+                    CustomPrimaryText(
+                      text: item['Option'][index],
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.darkColor,
+                    ),
+                  ],
+                ),
               );
             }),
+            ),
           ],
         );
       }),

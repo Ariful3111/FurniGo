@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/auth/widgets/onboard_login.dart';
-import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
+import 'package:zb_dezign/features/auth/widgets/onboarding_slider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class OnboardingFooter extends StatelessWidget {
   final String title;
   final String subTitle;
-  final VoidCallback onTap;
   final bool isLast;
   const OnboardingFooter({
     super.key,
     required this.title,
     required this.subTitle,
-    required this.onTap,
     required this.isLast,
   });
 
@@ -38,13 +36,13 @@ class OnboardingFooter extends StatelessWidget {
         ),
         SizedBox(height: 11.h),
         AnimatedSize(
-          duration:  Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-         
+
           child: isLast
-              ? OnboardLogin(subTitle: subTitle, valueKey: ValueKey('login'),)
+              ? OnboardLogin(subTitle: subTitle, valueKey: ValueKey('login'))
               : Column(
-                key: ValueKey('next'),
+                  key: ValueKey('next'),
                   children: [
                     CustomPrimaryText(
                       text: subTitle,
@@ -60,13 +58,7 @@ class OnboardingFooter extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 38.h),
-                    CustomPrimaryButton(
-                      text: 'Next',
-                      onPressed: onTap,
-                      fontWeight: FontWeight.w600,
-                      backgroundColor: AppColors.whiteColor,
-                      textColor: AppColors.primaryColor,
-                    ),
+                    OnboardingSlider(isLast: isLast,),
                   ],
                 ),
         ),

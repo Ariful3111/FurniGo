@@ -56,6 +56,11 @@ class AppColors {
     end: Alignment.bottomCenter,
     colors: [Color(0xFFF6F2FF), Color(0xFFF9F2FF)],
   );
+  static Gradient primaryGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Color(0xFF15003A), Color(0xFF3A00A0)],
+  );
   static Gradient bannerBG = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,

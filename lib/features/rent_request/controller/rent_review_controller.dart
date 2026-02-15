@@ -1,14 +1,27 @@
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
 
-class RentReviewController extends GetxController{
+class RentReviewController extends GetxController {
   var propertyType = [
-    {'title': 'Property Type', 'value': 'Commercial'},
-    {'title': 'Property Use', 'value': 'Office'},
+    {
+      'title': 'Property Type',
+      'value': Get.find<RentPropertyTypeController>()
+          .selectedPropertyType.value,
+    },
+    {'title': 'Property Use', 'value': Get.find<RentPropertyTypeController>()
+          .selectedPropertyUse.value},
   ];
   var propertyDetails = [
-    {'title': 'Property Address', 'value': '25 Collins Street, Melbourne VIC 3000, Australia'},
+    {
+      'title': 'Property Address',
+      'value': '25 Collins Street, Melbourne VIC 3000, Australia',
+    },
     {'title': 'Property Size', 'value': '1235 sqm'},
-    {'title': 'Space Breakdown', 'value': 'Reception / Waiting Area(2), Meeting / Conference Rooms (2), Private Offices (1), Utility Room(1), Staff Break Area (2)'},
+    {
+      'title': 'Space Breakdown',
+      'value':
+          'Reception / Waiting Area(2), Meeting / Conference Rooms (2), Private Offices (1), Utility Room(1), Staff Break Area (2)',
+    },
   ];
   var propertyFloorPlan = [
     {'title': 'Office Floor', 'value': 'Length (1 sqm)*Width (1 sqm)'},
@@ -16,9 +29,18 @@ class RentReviewController extends GetxController{
     {'title': 'Kitchen', 'value': 'Length (1 sqm)*Width (1 sqm)'},
   ];
   var propertyAppliance = [
-    {'title': 'Reception', 'value': 'Refrigerator (2), Microwave (1), Washing Machine (3)'},
-    {'title': 'Office Floor', 'value': 'Refrigerator (2), Microwave (1), Washing Machine (3)'},
-    {'title': 'Private Offices', 'value': 'Refrigerator (2), Microwave (1), Washing Machine (3)'},
+    {
+      'title': 'Reception',
+      'value': 'Refrigerator (2), Microwave (1), Washing Machine (3)',
+    },
+    {
+      'title': 'Office Floor',
+      'value': 'Refrigerator (2), Microwave (1), Washing Machine (3)',
+    },
+    {
+      'title': 'Private Offices',
+      'value': 'Refrigerator (2), Microwave (1), Washing Machine (3)',
+    },
   ];
   var propertyBranding = [
     {'title': 'Branding', 'value': 'Required'},

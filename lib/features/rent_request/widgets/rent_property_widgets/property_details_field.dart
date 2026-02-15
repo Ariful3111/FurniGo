@@ -3,30 +3,47 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_property_details_controller.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
+import 'package:zb_dezign/shared/extensions/validators/name_validator.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class PropertyDetailsField extends StatelessWidget {
-  const PropertyDetailsField({super.key});
+  final GlobalKey<FormState> formKey;
+  const PropertyDetailsField({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
     RentPropertyDetailsController rentPropertyDetailsController = Get.find();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        myField(
-          text: 'Property Address *',
-          controller: rentPropertyDetailsController.propertyAddressController,
-          labelText: 'Enter Property Address',
-        ),
-        SizedBox(height: 16.h),
-        myField(
-          text: 'Property Size (Optional)',
-          controller: rentPropertyDetailsController.propertySizeController,
-          labelText: 'Enter Property Size',
-        ),
-      ],
+    RentPropertyTypeController rentPropertyTypeController = Get.find();
+    return Form(
+      key: formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          myField(
+            text: 'Property Address *',
+            controller: rentPropertyDetailsController.propertyAddressController,
+            labelText: 'Enter Property Address',
+            validation: AutovalidateMode.onUserInteraction,
+            validator: nameValidation,
+          ),
+          SizedBox(height: 16.h),
+          myField(
+            text:
+                rentPropertyTypeController.selectedPropertyType.value ==
+                    'Residential'
+                ? 'Property Size *'
+                : 'Property Size (Optional)',
+            controller: rentPropertyDetailsController.propertySizeController,
+            labelText: 'Enter Property Size',
+            validation: AutovalidateMode.onUserInteraction,
+            validator:rentPropertyTypeController.selectedPropertyType.value=='Residential'? nameValidation: (value) {
+              return null;
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -35,6 +52,8 @@ Widget myField({
   required String text,
   required TextEditingController controller,
   required String labelText,
+  String? Function(String?)? validator,
+  AutovalidateMode? validation,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,6 +71,8 @@ Widget myField({
         fillColor: AppColors.whiteColor,
         borderWidth: 1.2.r,
         borderColor: AppColors.fieldBorderColorLight,
+        validation: validation,
+        validator: validator,
       ),
     ],
   );

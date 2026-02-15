@@ -19,7 +19,7 @@ class RentBrand extends StatelessWidget {
     return SharedContainer(
       child: Column(
         children: [
-          PageCount(text: 'Furniture Requirements'),
+          PageCount(text: 'Brand Placement'),
           SizedBox(height: 20.h),
           propertyDivider(),
           optionContainer(

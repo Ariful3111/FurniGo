@@ -8,7 +8,7 @@ class RentApplianceController extends GetxController {
   RxBool isAppliance = false.obs;
   RxList<bool> isOpenList = <bool>[].obs;
   List widgets = [
-    {'title': 'Items & appliances', 'child': RentApplianceWidgetsDetails()},
+    {'title': 'Reception', 'child': RentApplianceWidgetsDetails()},
     {'title': 'Private Offices', 'child': RentApplianceWidgetsDetails()},
     {'title': 'Showroom', 'child': RentApplianceWidgetsDetails()},
   ];

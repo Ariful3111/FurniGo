@@ -27,7 +27,7 @@ class RentDeliveryDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomPrimaryText(
-                        text: 'Branding Required?',
+                        text: 'Setup required?',
                         fontSize: 14.sp,
                         color: AppColors.darkTextColor,
                         fontWeight: FontWeight.w600,
@@ -35,7 +35,7 @@ class RentDeliveryDetails extends StatelessWidget {
                       SizedBox(height: 4.h),
                       CustomPrimaryText(
                         text:
-                            'Add your logo, colors, or custom design to furniture and display areas.',
+                            'Professional setup service',
                         fontSize: 14.sp,
                         color: Color(0xFF6A7282),
                         fontWeight: FontWeight.w400,

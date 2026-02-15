@@ -6,4 +6,8 @@ class AppRoutes {
   static const String signUpOptionView = '/signUpOptionView';
   static const String rentBusinessIdentification = '/rentBusinessIdentification';
   static const String rentalView = '/rentalView';
+  static const String forgotPasswordView = '/forgotPasswordView';
+  static const String otpView = '/otpView';
+  static const String newPasswordView = '/newPasswordView';
+  static const String emailVerificationView = '/emailVerificationView';
 }

@@ -9,12 +9,13 @@ class OtherField extends StatelessWidget {
   final double? height;
   final double? width;
   final String? labelText;
+  final TextInputType? keyboardType;
   const OtherField({
     super.key,
     required this.controller,
     this.readOnly,
     this.height,
-    this.width, this.labelText,
+    this.width, this.labelText, this.keyboardType,
   });
 
   @override
@@ -40,6 +41,7 @@ class OtherField extends StatelessWidget {
         padding: EdgeInsets.zero,
         fillColor: AppColors.whiteColor,
         readOnly: readOnly,
+        keyboardType: keyboardType,
       ),
     );
   }

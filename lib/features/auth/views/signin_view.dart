@@ -33,6 +33,7 @@ class SigninView extends StatelessWidget {
               text: 'Sign In',
               fontSize: 31.sp,
               fontWeight: FontWeight.w600,
+              color: AppColors.darkColor,
             ),
             SizedBox(height: 12.h),
             CustomSpanText(

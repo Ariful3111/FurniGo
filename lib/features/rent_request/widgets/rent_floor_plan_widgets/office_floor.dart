@@ -31,7 +31,10 @@ class OfficeFloor extends StatelessWidget {
         SizedBox(height: 26.h),
         PropertyImage(
           title: 'Drag & drop your floorplan here, or click to browse',
-          onTap: () {},
+          onGallery: () {},
+          onCamera: () {
+            
+          },
         ),
         SizedBox(height: 26.h),
         RentErrorContainer(

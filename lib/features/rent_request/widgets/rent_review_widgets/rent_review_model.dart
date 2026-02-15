@@ -26,7 +26,7 @@ class RentReviewModel extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.only(bottom:data.length-1 == index ? 0 : 12.0.h),
             child: Row(
-             crossAxisAlignment: CrossAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: Align(

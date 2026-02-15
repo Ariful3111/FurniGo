@@ -68,7 +68,7 @@ class SignupOptionView extends StatelessWidget {
           SizedBox(height: 16.h),
           LoginButton(
             onTap: () {},
-            icon: IconsPath.gmail,
+            icon: IconsPath.authEmail,
             title: 'Continue With email',
             radius: 12.r,
           ),
