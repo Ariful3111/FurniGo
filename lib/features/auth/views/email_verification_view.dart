@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/auth/controller/signup_controller.dart';
 import 'package:zb_dezign/features/auth/widgets/auth_header.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
@@ -37,7 +38,12 @@ class EmailVerificationView extends StatelessWidget {
             color: AppColors.buttonTextColor,
           ),
           SizedBox(height: 46.h),
-          CustomPrimaryButton(text: 'Check My Inbox', onPressed: () {}),
+          CustomPrimaryButton(
+            text: 'Check My Inbox',
+            onPressed: () {
+              Get.toNamed(AppRoutes.rentBusinessIdentification);
+            },
+          ),
           SizedBox(height: 16.h),
           InkWell(
             onTap: () {},

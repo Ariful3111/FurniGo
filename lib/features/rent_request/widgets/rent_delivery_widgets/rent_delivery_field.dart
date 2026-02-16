@@ -5,6 +5,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_delivery_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
 import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_dropdown_menu.dart';
+import 'package:zb_dezign/shared/widgets/custom_form_field/custom_phone_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -75,9 +76,9 @@ class RentDeliveryField extends StatelessWidget {
         SizedBox(height: 26.h),
         text(text: 'Phone'),
         SizedBox(height: 8.h),
-        CustomTextFormField(
-          controller: TextEditingController(),
-          labelText: 'Enter phone number',
+        CustomPhoneField(
+          controller: rentDeliveryController.numberDateController,
+          labelText: 'Enter Your Phone Number',
         ),
         SizedBox(height: 16.h),
         Row(
@@ -90,14 +91,17 @@ class RentDeliveryField extends StatelessWidget {
                 },
               ),
             ),
-            text(text: 'Save This Information For Next Time',fontWeight: FontWeight.w400)
+            text(
+              text: 'Save This Information For Next Time',
+              fontWeight: FontWeight.w400,
+            ),
           ],
         ),
       ],
     );
   }
 
-  Widget text({required String text,FontWeight ? fontWeight}) {
+  Widget text({required String text, FontWeight? fontWeight}) {
     return CustomPrimaryText(
       text: text,
       fontSize: 14.sp,

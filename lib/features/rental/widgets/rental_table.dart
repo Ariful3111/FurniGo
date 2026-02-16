@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:zb_dezign/features/rental/controller/rental_controller.dart';
+import 'package:zb_dezign/features/rental/model/rental_model.dart';
+import 'package:zb_dezign/features/rental/widgets/rental_expanded_table.dart';
+import 'package:zb_dezign/shared/widgets/custom_table/custom_table.dart';
+
+class RentalTable extends StatelessWidget {
+  const RentalTable({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final RentalController controller = Get.put(RentalController());
+    return Obx(() {
+      final tableRows = controller.rentals
+          .map(
+            (rental) => {
+              'id': rental.id,
+              'status': rental.status,
+              'title': 'RENTAL ID',
+              'model': rental,
+            },
+          )
+          .toList();
+      final expandedFlags = controller.expandedList.toList();
+      return CustomTable(
+        rows: tableRows,
+        id: 'id',
+        status: 'status',
+        title: 'title',
+        expandedList: expandedFlags,
+        onExpand: (index) {
+          controller.expandedList[index] = !controller.expandedList[index];
+        },
+        buildExpanded: (index, row) {
+          final RentalModel rentalModel = row['model'] as RentalModel;
+          return RentalExpandedTable(rental: rentalModel);
+        },
+      );
+    });
+  }
+}

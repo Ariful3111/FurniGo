@@ -37,8 +37,8 @@ class PropertyImage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              imageUpload(onTap: onGallery, icon: IconsPath.gallery, title: 'Chose from Gallery'),
-              imageUpload(onTap: onCamera, icon: IconsPath.camera, title: 'Capture Image'),
+              Expanded(child: imageUpload(onTap: onGallery, icon: IconsPath.gallery, title: 'Chose from Gallery')),
+              Expanded(child: imageUpload(onTap: onCamera, icon: IconsPath.camera, title: 'Capture Image')),
           ],),
         ],
       ),
@@ -52,16 +52,19 @@ class PropertyImage extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
-          border: Border.all(width: 1.r, color: Color(0xFFD1D7E0)),
+          border: Border.all(width: 1.r, color: AppColors.buttonBorderColor),
           borderRadius: BorderRadius.circular(100.r),
         ),
         child: Row(
           children: [
-            CustomPrimaryText(
-              text: title,
-              color: AppColors.labelColor,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
+            Expanded(
+              child: CustomPrimaryText(
+                text: title,
+                color: AppColors.labelColor,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                textOverflow: TextOverflow.ellipsis,
+              ),
             ),
             SizedBox(width: 4.w,),
             Image.asset(icon,height: 16.h,width: 16.w,),

@@ -9,6 +9,7 @@ class AppColors {
   static const Color darkTextColor = Color(0xFF0A0A0F);
   static const Color titleTextColor = Color(0xFF0A0D14);
   static const Color greyTextColor = Color(0xFF4C4C4C);
+  static const Color greyColor = Color(0xFF6A7282);
   static const Color secondaryTextColor = Color(0xFF4A5565);
   static const Color errorTextColor = Color(0xFF733E0A);
   static const Color errorTextColor2 = Color(0xFFA65F00);
@@ -26,6 +27,7 @@ class AppColors {
   static const Color labelColor = Color(0xFF1F1F1F);
   static const Color shadowColor = Color(0xFF14142B);
   static const Color borderColor = Color(0xFFE5E9EE);
+  static const Color buttonBorderColor = Color(0xFFD1D7E0);
   static const Color pendingBGColor = Color(0xFFFFF3D0);
   static const Color pendingTextColor = Color(0xFFB49948);
   static const Color quoteBGColor = Color(0xFFDFE2FF);
@@ -39,6 +41,11 @@ class AppColors {
   static const Color rejectedBGColor = Color(0xFFFFD3D3);
   static const Color rejectedTextColor = Color(0xFFFF2828);
 
+  // Dark Colors
+
+  static const Color darkBorderColor = Color(0xFF434953);
+
+  //Gradient Colors
   static Gradient authBG = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/di/dependency_injection.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/core/routes/routes.dart';
+import 'package:zb_dezign/core/theme/app_theme.dart';
+import 'package:zb_dezign/core/theme/theme_controller.dart';
 import 'package:zb_dezign/features/auth/bindings/auth_bindings.dart';
 
 void main()async {
@@ -21,8 +23,11 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => GetMaterialApp(
         title: 'ZB DEZIGN',
         debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: Get.find<ThemeController>().currentTheme,
         initialBinding: AuthBindings(),
-        initialRoute: AppRoutes.rentBusinessIdentification,
+        initialRoute: AppRoutes.onboardingView,
         getPages: appRoutes,
       ),
     );

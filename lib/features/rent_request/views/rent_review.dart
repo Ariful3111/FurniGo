@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_review_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -16,6 +17,8 @@ class RentReview extends StatelessWidget {
   Widget build(BuildContext context) {
     RentReviewController rentReviewController =
         Get.find<RentReviewController>();
+    RentPropertyTypeController rentPropertyTypeController = Get.find();
+
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,14 +55,24 @@ class RentReview extends StatelessWidget {
           ),
           SizedBox(height: 26.h),
           RentReviewModel(
+            title: 'Furniture Requirements',
+            data: rentReviewController.propertyFloorPlan,
+          ),
+          SizedBox(height: 26.h),
+          RentReviewModel(
             title: 'Items & appliances',
             data: rentReviewController.propertyAppliance,
           ),
           SizedBox(height: 26.h),
-          RentReviewModel(
-            title: 'Branding & Customization',
-            data: rentReviewController.propertyBranding,
-          ),
+          rentPropertyTypeController.selectedPropertyType.value == 'Residential'
+              ? RentReviewModel(
+                  title: 'Additional Notes',
+                  data: rentReviewController.propertyNotes,
+                )
+              : RentReviewModel(
+                  title: 'Branding & Customization',
+                  data: rentReviewController.propertyBranding,
+                ),
           SizedBox(height: 26.h),
           RentReviewModel(
             title: 'Rental Period & Budget',

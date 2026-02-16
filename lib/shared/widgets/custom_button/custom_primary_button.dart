@@ -28,21 +28,26 @@ class CustomPrimaryButton extends StatelessWidget {
     this.borderRadius,
     this.child,
     this.boxDecoration,
-    this.fontWeight, this.padding,
+    this.fontWeight,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        padding: padding??EdgeInsets.symmetric(horizontal: 16.w,vertical: 12.h),
-        height: height??48.h,
+        padding:
+            padding ?? EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        height: height ?? 48.h,
         width: width ?? MediaQuery.widthOf(context),
         decoration:
             boxDecoration ??
             BoxDecoration(
-              color: backgroundColor ?? AppColors.primaryColor,
+              color: isDark
+                  ? AppColors.whiteColor
+                  : backgroundColor ?? AppColors.primaryColor,
               borderRadius: borderRadius ?? BorderRadius.circular(100.r),
             ),
         child:
@@ -50,7 +55,9 @@ class CustomPrimaryButton extends StatelessWidget {
             Center(
               child: CustomPrimaryText(
                 text: text,
-                color: textColor ?? AppColors.whiteColor,
+                color: isDark
+                    ? AppColors.darkColor
+                    : textColor ?? AppColors.whiteColor,
                 fontSize: fontSize ?? 16.sp,
                 fontWeight: fontWeight ?? FontWeight.w500,
               ),

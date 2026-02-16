@@ -25,6 +25,8 @@ class CustomPrimaryText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { 
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Text(
       text,
       textAlign: textAlign,
@@ -32,7 +34,7 @@ class CustomPrimaryText extends StatelessWidget {
       style: GoogleFonts.montserrat(
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.w500,
-        color:color?? AppColors.primaryColor,
+        color:isDark? AppColors.whiteColor:color?? AppColors.primaryColor,
         shadows: shadow
       ),
     );

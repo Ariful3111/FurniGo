@@ -9,14 +9,21 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(8.27.r),
-        height: 32.h,width: 32.w,
+        height: 32.h,
+        width: 32.w,
         decoration: BoxDecoration(
-          color: AppColors.whiteColor,
-          border: Border.all(width: 1.03.r, color: AppColors.primaryBorderColor),
+          color: isDark ? AppColors.labelColor : AppColors.whiteColor,
+          border: Border.all(
+            width: 1.03.r,
+            color: isDark
+                ? AppColors.darkBorderColor
+                : AppColors.primaryBorderColor,
+          ),
           borderRadius: BorderRadius.circular(4.65.r),
           boxShadow: [
             BoxShadow(
@@ -27,7 +34,7 @@ class ActionButton extends StatelessWidget {
           ],
         ),
         child: Center(
-          child: Image.asset(icon, height: 16.w, width: 16.w),
+          child: Image.asset(icon, height: 16.w, width: 16.w,color: isDark?AppColors.primaryBorderColor:null,),
         ),
       ),
     );

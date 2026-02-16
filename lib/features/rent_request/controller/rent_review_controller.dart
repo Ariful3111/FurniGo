@@ -47,6 +47,10 @@ class RentReviewController extends GetxController {
     {'title': 'Logo Placement', 'value': 'Yes'},
     {'title': 'Brand Color Matching', 'value': 'No'},
   ];
+  var propertyNotes = [
+    {'title': 'Custom notes', 'value': 'Required'},
+    {'title': 'Material preferences', 'value': 'Yes'},
+  ];
   var propertyPeriod = [
     {'title': 'Rental term (days)', 'value': '60 days'},
     {'title': 'Payment Type', 'value': 'Pay in instalments'},

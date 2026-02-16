@@ -23,6 +23,7 @@ class SignupController extends GetxController {
   final storage = Get.find<StorageService>();
 
   Future<void> register({required GlobalKey<FormState> formKey}) async {
+          Get.toNamed(AppRoutes.emailVerificationView);
     if (formKey.currentState?.validate() ?? false) {
       isLoading.value = true;
       final response = await registerRepository.execute(

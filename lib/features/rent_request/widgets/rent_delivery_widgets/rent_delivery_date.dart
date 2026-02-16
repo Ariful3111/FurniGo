@@ -78,7 +78,7 @@ class RentDeliveryDate extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 16.w),
           decoration: BoxDecoration(
             color: AppColors.whiteColor,
-            border: Border.all(color: Color(0xFFD1D7E0),width: 1.r),
+            border: Border.all(color: AppColors.buttonBorderColor,width: 1.r),
             borderRadius: BorderRadius.circular(100.r),
           ),
           child: Row(children: [

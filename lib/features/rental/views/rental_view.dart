@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/rental/controller/rental_controller.dart';
+import 'package:zb_dezign/features/rental/widgets/rental_table.dart';
+import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_search.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_status_type.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
@@ -14,6 +18,7 @@ class RentalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RentalController rentalController = Get.find();
     return CustomContainer(
       child: ListView(
         children: [
@@ -42,6 +47,13 @@ class RentalView extends StatelessWidget {
           RentalStatusType(),
           SizedBox(height: 12.h),
           Align(alignment: Alignment.centerRight, child: RentalSearch()),
+          SizedBox(height: 12.h),
+          RentalTable(),
+          SizedBox(height: 24.h),
+          CustomPagination(
+            currentPage: rentalController.currentPage,
+            totalPage: rentalController.totalPages,
+          ),
         ],
       ),
     );
