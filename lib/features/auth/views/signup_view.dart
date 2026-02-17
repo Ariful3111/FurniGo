@@ -20,11 +20,12 @@ class SignupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark; 
     final fromKey = GlobalKey<FormState>();
     UserModeController userModeController = Get.find();
     SignupController signupController = Get.find();
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient:isDark?AppColors.darkAuthBG: AppColors.authBG,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,16 +42,16 @@ class SignupView extends StatelessWidget {
             SizedBox(height: 40.h),
             userModeController.selectedIndex.value == 0
                 ? CustomPrimaryText(
-                    text: 'Create your personal account.',
+                    text: 'Create your personal account',
                     fontSize: 22.sp,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.darkColor,
+                    color:isDark?AppColors.whiteColor: AppColors.darkColor,
                   )
                 : CustomPrimaryText(
-                    text: 'Create your Business account.',
+                    text: 'Create your Business account',
                     fontSize: 22.sp,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.darkColor,
+                    color:isDark?AppColors.whiteColor: AppColors.darkColor,
                   ),
             SizedBox(height: 22.h),
             SignupForm(formKey: fromKey),

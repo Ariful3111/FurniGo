@@ -11,6 +11,7 @@ class LoginButton extends StatelessWidget {
   final Color? fontColor;
   final Color? borderColor;
   final double? radius;
+  final Color? iconColor;
   const LoginButton({
     super.key,
     required this.onTap,
@@ -18,32 +19,40 @@ class LoginButton extends StatelessWidget {
     required this.title,
     this.color,
     this.fontColor,
-    this.borderColor, this.radius,
+    this.borderColor,
+    this.radius, this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         height: 48.h,
         decoration: BoxDecoration(
-          color: color ?? AppColors.whiteColor,
-          borderRadius: BorderRadius.circular(radius?? 60.r),
+          color: isDark
+              ? color ?? AppColors.darkColor
+              : color ?? AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(radius ?? 60.r),
           border: Border.all(
             width: 1.r,
-            color: borderColor ?? AppColors.grayBorderColor,
+            color: isDark
+                ? borderColor ?? AppColors.darkBorderColor
+                : borderColor ?? AppColors.grayBorderColor,
           ),
         ),
         child: Row(
           children: [
-            Image.asset(icon, height: 20.h, width: 20.w),
+            Image.asset(icon, height: 20.h, width: 20.w, color: iconColor),
             SizedBox(width: 80.w),
             CustomPrimaryText(
               text: title,
               fontSize: 16.sp,
-              color: fontColor ?? AppColors.buttonTextColor,
+              color: isDark
+                  ? fontColor ?? AppColors.whiteColor
+                  : fontColor ?? AppColors.buttonTextColor,
             ),
           ],
         ),

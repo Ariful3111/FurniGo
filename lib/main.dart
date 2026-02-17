@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkTheme,
         themeMode: Get.find<ThemeController>().currentTheme,
         initialBinding: AuthBindings(),
-        initialRoute: AppRoutes.onboardingView,
+        initialRoute: AppRoutes.rentalView,
         getPages: appRoutes,
       ),
     );

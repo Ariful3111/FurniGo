@@ -38,4 +38,5 @@ class IconsPath {
   static const String camera = 'assets/icons/camera.png';
   static const String authEmail = 'assets/icons/auth_email.png';
   static const String emailVerification = 'assets/icons/email_verification.png';
+  static const String back = 'assets/icons/back.png';
 }

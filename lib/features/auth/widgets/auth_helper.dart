@@ -11,21 +11,24 @@ Widget authField({
     required String icon,
     String? Function(String?)? validator,
     AutovalidateMode? validation,
+   required BuildContext context,
   }) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPrimaryText(
           text: text,
           fontSize: 16.sp,
-          color: AppColors.buttonTextColor,
+          color:isDark?AppColors.primaryBorderColor: AppColors.buttonTextColor,
         ),
         SizedBox(height: 8.h),
         CustomTextFormField(
           controller: controller,
           labelText: labelText,
-          borderColor: AppColors.fieldBorderColor,
-          fillColor: AppColors.fieldColor,
+          borderColor:isDark? AppColors.darkBorderColor:AppColors.fieldBorderColor,
+          fillColor:isDark? AppColors.labelColor:AppColors.fieldColor,
           borderRadius: 12.r,
           prefixIcon: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),

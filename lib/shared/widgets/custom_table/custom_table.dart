@@ -13,6 +13,8 @@ class CustomTable extends StatelessWidget {
   final List<bool> expandedList;
   final void Function(int index) onExpand;
   final Widget Function(int index, dynamic row) buildExpanded;
+  final List<String> headerList;
+  final void Function(dynamic row) onView;
   const CustomTable({
     super.key,
     required this.rows,
@@ -22,15 +24,22 @@ class CustomTable extends StatelessWidget {
     required this.expandedList,
     required this.onExpand,
     required this.buildExpanded,
+    required this.headerList,
+    required this.onView,
   });
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
-      padding: EdgeInsets.all(12.r),
+      padding: EdgeInsets.all(0.r),
       child: Column(
         children: [
-          CustomTableHeader(),
-          Divider(height: 1, color: AppColors.borderColor),
+          CustomTableHeader(headerList: headerList),
+          Divider(
+            thickness: 1,
+            height: 0,
+            color: isDark ? AppColors.darkBorderColor : AppColors.borderColor,
+          ),
           CustomTableRow(
             rows: rows,
             expandedList: expandedList,
@@ -39,6 +48,7 @@ class CustomTable extends StatelessWidget {
             status: status,
             title: title,
             buildExpanded: buildExpanded,
+            onView: onView,
           ),
         ],
       ),

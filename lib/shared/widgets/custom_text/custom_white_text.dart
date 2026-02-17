@@ -33,7 +33,7 @@ class CustomWhiteText extends StatelessWidget {
       style: GoogleFonts.montserrat( 
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.bold,
-        color:isDark?AppColors.darkColor :color?? AppColors.whiteColor,
+        color:isDark?color??AppColors.darkColor :color?? AppColors.whiteColor,
       ),
     );
   }

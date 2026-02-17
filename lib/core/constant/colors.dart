@@ -10,6 +10,7 @@ class AppColors {
   static const Color titleTextColor = Color(0xFF0A0D14);
   static const Color greyTextColor = Color(0xFF4C4C4C);
   static const Color greyColor = Color(0xFF6A7282);
+  static const Color boxColor = Color(0xFFE8E6EB);
   static const Color secondaryTextColor = Color(0xFF4A5565);
   static const Color errorTextColor = Color(0xFF733E0A);
   static const Color errorTextColor2 = Color(0xFFA65F00);
@@ -44,6 +45,20 @@ class AppColors {
   // Dark Colors
 
   static const Color darkBorderColor = Color(0xFF434953);
+  static const Color darkPendingBGColor = Color(0xFF6B5A2B);
+  static const Color darkPendingTextColor = Color(0xFFFFFBF0);
+  static const Color darkQuoteBGColor = Color(0xFF6155F5);
+  static const Color darkQuoteTextColor = Color(0xFFDFE2FF);
+  static const Color darkReviseBGColor = Color(0xFF106D93);
+  static const Color darkReviseTextColor = Color(0xFFCCF0FF);
+  static const Color darkActiveBGColor = Color(0xFF0E5843);
+  static const Color darkActiveTextColor = Color(0xFFE9FAF5);
+  static const Color darkCompleteBgColor = Color(0xFF05393B);
+  static const Color darkCompleteTextColor = Color(0xFFE7F3F4);
+  static const Color darkRejectedBGColor = Color(0xFFBF1F1F);
+  static const Color darkRejectedTextColor = Color(0xFFFFD3D3);
+  static const Color darkErrorBG = Color(0xFF6B5A2B);
+  static const Color darkErrorBorder = Color(0xFFB49948);
 
   //Gradient Colors
   static Gradient authBG = LinearGradient(
@@ -58,6 +73,18 @@ class AppColors {
       whiteColor,
     ],
   );
+  static Gradient darkAuthBG = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0xFF3500CC).withValues(alpha: 0.2),
+      darkColor.withValues(alpha: 0.2),
+      darkColor,
+      darkColor,
+      darkColor,
+      darkColor,
+    ],
+  );
   static Gradient primaryBG = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
@@ -67,6 +94,11 @@ class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [Color(0xFF15003A), Color(0xFF3A00A0)],
+  );
+  static Gradient darkPrimaryGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Color(0xFFBBA0EB), Color(0xFFAE45FA)],
   );
   static Gradient bannerBG = LinearGradient(
     begin: Alignment.topCenter,

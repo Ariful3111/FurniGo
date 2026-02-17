@@ -34,7 +34,7 @@ class CustomPrimaryText extends StatelessWidget {
       style: GoogleFonts.montserrat(
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.w500,
-        color:isDark? AppColors.whiteColor:color?? AppColors.primaryColor,
+        color:isDark?color?? AppColors.whiteColor:color?? AppColors.primaryColor,
         shadows: shadow
       ),
     );

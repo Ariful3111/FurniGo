@@ -9,6 +9,7 @@ class CustomTableActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(50.r),
@@ -16,7 +17,7 @@ class CustomTableActionButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
-          border: Border.all(color: AppColors.buttonBorderColor, width: 1.r),
+          border: Border.all(color:isDark? AppColors.darkBorderColor:AppColors.buttonBorderColor, width: 1.r),
           borderRadius: BorderRadius.circular(50.r),
         ),
         child: FittedBox(
@@ -27,13 +28,13 @@ class CustomTableActionButton extends StatelessWidget {
               CustomPrimaryText(
                 text: 'View Detail',
                 fontSize: 12.sp,
-                color: AppColors.labelColor,
+                color:isDark?AppColors.darkColor: AppColors.labelColor,
               ),
               SizedBox(width: 4.w),
               Icon(
                 Icons.arrow_forward,
                 size: 14.sp,
-                color: AppColors.labelColor,
+                color:isDark? AppColors.darkColor:AppColors.labelColor,
               ),
             ],
           ),

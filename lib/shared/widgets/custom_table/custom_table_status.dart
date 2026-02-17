@@ -10,34 +10,36 @@ class CustomTableStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     Color bgColor;
     Color textColor;
 
     switch (status) {
       case 'Pending':
-        bgColor = AppColors.pendingBGColor;
-        textColor = AppColors.pendingTextColor;
+        bgColor =isDark? AppColors.darkPendingBGColor:AppColors.pendingBGColor;
+        textColor =isDark? AppColors.darkPendingTextColor:AppColors.pendingTextColor;
         break;
       case 'Quote Sent':
-        bgColor = AppColors.quoteBGColor;
-        textColor = AppColors.quoteTextColor;
+        bgColor =isDark? AppColors.darkQuoteBGColor:AppColors.quoteBGColor;
+        textColor =isDark?AppColors.darkQuoteTextColor: AppColors.quoteTextColor;
         break;
       case 'Revise Quote':
-        bgColor = AppColors.reviseBGColor;
-        textColor = AppColors.reviseTextColor;
+        bgColor =isDark? AppColors.darkReviseBGColor:AppColors.reviseBGColor;
+        textColor =isDark? AppColors.darkReviseTextColor:AppColors.reviseTextColor;
         break;
       case 'Active':
-        bgColor = AppColors.activeBGColor;
-        textColor = AppColors.activeTextColor;
+        bgColor =isDark?AppColors.darkActiveBGColor: AppColors.activeBGColor;
+        textColor =isDark?AppColors.darkActiveTextColor: AppColors.activeTextColor;
         break;
       case 'Completed':
       case 'Competed':
-        bgColor = AppColors.completeBgColor;
-        textColor = AppColors.completeTextColor;
+        bgColor =isDark?AppColors.darkCompleteBgColor: AppColors.completeBgColor;
+        textColor =isDark?AppColors.darkCompleteTextColor :AppColors.completeTextColor;
         break;
       case 'Rejected':
-        bgColor = AppColors.rejectedBGColor;
-        textColor = AppColors.rejectedTextColor;
+        bgColor =isDark? AppColors.darkRejectedBGColor:AppColors.rejectedBGColor;
+        textColor =isDark?AppColors.darkRejectedTextColor: AppColors.rejectedTextColor;
         break;
       default:
         bgColor = AppColors.fieldColor;
@@ -48,7 +50,7 @@ class CustomTableStatus extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(50.r),
       ),
       child: CustomPrimaryText(
         text: status,

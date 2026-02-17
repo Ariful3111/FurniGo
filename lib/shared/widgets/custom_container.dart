@@ -35,7 +35,7 @@ class CustomContainer extends StatelessWidget {
         width: MediaQuery.widthOf(context),
         decoration: BoxDecoration(
           gradient: isDark
-              ? LinearGradient(
+              ?gradient?? LinearGradient(
                   colors: [AppColors.darkColor, AppColors.darkTextColor],
                 )
               : gradient ?? AppColors.primaryBG,

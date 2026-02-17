@@ -38,16 +38,16 @@ class CustomPhoneField extends StatelessWidget {
       dropdownIconPosition: IconPosition.trailing,
       dropdownIcon: Icon(
         Icons.keyboard_arrow_down,
-        color: AppColors.fieldTextColor,
+        color:isDark? AppColors.whiteColor:AppColors.fieldTextColor,
         size: 24.sp,
       ),
       style: GoogleFonts.montserrat(
-        color: isDark ? AppColors.darkColor : AppColors.darkColor,
+        color: isDark ? AppColors.whiteColor : AppColors.darkColor,
         fontSize: 16.sp,
         fontWeight: FontWeight.w500,
       ),
       dropdownTextStyle: GoogleFonts.montserrat(
-        color: isDark ? AppColors.buttonTextColor : AppColors.buttonTextColor,
+        color: isDark ? AppColors.whiteColor : AppColors.buttonTextColor,
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
       ),
@@ -56,7 +56,7 @@ class CustomPhoneField extends StatelessWidget {
         isDense: true,
         label: CustomPrimaryText(
           text: labelText,
-          color: AppColors.fieldTextColor,
+          color:isDark? AppColors.primaryBorderColor:AppColors.fieldTextColor,
           fontSize: 14.sp,
           fontWeight: FontWeight.w400,
         ),
@@ -71,28 +71,28 @@ class CustomPhoneField extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.r),
           borderSide: BorderSide(
             width: 1.r,
-            color: AppColors.fieldBorderColorLight,
+            color:isDark?AppColors.darkBorderColor: AppColors.fieldBorderColorLight,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.r),
           borderSide: BorderSide(
             width: 1.r,
-            color: AppColors.fieldBorderColorLight,
+            color:isDark?AppColors.darkBorderColor: AppColors.fieldBorderColorLight,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.r),
           borderSide: BorderSide(
             width: 1.r,
-            color: AppColors.fieldBorderColorLight,
+            color:isDark?AppColors.darkBorderColor: AppColors.fieldBorderColorLight,
           ),
         ),
         filled: isFilled ?? true,
         fillColor: isDark
-            ? fillColor ?? AppColors.whiteColor
+            ? fillColor ?? AppColors.labelColor
             : fillColor ?? AppColors.whiteColor,
-        counterText: '', // Hide default counter
+        counterText: '',
       ),
       languageCode: "en",
       onChanged: onChanged,

@@ -46,7 +46,7 @@ class CustomPrimaryButton extends StatelessWidget {
             boxDecoration ??
             BoxDecoration(
               color: isDark
-                  ? AppColors.whiteColor
+                  ?backgroundColor?? AppColors.whiteColor
                   : backgroundColor ?? AppColors.primaryColor,
               borderRadius: borderRadius ?? BorderRadius.circular(100.r),
             ),

@@ -10,6 +10,7 @@ class RentalController extends GetxController {
   RxList<bool> expandedList = <bool>[].obs;
   RxInt currentPage = 1.obs;
   final int totalPages = 100;
+  List<String> rentalTableColumn = ['Rental ID','Status','Action'];
   final List<RentalModel> rentals = [
     RentalModel(
       id: 'RNT-2023-012',

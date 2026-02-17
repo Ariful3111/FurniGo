@@ -13,6 +13,8 @@ class OnboardingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     OnboardingController onboardingController = Get.find();
     final page = onboardingController.onboardingItems.length;
     return Row(
@@ -39,7 +41,7 @@ class OnboardingHeader extends StatelessWidget {
         Spacer(),
         Image.asset(IconsPath.header, height: 28.h, width: 28.w),
         SizedBox(width: 8.w),
-        CustomWhiteText(text: 'ZB DEZIGN'),
+        CustomWhiteText(text: 'ZB DEZIGN',color: isDark?AppColors.whiteColor:null,),
         Spacer(),
         Obx(
           () =>
@@ -53,7 +55,7 @@ class OnboardingHeader extends StatelessWidget {
                   onTap: () {
                     if (onboardingController.pageController.hasClients) {
                       onboardingController.pageController.animateToPage(
-                        page - 2,
+                        page - 1,
                         duration: Duration(milliseconds:onboardingController.currentIndex.value==page-3?500 :onboardingController.currentIndex.value==page-2? 300:800),
                         curve: Curves.linear,
                       );

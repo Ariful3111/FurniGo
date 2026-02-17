@@ -18,6 +18,8 @@ class OnboardLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       key: key,
       children: [
@@ -34,13 +36,14 @@ class OnboardLogin extends StatelessWidget {
         LoginButton(
           onTap: () {},
           icon: IconsPath.apple,
+          iconColor: isDark?AppColors.whiteColor:null,
           title: 'Continue With Apple',
           borderColor: Color(0xFFBEBEBE),
         ),
         SizedBox(height: 12.h),
         LoginButton(
           onTap: () {},
-          icon: IconsPath.google,
+          icon: IconsPath.gmail,
           title: 'Continue With Gmail',
           color: AppColors.primaryColor,
           fontColor: AppColors.whiteColor,

@@ -8,11 +8,13 @@ import 'package:badges/badges.dart' as badges;
 
 class CustomAppbar extends StatelessWidget {
   final String title;
+  final String? icon;
   final VoidCallback onDrawerTap;
   const CustomAppbar({
     super.key,
     required this.title,
     required this.onDrawerTap,
+    this.icon,
   });
 
   @override
@@ -22,10 +24,18 @@ class CustomAppbar extends StatelessWidget {
       children: [
         InkWell(
           onTap: onDrawerTap,
-          child: Image.asset(IconsPath.drawer, height: 24.h, width: 24.w,color: isDark?AppColors.whiteColor:null,),
+          child: Image.asset(
+            icon ?? IconsPath.drawer,
+            height: 24.h, 
+            width: 24.w,
+            color: isDark ? AppColors.whiteColor : null,
+          ),
         ),
         SizedBox(width: 8.w),
-        CustomPrimaryText(text: title,color: isDark?AppColors.whiteColor:null,),
+        CustomPrimaryText(
+          text: title,
+          color: isDark ? AppColors.whiteColor : null,
+        ),
         Spacer(),
         ActionButton(icon: IconsPath.favorite, onTap: () {}),
         SizedBox(width: 8.w),
@@ -44,6 +54,5 @@ class CustomAppbar extends StatelessWidget {
         SizedBox(width: 8.w),
       ],
     );
-    
   }
 }

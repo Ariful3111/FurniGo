@@ -10,6 +10,7 @@ class CustomTableRow extends StatelessWidget {
   final List rows;
   final List<bool> expandedList;
   final void Function(int index) onExpand;
+  final void Function(dynamic row) onView;
   final String id;
   final String status;
   final String title;
@@ -23,16 +24,22 @@ class CustomTableRow extends StatelessWidget {
     required this.status,
     required this.title,
     required this.buildExpanded,
+    required this.onView,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: rows.length,
-      separatorBuilder: (context, index) =>
-          Divider(height: 1, color: AppColors.borderColor),
+      separatorBuilder: (context, index) => Divider(
+        thickness: 1,
+        height: 0,
+        color: isDark ? AppColors.darkBorderColor : AppColors.borderColor,
+      ),
       itemBuilder: (context, index) {
         final row = rows[index];
         final isRowExpanded = expandedList[index];
@@ -57,7 +64,9 @@ class CustomTableRow extends StatelessWidget {
                       text: row[id],
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.titleTextColor,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.titleTextColor,
                     ),
                   ),
                   Expanded(
@@ -70,9 +79,7 @@ class CustomTableRow extends StatelessWidget {
                     flex: 2,
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: CustomTableActionButton(
-                        onTap: () => onExpand(index),
-                      ),
+                      child: CustomTableActionButton(onTap: () => onView(row)),
                     ),
                   ),
                 ],

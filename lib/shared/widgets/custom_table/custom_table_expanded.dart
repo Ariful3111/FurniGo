@@ -12,21 +12,24 @@ class CustomTableExpanded extends StatelessWidget {
     super.key,
     required this.id,
     required this.onTap,
-    required this.title, required this.expandedElements,
+    required this.title,
+    required this.expandedElements,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(16.r),
-      color: AppColors.whiteColor,
+      color: isDark ? AppColors.labelColor : AppColors.whiteColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildDetailRow(title, id, isBold: true),
+              buildDetailRow(title, id, isBold: true, isDark: isDark),
               InkWell(
                 onTap: onTap,
                 child: Container(
@@ -34,25 +37,32 @@ class CustomTableExpanded extends StatelessWidget {
                   width: 36.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.primaryBorderColor
+                    color: isDark
+                        ? AppColors.darkColor
+                        : AppColors.primaryBorderColor,
                   ),
                   child: Icon(
                     Icons.close,
                     size: 20.sp,
-                    color: Color(0xFF251621),
+                    color: isDark ? AppColors.whiteColor : Color(0xFF251621),
                   ),
                 ),
               ),
             ],
           ),
-          expandedElements
+          expandedElements,
         ],
       ),
     );
   }
 }
 
- Widget buildDetailRow(String label, String value, {bool isBold = false}) {
+Widget buildDetailRow(
+  String label,
+  String value, {
+  bool isBold = false,
+  required bool isDark,
+}) {
   return RichText(
     text: TextSpan(
       children: [
@@ -61,15 +71,21 @@ class CustomTableExpanded extends StatelessWidget {
           style: GoogleFonts.montserrat(
             fontSize: 12.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.greyColor,
+            color: isDark ? AppColors.primaryBorderColor : AppColors.greyColor,
           ),
         ),
         TextSpan(
           text: value,
           style: GoogleFonts.montserrat(
             fontSize: 12.sp,
-            fontWeight: FontWeight.w600,
-            color: isBold ? AppColors.darkTextColor : AppColors.greyColor,
+            fontWeight: FontWeight.w400,
+            color: isBold
+                ? isDark
+                      ? AppColors.whiteColor
+                      : AppColors.darkTextColor
+                : isDark
+                ? AppColors.primaryBorderColor
+                : AppColors.greyColor,
           ),
         ),
       ],
