@@ -9,6 +9,8 @@ class AuthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,7 +26,7 @@ class AuthHeader extends StatelessWidget {
                 IconsPath.onboardingBack,
                 height: 20.h,
                 width: 20.w,
-                color: AppColors.primaryColor,
+                color:isDark?null: AppColors.primaryColor,
               ),
             ),
           ),
@@ -32,7 +34,7 @@ class AuthHeader extends StatelessWidget {
         SizedBox(height: 54.h),
         Row(
           children: [
-            Image.asset(IconsPath.authLogo, height: 28.h, width: 28.w),
+            Image.asset(IconsPath.authLogo, height: 28.h, width: 28.w,color: isDark?AppColors.whiteColor:null,),
             SizedBox(width: 18.w),
             CustomPrimaryText(
               text: 'ZB DEZIGN',

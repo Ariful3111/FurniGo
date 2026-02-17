@@ -11,6 +11,7 @@ class OnboardingSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     OnboardingController onboardingController = Get.find();
     return Obx(() {
       final isSecondLast =
@@ -36,10 +37,16 @@ class OnboardingSlider extends StatelessWidget {
                   height: 6.h,
                   width: isSelected ? 24.w : 14.w,
                   decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient.withOpacity(
-                      isSelected ? 1 : 0.75,
+                    gradient: isDark
+                        ? AppColors.darkPrimaryGradient.withOpacity(
+                            isSelected ? 1 : 0.75,
+                          )
+                        : AppColors.primaryGradient.withOpacity(
+                            isSelected ? 1 : 0.75,
+                          ),
+                    borderRadius: BorderRadius.circular(
+                      isSecondLast ? 32.r : 2.r,
                     ),
-                    borderRadius: BorderRadius.circular(isSecondLast?32.r: 2.r),
                   ),
                 );
               },
@@ -60,26 +67,52 @@ class OnboardingSlider extends StatelessWidget {
               height: 60.h,
               width: isSecondLast ? 106.w : 60.w,
               decoration: BoxDecoration(
-                color: AppColors.whiteColor,
+                gradient: isDark
+                    ?isSecondLast?LinearGradient(
+                        colors: [AppColors.whiteColor, AppColors.whiteColor],
+                      ) :AppColors.darkPrimaryGradient
+                    : LinearGradient(
+                        colors: [AppColors.whiteColor, AppColors.whiteColor],
+                      ),
                 borderRadius: BorderRadius.circular(24.r),
                 boxShadow: [
                   BoxShadow(
                     offset: Offset(0, 15.88),
                     blurRadius: 27.35,
-                    color: Color(0xFF4F10BD).withValues(alpha: 0.25),
+                    color: isDark
+                        ? Color(0xFF4F10BD).withValues(alpha: 0.25)
+                        : Color(0xFF4F10BD).withValues(alpha: 0.25),
                   ),
                 ],
               ),
-              child:
-                  isSecondLast
+              child: isSecondLast
                   ? OnboardingExpandButton(isLast: isLast)
                   : Center(
                       child: ShaderMask(
                         blendMode: BlendMode.srcIn,
                         shaderCallback: (bounds) {
-                          return AppColors.primaryGradient.createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          );
+                          return isDark
+                              ? LinearGradient(
+                                  colors: [
+                                    AppColors.whiteColor,
+                                    AppColors.whiteColor,
+                                  ],
+                                ).createShader(
+                                  Rect.fromLTWH(
+                                    0,
+                                    0,
+                                    bounds.width,
+                                    bounds.height,
+                                  ),
+                                )
+                              : AppColors.primaryGradient.createShader(
+                                  Rect.fromLTWH(
+                                    0,
+                                    0,
+                                    bounds.width,
+                                    bounds.height,
+                                  ),
+                                );
                         },
                         child: Icon(
                           Icons.arrow_forward,

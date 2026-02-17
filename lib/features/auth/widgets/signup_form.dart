@@ -36,6 +36,7 @@ class SignupForm extends StatelessWidget {
                 : IconsPath.bag,
             validation: AutovalidateMode.onUserInteraction,
             validator: nameValidation,
+            context: context,
           ),
           SizedBox(height: 22.h),
           authField(
@@ -47,6 +48,7 @@ class SignupForm extends StatelessWidget {
             icon: IconsPath.email,
             validation: AutovalidateMode.onUserInteraction,
             validator: emailValidation,
+            context: context,
           ),
           SizedBox(height: 22.h),
           authField(
@@ -56,6 +58,7 @@ class SignupForm extends StatelessWidget {
             icon: IconsPath.pass,
             validation: AutovalidateMode.onUserInteraction,
             validator: passwordValidation,
+            context: context,
           ),
           SizedBox(height: 22.h),
           authField(
@@ -64,7 +67,11 @@ class SignupForm extends StatelessWidget {
             controller: signupController.confirmPasswordController,
             icon: IconsPath.pass,
             validation: AutovalidateMode.onUserInteraction,
-            validator: (value)=>confirmPasswordValidation(signupController.passwordController.text, value),
+            validator: (value) => confirmPasswordValidation(
+              signupController.passwordController.text,
+              value,
+            ),
+            context: context,
           ),
           SizedBox(height: 22.h),
           authField(
@@ -76,6 +83,7 @@ class SignupForm extends StatelessWidget {
             icon: IconsPath.phone,
             validation: AutovalidateMode.onUserInteraction,
             validator: phoneValidation,
+            context: context,
           ),
           if (userModeController.selectedIndex.value == 1)
             SizedBox(height: 22.h),
@@ -87,6 +95,7 @@ class SignupForm extends StatelessWidget {
               icon: IconsPath.file,
               validation: AutovalidateMode.onUserInteraction,
               validator: abnValidation,
+              context: context,
             ),
         ],
       ),

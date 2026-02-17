@@ -32,7 +32,7 @@ class RentBusinessIdentification extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               myButton(
-                border: Border.all(color: Color(0xFFD1D7E0), width: 1.r),
+                border: Border.all(color: AppColors.buttonBorderColor, width: 1.r),
                 onTap: () {
                   if (controller.currentIndex.value > 0) {
                     controller.rentController.animateTo(

@@ -15,13 +15,14 @@ class CustomRadioButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Radio(
       value: value,
       groupValue: groupValue,
       onChanged: onChange,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      activeColor: AppColors.primaryColor,
-      
+      activeColor:isDark?AppColors.boxColor: AppColors.primaryColor,
     );
   }
 }

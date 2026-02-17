@@ -10,11 +10,12 @@ class SharedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding:padding?? EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
       width: MediaQuery.widthOf(context),
       decoration: BoxDecoration(
-        color: AppColors.whiteColor,
+        color:isDark?AppColors.labelColor: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(radius?? 24.r),
       ),
       child: child,

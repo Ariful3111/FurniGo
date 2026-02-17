@@ -16,9 +16,10 @@ class NewPasswordView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     NewPasswordController newPasswordController = Get.find();
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient: isDark ? AppColors.darkAuthBG : AppColors.authBG,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,14 +31,16 @@ class NewPasswordView extends StatelessWidget {
               text: 'Set New Password',
               fontSize: 31.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.darkColor,
+              color: isDark ? AppColors.whiteColor : AppColors.darkColor,
             ),
             SizedBox(height: 12.h),
             CustomPrimaryText(
               text: 'Must be at least 8 characters',
               fontSize: 16.sp,
               fontWeight: FontWeight.w400,
-              color: AppColors.buttonTextColor,
+              color: isDark
+                  ? AppColors.primaryBorderColor
+                  : AppColors.buttonTextColor,
             ),
             SizedBox(height: 24.h),
             authField(
@@ -45,6 +48,7 @@ class NewPasswordView extends StatelessWidget {
               labelText: 'Enter your Password',
               controller: newPasswordController.passwordController,
               icon: IconsPath.pass,
+              context: context,
             ),
             SizedBox(height: 20.h),
             authField(
@@ -52,6 +56,7 @@ class NewPasswordView extends StatelessWidget {
               labelText: 'Re-Enter your Password',
               controller: newPasswordController.confirmPasswordController,
               icon: IconsPath.pass,
+              context: context,
             ),
             SizedBox(height: 20.h),
             CustomPrimaryButton(text: 'Continue', onPressed: () {}),
@@ -63,10 +68,19 @@ class NewPasswordView extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.arrow_back,size: 20.sp,color: AppColors.darkColor,),
-                  SizedBox(width: 12.w,),
-                  CustomPrimaryText(text: 'Back to log in',fontSize: 16.sp,color: AppColors.darkColor,),
-                ],),
+                  Icon(
+                    Icons.arrow_back,
+                    size: 20.sp,
+                    color: isDark ? AppColors.whiteColor : AppColors.darkColor,
+                  ),
+                  SizedBox(width: 12.w),
+                  CustomPrimaryText(
+                    text: 'Back to log in',
+                    fontSize: 16.sp,
+                    color: isDark ? AppColors.whiteColor : AppColors.darkColor,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

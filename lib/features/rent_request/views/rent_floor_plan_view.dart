@@ -43,7 +43,7 @@ class RentFloorPlanView extends StatelessWidget {
                             'Sharing your floor plan helps us design your space faster and more accurately.',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xFF6A7282),
+                        color: AppColors.greyColor,
                       ),
                     ),
                     Obx(

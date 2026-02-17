@@ -13,6 +13,7 @@ import 'package:zb_dezign/features/auth/views/user_mode_view.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_business_identification.dart';
 import 'package:zb_dezign/features/rental/bindings/rental_bindings.dart';
+import 'package:zb_dezign/features/rental/views/rental_pending_view.dart';
 import 'package:zb_dezign/features/rental/views/rental_view.dart';
 
 final List<GetPage> appRoutes = [
@@ -70,5 +71,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.emailVerificationView,
     page: () => EmailVerificationView(),
     binding: AuthBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.rentalPendingView,
+    page: () => const RentalPendingView(),
+    binding: RentalBindings(),
   ),
 ];

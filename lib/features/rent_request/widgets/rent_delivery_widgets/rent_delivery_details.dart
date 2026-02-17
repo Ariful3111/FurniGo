@@ -18,62 +18,61 @@ class RentDeliveryDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         optionContainer(
-            context: context,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomPrimaryText(
-                        text: 'Setup required?',
-                        fontSize: 14.sp,
-                        color: AppColors.darkTextColor,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      SizedBox(height: 4.h),
-                      CustomPrimaryText(
-                        text:
-                            'Professional setup service',
-                        fontSize: 14.sp,
-                        color: Color(0xFF6A7282),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ],
-                  ),
+          context: context,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomPrimaryText(
+                      text: 'Setup required?',
+                      fontSize: 14.sp,
+                      color: AppColors.darkTextColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    SizedBox(height: 4.h),
+                    CustomPrimaryText(
+                      text: 'Professional setup service',
+                      fontSize: 14.sp,
+                      color: AppColors.greyColor,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ],
                 ),
-                Obx(() {
-                  return CustomSwitchButton(
-                    isOn: rentDeliveryController.isSetup.value,
-                    onChanged: (value) {
-                      rentDeliveryController.isSetup.value = value;
-                    },
-                  );
-                }),
-              ],
-            ),
+              ),
+              Obx(() {
+                return CustomSwitchButton(
+                  isOn: rentDeliveryController.isSetup.value,
+                  onChanged: (value) {
+                    rentDeliveryController.isSetup.value = value;
+                  },
+                );
+              }),
+            ],
           ),
-          SizedBox(height: 26.h),
-          RentErrorContainer(
-            text: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomPrimaryText(
-                  text: 'Setup makes things easier!',
-                  fontSize: 14.sp,
-                  color: AppColors.errorTextColor,
-                  fontWeight: FontWeight.w600,
-                ),
-                CustomPrimaryText(
-                  text: 'Additional setup charges may apply.',
-                  fontSize: 14.sp,
-                  color: AppColors.errorTextColor2,
-                  fontWeight: FontWeight.w400,
-                ),
-              ],
-            ),
+        ),
+        SizedBox(height: 26.h),
+        RentErrorContainer(
+          text: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomPrimaryText(
+                text: 'Setup makes things easier!',
+                fontSize: 14.sp,
+                color: AppColors.errorTextColor,
+                fontWeight: FontWeight.w600,
+              ),
+              CustomPrimaryText(
+                text: 'Additional setup charges may apply.',
+                fontSize: 14.sp,
+                color: AppColors.errorTextColor2,
+                fontWeight: FontWeight.w400,
+              ),
+            ],
           ),
+        ),
       ],
     );
   }

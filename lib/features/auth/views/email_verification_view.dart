@@ -14,8 +14,9 @@ class EmailVerificationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient:isDark? AppColors.darkAuthBG:AppColors.authBG,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -25,19 +26,24 @@ class EmailVerificationView extends StatelessWidget {
           SizedBox(height: 40.h),
           CustomPrimaryText(
             text: 'Verify Your Email',
-            color: AppColors.darkColor,
+            color:isDark?AppColors.whiteColor: AppColors.darkColor,
             fontSize: 24.sp,
             fontWeight: FontWeight.w600,
           ),
           SizedBox(height: 16.h),
           CustomPrimaryText(
             text:
-                'A verification email has been sent to your ${Get.find<SignupController>().emailController.text}. Please check your mail for OTP.',
+                'A verification email has been sent to your ${Get.find<SignupController>().emailController.text}. Please check your mail to complete your registration.',
             fontSize: 16.sp,
-            color: AppColors.buttonTextColor,
+            color:isDark?AppColors.primaryBorderColor: AppColors.buttonTextColor,
           ),
           SizedBox(height: 46.h),
-          CustomPrimaryButton(text: 'Check My Inbox', onPressed: () {}),
+          CustomPrimaryButton(
+            text: 'Check My Inbox',
+            onPressed: () {
+              
+            },
+          ),
           SizedBox(height: 16.h),
           InkWell(
             onTap: () {},

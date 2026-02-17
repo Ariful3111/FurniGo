@@ -49,6 +49,8 @@ class CustomSpanText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return RichText(
       textAlign: textAlign ?? TextAlign.start,
       maxLines: maxLines,
@@ -56,7 +58,7 @@ class CustomSpanText extends StatelessWidget {
       text: TextSpan(
         text: title,
         style: GoogleFonts.montserrat(
-          color: color ?? AppColors.buttonTextColor,
+          color:isDark?color?? AppColors.primaryBorderColor:color ?? AppColors.buttonTextColor,
           fontSize: fontSize ?? 14.sp,
           fontWeight: fontWeight ?? FontWeight.w500,
           decoration: textDecoration,
@@ -68,10 +70,13 @@ class CustomSpanText extends StatelessWidget {
             style:
                 textStyle ??
                 GoogleFonts.inter(
-                  color: spanColor ?? AppColors.primaryColor,
+                  color:isDark? spanColor??Color(0xFFE8E6EB):spanColor ?? AppColors.primaryColor,
                   fontSize: spanFontSize ?? 14.sp,
                   fontWeight: spanFontWeight ?? FontWeight.w600,
                   decoration: spanDecoration,
+                  textStyle: TextStyle(
+                    decoration: TextDecoration.underline
+                  )
                 ),
           ),
         ],

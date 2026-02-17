@@ -15,6 +15,7 @@ class OtpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
     TextStyle createStyle(Color color) {
       ThemeData theme = Theme.of(context);
       return theme.textTheme.headlineMedium?.copyWith(color: color) ??
@@ -22,14 +23,14 @@ class OtpView extends StatelessWidget {
     }
 
     List<TextStyle> otpStyle = [
-      createStyle(AppColors.primaryColor),
-      createStyle(AppColors.primaryColor),
-      createStyle(AppColors.primaryColor),
-      createStyle(AppColors.primaryColor),
-      createStyle(AppColors.primaryColor),
+      createStyle(isDark? AppColors.whiteColor:AppColors.primaryColor),
+      createStyle(isDark? AppColors.whiteColor:AppColors.primaryColor),
+      createStyle(isDark? AppColors.whiteColor:AppColors.primaryColor),
+      createStyle(isDark? AppColors.whiteColor:AppColors.primaryColor),
+      createStyle(isDark? AppColors.whiteColor:AppColors.primaryColor),
     ];
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient:isDark?AppColors.darkAuthBG: AppColors.authBG,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,25 +42,26 @@ class OtpView extends StatelessWidget {
               text: 'Enter OTP',
               fontSize: 31.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.darkColor,
+              color:isDark?AppColors.whiteColor: AppColors.darkColor,
             ),
             SizedBox(height: 12.h),
             CustomPrimaryText(
               text:
                   'A verification email has been sent to your ${Get.find<ForgotPasswordController>().emailController.text}. Please check your mail for OTP.',
               fontSize: 16.sp,
-              color: AppColors.buttonTextColor,
+              color:isDark? AppColors.primaryBorderColor:AppColors.buttonTextColor,
             ),
             SizedBox(height: 100.h),
             OtpTextField(
               numberOfFields: 5,
-              borderColor: AppColors.primaryColor,
-              focusedBorderColor: AppColors.primaryColor,
+              borderColor:isDark?AppColors.activeTextColor: AppColors.primaryColor,
+              focusedBorderColor:isDark?AppColors.activeTextColor: AppColors.primaryColor,
               borderWidth: 4.r,
               keyboardType: TextInputType.numberWithOptions(),
               styles: otpStyle,
               onCodeChanged: (value) {},
               onSubmit: (value) {},
+              cursorColor: isDark?AppColors.whiteColor:null,
             ),
             SizedBox(height: 50.h),
             CustomPrimaryButton(

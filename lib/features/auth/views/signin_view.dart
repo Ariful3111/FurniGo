@@ -18,10 +18,11 @@ class SigninView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     SigninController signinController = Get.find();
     final fromKey = GlobalKey<FormState>();
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient:isDark? AppColors.darkAuthBG:AppColors.authBG,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +34,7 @@ class SigninView extends StatelessWidget {
               text: 'Sign In',
               fontSize: 31.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.darkColor,
+              color: isDark ? AppColors.whiteColor : AppColors.darkColor,
             ),
             SizedBox(height: 12.h),
             CustomSpanText(
@@ -60,9 +61,9 @@ class SigninView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                divider(),
+                divider(context: context),
                 CustomPrimaryText(text: 'Or', color: AppColors.buttonTextColor),
-                divider(),
+                divider(context: context),
               ],
             ),
             SizedBox(height: 20.h),
@@ -76,6 +77,7 @@ class SigninView extends StatelessWidget {
             LoginButton(
               onTap: () {},
               icon: IconsPath.apple,
+              iconColor: isDark?AppColors.whiteColor:null,
               title: 'Continue With Apple',
               radius: 12.r,
             ),
@@ -85,14 +87,21 @@ class SigninView extends StatelessWidget {
     );
   }
 
-  Widget divider() {
+  Widget divider({required BuildContext context}) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       height: 2.h,
       width: 170.w,
       decoration: BoxDecoration(
-        color: AppColors.fieldBorderColor,
+        color: isDark ? AppColors.darkBorderColor : AppColors.fieldBorderColor,
         borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(width: 1.r, color: AppColors.fieldBorderColor),
+        border: Border.all(
+          width: 1.r,
+          color: isDark
+              ? AppColors.darkBorderColor
+              : AppColors.fieldBorderColor,
+        ),
       ),
     );
   }

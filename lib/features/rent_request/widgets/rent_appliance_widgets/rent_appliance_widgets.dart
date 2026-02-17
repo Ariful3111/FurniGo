@@ -15,76 +15,73 @@ class RentApplianceWidgets extends StatelessWidget {
   Widget build(BuildContext context) {
     RentApplianceController rentApplianceController = Get.find();
     return Obx(
-      () => SharedContainer(
-        padding: EdgeInsets.symmetric(horizontal: 24.w,vertical: 20.h),
-        radius: 16.r,
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RentApplianceHeader(),
-            ...List.generate(rentApplianceController.widgets.length, (index) {
-              final item = rentApplianceController.widgets[index];
-              final isSelected = rentApplianceController.isOpenList[index];
-              return Column(
-                key: ValueKey(index),
-                children: [
-                  SharedContainer(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20.h,
-                      horizontal: 24.w,
-                    ),
-                    radius: 16.r,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomPrimaryText(
-                              text: item['title'],
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.darkColor,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                rentApplianceController.isOpenList[index] =
-                                    !rentApplianceController.isOpenList[index];
-                              },
-                              child: AnimatedRotation(
-                                turns: isSelected ? 1 : 0,
-                                duration: const Duration(milliseconds: 300),
-                                child: Image.asset(
-                                  isSelected
-                                      ? IconsPath.upArrow
-                                      : IconsPath.downArrow,
-                                  height: 20.h,
-                                  width: 20.w,
-                                  color: AppColors.darkColor,
-                                ),
+      () => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RentApplianceHeader(),
+          SizedBox(height: 16.h,),
+          ...List.generate(rentApplianceController.widgets.length, (index) {
+            final item = rentApplianceController.widgets[index];
+            final isSelected = rentApplianceController.isOpenList[index];
+            return Column(
+              key: ValueKey(index),
+              children: [
+                SharedContainer(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 20.h,
+                    horizontal: 24.w,
+                  ),
+                  radius: 16.r,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomPrimaryText(
+                            text: item['title'],
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.darkColor,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              rentApplianceController.isOpenList[index] =
+                                  !rentApplianceController.isOpenList[index];
+                            },
+                            child: AnimatedRotation(
+                              turns: isSelected ? 1 : 0,
+                              duration: const Duration(milliseconds: 300),
+                              child: Image.asset(
+                                isSelected
+                                    ? IconsPath.upArrow
+                                    : IconsPath.downArrow,
+                                height: 20.h,
+                                width: 20.w,
+                                color: AppColors.darkColor,
                               ),
                             ),
-                          ],
-                        ),
-                        AnimatedSize(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.linear,
-                          child: isSelected
-                              ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                key: ValueKey('widgets'),
-                                children: [item['child']],
-                              )
-                              : SizedBox.shrink(),
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                      AnimatedSize(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.linear,
+                        child: isSelected
+                            ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              key: ValueKey('widgets'),
+                              children: [item['child']],
+                            )
+                            : SizedBox.shrink(),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 20.h),
-                ],
-              );
-            }),
-          ],
-        ),
+                ),
+                SizedBox(height: 20.h),
+              ],
+            );
+          }),
+        ],
       ),
     );
   }

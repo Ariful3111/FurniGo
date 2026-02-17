@@ -10,6 +10,7 @@ class CustomBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 180.h,
       width: 400.w,
@@ -76,6 +77,7 @@ class CustomBanner extends StatelessWidget {
                         text: 'View plans',
                         fontWeight: FontWeight.w600,
                         fontSize: 14.sp,
+                        color: isDark?AppColors.primaryColor:null,
                       ),
                     ),
                   ),

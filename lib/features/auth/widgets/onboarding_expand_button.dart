@@ -12,13 +12,14 @@ class OnboardingExpandButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     OnboardingController onboardingController = Get.find();
     return Obx(
       () => Padding(
         padding: EdgeInsets.all(4.r),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           child: GestureDetector(
             onHorizontalDragUpdate: (details) =>
                 onboardingController.updateDrag(details.delta.dx),
@@ -35,7 +36,9 @@ class OnboardingExpandButton extends StatelessWidget {
                       width: 52.w,
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradient,
+                        gradient: isDark
+                            ? AppColors.darkPrimaryGradient
+                            : AppColors.primaryGradient,
                         borderRadius: BorderRadius.circular(30.r),
                       ),
                       child: Center(
@@ -60,8 +63,11 @@ class OnboardingExpandButton extends StatelessWidget {
                             return ShaderMask(
                               blendMode: BlendMode.srcIn,
                               shaderCallback: (bounds) {
-                                LinearGradient originalGradient =
-                                    AppColors.primaryGradient as LinearGradient;
+                                LinearGradient originalGradient = isDark
+                                    ? AppColors.darkPrimaryGradient
+                                          as LinearGradient
+                                    : AppColors.primaryGradient
+                                          as LinearGradient;
                                 return LinearGradient(
                                   begin: originalGradient.begin,
                                   end: originalGradient.end,

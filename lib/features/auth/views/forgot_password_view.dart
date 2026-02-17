@@ -18,9 +18,10 @@ class ForgotPasswordView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
     ForgotPasswordController forgotPasswordController = Get.find();
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient:isDark?AppColors.darkAuthBG: AppColors.authBG,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +33,7 @@ class ForgotPasswordView extends StatelessWidget {
               text: 'Reset Password',
               fontSize: 31.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.darkColor,
+              color:isDark?AppColors.whiteColor: AppColors.darkColor,
             ),
             SizedBox(height: 12.h),
             CustomSpanText(
@@ -50,7 +51,7 @@ class ForgotPasswordView extends StatelessWidget {
               controller: forgotPasswordController.emailController,
               icon: IconsPath.email,
               validation: AutovalidateMode.onUserInteraction,
-              validator: emailValidation,
+              validator: emailValidation, context: context,
             ),
             SizedBox(height: 24.h),
             CustomPrimaryButton(

@@ -24,6 +24,8 @@ class CustomWhiteText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { 
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Text(
       text,
       textAlign: textAlign,
@@ -31,7 +33,7 @@ class CustomWhiteText extends StatelessWidget {
       style: GoogleFonts.montserrat( 
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.bold,
-        color:color?? AppColors.whiteColor,
+        color:isDark?color??AppColors.darkColor :color?? AppColors.whiteColor,
       ),
     );
   }

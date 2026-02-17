@@ -15,6 +15,7 @@ class AuthCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         CustomCheckBox(isChecked: isChecked, onChange: onChange),
@@ -24,7 +25,7 @@ class AuthCheckBox extends StatelessWidget {
             style: GoogleFonts.montserrat(
               fontSize: 16.sp,
               fontWeight: FontWeight.w400,
-              color: AppColors.darkColor,
+              color:isDark?AppColors.whiteColor: AppColors.darkColor,
             ),
             children: [
               TextSpan(
@@ -40,7 +41,7 @@ class AuthCheckBox extends StatelessWidget {
                 style: GoogleFonts.montserrat(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.darkColor,
+                  color:isDark?AppColors.whiteColor: AppColors.darkColor,
                 ),
               ),
               TextSpan(
