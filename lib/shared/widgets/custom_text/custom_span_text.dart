@@ -70,7 +70,7 @@ class CustomSpanText extends StatelessWidget {
             style:
                 textStyle ??
                 GoogleFonts.inter(
-                  color:isDark? spanColor??Color(0xFFE8E6EB):spanColor ?? AppColors.primaryColor,
+                  color:isDark? spanColor??AppColors.boxColor:spanColor ?? AppColors.primaryColor,
                   fontSize: spanFontSize ?? 14.sp,
                   fontWeight: spanFontWeight ?? FontWeight.w600,
                   decoration: spanDecoration,

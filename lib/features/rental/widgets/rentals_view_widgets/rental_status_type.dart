@@ -17,7 +17,7 @@ class RentalStatusType extends StatelessWidget {
       padding: EdgeInsets.all(8.r),
       radius: 12.r,
       child: SizedBox(
-        height: 36.h,
+        height: 40.h,
         child: ListView.builder(
           itemCount: rentalController.statusList.length,
           shrinkWrap: true,

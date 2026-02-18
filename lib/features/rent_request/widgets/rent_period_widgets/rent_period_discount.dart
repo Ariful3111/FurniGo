@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
+import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
-import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_period_widgets/rent_period_discount_payment.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_period_widgets/rent_period_suggestion.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -20,7 +20,7 @@ class RentPeriodDiscount extends StatelessWidget {
         children: [
           Center(child: PageCount(text: 'Rental Period & Budget')),
           SizedBox(height: 20.h),
-          propertyDivider(),
+          CustomDivider(),
           SizedBox(height: 44.h),
           CustomPrimaryText(
             text: 'Rental term (days) *',

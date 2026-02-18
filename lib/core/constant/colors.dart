@@ -41,10 +41,12 @@ class AppColors {
   static const Color completeTextColor = Color(0xFFE6E6E6);
   static const Color rejectedBGColor = Color(0xFFFFD3D3);
   static const Color rejectedTextColor = Color(0xFFFF2828);
+  static const Color successColor = Color(0xFF38C793);
 
   // Dark Colors
 
   static const Color darkBorderColor = Color(0xFF434953);
+  static const Color darkPrimaryTextColor = Color(0xFFBABABA);
   static const Color darkPendingBGColor = Color(0xFF6B5A2B);
   static const Color darkPendingTextColor = Color(0xFFFFFBF0);
   static const Color darkQuoteBGColor = Color(0xFF6155F5);

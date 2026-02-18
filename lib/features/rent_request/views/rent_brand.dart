@@ -7,6 +7,7 @@ import 'package:zb_dezign/features/rent_request/controller/rent_property_type_co
 import 'package:zb_dezign/features/rent_request/views/rent_additional_note_view.dart';
 import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_brand_widgets/rent_brand_details.dart';
+import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_switch_button.dart';
@@ -30,7 +31,7 @@ class RentBrand extends StatelessWidget {
                 : 'Brand Placement',
           ),
           SizedBox(height: 20.h),
-          propertyDivider(),
+          CustomDivider(),
           rentPropertyTypeController.selectedPropertyType.value == 'Residential'
               ? RentAdditionalNoteView()
               : Column(

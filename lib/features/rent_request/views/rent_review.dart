@@ -5,8 +5,8 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_review_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
+import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
-import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_review_widgets/rent_review_model.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -25,7 +25,7 @@ class RentReview extends StatelessWidget {
         children: [
           Center(child: PageCount(text: 'Review & Submit')),
           SizedBox(height: 20.h),
-          propertyDivider(),
+          CustomDivider(),
           SizedBox(height: 24.h),
           CustomPrimaryText(
             text: 'Review & submit',

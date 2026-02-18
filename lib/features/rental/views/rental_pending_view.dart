@@ -6,6 +6,7 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/model/rental_model.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_widgets.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rental_quotes_calculation.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
@@ -20,7 +21,7 @@ class RentalPendingView extends StatelessWidget {
     final RentalModel rentalModel = Get.arguments as RentalModel;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomContainer(
-      child: Column(
+      child: ListView(
         children: [
           CustomAppbar(
             title: 'Rentals',
@@ -70,8 +71,10 @@ class RentalPendingView extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 20.h,),
-          PendingWidgets()
+          SizedBox(height: 20.h),
+          PendingWidgets(),
+          if (rentalModel.status == 'Quote Sent') RentalQuotesCalculation(),
+            
         ],
       ),
     );

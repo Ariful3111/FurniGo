@@ -24,7 +24,7 @@ class PendingWidgets extends StatelessWidget {
           return Column(
             key: ValueKey(index),
             children: [
-              SharedContainer( 
+              SharedContainer(
                 padding: EdgeInsets.all(20.r),
                 radius: 16.r,
                 child: Column(
@@ -32,10 +32,28 @@ class PendingWidgets extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomPrimaryText(
-                          text: item['title'],
-                          fontWeight: FontWeight.w600,
-                          color:isDark?AppColors.whiteColor: AppColors.darkColor,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomPrimaryText(
+                              text: item['title'],
+                              fontWeight: FontWeight.w600,
+                              color: isDark
+                                  ? AppColors.whiteColor
+                                  : AppColors.darkColor,
+                            ),
+                            if (item['title'] == 'Appliances' ||
+                                item['title'] == 'Furniture')
+                              SizedBox(height: 12.h),
+                            if (item['title'] == 'Appliances' ||
+                                item['title'] == 'Furniture')
+                              CustomPrimaryText(
+                                text: item['subTitle'],
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.greyTextColor,
+                              ),
+                          ],
                         ),
                         InkWell(
                           onTap: () {
@@ -51,7 +69,9 @@ class PendingWidgets extends StatelessWidget {
                                   : IconsPath.downArrow,
                               height: 20.h,
                               width: 20.w,
-                              color:isDark? AppColors.whiteColor:AppColors.darkColor,
+                              color: isDark
+                                  ? AppColors.whiteColor
+                                  : AppColors.darkColor,
                             ),
                           ),
                         ),
@@ -66,8 +86,8 @@ class PendingWidgets extends StatelessWidget {
                               child: Column(
                                 key: ValueKey('widgets'),
                                 children: [
-                                  item['widgets'],
-                                ],
+                                  
+                                  item['widgets']],
                               ),
                             )
                           : SizedBox.shrink(),
