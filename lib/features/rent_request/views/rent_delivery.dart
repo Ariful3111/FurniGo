@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
+import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_access.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_date.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_details.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_field.dart';
-import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentDelivery extends StatelessWidget {
@@ -21,7 +21,7 @@ class RentDelivery extends StatelessWidget {
         children: [
           Center(child: PageCount(text: 'Delivery & Setup')),
           SizedBox(height: 20.h),
-          propertyDivider(),
+          CustomDivider(),
           SizedBox(height: 24.h),
           CustomPrimaryText(
             text: 'Delivery & Setup',

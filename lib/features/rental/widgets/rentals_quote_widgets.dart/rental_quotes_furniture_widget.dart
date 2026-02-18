@@ -3,30 +3,34 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_floor_plan_controller.dart';
-import 'package:zb_dezign/shared/widgets/custom_divider.dart';
-import 'package:zb_dezign/shared/widgets/shared_container.dart';
+import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class FloorPlanWidgets extends StatelessWidget {
-  const FloorPlanWidgets({super.key});
+class RentalQuotesFurnitureWidget extends StatelessWidget {
+  const RentalQuotesFurnitureWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentFloorPlanController rentFloorPlanController = Get.find();
+    RentalQuotesController quotesController = Get.find();
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Column(
-        children: List.generate(rentFloorPlanController.widgets.length, (
-          index,
-        ) {
-          final item = rentFloorPlanController.widgets[index];
-          final isSelected = rentFloorPlanController.isOpenList[index];
+        children: List.generate(quotesController.furniture.length, (index) {
+          final item = quotesController.furniture[index];
+          final isSelected = quotesController.isOpen[index];
           return Column(
             key: ValueKey(index),
             children: [
               SharedContainer(
-                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
-                radius: 16.r,
+                padding: EdgeInsets.all(12.r),
+                radius: 12.r,
+                border: Border.all(
+                  width: 1.r,
+                  color: isDark
+                      ? AppColors.darkBorderColor
+                      : AppColors.primaryBorderColor,
+                ),
                 child: Column(
                   children: [
                     Row(
@@ -34,25 +38,28 @@ class FloorPlanWidgets extends StatelessWidget {
                       children: [
                         CustomPrimaryText(
                           text: item['title'],
-                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.darkColor,
+                          color: isDark
+                              ? AppColors.whiteColor
+                              : AppColors.darkColor,
                         ),
                         InkWell(
                           onTap: () {
-                            rentFloorPlanController.isOpenList[index] =
-                                !rentFloorPlanController.isOpenList[index];
+                            quotesController.isOpen[index] =
+                                !quotesController.isOpen[index];
                           },
                           child: AnimatedRotation(
                             turns: isSelected ? 1 : 0,
-                            duration: const Duration(milliseconds: 300),
+                            duration:  Duration(milliseconds: 300),
                             child: Image.asset(
                               isSelected
                                   ? IconsPath.upArrow
                                   : IconsPath.downArrow,
                               height: 20.h,
                               width: 20.w,
-                              color: AppColors.darkColor,
+                              color: isDark
+                                  ? AppColors.whiteColor
+                                  : AppColors.darkColor,
                             ),
                           ),
                         ),
@@ -65,12 +72,8 @@ class FloorPlanWidgets extends StatelessWidget {
                           ? Padding(
                               padding: EdgeInsetsGeometry.only(top: 20.h),
                               child: Column(
-                                key: ValueKey('widgets'),
-                                children: [
-                                  CustomDivider(),
-                                  SizedBox(height: 16.h),
-                                  item['child'],
-                                ],
+                                key: ValueKey('widget'),
+                                children: [item['widget']],
                               ),
                             )
                           : SizedBox.shrink(),
@@ -78,7 +81,7 @@ class FloorPlanWidgets extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: 20.h),
             ],
           );
         }),

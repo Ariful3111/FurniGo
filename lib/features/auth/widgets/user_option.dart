@@ -25,7 +25,7 @@ class UserOption extends StatelessWidget {
             color: isDark ? AppColors.labelColor : AppColors.whiteColor,
             border: Border.all(
               width: 1.r,
-              color: isDark ? AppColors.darkBorderColor : Color(0xFFE8E6EB),
+              color: isDark ? AppColors.darkBorderColor : AppColors.boxColor,
             ),
             borderRadius: BorderRadius.circular(16.r),
             boxShadow: [

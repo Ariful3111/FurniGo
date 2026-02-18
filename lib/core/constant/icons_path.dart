@@ -39,4 +39,8 @@ class IconsPath {
   static const String authEmail = 'assets/icons/auth_email.png';
   static const String emailVerification = 'assets/icons/email_verification.png';
   static const String back = 'assets/icons/back.png';
+  static const String furniture = 'assets/icons/furniture.png';
+  static const String approved = 'assets/icons/approved.png';
+  static const String reset = 'assets/icons/reset.png';
+  static const String close = 'assets/icons/close.png';
 }

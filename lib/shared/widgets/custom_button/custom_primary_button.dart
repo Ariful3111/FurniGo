@@ -16,6 +16,7 @@ class CustomPrimaryButton extends StatelessWidget {
   final Widget? child;
   final FontWeight? fontWeight;
   final EdgeInsets? padding;
+  final BoxBorder? border;
   const CustomPrimaryButton({
     super.key,
     this.height,
@@ -29,7 +30,7 @@ class CustomPrimaryButton extends StatelessWidget {
     this.child,
     this.boxDecoration,
     this.fontWeight,
-    this.padding,
+    this.padding, this.border,
   });
 
   @override
@@ -46,9 +47,10 @@ class CustomPrimaryButton extends StatelessWidget {
             boxDecoration ??
             BoxDecoration(
               color: isDark
-                  ?backgroundColor?? AppColors.whiteColor
+                  ? backgroundColor ?? AppColors.whiteColor
                   : backgroundColor ?? AppColors.primaryColor,
               borderRadius: borderRadius ?? BorderRadius.circular(100.r),
+              border: border,
             ),
         child:
             child ??
@@ -56,10 +58,11 @@ class CustomPrimaryButton extends StatelessWidget {
               child: CustomPrimaryText(
                 text: text,
                 color: isDark
-                    ? AppColors.darkColor
+                    ?textColor?? AppColors.darkColor
                     : textColor ?? AppColors.whiteColor,
                 fontSize: fontSize ?? 16.sp,
                 fontWeight: fontWeight ?? FontWeight.w500,
+                textAlign: TextAlign.center,
               ),
             ),
       ),

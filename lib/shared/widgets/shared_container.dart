@@ -6,7 +6,8 @@ class SharedContainer extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
   final double? radius;
-  const SharedContainer({super.key, required this.child, this.padding, this.radius});
+  final BoxBorder? border;
+  const SharedContainer({super.key, required this.child, this.padding, this.radius, this.border});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class SharedContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color:isDark?AppColors.labelColor: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(radius?? 24.r),
+        border: border,
       ),
       child: child,
     );
