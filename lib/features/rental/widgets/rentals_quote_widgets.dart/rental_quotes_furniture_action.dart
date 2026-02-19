@@ -6,51 +6,69 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
 
 class RentalQuotesFurnitureAction extends StatelessWidget {
-  const RentalQuotesFurnitureAction({super.key});
+  final int index;
+
+  const RentalQuotesFurnitureAction({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
     RentalQuotesController quotesController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return Obx(
-      () => Row(
+    return Obx(() {
+      final action = index < quotesController.itemActions.length
+          ? quotesController.itemActions[index]
+          : QuoteItemAction.none;
+      final isApproved = action == QuoteItemAction.approved;
+      final isChange = action == QuoteItemAction.change;
+      final isClose = action == QuoteItemAction.closed;
+
+      return Row(
         children: [
           button(
             onTap: () {
-              quotesController.isApproved.value =
-                  !quotesController.isApproved.value;
+              quotesController.toggleItemAction(
+                index,
+                QuoteItemAction.approved,
+              );
             },
             borderColor: AppColors.successColor,
             icon: IconsPath.approved,
-            color: quotesController.isApproved.value
-                ? AppColors.successColor
-                : null,
+            color: isApproved ? AppColors.successColor : null,
+            iconColor: isApproved ? AppColors.whiteColor : null,
           ),
           SizedBox(width: 6.4.w),
           button(
             onTap: () {
-              quotesController.isReset.value = !quotesController.isReset.value;
+              quotesController.toggleItemAction(index, QuoteItemAction.change);
             },
             borderColor: isDark ? AppColors.whiteColor : AppColors.primaryColor,
             icon: IconsPath.reset,
-            color: quotesController.isReset.value
+            color: isChange
                 ? isDark
                       ? AppColors.whiteColor
                       : AppColors.primaryColor
                 : null,
+            iconColor: isChange
+                ? isDark
+                      ? null
+                      : AppColors.whiteColor
+                : isDark
+                ? AppColors.whiteColor
+                : null,
           ),
           SizedBox(width: 6.4.w),
           button(
             onTap: () {
-              quotesController.isClose.value = !quotesController.isClose.value;
+              quotesController.toggleItemAction(index, QuoteItemAction.closed);
             },
-            borderColor: Color(0xFFDF1C41),
+            borderColor: const Color(0xFFDF1C41),
             icon: IconsPath.close,
-            color: quotesController.isClose.value? Color(0xFFDF1C41):null,
+            color: isClose ? const Color(0xFFDF1C41) : null,
+            iconColor: isClose ? AppColors.whiteColor : null,
           ),
         ],
-      ),
-    );
+      );
+    });
   }
 
   Widget button({

@@ -43,4 +43,5 @@ class IconsPath {
   static const String approved = 'assets/icons/approved.png';
   static const String reset = 'assets/icons/reset.png';
   static const String close = 'assets/icons/close.png';
+  static const String open = 'assets/icons/open.png';
 }

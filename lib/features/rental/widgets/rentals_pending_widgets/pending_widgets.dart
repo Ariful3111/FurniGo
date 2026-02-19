@@ -78,19 +78,18 @@ class PendingWidgets extends StatelessWidget {
                       ],
                     ),
                     AnimatedSize(
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.linear,
+                      alignment: Alignment.topCenter,
                       child: isSelected
                           ? Padding(
-                              padding: EdgeInsetsGeometry.only(top: 20.h),
+                              padding: EdgeInsets.only(top: 20.h),
                               child: Column(
-                                key: ValueKey('widgets'),
-                                children: [
-                                  
-                                  item['widgets']],
+                                key: const ValueKey('widgets'),
+                                children: [item['widgets']],
                               ),
                             )
-                          : SizedBox.shrink(),
+                          : const SizedBox.shrink(),
                     ),
                   ],
                 ),

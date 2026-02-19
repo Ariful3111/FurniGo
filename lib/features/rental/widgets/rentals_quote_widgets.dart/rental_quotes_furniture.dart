@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rental_quotes_furniture_action.dart';
+import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentalQuotesFurniture extends StatelessWidget {
@@ -11,40 +13,48 @@ class RentalQuotesFurniture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: List.generate(3, (index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            text(title: 'Item', isDark: isDark),
-            SizedBox(height: 12.h),
-            Row(
-              children: [
-                Image.asset(IconsPath.furniture, height: 48.h, width: 48.w),
-                SizedBox(width: 19.w),
-                text(title: 'Refrigerator', isDark: isDark),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            Row(
-              children: [
-                row(data: '01', isDark: isDark),
-                row(data: '\$20', isDark: isDark),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            Row(
-              children: [
-                text(title: 'Action:', isDark: isDark),
-                SizedBox(width: 8.w),
-                RentalQuotesFurnitureAction(),
-              ],
-            ),
-          ],
-        );
-      }),
-    );
+    RentalQuotesController rentalQuotesController = Get.find();
+    return Obx(() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(rentalQuotesController.item.length, (index) {
+          final item = rentalQuotesController.item[index];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              text(title: item['title'], isDark: isDark),
+              SizedBox(height: 12.h),
+              Row(
+                children: [
+                  Image.asset(item['image'], height: 48.h, width: 48.w),
+                  SizedBox(width: 19.w),
+                  text(title: item['name'], isDark: isDark),
+                ],
+              ),
+              SizedBox(height: 12.h),
+              Row(
+                children: [
+                  row(data: item['qty'], isDark: isDark),
+                  row(data: item['price'], isDark: isDark),
+                ],
+              ),
+              SizedBox(height: 12.h),
+              Row(
+                children: [
+                  text(title: 'Action:', isDark: isDark),
+                  SizedBox(width: 8.w),
+                  RentalQuotesFurnitureAction(index: index),
+                ],
+              ),
+              SizedBox(height: 20.h),
+              CustomDivider(),
+              if (rentalQuotesController.item.length - 1 != index)
+                SizedBox(height: 20.h),
+            ],
+          );
+        }),
+      );
+    });
   }
 
   Widget text({required String title, required bool isDark}) {
@@ -67,6 +77,4 @@ class RentalQuotesFurniture extends StatelessWidget {
       ),
     );
   }
-
-  
 }
