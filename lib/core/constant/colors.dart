@@ -97,6 +97,11 @@ class AppColors {
     end: Alignment.bottomCenter,
     colors: [Color(0xFF15003A), Color(0xFF3A00A0)],
   );
+  static Gradient secondaryGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Color(0xFF1348D2), Color(0xFF1B6ADD),Color(0xFF209DF0)],
+  );
   static Gradient darkPrimaryGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
