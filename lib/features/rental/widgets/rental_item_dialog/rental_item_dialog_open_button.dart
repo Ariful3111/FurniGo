@@ -15,8 +15,6 @@ class RentalItemDialogOpenButton extends StatelessWidget {
     return Obx(() {
       final int itemCount =
           controller.approvedItems.length + controller.revisedItems.length;
-      final double totalPrice = controller.grandTotal;
-      if (itemCount == 0) return const SizedBox.shrink();
       return Column(
         children: [
           Container(
@@ -39,7 +37,7 @@ class RentalItemDialogOpenButton extends StatelessWidget {
                 SizedBox(width: 5.w),
                 CustomPrimaryText(
                   text: '$itemCount items',
-                  color: Colors.white,
+                  color: AppColors.whiteColor,
                   fontSize: 16.sp,
                 ),
               ],
@@ -58,8 +56,8 @@ class RentalItemDialogOpenButton extends StatelessWidget {
             ),
             child: Center(
               child: CustomPrimaryText(
-                text: '\$${totalPrice.toStringAsFixed(0)}',
-                color: Colors.white,
+                text: '\$200',
+                color: AppColors.whiteColor,
                 fontSize: 16.sp,
               ),
             ),

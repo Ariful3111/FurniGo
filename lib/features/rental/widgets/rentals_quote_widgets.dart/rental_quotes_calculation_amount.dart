@@ -50,6 +50,7 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomPrimaryButton(
+                    height: 40.h,
                   text: primaryText,
                   onPressed: () {},
                   fontSize: 12.sp,
@@ -58,6 +59,7 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
               SizedBox(width: 8.w),
               Expanded(
                 child: CustomPrimaryButton(
+                    height: 40.h,
                   text: 'Decline',
                   onPressed: () {},
                   fontSize: 12.sp,

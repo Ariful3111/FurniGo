@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
+import 'package:zb_dezign/features/rental/widgets/rental_item_dialog/rent_item_dialog_header.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentItemDialogList extends StatelessWidget {
@@ -11,109 +12,126 @@ class RentItemDialogList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RentalQuotesController controller = Get.find();
+    RentalQuotesController controller = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Expanded(
       child: Obx(() {
         final approved = controller.approvedItems;
         final revised = controller.revisedItems;
         final allItems = [...approved, ...revised];
-        return ListView.separated(
-          itemCount: allItems.length,
-          separatorBuilder: (_, _) => SizedBox(height: 16.h),
-          itemBuilder: (context, index) {
-            final item = allItems[index];
-            final isApproved = index < approved.length;
-            final qty = _parseInt(item['qty']);
-            final unit = _parseMoney(item['price']);
-            final charge = _parseMoney(item['charge']);
-            final discount = _parseMoney(item['discount(3%)']);
-            final total = (qty * unit) + charge - discount;
-            return Row(
-              children: [
-                Container(
-                  width: 48.w,
-                  height: 48.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    image: DecorationImage(
-                      image: AssetImage(
-                        (item['image'] ?? IconsPath.furniture).toString(),
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomPrimaryText(
-                        text: (item['name'] ?? 'Furniture').toString(),
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
-                      Row(
-                        children: [
-                          CustomPrimaryText(
-                            text: 'Qty: $qty',
-                            fontSize: 10.sp,
-                            color: isDark ? Colors.white54 : Colors.black45,
-                          ),
-                          SizedBox(width: 8.w),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 4.w,
-                              vertical: 2.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isApproved
-                                  ? Colors.green.withOpacity(0.1)
-                                  : AppColors.primaryColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(4.r),
-                            ),
-                            child: Text(
-                              isApproved ? 'Approved' : 'Requested Change',
-                              style: TextStyle(
-                                fontSize: 8.sp,
-                                color: isApproved
-                                    ? Colors.green
-                                    : AppColors.primaryColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                CustomPrimaryText(
-                  text: '\$${total.toStringAsFixed(2)}',
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : Colors.black87,
-                ),
-              ],
-            );
-          },
+
+        final furnitureItems = allItems
+            .where((i) => i['category'] == 'furniture')
+            .toList();
+        final applianceItems = allItems
+            .where((i) => i['category'] == 'appliance')
+            .toList();
+
+        return ListView(
+          children: [
+            RentItemDialogHeader(
+              title: 'Furniture',
+              itemCount: '${furnitureItems.length}',
+            ),
+            SizedBox(height: 24.h,),
+            if (furnitureItems.isNotEmpty) ...[
+              _buildListSection(context, furnitureItems, approved, isDark),
+              SizedBox(height: 24.h,),
+            ],
+            RentItemDialogHeader(
+              title: 'Appliances',
+              itemCount: '${applianceItems.length}',
+            ),
+            SizedBox(height: 24.h,),
+            if (applianceItems.isNotEmpty) ...[
+              _buildListSection(context, applianceItems, approved, isDark),
+            ],
+          ],
         );
       }),
     );
   }
 
-  int _parseInt(dynamic value) {
-    if (value is int) return value;
-    final raw = (value ?? '').toString().trim();
-    return int.tryParse(raw) ?? 0;
-  }
-
-  double _parseMoney(dynamic value) {
-    if (value is num) return value.toDouble();
-    final raw = (value ?? '').toString();
-    final cleaned = raw.replaceAll(RegExp(r'[^0-9.]'), '');
-    return double.tryParse(cleaned) ?? 0;
+  Widget _buildListSection(
+    BuildContext context,
+    List<Map<String, dynamic>> items,
+    List<Map<String, dynamic>> approvedList,
+    bool isDark,
+  ) {
+    return Column(
+      children: List.generate(items.length, (index) {
+        final item = items[index];
+        final isApproved = approvedList.contains(item);
+        return Padding(
+          padding:  EdgeInsets.only(bottom:items.length-1==index?0: 16.h),
+          child: Row(
+            children: [
+              Container(
+                width: 48.w,
+                height: 48.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.r),
+                  image: DecorationImage(
+                    image: AssetImage(
+                      (item['image'] ?? IconsPath.furniture).toString(),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomPrimaryText(
+                      text: (item['name'] ?? 'Item').toString(),
+                      fontSize: 16.sp,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.darkTextColor,
+                    ),
+                    Row(
+                      children: [
+                        CustomPrimaryText(
+                          text: 'Qty: ${item['qty']}',
+                          fontSize: 12.sp,
+                          color: isDark
+                              ? AppColors.primaryBorderColor
+                              : Color(0xFF737373),
+                        ),
+                        SizedBox(width: 7.3.w),
+                        CustomPrimaryText(
+                          text: '|',
+                          fontSize: 12.sp,
+                          color: isDark
+                              ? AppColors.primaryBorderColor
+                              : Color(0xFF737373),
+                        ),
+                        SizedBox(width: 7.3.w),
+                        CustomPrimaryText(
+                          text: isApproved ? 'Approved' : 'Requested Change',
+                          fontSize: 12.sp,
+                          color: isDark
+                              ? AppColors.primaryBorderColor
+                              : Color(0xFF737373),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              CustomPrimaryText(
+                text: item['price'].toString(),
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ],
+          ),
+        );
+      }),
+    );
   }
 }

@@ -22,66 +22,70 @@ class RentalPendingView extends StatelessWidget {
     final RentalModel rentalModel = Get.arguments as RentalModel;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomContainer(
+      padding: EdgeInsets.all(0.r),
       child: Stack(
         children: [
-          ListView(
-            children: [
-              CustomAppbar(
-                title: 'Rentals',
-                onDrawerTap: () {
-                  Navigator.pop(context);
-                },
-                icon: IconsPath.back,
-              ),
-              SizedBox(height: 12.h),
-              rentalsTop(isDark: isDark),
-              SizedBox(height: 16.h),
-              SharedContainer(
-                padding: EdgeInsets.all(20.r),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        CustomPrimaryText(
-                          text: rentalModel.id,
-                          color: isDark
-                              ? AppColors.whiteColor
-                              : AppColors.labelColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        SizedBox(width: 12.w),
-                        CustomTableStatus(status: rentalModel.status),
-                      ],
-                    ),
-                    SizedBox(height: 4.h),
-                    CustomPrimaryText(
-                      text: rentalModel.startDate,
-                      color: isDark
-                          ? AppColors.primaryBorderColor
-                          : AppColors.greyTextColor,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    SizedBox(height: 20.h),
-                    Divider(
-                      color: isDark
-                          ? AppColors.darkBorderColor
-                          : AppColors.borderColor,
-                      thickness: 1,
-                      height: 0,
-                    ),
-                  ],
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: ListView(
+              children: [
+                CustomAppbar(
+                  title: 'Rentals',
+                  onDrawerTap: () {
+                    Navigator.pop(context);
+                  },
+                  icon: IconsPath.back,
                 ),
-              ),
-              SizedBox(height: 20.h),
-              PendingWidgets(),
-              if (rentalModel.status == 'Quote Sent') RentalQuotesCalculation(),
-            ],
+                SizedBox(height: 12.h),
+                rentalsTop(isDark: isDark),
+                SizedBox(height: 16.h),
+                SharedContainer(
+                  padding: EdgeInsets.all(20.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          CustomPrimaryText(
+                            text: rentalModel.id,
+                            color: isDark
+                                ? AppColors.whiteColor
+                                : AppColors.labelColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          SizedBox(width: 12.w),
+                          CustomTableStatus(status: rentalModel.status),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+                      CustomPrimaryText(
+                        text: rentalModel.startDate,
+                        color: isDark
+                            ? AppColors.primaryBorderColor
+                            : AppColors.greyTextColor,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      SizedBox(height: 20.h),
+                      Divider(
+                        color: isDark
+                            ? AppColors.darkBorderColor
+                            : AppColors.borderColor,
+                        thickness: 1,
+                        height: 0,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                PendingWidgets(),
+                if (rentalModel.status == 'Quote Sent') RentalQuotesCalculation(),
+              ],
+            ),
           ),
-          Positioned(
+         if (rentalModel.status == 'Quote Sent') Positioned(
             right: 0,
-            top: (MediaQuery.heightOf(context) * 0.5) - 40.h,
+            top: (MediaQuery.heightOf(context) * 0.5) - 60.h,
             child: RentalItemDialogOpen(),
           ),
         ],
