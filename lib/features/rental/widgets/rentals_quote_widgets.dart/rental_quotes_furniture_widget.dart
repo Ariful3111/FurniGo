@@ -9,7 +9,9 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class RentalQuotesFurnitureWidget extends StatelessWidget {
-  const RentalQuotesFurnitureWidget({super.key});
+  final List itemList;
+  final RxList<bool> isOpen;
+  const RentalQuotesFurnitureWidget({super.key, required this.itemList, required this.isOpen});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +21,9 @@ class RentalQuotesFurnitureWidget extends StatelessWidget {
       () => Column(
         children: [
           Column(
-            children: List.generate(quotesController.furniture.length, (index) {
-              final item = quotesController.furniture[index];
-              final isSelected = quotesController.isOpen[index];
+            children: List.generate(itemList.length, (index) {
+              final item = itemList[index];
+              final isSelected = isOpen[index];
               return Column(
                 key: ValueKey(index),
                 children: [
@@ -48,8 +50,8 @@ class RentalQuotesFurnitureWidget extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                quotesController.isOpen[index] =
-                                    !quotesController.isOpen[index];
+                                isOpen[index] =
+                                    !isOpen[index];
                               },
                               child: AnimatedRotation(
                                 turns: isSelected ? 1 : 0,
@@ -76,7 +78,7 @@ class RentalQuotesFurnitureWidget extends StatelessWidget {
                               ? Padding(
                                   padding: EdgeInsets.only(top: 20.h),
                                   child: Column(
-                                    key: const ValueKey('widget'),
+                                    key:  ValueKey('widget'),
                                     children: [item['widget']],
                                   ),
                                 )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_item_dialog/rent_item_dialog_view.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_item_dialog/rental_item_dialog_open_button.dart';
 
@@ -13,20 +14,24 @@ class RentalItemDialogOpen extends StatelessWidget {
           context: context,
           barrierLabel: 'Quote Details',
           barrierDismissible: true,
-          barrierColor: Colors.black12,
+          barrierColor: Colors.transparent,
           transitionDuration: Duration(milliseconds: 300),
           pageBuilder: (context, animation, secondaryAnimation) {
-            return const Align(
+            return Align(
               alignment: Alignment.centerRight,
-              child: RentItemDialogView(),
+              child: GestureDetector(
+                onHorizontalDragEnd: (details) {
+                  if (details.primaryVelocity! > 0) {
+                    Get.back();
+                  }
+                },
+                child: RentItemDialogView(),
+              ),
             );
           },
           transitionBuilder: (context, animation, secondaryAnimation, child) {
             final offsetAnimation =
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).animate(
+                Tween<Offset>(begin: Offset(1, 0), end: Offset.zero).animate(
                   CurvedAnimation(
                     parent: animation,
                     curve: Curves.easeOutCubic,

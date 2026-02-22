@@ -7,16 +7,25 @@ import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.da
 
 class RentalQuotesFurnitureAction extends StatelessWidget {
   final int index;
+  final String category;
 
-  const RentalQuotesFurnitureAction({super.key, required this.index});
+  const RentalQuotesFurnitureAction({
+    super.key,
+    required this.index,
+    this.category = 'furniture',
+  });
 
   @override
   Widget build(BuildContext context) {
     RentalQuotesController quotesController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(() {
-      final action = index < quotesController.itemActions.length
-          ? quotesController.itemActions[index]
+      final actions = category == 'furniture'
+          ? quotesController.furnitureActions
+          : quotesController.applianceActions;
+
+      final action = index < actions.length
+          ? actions[index]
           : QuoteItemAction.none;
       final isApproved = action == QuoteItemAction.approved;
       final isChange = action == QuoteItemAction.change;
@@ -29,6 +38,7 @@ class RentalQuotesFurnitureAction extends StatelessWidget {
               quotesController.toggleItemAction(
                 index,
                 QuoteItemAction.approved,
+                category: category,
               );
             },
             borderColor: AppColors.successColor,
@@ -39,7 +49,11 @@ class RentalQuotesFurnitureAction extends StatelessWidget {
           SizedBox(width: 6.4.w),
           button(
             onTap: () {
-              quotesController.toggleItemAction(index, QuoteItemAction.change);
+              quotesController.toggleItemAction(
+                index,
+                QuoteItemAction.change,
+                category: category,
+              );
             },
             borderColor: isDark ? AppColors.whiteColor : AppColors.primaryColor,
             icon: IconsPath.reset,
@@ -59,7 +73,11 @@ class RentalQuotesFurnitureAction extends StatelessWidget {
           SizedBox(width: 6.4.w),
           button(
             onTap: () {
-              quotesController.toggleItemAction(index, QuoteItemAction.closed);
+              quotesController.toggleItemAction(
+                index,
+                QuoteItemAction.closed,
+                category: category,
+              );
             },
             borderColor: const Color(0xFFDF1C41),
             icon: IconsPath.close,

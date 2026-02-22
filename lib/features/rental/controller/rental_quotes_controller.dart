@@ -6,97 +6,177 @@ enum QuoteItemAction { none, approved, change, closed }
 
 class RentalQuotesController extends GetxController {
   List furniture = [
-    {'title': 'Master Bedroom', 'widget': const RentalQuotesFurniture()},
-    {'title': 'Bedroom 01', 'widget': const RentalQuotesFurniture()},
-    {'title': 'Living Room', 'widget': const RentalQuotesFurniture()},
-    {'title': 'Dining Room', 'widget': const RentalQuotesFurniture()},
-    {'title': 'Kitchen', 'widget': const RentalQuotesFurniture()},
+    {
+      'title': 'Master Bedroom',
+      'widget': RentalQuotesFurniture(category: 'furniture'),
+    },
+    {
+      'title': 'Bedroom 01',
+      'widget': RentalQuotesFurniture(category: 'furniture'),
+    },
+    {
+      'title': 'Living Room',
+      'widget': RentalQuotesFurniture(category: 'furniture'),
+    },
+    {
+      'title': 'Dining Room',
+      'widget': RentalQuotesFurniture(category: 'furniture'),
+    },
+    {
+      'title': 'Kitchen',
+      'widget': RentalQuotesFurniture(category: 'furniture'),
+    },
   ];
-  RxList<Map<String, dynamic>> item = <Map<String, dynamic>>[].obs;
+  List appliance = [
+    {
+      'title': 'Master Bedroom',
+      'widget': RentalQuotesFurniture(category: 'appliance'),
+    },
+    {
+      'title': 'Bedroom 01',
+      'widget': RentalQuotesFurniture(category: 'appliance'),
+    },
+    {
+      'title': 'Living Room',
+      'widget': RentalQuotesFurniture(category: 'appliance'),
+    },
+    {
+      'title': 'Dining Room',
+      'widget': RentalQuotesFurniture(category: 'appliance'),
+    },
+    {
+      'title': 'Kitchen',
+      'widget': RentalQuotesFurniture(category: 'appliance'),
+    },
+  ];
+  RxList<Map<String, dynamic>> furnitureItems = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> applianceItems = <Map<String, dynamic>>[].obs;
+
+  RxList<QuoteItemAction> furnitureActions = <QuoteItemAction>[].obs;
+  RxList<QuoteItemAction> applianceActions = <QuoteItemAction>[].obs;
+
+  RxList<bool> isFurnitureExpanded = <bool>[].obs;
+  RxList<bool> isApplianceExpanded = <bool>[].obs;
+
   RxList<bool> isOpen = <bool>[].obs;
+  RxList<bool> isOpenAppliance = <bool>[].obs;
+  RxList<Map<String, dynamic>> item = <Map<String, dynamic>>[].obs;
   RxList<QuoteItemAction> itemActions = <QuoteItemAction>[].obs;
+  RxBool isShowItem = false.obs;
+  RxBool isShowInfo = false.obs;
   RxList<Map<String, dynamic>> approvedItems = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> revisedItems = <Map<String, dynamic>>[].obs;
-
   bool get hasResetItem =>
-      itemActions.any((action) => action == QuoteItemAction.change);
-
-  double get grandTotal {
-    return subtotal + totalCharge - totalDiscount;
-  }
-
-  double get subtotal {
-    double total = 0;
-    for (final item in [...approvedItems, ...revisedItems]) {
-      final qty = _parseInt(item['qty']);
-      final price = _parseMoney(item['price']);
-      total += (qty * price);
-    }
-    return total;
-  }
-
-  double get totalDiscount {
-    double total = 0;
-    for (final item in [...approvedItems, ...revisedItems]) {
-      total += _parseMoney(item['discount(3%)']);
-    }
-    return total;
-  }
-
-  double get totalCharge {
-    double total = 0;
-    for (final item in [...approvedItems, ...revisedItems]) {
-      total += _parseMoney(item['charge']);
-    }
-    return total;
-  }
+      furnitureActions.any((action) => action == QuoteItemAction.change) ||
+      applianceActions.any((action) => action == QuoteItemAction.change);
 
   @override
   void onInit() {
     super.onInit();
     isOpen.value = List.generate(furniture.length, (_) => false);
-    item.assignAll([
+    isOpenAppliance.value = List.generate(appliance.length, (_) => false);
+
+    // Initialize Furniture Items
+    furnitureItems.assignAll([
       {
         'title': 'Item:',
         'image': IconsPath.furniture,
         'name': 'Modern Velvet Sofa',
         'qty': '01',
-        'price': '\$20',
+        'price': '\$320',
         'discount(3%)': '-\$10',
         'charge': '\$20',
+        'category': 'furniture',
       },
       {
         'title': 'Item:',
         'image': IconsPath.furniture,
         'name': 'Modern Velvet Sofa',
         'qty': '01',
-        'price': '\$20',
+        'discount(3%)': '-\$10',
+        'price': '\$320',
+        'charge': '\$0',
+        'category': 'furniture',
       },
       {
         'title': 'Item:',
         'image': IconsPath.furniture,
         'name': 'Modern Velvet Sofa',
         'qty': '01',
-        'price': '\$20',
+        'discount(3%)': '-\$10',
+        'price': '\$320',
+        'charge': '\$0',
+        'category': 'furniture',
       },
     ]);
-    itemActions.value = List<QuoteItemAction>.filled(
-      item.length,
+
+    furnitureActions.value = List<QuoteItemAction>.filled(
+      furnitureItems.length,
       QuoteItemAction.none,
       growable: true,
     );
+
+    isFurnitureExpanded.value = List<bool>.filled(furnitureItems.length, false);
+
+    // Initialize Appliance Items (Using different data to be distinct)
+    applianceItems.assignAll([
+      {
+        'title': 'Item:',
+        'image': IconsPath.furniture, // Should ideally be appliance icon/image
+        'name': 'Refrigerator',
+        'qty': '01',
+        'price': '\$320',
+        'discount(3%)': '-\$10',
+        'charge': '\$20',
+        'category': 'appliance',
+      },
+      {
+        'title': 'Item:',
+        'image': IconsPath.furniture,
+        'name': 'Microwave',
+        'qty': '01',
+        'discount(3%)': '-\$5',
+        'price': '\$150',
+        'charge': '\$0',
+        'category': 'appliance',
+      },
+    ]);
+
+    applianceActions.value = List<QuoteItemAction>.filled(
+      applianceItems.length,
+      QuoteItemAction.none,
+      growable: true,
+    );
+
+    isApplianceExpanded.value = List<bool>.filled(applianceItems.length, false);
+
+    // Backward compatibility for old code referencing 'item'
+    item.assignAll(furnitureItems);
+    itemActions.assignAll(furnitureActions);
   }
 
-  void toggleItemAction(int index, QuoteItemAction action) {
-    if (index < 0 || index >= item.length) {
+  void toggleItemAction(
+    int index,
+    QuoteItemAction action, {
+    String category = 'furniture',
+  }) {
+    final isFurniture = category == 'furniture';
+    final targetItems = isFurniture ? furnitureItems : applianceItems;
+    final targetActions = isFurniture ? furnitureActions : applianceActions;
+    final targetExpanded = isFurniture
+        ? isFurnitureExpanded
+        : isApplianceExpanded;
+
+    if (index < 0 || index >= targetItems.length) {
       return;
     }
-    final current = itemActions[index];
+
+    final current = targetActions[index];
     final newAction = current == action ? QuoteItemAction.none : action;
 
-    itemActions[index] = newAction;
+    targetActions[index] = newAction;
 
-    final currentItem = item[index];
+    final currentItem = targetItems[index];
 
     if (newAction == QuoteItemAction.approved) {
       if (!approvedItems.contains(currentItem)) approvedItems.add(currentItem);
@@ -110,33 +190,39 @@ class RentalQuotesController extends GetxController {
     }
 
     if (newAction == QuoteItemAction.closed) {
-      item.removeAt(index);
-      itemActions.removeAt(index);
+      targetItems.removeAt(index);
+      targetActions.removeAt(index);
+      targetExpanded.removeAt(index);
       approvedItems.remove(currentItem);
       revisedItems.remove(currentItem);
+    }
+  }
+
+  void toggleItemExpanded(int index, {String category = 'furniture'}) {
+    final isFurniture = category == 'furniture';
+    final targetExpanded = isFurniture
+        ? isFurnitureExpanded
+        : isApplianceExpanded;
+
+    if (index >= 0 && index < targetExpanded.length) {
+      targetExpanded[index] = !targetExpanded[index];
     }
   }
 
   void approveAll() {
     revisedItems.clear();
     approvedItems.clear();
-    for (int i = 0; i < item.length; i++) {
-      final currentItem = item[i];
-      itemActions[i] = QuoteItemAction.approved;
-      approvedItems.add(currentItem);
+
+    // Approve all furniture
+    for (int i = 0; i < furnitureItems.length; i++) {
+      furnitureActions[i] = QuoteItemAction.approved;
+      approvedItems.add(furnitureItems[i]);
     }
-  }
 
-  int _parseInt(dynamic value) {
-    if (value is int) return value;
-    final raw = (value ?? '').toString().trim();
-    return int.tryParse(raw) ?? 0;
-  }
-
-  double _parseMoney(dynamic value) {
-    if (value is num) return value.toDouble();
-    final raw = (value ?? '').toString();
-    final cleaned = raw.replaceAll(RegExp(r'[^0-9.]'), '');
-    return double.tryParse(cleaned) ?? 0;
+    // Approve all appliances
+    for (int i = 0; i < applianceItems.length; i++) {
+      applianceActions[i] = QuoteItemAction.approved;
+      approvedItems.add(applianceItems[i]);
+    }
   }
 }
