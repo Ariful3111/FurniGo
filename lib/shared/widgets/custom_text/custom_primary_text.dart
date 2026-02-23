@@ -26,7 +26,6 @@ class CustomPrimaryText extends StatelessWidget {
   @override
   Widget build(BuildContext context) { 
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Text(
       text,
       textAlign: textAlign,

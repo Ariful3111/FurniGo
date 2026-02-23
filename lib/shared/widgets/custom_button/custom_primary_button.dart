@@ -17,6 +17,7 @@ class CustomPrimaryButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final EdgeInsets? padding;
   final BoxBorder? border;
+  final List<BoxShadow>? boxShadow;
   const CustomPrimaryButton({
     super.key,
     this.height,
@@ -30,7 +31,7 @@ class CustomPrimaryButton extends StatelessWidget {
     this.child,
     this.boxDecoration,
     this.fontWeight,
-    this.padding, this.border,
+    this.padding, this.border, this.boxShadow,
   });
 
   @override
@@ -51,6 +52,7 @@ class CustomPrimaryButton extends StatelessWidget {
                   : backgroundColor ?? AppColors.primaryColor,
               borderRadius: borderRadius ?? BorderRadius.circular(100.r),
               border: border,
+              boxShadow: boxShadow
             ),
         child:
             child ??

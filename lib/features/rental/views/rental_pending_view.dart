@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/model/rental_model.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_delivery_status.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_info.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_widgets.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rental_quotes_calculation.dart';
@@ -39,7 +41,7 @@ class RentalPendingView extends StatelessWidget {
                 SizedBox(height: 12.h),
                 rentalsTop(isDark: isDark),
                 SizedBox(height: 16.h),
-                SharedContainer(
+             rentalModel.status == 'Active'||rentalModel.status == 'Completed'? RentalsActiveInfo()  :SharedContainer(
                   padding: EdgeInsets.all(20.r),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,6 +82,7 @@ class RentalPendingView extends StatelessWidget {
                 SizedBox(height: 20.h),
                 PendingWidgets(),
                 if (rentalModel.status == 'Quote Sent') RentalQuotesCalculation(),
+                if(rentalModel.status == 'Active') RentalsActiveDeliveryStatus()
               ],
             ),
           ),

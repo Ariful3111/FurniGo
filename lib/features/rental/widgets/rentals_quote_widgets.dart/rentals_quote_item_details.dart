@@ -11,7 +11,11 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 class RentalsQuoteItemDetails extends StatelessWidget {
   final int index;
   final Map<String, dynamic> item;
-  const RentalsQuoteItemDetails({super.key, required this.item, required this.index});
+  const RentalsQuoteItemDetails({
+    super.key,
+    required this.item,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class RentalsQuoteItemDetails extends StatelessWidget {
       width: MediaQuery.widthOf(context),
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.darkColor : AppColors.whiteColor,
+        color: isDark ? AppColors.labelColor : AppColors.whiteColor,
         border: Border.all(
           width: 1.r,
           color: isDark ? AppColors.darkBorderColor : AppColors.borderColor,
@@ -33,13 +37,15 @@ class RentalsQuoteItemDetails extends StatelessWidget {
         children: [
           Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15.r),
-                child: Image.asset(
-                  item['image'] ?? IconsPath.furniture,
-                  height: 264.h,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+              Container(
+                height: 264.h,
+                width: MediaQuery.widthOf(context),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.r),
+                  image: DecorationImage(
+                    image: AssetImage(item['image']),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Positioned(
@@ -62,7 +68,7 @@ class RentalsQuoteItemDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomPrimaryText(
-                text: item['name'] ?? 'Furniture',
+                text: item['name'],
                 fontSize: 22.sp,
               ),
               Obx(
