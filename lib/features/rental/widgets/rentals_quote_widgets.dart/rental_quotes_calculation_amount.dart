@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/accept_dialog.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/revision_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -15,8 +17,6 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
     RentalQuotesController quotesController = Get.find();
     return Obx(() {
       final bool isRevisionMode = quotesController.hasResetItem;
-      final String primaryText = isRevisionMode ? 'Request Revision' : 'Accept';
-
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -50,16 +50,32 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomPrimaryButton(
-                    height: 40.h,
-                  text: primaryText,
-                  onPressed: () {},
+                  height: 40.h,
+                  text: isRevisionMode ? 'Request Revision' : 'Accept',
+                  onPressed: isRevisionMode
+                      ? () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return RevisionDialog();
+                            },
+                          );
+                        }
+                      : () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AcceptDialog();
+                            },
+                          );
+                      },
                   fontSize: 12.sp,
                 ),
               ),
               SizedBox(width: 8.w),
               Expanded(
                 child: CustomPrimaryButton(
-                    height: 40.h,
+                  height: 40.h,
                   text: 'Decline',
                   onPressed: () {},
                   fontSize: 12.sp,

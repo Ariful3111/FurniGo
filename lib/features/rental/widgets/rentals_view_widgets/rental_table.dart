@@ -13,7 +13,7 @@ class RentalTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final RentalController controller = Get.put(RentalController());
     return Obx(() {
-      final tableRows = controller.rentals
+      final tableRows = controller.filteredRentals
           .map(
             (rental) => {
               'id': rental.id,

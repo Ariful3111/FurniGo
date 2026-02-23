@@ -75,8 +75,6 @@ class RentalQuotesController extends GetxController {
     super.onInit();
     isOpen.value = List.generate(furniture.length, (_) => false);
     isOpenAppliance.value = List.generate(appliance.length, (_) => false);
-
-    // Initialize Furniture Items
     furnitureItems.assignAll([
       {
         'title': 'Item:',
@@ -117,12 +115,10 @@ class RentalQuotesController extends GetxController {
     );
 
     isFurnitureExpanded.value = List<bool>.filled(furnitureItems.length, false);
-
-    // Initialize Appliance Items (Using different data to be distinct)
     applianceItems.assignAll([
       {
         'title': 'Item:',
-        'image': IconsPath.furniture, // Should ideally be appliance icon/image
+        'image': IconsPath.furniture,
         'name': 'Refrigerator',
         'qty': '01',
         'price': '\$320',
@@ -149,8 +145,6 @@ class RentalQuotesController extends GetxController {
     );
 
     isApplianceExpanded.value = List<bool>.filled(applianceItems.length, false);
-
-    // Backward compatibility for old code referencing 'item'
     item.assignAll(furnitureItems);
     itemActions.assignAll(furnitureActions);
   }

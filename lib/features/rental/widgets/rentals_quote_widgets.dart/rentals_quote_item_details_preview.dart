@@ -25,30 +25,41 @@ class RentalsQuoteItemDetailsPreview extends StatelessWidget {
         RentalQuotesFurnitureAction(index: index),
         SizedBox(height: 22.h),
         CustomPrimaryText(text: 'Other Items (Preview)'),
-        Row(
-          children: List.generate(preview.length, (index) {
-            final item = preview[index];
-            return Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadiusGeometry.circular(5.66.r),
-                  child: Image.asset(
-                    item['image'],
-                    height: 75.22.h,
-                    width: 75.22.w,
-                  ),
-                ),
-                SizedBox(height: 4.24.h),
-                CustomPrimaryText(
-                  text: item['text'],
-                  color: isDark
-                      ? AppColors.whiteColor
-                      : AppColors.buttonTextColor,
+        SizedBox(height: 15.h),
+        SizedBox(
+          height: 94.h,
+          child: ListView.builder(
+            itemCount: preview.length,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              final item = preview[index];
+              return Padding(
+                padding: EdgeInsets.only(right: 8.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(5.66.r),
+                      child: Image.asset(
+                        item['image'],
+                        height: 75.22.h,
+                        width: 75.22.w,
+                      ),
+                    ),
+                    SizedBox(height: 4.24.h),
+                    CustomPrimaryText(
+                      text: item['text'],
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.buttonTextColor,
                       fontSize: 9,
+                    ),
+                  ],
                 ),
-              ],
-            );
-          }),
+              );
+            },
+          ),
         ),
       ],
     );
