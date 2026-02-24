@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/accept_dialog.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/decline_dialog.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/revision_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -77,7 +78,14 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
                 child: CustomPrimaryButton(
                   height: 40.h,
                   text: 'Decline',
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                            context: context,
+                            builder: (context) {
+                              return DeclineDialog();
+                            },
+                          );
+                  },
                   fontSize: 12.sp,
                   backgroundColor: AppColors.whiteColor,
                   border: Border.all(

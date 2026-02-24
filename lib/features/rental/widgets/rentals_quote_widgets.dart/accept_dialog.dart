@@ -15,7 +15,6 @@ class AcceptDialog extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Dialog(
       alignment: Alignment.center,
-     // backgroundColor: isDark ? AppColors.labelColor : AppColors.whiteColor,
       child: Container(
         width: MediaQuery.widthOf(context),
         height: 261.h,

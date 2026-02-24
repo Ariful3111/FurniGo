@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/widgets/other_field.dart';
+import 'package:zb_dezign/shared/widgets/custom_form_field/other_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 

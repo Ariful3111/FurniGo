@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/model/rental_model.dart';
+import 'package:zb_dezign/features/rental/widgets/rental_completed_widgets/rentals_complete_delivery.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_delivery_status.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_info.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
@@ -82,7 +83,8 @@ class RentalPendingView extends StatelessWidget {
                 SizedBox(height: 20.h),
                 PendingWidgets(),
                 if (rentalModel.status == 'Quote Sent') RentalQuotesCalculation(),
-                if(rentalModel.status == 'Active') RentalsActiveDeliveryStatus()
+                if(rentalModel.status == 'Active') RentalsActiveDeliveryStatus(),
+                if(rentalModel.status == 'Completed') RentalsCompleteDelivery()
               ],
             ),
           ),

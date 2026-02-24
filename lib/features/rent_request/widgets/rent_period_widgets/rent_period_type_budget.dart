@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_period_controller.dart';
-import 'package:zb_dezign/features/rent_request/widgets/other_field.dart';
+import 'package:zb_dezign/shared/widgets/custom_form_field/other_field.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_error_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
