@@ -17,30 +17,56 @@ class CustomTableStatus extends StatelessWidget {
 
     switch (status) {
       case 'Pending':
-        bgColor =isDark? AppColors.darkPendingBGColor:AppColors.pendingBGColor;
-        textColor =isDark? AppColors.darkPendingTextColor:AppColors.pendingTextColor;
+        bgColor = isDark
+            ? AppColors.darkPendingBGColor
+            : AppColors.pendingBGColor;
+        textColor = isDark
+            ? AppColors.darkPendingTextColor
+            : AppColors.pendingTextColor;
         break;
       case 'Quote Sent':
-        bgColor =isDark? AppColors.darkQuoteBGColor:AppColors.quoteBGColor;
-        textColor =isDark?AppColors.darkQuoteTextColor: AppColors.quoteTextColor;
+        bgColor = isDark ? AppColors.darkQuoteBGColor : AppColors.quoteBGColor;
+        textColor = isDark
+            ? AppColors.darkQuoteTextColor
+            : AppColors.quoteTextColor;
         break;
       case 'Revise Quote':
-        bgColor =isDark? AppColors.darkReviseBGColor:AppColors.reviseBGColor;
-        textColor =isDark? AppColors.darkReviseTextColor:AppColors.reviseTextColor;
+        bgColor = isDark
+            ? AppColors.darkReviseBGColor
+            : AppColors.reviseBGColor;
+        textColor = isDark
+            ? AppColors.darkReviseTextColor
+            : AppColors.reviseTextColor;
         break;
       case 'Active':
-        bgColor =isDark?AppColors.darkActiveBGColor: AppColors.activeBGColor;
-        textColor =isDark?AppColors.darkActiveTextColor: AppColors.activeTextColor;
+        bgColor = isDark
+            ? AppColors.darkActiveBGColor
+            : AppColors.activeBGColor;
+        textColor = isDark
+            ? AppColors.darkActiveTextColor
+            : AppColors.activeTextColor;
         break;
       case 'Completed':
       case 'Competed':
-        bgColor =isDark?AppColors.darkCompleteBgColor: AppColors.completeBgColor;
-        textColor =isDark?AppColors.darkCompleteTextColor :AppColors.completeTextColor;
+        bgColor = isDark
+            ? AppColors.darkCompleteBgColor
+            : AppColors.completeBgColor;
+        textColor = isDark
+            ? AppColors.darkCompleteTextColor
+            : AppColors.completeTextColor;
         break;
       case 'Rejected':
-        bgColor =isDark? AppColors.darkRejectedBGColor:AppColors.rejectedBGColor;
-        textColor =isDark?AppColors.darkRejectedTextColor: AppColors.rejectedTextColor;
+      case '2nd installment: Due':
+        bgColor = isDark
+            ? AppColors.darkRejectedBGColor
+            : AppColors.rejectedBGColor;
+        textColor = isDark
+            ? AppColors.darkRejectedTextColor
+            : AppColors.rejectedTextColor;
         break;
+      case '2nd installment: Upcoming':
+        bgColor = Color(0xFFFFE7D3);
+        textColor  = Color(0xFFFF8D28);
       default:
         bgColor = AppColors.fieldColor;
         textColor = AppColors.fieldTextColor;
@@ -52,11 +78,7 @@ class CustomTableStatus extends StatelessWidget {
         color: bgColor,
         borderRadius: BorderRadius.circular(50.r),
       ),
-      child: CustomPrimaryText(
-        text: status,
-        fontSize: 12.sp,
-        color: textColor,
-      ),
+      child: CustomPrimaryText(text: status, fontSize: 12.sp, color: textColor),
     );
   }
 }

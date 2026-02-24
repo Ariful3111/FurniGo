@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/rental/controller/rental_active_controller.dart';
 import 'package:zb_dezign/features/rental/model/rental_model.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_info_payment.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
@@ -17,6 +18,7 @@ class RentalsActiveInfoDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final RentalModel rentalModel = Get.arguments as RentalModel;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    RentalActiveController activeController = Get.find();
     return SharedContainer(
       radius: 12.r,
       padding: EdgeInsets.all(20.r),
@@ -82,18 +84,21 @@ class RentalsActiveInfoDetails extends StatelessWidget {
                 children: [
                   text(text: 'Status', isDark: isDark),
                   SizedBox(height: 4.h),
-                  CustomTableStatus(status: rentalModel.status),
+                  CustomTableStatus(
+                    status: activeController.isInstallment
+                        ? rentalModel.status
+                        : '2nd installment: Due',
+                  ),
                 ],
               ),
             ],
           ),
-          SizedBox(height: 20.h,),
+          SizedBox(height: 20.h),
           CustomDivider(),
-          SizedBox(height: 20.h,),
-          RentalsActiveInfoPayment()
+          SizedBox(height: 20.h),
+          RentalsActiveInfoPayment(),
         ],
       ),
     );
   }
-
 }

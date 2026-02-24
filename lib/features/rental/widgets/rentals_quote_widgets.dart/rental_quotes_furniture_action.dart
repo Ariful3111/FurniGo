@@ -79,7 +79,7 @@ class RentalQuotesFurnitureAction extends StatelessWidget {
                 category: category,
               );
             },
-            borderColor: const Color(0xFFDF1C41),
+            borderColor:  Color(0xFFDF1C41),
             icon: IconsPath.close,
             color: isClose ? const Color(0xFFDF1C41) : null,
             iconColor: isClose ? AppColors.whiteColor : null,
