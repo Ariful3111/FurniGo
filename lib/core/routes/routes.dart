@@ -10,6 +10,10 @@ import 'package:zb_dezign/features/auth/views/signin_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_option_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_view.dart';
 import 'package:zb_dezign/features/auth/views/user_mode_view.dart';
+import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
+import 'package:zb_dezign/features/dashboard/views/dashboard_view.dart';
+import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
+import 'package:zb_dezign/features/home/views/bottom_nav_view.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_business_identification.dart';
 import 'package:zb_dezign/features/rental/bindings/rental_bindings.dart';
@@ -74,7 +78,17 @@ final List<GetPage> appRoutes = [
   ),
   GetPage(
     name: AppRoutes.rentalPendingView,
-    page: () => const RentalPendingView(),
+    page: () => RentalPendingView(),
     binding: RentalBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.dashboardView,
+    page: () => DashboardView(),
+    binding: DashboardBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.bottomNav,
+    page: () => BottomNavView(),
+    binding: HomeBindings(),
   ),
 ];

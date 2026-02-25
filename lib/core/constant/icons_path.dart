@@ -49,5 +49,8 @@ class IconsPath {
   static const String moneyBag = 'assets/icons/money_bag.png';
   static const String confirm = 'assets/icons/confirm.png';
   static const String rejectEmoji = 'assets/icons/reject_emoji.png';
+  static const String categoryNav = 'assets/icons/category_nav.png';
+  static const String dashboardNav = 'assets/icons/dashboard_nav.png';
+  static const String profileNav = 'assets/icons/profile_nav.png';
 
 }

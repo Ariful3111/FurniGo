@@ -11,4 +11,6 @@ class AppRoutes {
   static const String newPasswordView = '/newPasswordView';
   static const String emailVerificationView = '/emailVerificationView';
   static const String rentalPendingView = '/rentalPendingView';
+  static const String dashboardView = '/dashboardView';
+  static const String bottomNav = '/bottomNav';
 }
