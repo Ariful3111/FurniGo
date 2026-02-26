@@ -52,5 +52,23 @@ class IconsPath {
   static const String categoryNav = 'assets/icons/category_nav.png';
   static const String dashboardNav = 'assets/icons/dashboard_nav.png';
   static const String profileNav = 'assets/icons/profile_nav.png';
+  static const String drawerAi = 'assets/icons/drawer_ai.png';
+  static const String drawerCredit = 'assets/icons/drawer_credit.png';
+  static const String drawerOrder = 'assets/icons/drawer_order.png';
+  static const String drawerPayment = 'assets/icons/drawer_payment.png';
+  static const String drawerRent = 'assets/icons/drawer_rent.png';
+  static const String drawerSell = 'assets/icons/drawer_sell.png';
+  static const String drawerSetting = 'assets/icons/drawer_setting.png';
+  static const String drawerSupport = 'assets/icons/drawer_support.png';
+  static const String drawerTrans = 'assets/icons/drawer_trans.png';
+  static const String spent = 'assets/icons/spent.png';
+  static const String activeOrder = 'assets/icons/active_order.png';
+  static const String activeRentals = 'assets/icons/active_rentals.png';
+  static const String design = 'assets/icons/design.png';
+  static const String shopProduction = 'assets/icons/shop_production.png';
+  static const String sellFurniture = 'assets/icons/sell_furniture.png';
+  static const String rentProduct = 'assets/icons/rent_product.png';
+  static const String quickAction = 'assets/icons/quick_action.png';
+
 
 }

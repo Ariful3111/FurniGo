@@ -69,7 +69,7 @@ class OrderHeader extends StatelessWidget {
                   children: [
                     CustomPrimaryText(
                       text: 'My Order',
-                      color: Color(0xFF101828),
+                      color: AppColors.titleColor,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,

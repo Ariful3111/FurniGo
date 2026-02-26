@@ -34,7 +34,7 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
             text: '\$12545.00',
             fontSize: 24.sp,
             fontWeight: FontWeight.w600,
-            color: isDark ? AppColors.whiteColor : const Color(0xFF101828),
+            color: isDark ? AppColors.whiteColor : AppColors.titleColor,
           ),
           CustomPrimaryText(
             text:
