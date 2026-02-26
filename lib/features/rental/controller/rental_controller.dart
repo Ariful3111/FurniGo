@@ -67,7 +67,6 @@ class RentalController extends GetxController {
       payment: 'N/A',
     ),
   ];
-
   RxList<RentalModel> get filteredRentals {
     if (statusIndex.value == 0) {
       return rentals.obs;
@@ -88,11 +87,9 @@ class RentalController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Initialize expandedList based on filteredRentals length
     ever(filteredRentals, (List<RentalModel> list) {
       expandedList.value = List<bool>.filled(list.length, false);
     });
-    // Trigger initial population
     expandedList.value = List<bool>.filled(filteredRentals.length, false);
   }
 

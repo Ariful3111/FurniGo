@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class RentalsCompleteController extends GetxController {
   TextEditingController dateController = TextEditingController();
   TextEditingController otherController = TextEditingController();
-  RxInt timeIndex = 0.obs;
+  RxList<int> timeIndex = <int>[0].obs;
   bool deliveryStatus = true;
   List time = [
     'Between 8 a.m. - 12 p.m.',
