@@ -4,6 +4,7 @@ class AppColors {
   static const Color primaryColor = Color(0xFF15003B);
   static const Color secondaryColor = Color(0xFF15003A);
   static const Color darkColor = Color(0xFF000000);
+  static const Color titleColor = Color(0xFF101828);
   static const Color whiteColor = Color(0xFFFFFFFF);
   static const Color grayBorderColor = Color(0xFFBEBEBE);
   static const Color darkTextColor = Color(0xFF0A0A0F);
@@ -100,7 +101,7 @@ class AppColors {
   static Gradient secondaryGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFF1348D2), Color(0xFF1B6ADD),Color(0xFF209DF0)],
+    colors: [Color(0xFF1348D2), Color(0xFF1B6ADD), Color(0xFF209DF0)],
   );
   static Gradient darkPrimaryGradient = LinearGradient(
     begin: Alignment.topCenter,

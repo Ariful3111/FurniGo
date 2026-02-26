@@ -22,7 +22,7 @@ class RentBusinessIdentification extends StatelessWidget {
         controller: controller.rentController,
         children: [
           SizedBox(height: 20.h,),
-          CustomAppbar(title: 'Rent', onDrawerTap: () {}),
+          CustomAppbar(title: 'Rent', onDrawerTap: () {  }, ),
           SizedBox(height: 32.h),
           RentBusinessIdentificationHeader(),
           SizedBox(height: 16.h),

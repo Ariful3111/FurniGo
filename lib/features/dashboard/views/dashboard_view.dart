@@ -1,15 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_info.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_quick_action.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_table.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_welcome.dart';
+import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
+import 'package:zb_dezign/shared/widgets/custom_banner.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomContainer(child: Column(
-      children: [
-         
-      ],
-    ),);
+    return CustomContainer(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomAppbar(
+              title: 'Dashboard',
+              onDrawerTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CustomDrawer();
+                  },
+                );
+              },
+            ),
+            SizedBox(height: 12.h,),
+            DashboardWelcome(),
+            SizedBox(height: 16.h,),
+            CustomBanner(),
+            SizedBox(height: 16.h,),
+            DashboardInfo(),
+            SizedBox(height: 12.h,),
+            DashboardQuickAction(),
+            SizedBox(height: 12.h,),
+            DashboardTable(),
+          ],
+        ),
+      ),
+    );
   }
 }
