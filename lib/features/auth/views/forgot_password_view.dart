@@ -43,6 +43,7 @@ class ForgotPasswordView extends StatelessWidget {
                 Get.toNamed(AppRoutes.signUpView);
                 forgotPasswordController.emailController.clear();
               },
+              decoration: TextDecoration.underline,
             ),
             SizedBox(height: 100.h),
             authField(

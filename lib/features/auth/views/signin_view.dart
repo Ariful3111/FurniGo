@@ -43,6 +43,7 @@ class SigninView extends StatelessWidget {
               onTap: () {
                 signinController.signup(formKey: fromKey);
               },
+              decoration: TextDecoration.underline,
             ),
             SizedBox(height: 24.h),
             SigninForm(formKey: fromKey),

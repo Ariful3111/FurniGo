@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_active_rentals.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_info.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_membership_notice.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_quick_action.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_reminders.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_sell_quote.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_table.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_welcome.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
@@ -39,6 +43,14 @@ class DashboardView extends StatelessWidget {
             DashboardQuickAction(),
             SizedBox(height: 12.h,),
             DashboardTable(),
+            SizedBox(height: 12.h,),
+            DashboardActiveRentals(),
+            SizedBox(height: 12.h,),
+            DashboardSellQuote(),
+            SizedBox(height: 12.h,),
+            DashboardReminders(),
+            SizedBox(height: 12.h,),
+            DashboardMembershipNotice()
           ],
         ),
       ),
