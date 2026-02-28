@@ -5,6 +5,7 @@ import 'package:zb_dezign/features/rental/controller/rental_controller.dart';
 import 'package:zb_dezign/features/rental/model/rental_model.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_view_widgets/rental_expanded_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table.dart';
+import 'package:zb_dezign/shared/widgets/custom_table/custom_table_action_button.dart';
 
 class RentalTable extends StatelessWidget {
   const RentalTable({super.key});
@@ -38,10 +39,11 @@ class RentalTable extends StatelessWidget {
           return RentalExpandedTable(rental: rentalModel);
         },
         headerList: controller.rentalTableColumn,
-        onView: (row) {
-          final RentalModel rentalModel = row['model'] as RentalModel;
+        action: CustomTableActionButton(onTap: () {
+          final RentalModel rentalModel = 'model' as RentalModel;
           Get.toNamed(AppRoutes.rentalPendingView, arguments: rentalModel);
-        },
+        },),
+         
       );
     });
   }

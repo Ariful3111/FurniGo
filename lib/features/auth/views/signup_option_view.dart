@@ -38,6 +38,7 @@ class SignupOptionView extends StatelessWidget {
             onTap: () {
               Get.toNamed(AppRoutes.signInView);
             },
+            decoration: TextDecoration.underline,
           ),
           SizedBox(height: 40.h),
           userModeController.selectedIndex.value == 0

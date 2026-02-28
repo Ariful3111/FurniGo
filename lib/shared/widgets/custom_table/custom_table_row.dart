@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/shared/widgets/custom_table/custom_table_action_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_expanded.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -10,11 +9,11 @@ class CustomTableRow extends StatelessWidget {
   final List rows;
   final List<bool> expandedList;
   final void Function(int index) onExpand;
-  final void Function(dynamic row) onView;
   final String id;
   final String status;
   final String title;
   final Widget Function(int index, dynamic row) buildExpanded;
+  final Widget action;
   const CustomTableRow({
     super.key,
     required this.rows,
@@ -23,8 +22,7 @@ class CustomTableRow extends StatelessWidget {
     required this.id,
     required this.status,
     required this.title,
-    required this.buildExpanded,
-    required this.onView,
+    required this.buildExpanded, required this.action,
   });
 
   @override
@@ -77,10 +75,7 @@ class CustomTableRow extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 2,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: CustomTableActionButton(onTap: () => onView(row)),
-                    ),
+                    child: action,
                   ),
                 ],
               ),

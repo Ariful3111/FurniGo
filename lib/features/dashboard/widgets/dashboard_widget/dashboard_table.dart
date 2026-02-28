@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/dashboard/controller/dashboard_controller.dart';
+import 'package:zb_dezign/features/dashboard/models/recent_order_model.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_table_expanded.dart';
+import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_property_header.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
+import 'package:zb_dezign/shared/widgets/custom_table/custom_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class DashboardTable extends StatelessWidget {
@@ -10,6 +16,7 @@ class DashboardTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    DashboardController dashboardController = Get.find();
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.r),
       width: MediaQuery.widthOf(context),
@@ -22,46 +29,49 @@ class DashboardTable extends StatelessWidget {
         children: [
           SizedBox(
             height: 69.h,
-            width: MediaQuery.widthOf(context),
-            child: Padding(
-              padding: EdgeInsets.only(left:20.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomPrimaryText(
-                    text: 'Recent orders',
-                    color: isDark ? AppColors.whiteColor : AppColors.titleColor,
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: SizedBox(
-                      height: 36.h,
-                      width: 101.w,
-                      child: Row(
-                        children: [
-                          CustomPrimaryText(
-                            text: 'View all',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14.sp,
-                          ),
-                          SizedBox(width: 9.87.w),
-                          Icon(
-                            Icons.arrow_forward,
-                            color: isDark
-                                ? AppColors.whiteColor
-                                : AppColors.primaryColor,
-                            fontWeight: FontWeight.w900,
-                            size: 16.sp,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+            child: DashboardPropertyHeader(title: 'Recent orders', onTap: () {  },)),
           CustomDivider(),
+          Obx(() {
+            final tableRows = dashboardController.recentOrderModel
+                .map(
+                  (order) => {
+                    'id': order.id,
+                    'status': order.status,
+                    'title': 'order ID',
+                    'model': order,
+                  },
+                )
+                .toList();
+            final expandedFlags = dashboardController.expandedList.toList();
+            return CustomTable(
+              rows: tableRows,
+              id: 'id',
+              status: 'status',
+              title: 'title',
+              expandedList: expandedFlags,
+              onExpand: (index) {
+                dashboardController.expandedList[index] =
+                    !dashboardController.expandedList[index];
+              },
+              buildExpanded: (index, row) {
+                final RecentOrderModel orderModel =
+                    row['model'] as RecentOrderModel;
+                return DashboardTableExpanded(orderModel: orderModel);
+              },
+              headerList: dashboardController.dashboardTableColumn,
+              action: Padding(
+                padding:  EdgeInsets.only(left: 25.w),
+                child: CustomPrimaryText(
+                  text: 'Track',
+                  fontSize: 14.sp,
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : Color(0xFF364153),
+                      textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }),
         ],
       ),
     );

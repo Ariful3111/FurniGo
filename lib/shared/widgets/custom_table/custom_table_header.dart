@@ -23,7 +23,7 @@ class CustomTableHeader extends StatelessWidget {
               height: 40.h,
               child: Center(
                 child: CustomPrimaryText(
-                  text: headerList[i],
+                  text: headerList[i].toUpperCase(),
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                   color: isDark
