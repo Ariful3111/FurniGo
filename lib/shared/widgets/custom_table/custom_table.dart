@@ -15,6 +15,7 @@ class CustomTable extends StatelessWidget {
   final Widget Function(int index, dynamic row) buildExpanded;
   final List<String> headerList;
   final Widget action;
+  final Widget Function(int index, dynamic row)? actionBuilder;
   const CustomTable({
     super.key,
     required this.rows,
@@ -25,7 +26,7 @@ class CustomTable extends StatelessWidget {
     required this.onExpand,
     required this.buildExpanded,
     required this.headerList,
-    required this.action,
+    required this.action, this.actionBuilder,
   });
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,7 @@ class CustomTable extends StatelessWidget {
             title: title,
             buildExpanded: buildExpanded,
             action: action,
+            actionBuilder: actionBuilder,
           ),
         ],
       ),

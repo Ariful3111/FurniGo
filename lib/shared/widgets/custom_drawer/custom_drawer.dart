@@ -44,6 +44,9 @@ class CustomDrawer extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   customDrawerController.selectedItem.value = index;
+                  Navigator.pop(context);
+                  Get.toNamed(item['page']);
+
                 },
                 child: Container(
                   margin: EdgeInsets.only(

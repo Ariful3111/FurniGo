@@ -9,7 +9,6 @@ class RentalCompleteDownloadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 40.h,
       width: MediaQuery.widthOf(context),
@@ -26,7 +25,7 @@ class RentalCompleteDownloadButton extends StatelessWidget {
           CustomPrimaryText(
             text: 'Download Invoices',
             fontSize: 12.sp,
-            color: isDark ? AppColors.whiteColor : AppColors.labelColor,
+            color:  AppColors.labelColor,
           ),
         ],
       ),

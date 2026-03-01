@@ -39,11 +39,15 @@ class RentalTable extends StatelessWidget {
           return RentalExpandedTable(rental: rentalModel);
         },
         headerList: controller.rentalTableColumn,
-        action: CustomTableActionButton(onTap: () {
-          final RentalModel rentalModel = 'model' as RentalModel;
-          Get.toNamed(AppRoutes.rentalPendingView, arguments: rentalModel);
-        },),
-         
+        action: SizedBox.shrink(),
+        actionBuilder: (index, row) {
+        return  CustomTableActionButton(
+            onTap: () {
+              final RentalModel rentalModel = row['model'] as RentalModel;
+              Get.toNamed(AppRoutes.rentalPendingView, arguments: rentalModel);
+            },
+          );
+        },
       );
     });
   }

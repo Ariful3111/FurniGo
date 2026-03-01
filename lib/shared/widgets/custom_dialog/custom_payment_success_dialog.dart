@@ -5,8 +5,9 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class PaymentSuccessDialog extends StatelessWidget {
-  const PaymentSuccessDialog({super.key});
+class CustomPaymentSuccessDialog extends StatelessWidget {
+  final String? icon;
+  const CustomPaymentSuccessDialog({super.key, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class PaymentSuccessDialog extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Image.asset(IconsPath.confirm,height: 180.h,width: 180.w,),
+            Image.asset(icon ?? IconsPath.confirm, height: 180.h, width: 180.w),
             CustomPrimaryText(
               text: 'Payment processed successfully!',
               fontWeight: FontWeight.w600,

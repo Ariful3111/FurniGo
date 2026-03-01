@@ -32,7 +32,6 @@ class IconsPath {
   static const String download = 'assets/icons/download.png';
   static const String search = 'assets/icons/search.png';
   static const String star = 'assets/icons/star.png';
-  static const String rentalSearch = 'assets/icons/rental_search.png';
   static const String home = 'assets/icons/home.png';
   static const String gallery = 'assets/icons/gallery.png';
   static const String camera = 'assets/icons/camera.png';

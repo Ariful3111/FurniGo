@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/payment_success_dialog.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_success_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class PaymentDialogMethod extends StatelessWidget {
-  const PaymentDialogMethod({super.key});
+class CustomPaymentDialogMethod extends StatelessWidget {
+  final String? icon;
+  const CustomPaymentDialogMethod({super.key, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +73,12 @@ class PaymentDialogMethod extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
             showDialog(
+              barrierColor: isDark
+                  ? AppColors.whiteColor.withValues(alpha: 0.3)
+                  : null,
               context: context,
               builder: (context) {
-                return PaymentSuccessDialog();
+                return CustomPaymentSuccessDialog(icon: icon);
               },
             );
           },

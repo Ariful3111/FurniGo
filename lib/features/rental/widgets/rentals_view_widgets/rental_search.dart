@@ -23,7 +23,7 @@ class RentalSearch extends StatelessWidget {
         labelFontWeight: FontWeight.w400,
         suffixIcon: Padding(
           padding: EdgeInsets.only(right: 8.w),
-          child: Image.asset(IconsPath.rentalSearch,height: 16.h,width: 16.w,),
+          child: Image.asset(IconsPath.search,height: 16.h,width: 16.w,),
         ),
       ),
     );

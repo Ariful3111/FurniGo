@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/features/rental/controller/rental_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_view_widgets/rental_table.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
+import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_view_widgets/rental_search.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_view_widgets/rental_status_type.dart';
@@ -20,7 +21,7 @@ class RentalView extends StatelessWidget {
     return CustomContainer(
       child: ListView(
         children: [
-          CustomAppbar(title: 'Rental', onDrawerTap: () {}),
+          CustomAppbar(title: 'Rental', onDrawerTap: () {showDialog(context: context, builder: (context) => CustomDrawer());}),
           SizedBox(height: 12.h),
           rentalsTop(isDark: isDark),
           SizedBox(height: 16.h),
