@@ -15,4 +15,5 @@ class AppRoutes {
   static const String bottomNav = '/bottomNav';
   static const String dashboardPaymentView = '/dashboardPaymentView';
   static const String orderView = '/orderView';
+  static const String orderDetailsView = '/orderDetailsView';
 }

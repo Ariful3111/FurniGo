@@ -18,6 +18,14 @@ class OrderInfo extends StatelessWidget {
           title1: 'Nov 10, 2023',
           title2: '#ORD-7784',
         ),
+        SizedBox(height: 16.h),
+        row(
+          isDark: isDark,
+          sub1: 'Order Status',
+          sub2: 'Total Amount',
+          title1: 'Shipped',
+          title2: '\$200.00',
+        ),
       ],
     );
   }
@@ -57,8 +65,13 @@ class OrderInfo extends StatelessWidget {
           height: 40.h,
           width: 1.w,
           decoration: BoxDecoration(
-            color:isDark?Color(0xFF697483): AppColors.fieldBorderColorLight,
-            border: Border.all(width: 1.r,color: isDark?Color(0xFF697483):AppColors.fieldBorderColorLight),
+            color: isDark ? Color(0xFF697483) : AppColors.fieldBorderColorLight,
+            border: Border.all(
+              width: 1.r,
+              color: isDark
+                  ? Color(0xFF697483)
+                  : AppColors.fieldBorderColorLight,
+            ),
           ),
         ),
         SizedBox(width: 40.w),

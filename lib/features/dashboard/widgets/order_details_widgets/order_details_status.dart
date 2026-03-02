@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
+
+class OrderDetailsStatus extends StatelessWidget {
+  const OrderDetailsStatus({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return SharedContainer(
+      padding: EdgeInsets.all(20.r),
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomPrimaryText(
+            text: 'Order Status',
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w700,
+            color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
+          ),
+          SizedBox(height: 16.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              sub(text: 'Current Status:', isDark: isDark),
+              sub(text: 'Tracking Number:', isDark: isDark),
+            ],
+          ),
+          SizedBox(height: 4.h),
+          Row(
+            children: [
+              Image.asset(
+                IconsPath.truck,
+                height: 20.h,
+                width: 20.w,
+                color: isDark ? null : AppColors.labelColor,
+              ),
+              SizedBox(width: 8.w,),
+              title(text: 'Shipped', isDark: isDark),
+              Spacer(),
+              title(text: 'TRK-9928-XA', isDark: isDark),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          sub(text: 'Estimated Delivery:', isDark: isDark),
+          SizedBox(height: 4.h),
+          title(text: 'Nov 15 - Nov 17, 2025', isDark: isDark),
+        ],
+      ),
+    );
+  }
+
+  Widget sub({required String text, required bool isDark}) {
+    return CustomPrimaryText(
+      text: text,
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w400,
+      color: isDark ? AppColors.darkPrimaryTextColor : AppColors.greyColor,
+    );
+  }
+
+  Widget title({required String text, required bool isDark}) {
+    return CustomPrimaryText(
+      text: text,
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w600,
+      color: isDark ? AppColors.whiteColor : AppColors.labelColor,
+    );
+  }
+}
