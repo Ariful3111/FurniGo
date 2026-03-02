@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class AcceptDialog extends StatelessWidget {
@@ -57,8 +57,11 @@ class AcceptDialog extends StatelessWidget {
                       Navigator.pop(context);
                       showDialog(
                         context: context,
+                         barrierColor: isDark
+                    ? AppColors.whiteColor.withValues(alpha: 0.3)
+                    : null,
                         builder: (context) {
-                          return PaymentDialog();
+                          return CustomPaymentDialog();
                         },
                       );
                     },

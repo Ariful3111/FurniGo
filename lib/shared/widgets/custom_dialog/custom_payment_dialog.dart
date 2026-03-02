@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/payment_dialog_method.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog_method.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class PaymentDialog extends StatelessWidget {
-  const PaymentDialog({super.key});
+class CustomPaymentDialog extends StatelessWidget {
+  final String? icon;
+  const CustomPaymentDialog({super.key, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class PaymentDialog extends StatelessWidget {
               ],
             ),
             SizedBox(height: 35.h),
-            PaymentDialogMethod(),
+            CustomPaymentDialogMethod(icon: icon),
           ],
         ),
       ),

@@ -13,4 +13,6 @@ class AppRoutes {
   static const String rentalPendingView = '/rentalPendingView';
   static const String dashboardView = '/dashboardView';
   static const String bottomNav = '/bottomNav';
+  static const String dashboardPaymentView = '/dashboardPaymentView';
+  static const String orderView = '/orderView';
 }

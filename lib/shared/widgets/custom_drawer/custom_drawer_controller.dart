@@ -1,17 +1,19 @@
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 
 class CustomDrawerController extends GetxController {
   RxInt selectedItem = 0.obs;
   List drawerItem = [
-    {'icon': IconsPath.dashboardNav, 'title': 'OverView'},
-    {'icon': IconsPath.drawerOrder, 'title': 'OverView'},
-    {'icon': IconsPath.drawerSell, 'title': 'OverView'},
-    {'icon': IconsPath.drawerAi, 'title': 'OverView'},
-    {'icon': IconsPath.drawerCredit, 'title': 'OverView'},
-    {'icon': IconsPath.drawerTrans, 'title': 'OverView'},
-    {'icon': IconsPath.drawerPayment, 'title': 'OverView'},
-    {'icon': IconsPath.drawerSupport, 'title': 'OverView'},
-    {'icon': IconsPath.drawerSetting, 'title': 'OverView'},
+    {'icon': IconsPath.dashboardNav, 'title': 'Overview', 'page':AppRoutes.bottomNav},
+    {'icon': IconsPath.drawerOrder, 'title': 'Orders', 'page':AppRoutes.orderView},
+    {'icon': IconsPath.drawerRent, 'title': 'Rentals', 'page':AppRoutes.rentalView},
+    {'icon': IconsPath.drawerSell, 'title': 'Sell Quotes', 'page':'/sell_quotes'},
+    {'icon': IconsPath.drawerAi, 'title': 'AI Designs', 'page':'/ai_designs'},
+    {'icon': IconsPath.drawerCredit, 'title': 'Credit Balance', 'page':'/credit_balance'},
+    {'icon': IconsPath.drawerTrans, 'title': 'Transaction', 'page':'/transaction'},
+    {'icon': IconsPath.drawerPayment, 'title': 'Payment', 'page':'/payment'},
+    {'icon': IconsPath.drawerSupport, 'title': 'Support', 'page':'/support'},
+    {'icon': IconsPath.drawerSetting, 'title': 'Setting', 'page':'/setting'},
   ];
 }

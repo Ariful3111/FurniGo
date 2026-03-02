@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/order/controller/order_controller.dart';
+import 'package:zb_dezign/features/dashboard/controller/order_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -13,6 +13,7 @@ class OrderHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     OrderController orderController = Get.find();
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(() {
       return AnimatedSwitcher(
         duration: Duration(milliseconds: 300),
@@ -32,15 +33,15 @@ class OrderHeader extends StatelessWidget {
         },
         child: orderController.isSearch.value
             ? SizedBox(
-              key: ValueKey('Field'),
-              child: CustomTextFormField(
+                key: ValueKey('Field'),
+                child: CustomTextFormField(
                   border: BorderSide.none,
                   labelText: 'Search Your Order',
                   maxLines: 1,
                   borderRadius: 12.r,
                   controller: orderController.orderController,
                   suffixIcon: Padding(
-                    padding:  EdgeInsets.only(right: 8.w),
+                    padding: EdgeInsets.only(right: 8.w),
                     child: InkWell(
                       onTap: () {
                         orderController.isSearch.value =
@@ -48,15 +49,15 @@ class OrderHeader extends StatelessWidget {
                       },
                       child: Image.asset(
                         IconsPath.search,
-                        height: 32.h,
-                        width: 32.w,
+                        height: 24.h,
+                        width: 24.w,
                       ),
                     ),
                   ),
                 ),
-            )
+              )
             : Container(
-              key: ValueKey('Header'),
+                key: ValueKey('Header'),
                 height: 56.h,
                 width: MediaQuery.widthOf(context),
                 padding: EdgeInsets.all(12),
@@ -74,25 +75,19 @@ class OrderHeader extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        InkWell(
+                        button(
+                          imagePath: IconsPath.download,
                           onTap: () {},
-                          child: Image.asset(
-                            IconsPath.download,
-                            height: 32.h,
-                            width: 32.w,
-                          ),
+                          isDark: isDark,
                         ),
                         SizedBox(width: 8.w),
-                        InkWell(
+                        button(
+                          imagePath: IconsPath.search,
                           onTap: () {
                             orderController.isSearch.value =
                                 !orderController.isSearch.value;
                           },
-                          child: Image.asset(
-                            IconsPath.search,
-                            height: 32.h,
-                            width: 32.w,
-                          ),
+                          isDark: isDark,
                         ),
                       ],
                     ),
@@ -101,5 +96,32 @@ class OrderHeader extends StatelessWidget {
               ),
       );
     });
+  }
+
+  Widget button({
+    required String imagePath,
+    required VoidCallback onTap,
+    required bool isDark,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 32.h,
+        width: 32.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50.r),
+          color: isDark ? AppColors.labelColor : AppColors.whiteColor,
+          border: Border.all(
+            width: 0.8.r,
+            color: isDark
+                ? AppColors.darkBorderColor
+                : AppColors.fieldBorderColorLight,
+          ),
+        ),
+        child: Center(
+          child: Image.asset(imagePath, height: 14.h, width: 14.w),
+        ),
+      ),
+    );
   }
 }

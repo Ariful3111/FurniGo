@@ -11,7 +11,9 @@ import 'package:zb_dezign/features/auth/views/signup_option_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_view.dart';
 import 'package:zb_dezign/features/auth/views/user_mode_view.dart';
 import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
+import 'package:zb_dezign/features/dashboard/views/dashboard_payment_view.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_view.dart';
+import 'package:zb_dezign/features/dashboard/views/order_view.dart';
 import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
 import 'package:zb_dezign/features/home/views/bottom_nav_view.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
@@ -90,5 +92,15 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.bottomNav,
     page: () => BottomNavView(),
     binding: HomeBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.dashboardPaymentView,
+    page: () => DashboardPaymentView(),
+    binding: DashboardBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.orderView,
+    page: () => OrderView(),
+    binding: DashboardBindings(),
   ),
 ];

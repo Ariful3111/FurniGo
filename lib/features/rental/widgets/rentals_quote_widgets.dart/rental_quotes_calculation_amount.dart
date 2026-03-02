@@ -56,6 +56,9 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
                   onPressed: isRevisionMode
                       ? () {
                           showDialog(
+                            barrierColor: isDark
+                                ? AppColors.whiteColor.withValues(alpha: 0.3)
+                                : null,
                             context: context,
                             builder: (context) {
                               return RevisionDialog();
@@ -63,13 +66,16 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
                           );
                         }
                       : () {
-                        showDialog(
+                          showDialog(
+                            barrierColor: isDark
+                                ? AppColors.whiteColor.withValues(alpha: 0.3)
+                                : null,
                             context: context,
                             builder: (context) {
                               return AcceptDialog();
                             },
                           );
-                      },
+                        },
                   fontSize: 12.sp,
                 ),
               ),
@@ -80,11 +86,14 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
                   text: 'Decline',
                   onPressed: () {
                     showDialog(
-                            context: context,
-                            builder: (context) {
-                              return DeclineDialog();
-                            },
-                          );
+                      context: context,
+                      barrierColor: isDark
+                          ? AppColors.whiteColor.withValues(alpha: 0.3)
+                          : null,
+                      builder: (context) {
+                        return DeclineDialog();
+                      },
+                    );
                   },
                   fontSize: 12.sp,
                   backgroundColor: AppColors.whiteColor,

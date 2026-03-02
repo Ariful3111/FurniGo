@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/dashboard/controller/reminder_controller.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_card.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_property_header.dart';
@@ -54,7 +55,9 @@ class DashboardReminders extends StatelessWidget {
                         ),
                         text: 'Pay Now',
                         fontSize: 12.sp,
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.dashboardPaymentView);
+                        },
                       ),
                     ),
                   ),

@@ -14,6 +14,7 @@ class CustomTableRow extends StatelessWidget {
   final String title;
   final Widget Function(int index, dynamic row) buildExpanded;
   final Widget action;
+  final Widget Function(int index, dynamic row)? actionBuilder;
   const CustomTableRow({
     super.key,
     required this.rows,
@@ -22,7 +23,9 @@ class CustomTableRow extends StatelessWidget {
     required this.id,
     required this.status,
     required this.title,
-    required this.buildExpanded, required this.action,
+    required this.buildExpanded,
+    required this.action,
+    this.actionBuilder,
   });
 
   @override
@@ -50,6 +53,9 @@ class CustomTableRow extends StatelessWidget {
             expandedElements: buildExpanded(index, row),
           );
         } else {
+          final actionWidget = actionBuilder != null
+              ? actionBuilder!(index, row)
+              : action;
           child = Padding(
             padding: EdgeInsets.all(12.r),
             child: InkWell(
@@ -73,10 +79,7 @@ class CustomTableRow extends StatelessWidget {
                       child: CustomTableStatus(status: row[status]),
                     ),
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: action,
-                  ),
+                  Expanded(flex: 2, child: actionWidget),
                 ],
               ),
             ),
