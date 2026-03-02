@@ -71,7 +71,7 @@ class RentalsActiveInfoPayment extends StatelessWidget {
                   : Row(
                       children: [
                         Expanded(child: updatePayment()),
-                        SizedBox(width: 12.w,),
+                        SizedBox(width: 12.w),
                         Expanded(child: RentalCompleteDownloadButton()),
                       ],
                     )

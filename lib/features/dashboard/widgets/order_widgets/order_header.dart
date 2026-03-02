@@ -6,6 +6,7 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/dashboard/controller/order_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class OrderHeader extends StatelessWidget {
   const OrderHeader({super.key});
@@ -56,21 +57,18 @@ class OrderHeader extends StatelessWidget {
                   ),
                 ),
               )
-            : Container(
+            : SharedContainer(
                 key: ValueKey('Header'),
-                height: 56.h,
-                width: MediaQuery.widthOf(context),
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  color: AppColors.whiteColor,
-                ),
+                padding: EdgeInsets.all(12.r),
+                radius: 12.r,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomPrimaryText(
                       text: 'My Order',
-                      color: AppColors.titleColor,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.titleColor,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -119,7 +117,12 @@ class OrderHeader extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: Image.asset(imagePath, height: 14.h, width: 14.w),
+          child: Image.asset(
+            imagePath,
+            height: 14.h,
+            width: 14.w,
+            color: isDark ? AppColors.whiteColor : null,
+          ),
         ),
       ),
     );

@@ -43,7 +43,7 @@ class RentalQuotesCalculationAmount extends StatelessWidget {
             fontWeight: FontWeight.w400,
             color: isDark
                 ? AppColors.primaryBorderColor
-                : const Color(0xFF364153),
+                : AppColors.lightGreyColor,
           ),
           SizedBox(height: 16.h),
           Row(

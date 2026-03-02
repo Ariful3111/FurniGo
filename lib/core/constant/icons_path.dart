@@ -68,6 +68,7 @@ class IconsPath {
   static const String sellFurniture = 'assets/icons/sell_furniture.png';
   static const String rentProduct = 'assets/icons/rent_product.png';
   static const String quickAction = 'assets/icons/quick_action.png';
-
+  static const String view = 'assets/icons/view.png';
+  static const String truck = 'assets/icons/truck.png';
 
 }

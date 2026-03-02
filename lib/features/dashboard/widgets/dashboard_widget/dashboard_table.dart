@@ -66,7 +66,7 @@ class DashboardTable extends StatelessWidget {
                   fontSize: 14.sp,
                   color: isDark
                       ? AppColors.primaryBorderColor
-                      : Color(0xFF364153),
+                      : AppColors.lightGreyColor,
                       textAlign: TextAlign.center,
                 ),
               ),

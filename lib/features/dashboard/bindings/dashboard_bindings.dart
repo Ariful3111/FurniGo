@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/features/dashboard/controller/dashboard_controller.dart';
 import 'package:zb_dezign/features/dashboard/controller/dashboard_payment_controller.dart';
 import 'package:zb_dezign/features/dashboard/controller/order_controller.dart';
+import 'package:zb_dezign/features/dashboard/controller/order_details_controller.dart';
 import 'package:zb_dezign/features/dashboard/controller/reminder_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer_controller.dart';
 
@@ -13,5 +14,6 @@ class DashboardBindings implements Bindings {
     Get.lazyPut(() => ReminderController());
     Get.lazyPut(() => DashboardPaymentController());
     Get.lazyPut(() => OrderController());
+    Get.lazyPut(() => OrderDetailsController());
   }
 }
