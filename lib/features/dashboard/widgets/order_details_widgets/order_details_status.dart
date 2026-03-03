@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/dashboard/controller/order_details_controller.dart';
+import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_rating_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
@@ -11,6 +15,7 @@ class OrderDetailsStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    OrderDetailsController orderDetailsController = Get.find();
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
 
@@ -40,7 +45,7 @@ class OrderDetailsStatus extends StatelessWidget {
                 width: 20.w,
                 color: isDark ? null : AppColors.labelColor,
               ),
-              SizedBox(width: 8.w,),
+              SizedBox(width: 8.w),
               title(text: 'Shipped', isDark: isDark),
               Spacer(),
               title(text: 'TRK-9928-XA', isDark: isDark),
@@ -49,7 +54,33 @@ class OrderDetailsStatus extends StatelessWidget {
           SizedBox(height: 8.h),
           sub(text: 'Estimated Delivery:', isDark: isDark),
           SizedBox(height: 4.h),
-          title(text: 'Nov 15 - Nov 17, 2025', isDark: isDark),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              title(text: 'Nov 15 - Nov 17, 2025', isDark: isDark),
+              CustomPrimaryButton(
+                text: 'Add Review',
+                onPressed: () {
+                  showDialog(
+                    barrierColor: isDark?AppColors.whiteColor.withValues(alpha: 0.2):null,
+                    context: context,
+                    builder: (context) {
+                      return Obx(()=> CustomRatingDialog(
+                        onSubmitTap: () {
+                          
+                        },
+                        rating: orderDetailsController.rating.value,
+                        textEditingController: orderDetailsController.ratingController,
+                        onRatingUpdate: (double value) {
+                          orderDetailsController.rating.value = value;
+                        },
+                      ));
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ],
       ),
     );

@@ -65,6 +65,8 @@ class OtpView extends StatelessWidget {
             ),
             SizedBox(height: 50.h),
             CustomPrimaryButton(
+              height: 48.h,
+              fontSize: 16.sp,
               text: 'Submit',
               onPressed: () {
                 Get.toNamed(AppRoutes.newPasswordView);

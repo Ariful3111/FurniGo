@@ -10,24 +10,32 @@ class SharedContainer extends StatelessWidget {
   final BoxBorder? border;
   final Color? color;
   final List<BoxShadow>? boxShadow;
+  final double? height;
+  final double? width;
   const SharedContainer({
     super.key,
     required this.child,
     this.padding,
     this.radius,
-    this.border, this.color, this.boxShadow, this.margin,
+    this.border,
+    this.color,
+    this.boxShadow,
+    this.margin, this.height, this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
+      height: height,
       padding:
           padding ?? EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
-          margin: margin,
-      width: MediaQuery.widthOf(context),
+      margin: margin,
+      width:width?? MediaQuery.widthOf(context),
       decoration: BoxDecoration(
-        color: isDark ?color?? AppColors.labelColor :color?? AppColors.whiteColor,
+        color: isDark
+            ? color ?? AppColors.labelColor
+            : color ?? AppColors.whiteColor,
         borderRadius: BorderRadius.circular(radius ?? 24.r),
         border: border,
         boxShadow: boxShadow,

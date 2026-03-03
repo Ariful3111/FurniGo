@@ -68,7 +68,7 @@ class DashboardCard extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       color: isDark
                           ? AppColors.primaryBorderColor
-                          : Color(0xFF42526D),
+                          : AppColors.primaryGreyTextColor,
                     ),
                     SizedBox(height: 4.h),
                     CustomPrimaryText(

@@ -56,6 +56,8 @@ class ForgotPasswordView extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             CustomPrimaryButton(
+              height: 48.h,
+              fontSize: 16.sp,
               text: 'Send OTP',
               onPressed: () {
                 Get.toNamed(AppRoutes.otpView);

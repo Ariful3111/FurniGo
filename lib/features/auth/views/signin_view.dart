@@ -52,6 +52,8 @@ class SigninView extends StatelessWidget {
               return signinController.isLoading.value
                   ? ButtonLoading()
                   : CustomPrimaryButton(
+                      height: 48.h,
+                      fontSize: 16.sp,
                       text: 'Sign In',
                       onPressed: () async {
                         await signinController.userLogin(formKey: fromKey);

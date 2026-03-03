@@ -6,7 +6,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 
 class CustomSpanText extends StatelessWidget {
   final String title;
-  final String spantext;
+  final String? spantext;
   final Color? color;
   final Color? spanColor;
   final double? fontSize;
@@ -25,10 +25,11 @@ class CustomSpanText extends StatelessWidget {
   final int? maxLines;
   final TextOverflow? overflow;
   final TextDecoration? decoration;
+  final List<InlineSpan>? inlineSpan;
   const CustomSpanText({
     super.key,
     required this.title,
-    required this.spantext,
+    this.spantext,
     this.color,
     this.spanColor,
     this.fontSize,
@@ -46,7 +47,7 @@ class CustomSpanText extends StatelessWidget {
     this.textAlign,
     this.maxLines,
     this.overflow,
-    this.decoration,
+    this.decoration, this.inlineSpan,
   });
 
   @override
@@ -67,7 +68,7 @@ class CustomSpanText extends StatelessWidget {
           fontWeight: fontWeight ?? FontWeight.w500,
           decoration: textDecoration,
         ),
-        children: [
+        children:inlineSpan?? [
           TextSpan(
             text: spantext,
             recognizer: TapGestureRecognizer()..onTap = onTap,

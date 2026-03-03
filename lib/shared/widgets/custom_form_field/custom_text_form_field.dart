@@ -84,7 +84,8 @@ class CustomTextFormField extends StatelessWidget {
     this.borderWidth,
     this.labelColor,
     this.borderColor,
-    this.labelFontSize, this.labelFontWeight,
+    this.labelFontSize,
+    this.labelFontWeight,
   });
 
   @override
@@ -122,7 +123,9 @@ class CustomTextFormField extends StatelessWidget {
             labelTextWidget ??
             CustomPrimaryText(
               text: labelText ?? "",
-              color:isDark? labelColor ??AppColors.primaryBorderColor :labelColor ?? AppColors.fieldTextColor,
+              color: isDark
+                  ? labelColor ?? AppColors.primaryBorderColor
+                  : labelColor ?? AppColors.fieldTextColor,
               fontSize: labelFontSize ?? 16.sp,
               fontWeight: labelFontWeight,
             ),

@@ -33,7 +33,52 @@ class DashboardPaymentSchedule extends StatelessWidget {
             color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
           ),
           SizedBox(height: 14.h),
-          CustomPaymentTimeline(items: items),
+          ...List.generate(items.length, (index) {
+            return SizedBox(
+              height: 50.h,
+              child: CustomPaymentTimeline(
+                isFirst: index == 0 ? true : false,
+                isCurrentStatus: items[index]["active"] == true,
+                isLast: items.length - 1 == index ? true : false,
+                endChild: Padding(
+                  padding: EdgeInsets.only(left: 10.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomPrimaryText(
+                        text: items[index]["date"].toString(),
+                        fontWeight: items[index]["active"] == true
+                            ? FontWeight.w600
+                            : FontWeight.w400,
+                        color: items[index]["active"] == true
+                            ? isDark
+                                  ? AppColors.whiteColor
+                                  : AppColors.darkTextColor
+                            : isDark
+                            ? AppColors.darkPrimaryTextColor
+                            : Color(0xFF6A6A6A),
+                        fontSize: 14.sp,
+                      ),
+                      CustomPrimaryText(
+                        text: items[index]["amount"].toString(),
+                        fontWeight: items[index]["active"] == true
+                            ? FontWeight.w600
+                            : FontWeight.w400,
+                        color: items[index]["active"] == true
+                            ? isDark
+                                  ? AppColors.whiteColor
+                                  : AppColors.darkTextColor
+                            : isDark
+                            ? AppColors.darkPrimaryTextColor
+                            : Color(0xFF6A6A6A),
+                        fontSize: 14.sp,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
           SizedBox(height: 14.h),
           CustomPrimaryButton(
             text: 'Pay Early',

@@ -36,7 +36,7 @@ class OtherField extends StatelessWidget {
         controller: controller,
         borderColor: Color(0xFFE2E4E9),
         labelText:labelText?? 'Other',
-        labelColor: Color(0xFF42526D),
+        labelColor: AppColors.primaryGreyTextColor,
         labelFontSize: 12.sp,
         padding: EdgeInsets.zero,
         fillColor: AppColors.whiteColor,
