@@ -17,6 +17,8 @@ import 'package:zb_dezign/features/dashboard/views/order_details_view.dart';
 import 'package:zb_dezign/features/dashboard/views/order_view.dart';
 import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
 import 'package:zb_dezign/features/home/views/bottom_nav_view.dart';
+import 'package:zb_dezign/features/notification/bindings/notification_bindings.dart';
+import 'package:zb_dezign/features/notification/views/notification_view.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_business_identification.dart';
 import 'package:zb_dezign/features/rental/bindings/rental_bindings.dart';
@@ -108,5 +110,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.orderDetailsView,
     page: () => OrderDetailsView(),
     binding: DashboardBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.notificationView,
+    page: () => NotificationView(),
+    binding: NotificationBindings(),
   ),
 ];

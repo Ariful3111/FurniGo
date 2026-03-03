@@ -70,6 +70,8 @@ class SignupView extends StatelessWidget {
               return signupController.isLoading.value
                   ? ButtonLoading()
                   : CustomPrimaryButton(
+                      height: 48.h,
+                      fontSize: 16.sp,
                       text: 'Sign Up',
                       backgroundColor: signupController.isChecked.value
                           ? null

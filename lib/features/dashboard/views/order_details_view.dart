@@ -39,7 +39,7 @@ class OrderDetailsView extends StatelessWidget {
           SizedBox(height: 16.h,),
           OrderDetailsStatus(),
           SizedBox(height: 16.h,),
-        ],
+        ], 
       ),
     );
   }

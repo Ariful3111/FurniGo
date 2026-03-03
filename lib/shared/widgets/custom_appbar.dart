@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/shared/widgets/action_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:badges/badges.dart' as badges;
@@ -26,7 +28,7 @@ class CustomAppbar extends StatelessWidget {
           onTap: onDrawerTap,
           child: Image.asset(
             icon ?? IconsPath.drawer,
-            height: 24.h, 
+            height: 24.h,
             width: 24.w,
             color: isDark ? AppColors.whiteColor : null,
           ),
@@ -49,7 +51,12 @@ class CustomAppbar extends StatelessWidget {
             ),
           ),
           position: badges.BadgePosition.custom(start: 16.w, top: 9.h),
-          child: ActionButton(icon: IconsPath.notification, onTap: () {}),
+          child: ActionButton(
+            icon: IconsPath.notification,
+            onTap: () {
+              Get.toNamed(AppRoutes.notificationView);
+            },
+          ),
         ),
         SizedBox(width: 8.w),
       ],

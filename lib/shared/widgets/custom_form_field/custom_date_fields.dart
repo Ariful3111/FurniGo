@@ -30,7 +30,7 @@ class CustomDateField extends StatelessWidget {
         text: label ?? 'Date',
         fontSize: 12.sp,
         fontWeight: FontWeight.w400,
-        color: isDark ? AppColors.primaryBorderColor : Color(0xFF42526D),
+        color: isDark ? AppColors.primaryBorderColor : AppColors.primaryGreyTextColor,
       ),
       hintText: 'Select Date',
       readOnly: true,

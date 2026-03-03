@@ -59,7 +59,11 @@ class NewPasswordView extends StatelessWidget {
               context: context,
             ),
             SizedBox(height: 20.h),
-            CustomPrimaryButton(text: 'Continue', onPressed: () {}),
+            CustomPrimaryButton(
+              height: 48.h,
+              fontSize: 16.sp,
+              text: 'Continue',
+              onPressed: () {}),
             SizedBox(height: 20.h),
             InkWell(
               onTap: () {

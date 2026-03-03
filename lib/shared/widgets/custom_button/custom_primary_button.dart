@@ -42,8 +42,8 @@ class CustomPrimaryButton extends StatelessWidget {
       child: Container(
         padding:
             padding ?? EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-        height: height ?? 48.h,
-        width: width ?? MediaQuery.widthOf(context),
+        height: height ?? 40.h,
+        width: width,
         decoration:
             boxDecoration ??
             BoxDecoration(
@@ -62,7 +62,7 @@ class CustomPrimaryButton extends StatelessWidget {
                 color: isDark
                     ?textColor?? AppColors.darkColor
                     : textColor ?? AppColors.whiteColor,
-                fontSize: fontSize ?? 16.sp,
+                fontSize: fontSize ?? 14.sp,
                 fontWeight: fontWeight ?? FontWeight.w500,
                 textAlign: TextAlign.center,
               ),

@@ -39,6 +39,8 @@ class EmailVerificationView extends StatelessWidget {
           ),
           SizedBox(height: 46.h),
           CustomPrimaryButton(
+            height: 48.h,
+            fontSize: 16.sp,
             text: 'Check My Inbox',
             onPressed: () {
               

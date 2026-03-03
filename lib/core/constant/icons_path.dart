@@ -70,5 +70,8 @@ class IconsPath {
   static const String quickAction = 'assets/icons/quick_action.png';
   static const String view = 'assets/icons/view.png';
   static const String truck = 'assets/icons/truck.png';
+  static const String rating = 'assets/icons/rating.png';
+  static const String mark = 'assets/icons/mark.png';
+  static const String bell = 'assets/icons/bell.png';
 
 }

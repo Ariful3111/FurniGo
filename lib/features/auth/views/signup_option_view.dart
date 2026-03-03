@@ -88,6 +88,8 @@ class SignupOptionView extends StatelessWidget {
           SizedBox(height: 32.h),
           Obx(
             () => CustomPrimaryButton(
+              height: 48.h,
+              fontSize: 16.sp,
               text: 'Continue',
               backgroundColor: !signupOptionController.isChecked.value
                   ? AppColors.buttonTextColor

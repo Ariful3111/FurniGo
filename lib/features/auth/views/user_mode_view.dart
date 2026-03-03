@@ -37,6 +37,8 @@ class UserModeView extends StatelessWidget {
           UserOption(),
           SizedBox(height: 42.h),
           CustomPrimaryButton(
+            height: 48.h, 
+            fontSize: 16.sp,
             text: 'Continue',
             onPressed: () {
               if (userModeController.selectedIndex.value == 0) {
