@@ -65,9 +65,7 @@ class OnboardingExpandButton extends StatelessWidget {
                               shaderCallback: (bounds) {
                                 LinearGradient originalGradient = isDark
                                     ? AppColors.darkPrimaryGradient
-                                          as LinearGradient
-                                    : AppColors.primaryGradient
-                                          as LinearGradient;
+                                    : AppColors.primaryGradient;
                                 return LinearGradient(
                                   begin: originalGradient.begin,
                                   end: originalGradient.end,
