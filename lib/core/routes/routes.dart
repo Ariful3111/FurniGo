@@ -19,6 +19,8 @@ import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
 import 'package:zb_dezign/features/home/views/bottom_nav_view.dart';
 import 'package:zb_dezign/features/notification/bindings/notification_bindings.dart';
 import 'package:zb_dezign/features/notification/views/notification_view.dart';
+import 'package:zb_dezign/features/profile/bindings/profile_bindings.dart';
+import 'package:zb_dezign/features/profile/views/profile_views.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_business_identification.dart';
 import 'package:zb_dezign/features/rental/bindings/rental_bindings.dart';
@@ -115,5 +117,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.notificationView,
     page: () => NotificationView(),
     binding: NotificationBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.profileView,
+    page: () => ProfileViews(),
+    binding: ProfileBindings(),
   ),
 ];

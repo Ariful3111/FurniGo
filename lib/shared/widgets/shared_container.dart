@@ -12,6 +12,7 @@ class SharedContainer extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
   final double? height;
   final double? width;
+  final LinearGradient? gradient;
   const SharedContainer({
     super.key,
     required this.child,
@@ -20,7 +21,10 @@ class SharedContainer extends StatelessWidget {
     this.border,
     this.color,
     this.boxShadow,
-    this.margin, this.height, this.width,
+    this.margin,
+    this.height,
+    this.width,
+    this.gradient,
   });
 
   @override
@@ -31,14 +35,17 @@ class SharedContainer extends StatelessWidget {
       padding:
           padding ?? EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
       margin: margin,
-      width:width?? MediaQuery.widthOf(context),
+      width: width ?? MediaQuery.widthOf(context),
       decoration: BoxDecoration(
-        color: isDark
-            ? color ?? AppColors.labelColor
-            : color ?? AppColors.whiteColor,
+        color: gradient == null
+            ? isDark
+                  ? color ?? AppColors.labelColor
+                  : color ?? AppColors.whiteColor
+            : null,
         borderRadius: BorderRadius.circular(radius ?? 24.r),
         border: border,
         boxShadow: boxShadow,
+        gradient: gradient,
       ),
       child: child,
     );

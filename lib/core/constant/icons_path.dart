@@ -73,5 +73,15 @@ class IconsPath {
   static const String rating = 'assets/icons/rating.png';
   static const String mark = 'assets/icons/mark.png';
   static const String bell = 'assets/icons/bell.png';
+  static const String profile = 'assets/icons/profile.png';
+  static const String profileBalance = 'assets/icons/profile_balance.png';
+  static const String profileContact = 'assets/icons/profile_contact.png';
+  static const String profileMode = 'assets/icons/profile_mode.png';
+  static const String profileNotification = 'assets/icons/profile_notification.png';
+  static const String profileOrder = 'assets/icons/profile_order.png';
+  static const String profilePrivacy = 'assets/icons/profile_privacy.png';
+  static const String profileSubs = 'assets/icons/profile_subs.png';
+  static const String profileSupport = 'assets/icons/profile_support.png';
+
 
 }
