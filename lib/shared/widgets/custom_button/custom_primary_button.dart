@@ -63,7 +63,7 @@ class CustomPrimaryButton extends StatelessWidget {
                     ?textColor?? AppColors.darkColor
                     : textColor ?? AppColors.whiteColor,
                 fontSize: fontSize ?? 14.sp,
-                fontWeight: fontWeight ?? FontWeight.w500,
+                fontWeight: fontWeight,
                 textAlign: TextAlign.center,
               ),
             ),

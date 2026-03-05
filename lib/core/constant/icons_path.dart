@@ -82,6 +82,11 @@ class IconsPath {
   static const String profilePrivacy = 'assets/icons/profile_privacy.png';
   static const String profileSubs = 'assets/icons/profile_subs.png';
   static const String profileSupport = 'assets/icons/profile_support.png';
-
+  static const String profileCategory = 'assets/icons/profile_category.png';
+  static const String themeLight = 'assets/icons/theme_light.png';
+  static const String themeDark = 'assets/icons/theme_dark.png';
+  static const String userLocation = 'assets/icons/user_location.png';
+  static const String add = 'assets/icons/add.png';
+  static const String delete = 'assets/icons/delete.png';
 
 }

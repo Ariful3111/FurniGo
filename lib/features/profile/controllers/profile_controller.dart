@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 
 class ProfileController extends GetxController {
   List profileList = [
-    {'icon':IconsPath.dashboardNav,'title':'Dashboard',},
-    {'icon':IconsPath.profile,'title':'Profile & Settings',},
+    {'icon':IconsPath.profileCategory,'title':'Dashboard',},
+    {'icon':IconsPath.profile,'title':'Profile & Settings','route':AppRoutes.profileSettingView,},
     {'icon':IconsPath.profileNotification,'title':'Notifications',},
     {'icon':IconsPath.profileMode,'title':'Switch Mode',},
     {'icon':IconsPath.profileBalance,'title':'Credit Balance',},
