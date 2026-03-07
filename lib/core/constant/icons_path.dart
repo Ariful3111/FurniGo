@@ -88,5 +88,12 @@ class IconsPath {
   static const String userLocation = 'assets/icons/user_location.png';
   static const String add = 'assets/icons/add.png';
   static const String delete = 'assets/icons/delete.png';
+  static const String silverStar = 'assets/icons/silver_star.png';
+  static const String blueStar = 'assets/icons/blue_star.png';
+  static const String goldenStar = 'assets/icons/golden_star.png';
+  static const String filter = 'assets/icons/filter.png';
+  static const String categoryContainer = 'assets/icons/category_container.png';
+  static const String homeCart = 'assets/icons/home_cart.png';
+
 
 }

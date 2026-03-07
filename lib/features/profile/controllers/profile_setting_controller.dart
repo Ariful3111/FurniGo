@@ -10,7 +10,12 @@ class ProfileSettingController extends GetxController {
   TextEditingController dialogNameController = TextEditingController();
   TextEditingController dialogPhoneController = TextEditingController();
   TextEditingController dialogAddressController = TextEditingController();
-
+  TextEditingController dialogZipController = TextEditingController();
+  RxBool isDefault = false.obs;
+  RxString selectedCity = ''.obs;
+  List city = ['Dhaka', 'Khulna'];
+  RxString selectedState = ''.obs;
+  List state = ['State1', 'State2'];
   RxBool isEdit = false.obs;
   List addressList = [
     {
