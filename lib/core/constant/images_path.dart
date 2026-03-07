@@ -8,4 +8,5 @@ class ImagesPath {
   static const String darkOnboarding3 = 'assets/images/dark_onboarding3.png';
   static const String darkOnboarding4 = 'assets/images/dark_onboarding4.png';
   static const String container = 'assets/images/container.png';
+  static const String home = 'assets/images/home.png';
 }

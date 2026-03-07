@@ -1,45 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/dashboard/controller/dashboard_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class DashboardQuickAction extends StatelessWidget {
-  const DashboardQuickAction({super.key});
+  final String? text;
+  const DashboardQuickAction({super.key, this.text});
 
   @override
   Widget build(BuildContext context) {
-    List item = [
-      {
-        'icon': IconsPath.shopProduction,
-        'title': 'Shop Products',
-        'sub': 'Brand-new pieces with fast delivery and easy setup.',
-      },
-      {
-        'icon': IconsPath.sellFurniture,
-        'title': 'Sell Furniture',
-        'sub': 'Get a fair offer fast pickup included.',
-      },
-      {
-        'icon': IconsPath.rentProduct,
-        'title': 'Rent Products',
-        'sub': 'Brand-new pieces with fast delivery and easy setup.',
-      },
-      {
-        'icon': IconsPath.design,
-        'title': 'Design My Room',
-        'sub': 'Brand-new pieces with fast delivery and easy setup.',
-      },
-    ];
+    DashboardController dashboardController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomPrimaryText(text: 'Quick actions', color:isDark? AppColors.whiteColor:AppColors.titleColor),
+          CustomPrimaryText(
+            text:text?? 'Quick actions',
+            color: isDark ? AppColors.whiteColor : AppColors.titleColor,
+          ),
           SizedBox(height: 8.h),
           GridView.builder(
+            padding: EdgeInsets.zero,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 8.w,
@@ -48,9 +34,9 @@ class DashboardQuickAction extends StatelessWidget {
             ),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: item.length,
+            itemCount: dashboardController.quickAction.length,
             itemBuilder: (context, index) {
-              final element = item[index];
+              final element = dashboardController.quickAction[index];
               return SharedContainer(
                 padding: EdgeInsets.zero,
                 color: isDark ? AppColors.darkColor : AppColors.whiteColor,
