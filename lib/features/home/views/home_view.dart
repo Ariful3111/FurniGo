@@ -5,6 +5,8 @@ import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_header.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_helper.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_new_arrival.dart';
+import 'package:zb_dezign/features/home/widgets/home_widgets/home_our_products.dart';
+import 'package:zb_dezign/features/home/widgets/home_widgets/home_product_placement.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_shop.dart';
 
 class HomeView extends StatelessWidget {
@@ -45,10 +47,14 @@ class HomeView extends StatelessWidget {
                     isDark: isDark,
                   ),
                   SizedBox(height: 16.h),
-                  HomeNewArrival()
+                  HomeNewArrival(),
+                  SizedBox(height: 20.h),
                 ],
               ),
             ),
+            HomeProductPlacement(),
+            SizedBox(height: 20.h),
+            HomeOurProducts(),
           ],
         ),
       ),
