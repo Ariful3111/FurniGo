@@ -54,7 +54,7 @@ class HomeHelper {
         ),
         GestureDetector(
           onTap: onTap,
-          child: CustomPrimaryText(text: 'See All', fontSize: 14.sp),
+          child: CustomPrimaryText(text: 'See All', fontSize: 14.sp,decoration: TextDecoration.underline,),
         ),
       ],
     );

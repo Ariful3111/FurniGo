@@ -94,6 +94,10 @@ class IconsPath {
   static const String filter = 'assets/icons/filter.png';
   static const String categoryContainer = 'assets/icons/category_container.png';
   static const String homeCart = 'assets/icons/home_cart.png';
+  static const String scan = 'assets/icons/scan.png';
+  static const String swap = 'assets/icons/swap.png';
+  static const String change = 'assets/icons/change.png';
+  static const String ai = 'assets/icons/ai.png';
 
 
 }
