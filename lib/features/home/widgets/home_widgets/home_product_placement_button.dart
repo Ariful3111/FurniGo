@@ -61,6 +61,7 @@ class HomeProductPlacementButton extends StatelessWidget {
         ),
         SizedBox(width: 7.w),
         SharedContainer(
+          color: AppColors.whiteColor,
           width: 30.w,
           padding: EdgeInsets.all(3.50.r),
           radius: 20.r,

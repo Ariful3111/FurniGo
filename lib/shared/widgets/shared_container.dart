@@ -13,6 +13,7 @@ class SharedContainer extends StatelessWidget {
   final double? height;
   final double? width;
   final LinearGradient? gradient;
+  final DecorationImage? image;
   const SharedContainer({
     super.key,
     required this.child,
@@ -24,7 +25,7 @@ class SharedContainer extends StatelessWidget {
     this.margin,
     this.height,
     this.width,
-    this.gradient,
+    this.gradient, this.image,
   });
 
   @override
@@ -46,6 +47,7 @@ class SharedContainer extends StatelessWidget {
         border: border,
         boxShadow: boxShadow,
         gradient: gradient,
+        image: image,
       ),
       child: child,
     );

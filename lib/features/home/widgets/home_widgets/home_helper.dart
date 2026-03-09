@@ -59,4 +59,27 @@ class HomeHelper {
       ],
     );
   }
+  
+}
+enum SplitSide { left, right }
+
+class SplitImageClipper extends CustomClipper<Rect> {
+  final double position;
+  final SplitSide side;
+
+  const SplitImageClipper({required this.position, required this.side});
+
+  @override
+  Rect getClip(Size size) {
+    final dx = (size.width * position).clamp(0.0, size.width);
+    if (side == SplitSide.left) {
+      return Rect.fromLTWH(0, 0, dx, size.height);
+    }
+    return Rect.fromLTWH(dx, 0, size.width - dx, size.height);
+  }
+
+  @override
+  bool shouldReclip(covariant SplitImageClipper oldClipper) {
+    return oldClipper.position != position || oldClipper.side != side;
+  }
 }

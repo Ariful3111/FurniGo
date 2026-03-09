@@ -10,4 +10,8 @@ class ImagesPath {
   static const String container = 'assets/images/container.png';
   static const String home = 'assets/images/home.png';
   static const String placement = 'assets/images/placement.png';
+  static const String aiBefore = 'assets/images/ai_before.png';
+  static const String aiAfter = 'assets/images/ai_after.png';
+  static const String sell = 'assets/images/sell.png';
+  static const String rent = 'assets/images/rent.png';
 }

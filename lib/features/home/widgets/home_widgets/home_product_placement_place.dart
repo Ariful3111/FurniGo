@@ -5,32 +5,38 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class HomeProductPlacementPlace extends StatelessWidget {
-  const HomeProductPlacementPlace({super.key});
+  final String text;
+  final VoidCallback onTap;
+  const HomeProductPlacementPlace({super.key, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
-        Image.asset(IconsPath.ai, height: 20.h, width: 20.w),
+        Image.asset(IconsPath.ai, height: 20.h, width: 20.w,color: isDark?AppColors.whiteColor:null,),
         SizedBox(width: 5.w),
         CustomPrimaryText(
-          text: 'Place Your Product',
-          color: AppColors.labelColor,
+          text: text,
+          color:isDark?AppColors.whiteColor: AppColors.labelColor,
           fontSize: 16.sp,
         ),
         Spacer(),
-        Container(
-          height: 24.h,
-          width: 24.w,
-          decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-          child: Center(
-            child: Icon(
-              Icons.arrow_forward,
-              size: 12.sp,
-              color: AppColors.whiteColor,
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            height: 24.h,
+            width: 24.w,
+            decoration: BoxDecoration(
+              color:isDark? AppColors.whiteColor:AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(30.r),
+            ),
+            child: Center(
+              child: Icon(
+                Icons.arrow_forward,
+                size: 12.sp,
+                color:isDark? AppColors.darkColor:AppColors.whiteColor,
+              ),
             ),
           ),
         ),
