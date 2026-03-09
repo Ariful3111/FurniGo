@@ -15,8 +15,8 @@ class HomeProductPlacement extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
-      color: Color(0xFFF5F5F5),
-      padding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 16.w),
+      color:isDark?Color(0xFF101010): Color(0xFFF5F5F5),
+      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
       radius: 0.r,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +28,7 @@ class HomeProductPlacement extends StatelessWidget {
           SizedBox(height: 16.h),
           SharedContainer(
             padding: EdgeInsets.all(12.r),
-            border: Border.all(width: 1.r, color: AppColors.borderColor),
+            border: Border.all(width: 1.r, color:isDark?AppColors.darkBorderColor: AppColors.borderColor),
             child: Column(
               children: [
                 Container(
@@ -62,6 +62,7 @@ class HomeProductPlacement extends StatelessWidget {
                         bottom: 12.h,
                         left: 190.w,
                         child: SharedContainer(
+                          color: AppColors.whiteColor,
                           width: 110.w,
                           padding: EdgeInsets.symmetric(
                             vertical: 5.66.h,
@@ -89,7 +90,10 @@ class HomeProductPlacement extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 12.h),
-                HomeProductPlacementPlace(),
+                HomeProductPlacementPlace(
+                  text: 'Place Your Product',
+                  onTap: () {},
+                ),
               ],
             ),
           ),

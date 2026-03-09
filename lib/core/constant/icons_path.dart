@@ -98,6 +98,7 @@ class IconsPath {
   static const String swap = 'assets/icons/swap.png';
   static const String change = 'assets/icons/change.png';
   static const String ai = 'assets/icons/ai.png';
+  static const String handle = 'assets/icons/handle.png';
 
 
 }

@@ -12,6 +12,7 @@ import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_banner.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -33,24 +34,24 @@ class DashboardView extends StatelessWidget {
                 );
               },
             ),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 12.h),
             DashboardWelcome(),
-            SizedBox(height: 16.h,),
+            SizedBox(height: 16.h),
             CustomBanner(),
-            SizedBox(height: 16.h,),
+            SizedBox(height: 16.h),
             DashboardInfo(),
-            SizedBox(height: 12.h,),
-            DashboardQuickAction(),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 12.h),
+            SharedContainer(child: DashboardQuickAction()),
+            SizedBox(height: 12.h),
             DashboardTable(),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 12.h),
             DashboardActiveRentals(),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 12.h),
             DashboardSellQuote(),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 12.h),
             DashboardReminders(),
-            SizedBox(height: 12.h,),
-            DashboardMembershipNotice()
+            SizedBox(height: 12.h),
+            DashboardMembershipNotice(),
           ],
         ),
       ),
