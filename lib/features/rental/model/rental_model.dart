@@ -7,7 +7,7 @@ class RentalModel {
   final String shipment;
   final String payment;
 
-  RentalModel({
+  RentalModel({ 
     required this.id,
     required this.propertyType,
     required this.startDate,

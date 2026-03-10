@@ -16,7 +16,7 @@ class CustomTableStatus extends StatelessWidget {
     Color textColor;
 
     switch (status) {
-      case 'Pending'||'Processing':
+      case 'Pending' || 'Processing' || 'In Review':
         bgColor = isDark
             ? AppColors.darkPendingBGColor
             : AppColors.pendingBGColor;
@@ -38,7 +38,12 @@ class CustomTableStatus extends StatelessWidget {
             ? AppColors.darkReviseTextColor
             : AppColors.reviseTextColor;
         break;
-      case 'Active'||'Out for delivery'||'Offer Ready':
+      case 'Active' ||
+          'Out for delivery' ||
+          'Offer Ready' ||
+          'Offer Accepted' ||
+          'Received' ||
+          'Delivered':
         bgColor = isDark
             ? AppColors.darkActiveBGColor
             : AppColors.activeBGColor;
@@ -46,7 +51,7 @@ class CustomTableStatus extends StatelessWidget {
             ? AppColors.darkActiveTextColor
             : AppColors.activeTextColor;
         break;
-      case 'Completed'||'Competed':
+      case 'Completed' || 'Competed':
         bgColor = isDark
             ? AppColors.darkCompleteBgColor
             : AppColors.completeBgColor;
@@ -54,7 +59,7 @@ class CustomTableStatus extends StatelessWidget {
             ? AppColors.darkCompleteTextColor
             : AppColors.completeTextColor;
         break;
-      case 'Rejected'||'2nd installment: Due':
+      case 'Rejected' || '2nd installment: Due':
         bgColor = isDark
             ? AppColors.darkRejectedBGColor
             : AppColors.rejectedBGColor;
@@ -64,7 +69,7 @@ class CustomTableStatus extends StatelessWidget {
         break;
       case '2nd installment: Upcoming':
         bgColor = Color(0xFFFFE7D3);
-        textColor  = Color(0xFFFF8D28);
+        textColor = Color(0xFFFF8D28);
       default:
         bgColor = AppColors.fieldColor;
         textColor = AppColors.fieldTextColor;

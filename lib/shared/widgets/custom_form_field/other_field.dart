@@ -25,7 +25,7 @@ class OtherField extends StatelessWidget {
       width: width,
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
+          BoxShadow( 
             color: Color(0xFFE4E5E7).withValues(alpha: 0.24),
             offset: Offset(0, 1),
             blurRadius: 2,

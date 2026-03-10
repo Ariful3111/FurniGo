@@ -6,8 +6,8 @@ import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class DeclineDialog extends StatelessWidget {
-  const DeclineDialog({super.key});
+class CustomRejectDialog extends StatelessWidget {
+  const CustomRejectDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,9 @@ class DeclineDialog extends StatelessWidget {
               height: 40.h,
               fontSize: 14.sp,
               boxShadow: buttonShadow,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ),
