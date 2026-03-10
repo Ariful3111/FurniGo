@@ -11,7 +11,6 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentalExpandedTable extends StatelessWidget {
   final RentalModel rental;
-
   const RentalExpandedTable({super.key, required this.rental});
 
   @override

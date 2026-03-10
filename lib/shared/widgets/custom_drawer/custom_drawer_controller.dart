@@ -8,7 +8,7 @@ class CustomDrawerController extends GetxController {
     {'icon': IconsPath.dashboardNav, 'title': 'Overview', 'page':AppRoutes.bottomNav},
     {'icon': IconsPath.drawerOrder, 'title': 'Orders', 'page':AppRoutes.orderView},
     {'icon': IconsPath.drawerRent, 'title': 'Rentals', 'page':AppRoutes.rentalView},
-    {'icon': IconsPath.drawerSell, 'title': 'Sell Quotes', 'page':'/sell_quotes'},
+    {'icon': IconsPath.drawerSell, 'title': 'Sell Quotes', 'page':AppRoutes.sellView},
     {'icon': IconsPath.drawerAi, 'title': 'AI Designs', 'page':'/ai_designs'},
     {'icon': IconsPath.drawerCredit, 'title': 'Credit Balance', 'page':'/credit_balance'},
     {'icon': IconsPath.drawerTrans, 'title': 'Transaction', 'page':'/transaction'},

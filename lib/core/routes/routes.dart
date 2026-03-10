@@ -27,6 +27,9 @@ import 'package:zb_dezign/features/rent_request/views/rent_business_identificati
 import 'package:zb_dezign/features/rental/bindings/rental_bindings.dart';
 import 'package:zb_dezign/features/rental/views/rental_pending_view.dart';
 import 'package:zb_dezign/features/rental/views/rental_view.dart';
+import 'package:zb_dezign/features/sell/bindings/sell_bindings.dart';
+import 'package:zb_dezign/features/sell/views/sell_details.dart';
+import 'package:zb_dezign/features/sell/views/sell_view.dart';
 
 final List<GetPage> appRoutes = [
   GetPage(
@@ -128,5 +131,15 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.profileSettingView,
     page: () => ProfileSettingView(),
     binding: ProfileBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.sellView,
+    page: () => SellView(),
+    binding: SellBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.sellDetails,
+    page: () => SellDetails(),
+    binding: SellBindings(),
   ),
 ];

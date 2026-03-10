@@ -19,4 +19,6 @@ class AppRoutes {
   static const String notificationView = '/notificationView';
   static const String profileView = '/profileView';
   static const String profileSettingView = '/profileSettingView';
+  static const String sellView = '/sellView';
+  static const String sellDetails = '/sellDetails';
 }
