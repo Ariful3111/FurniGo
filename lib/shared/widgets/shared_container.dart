@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 
 class SharedContainer extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final double? radius;
@@ -16,7 +16,7 @@ class SharedContainer extends StatelessWidget {
   final DecorationImage? image;
   const SharedContainer({
     super.key,
-    required this.child,
+     this.child,
     this.padding,
     this.radius,
     this.border,

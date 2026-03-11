@@ -36,14 +36,14 @@ class CustomTableStatus extends StatelessWidget {
             : AppColors.reviseBGColor;
         textColor = isDark
             ? AppColors.darkReviseTextColor
-            : AppColors.reviseTextColor;
+            : AppColors.reviseTextColor; 
         break;
       case 'Active' ||
           'Out for delivery' ||
           'Offer Ready' ||
           'Offer Accepted' ||
           'Received' ||
-          'Delivered':
+          'Delivered'||'Accepted'||'Success':
         bgColor = isDark
             ? AppColors.darkActiveBGColor
             : AppColors.activeBGColor;

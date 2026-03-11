@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/dashboard/controller/dashboard_payment_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -19,6 +21,7 @@ class DashboardPaymentSchedule extends StatelessWidget {
       {"date": "Dec 15", "amount": "\$125.00", "active": false, 'paid': 'Paid'},
     ];
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    DashboardPaymentController dashboardPaymentController = Get.find();
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
       radius: 20.sp,
@@ -89,7 +92,16 @@ class DashboardPaymentSchedule extends StatelessWidget {
                     : null,
                 context: context,
                 builder: (context) {
-                  return CustomPaymentDialog(icon: IconsPath.success);
+                  return CustomPaymentDialog(
+                    icon: IconsPath.success,
+                    cardList: dashboardPaymentController.cardList,
+                    selectedCard: dashboardPaymentController.selectedCard,
+                    onSelect: (value) {
+                      if (value != null) {
+                        dashboardPaymentController.selectedCard.value = value;
+                      }
+                    },
+                  );
                 },
               );
             },

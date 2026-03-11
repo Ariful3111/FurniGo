@@ -3,23 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/sell/controller/sell_details_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_success_dialog.dart';
-import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class CustomPaymentDialogMethod extends StatelessWidget {
-  final String? icon;
-  final String? buttonText;
-  final List<String> cardList;
-  final RxString selectedCard;
-  final void Function(String?) onSelect;
-  const CustomPaymentDialogMethod({super.key, this.icon, this.buttonText, required this.cardList, required this.selectedCard, required this.onSelect});
+class SellPendingPayment extends StatelessWidget {
+  const SellPendingPayment({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    SellDetailsController sellDetailsController = Get.find();
     return Column(
       children: [
         Row(
@@ -44,24 +39,13 @@ class CustomPaymentDialogMethod extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         CustomPaymentDropdownMenu(
-          cardList: cardList,
-          selectedCard: selectedCard,
-          onSelect: onSelect,
-        ),
-        SizedBox(height: 25.h),
-        CustomPrimaryButton(
-          text: buttonText ?? 'Pay Early',
-          onPressed: () {
-            Navigator.pop(context);
-            showDialog(
-              barrierColor: isDark
-                  ? AppColors.whiteColor.withValues(alpha: 0.3)
-                  : null,
-              context: context,
-              builder: (context) {
-                return CustomPaymentSuccessDialog(icon: icon);
-              },
-            );
+          height: 44.h,
+          cardList: sellDetailsController.cardList,
+          selectedCard: sellDetailsController.selectedCard,
+          onSelect: (value) {
+            if (value != null) {
+              sellDetailsController.selectedCard.value = value;
+            }
           },
         ),
       ],

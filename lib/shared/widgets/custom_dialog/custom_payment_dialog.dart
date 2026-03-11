@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog_method.dart';
@@ -7,7 +8,22 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class CustomPaymentDialog extends StatelessWidget {
   final String? icon;
-  const CustomPaymentDialog({super.key, this.icon});
+  final String? title;
+  final String? sub;
+  final String? buttonText;
+  final List<String> cardList;
+  final RxString selectedCard;
+  final void Function(String?) onSelect;
+  const CustomPaymentDialog({
+    super.key,
+    this.icon,
+    this.title,
+    this.sub,
+    this.buttonText,
+    required this.cardList,
+    required this.selectedCard,
+    required this.onSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +32,8 @@ class CustomPaymentDialog extends StatelessWidget {
       alignment: Alignment.center,
       child: Container(
         width: MediaQuery.widthOf(context),
-        height: 365.h,
-        padding: EdgeInsets.all(13.58.r),
+        height: 371.h,
+        padding: EdgeInsets.all(25.r),
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkColor : Color(0xFFFAFBFC),
           borderRadius: BorderRadius.circular(16.r),
@@ -31,14 +47,14 @@ class CustomPaymentDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomPrimaryText(
-              text: 'Payment',
+              text: title ?? 'Payment',
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
               color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
             ),
             SizedBox(height: 9.59.h),
             CustomPrimaryText(
-              text: 'Pay your installment.',
+              text: sub ?? 'Pay your installment.',
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
               color: isDark ? AppColors.primaryBorderColor : Color(0xFF6B7280),
@@ -62,7 +78,13 @@ class CustomPaymentDialog extends StatelessWidget {
               ],
             ),
             SizedBox(height: 35.h),
-            CustomPaymentDialogMethod(icon: icon),
+            CustomPaymentDialogMethod(
+              icon: icon,
+              buttonText: buttonText,
+              cardList: cardList,
+              onSelect: onSelect,
+              selectedCard: selectedCard,
+            ),
           ],
         ),
       ),
