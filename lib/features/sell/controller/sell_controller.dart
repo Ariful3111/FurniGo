@@ -10,7 +10,7 @@ class SellController extends GetxController {
     'Offer Ready',
     'In Review',
     'Accepted',
-    'Received',
+    'Received', 
   ];
 
   RxList<bool> expandedList = <bool>[].obs;
@@ -49,7 +49,43 @@ class SellController extends GetxController {
       id: 'SEL-2024-001',
       item: 'Oak Dining Table',
       submitDate: 'Dec 10, 2024',
-      status: 'Offer Accepted',
+      status: 'Received',
+      offer: '\$450.00',
+      shipment: 'Delivered',
+      payment: 'Received',
+    ),
+    SellModel(
+      id: 'SEL-2024-001',
+      item: 'Oak Dining Table',
+      submitDate: 'Dec 10, 2024',
+      status: 'Accepted',
+      offer: '\$450.00',
+      shipment: 'Delivered',
+      payment: 'Received',
+    ),
+    SellModel(
+      id: 'SEL-2024-001',
+      item: 'Oak Dining Table',
+      submitDate: 'Dec 10, 2024',
+      status: 'Accepted',
+      offer: '\$450.00',
+      shipment: 'Pending',
+      payment: 'Received',
+    ),
+    SellModel(
+      id: 'SEL-2024-001',
+      item: 'Oak Dining Table',
+      submitDate: 'Dec 10, 2024',
+      status: 'Accepted',
+      offer: '\$450.00',
+      shipment: 'Delivered',
+      payment: 'Pending',
+    ),
+    SellModel(
+      id: 'SEL-2024-001',
+      item: 'Oak Dining Table',
+      submitDate: 'Dec 10, 2024',
+      status: 'Offer Ready',
       offer: '\$450.00',
       shipment: 'Delivered',
       payment: 'Received',
@@ -106,8 +142,8 @@ class SellController extends GetxController {
     }
     final selectedStatus = filter[selectedIndex.value];
     return sell
-        .where((rental) {
-          return rental.status == selectedStatus;
+        .where((sell) {
+          return sell.status == selectedStatus;
         })
         .toList()
         .obs;

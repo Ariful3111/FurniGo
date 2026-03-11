@@ -99,6 +99,8 @@ class IconsPath {
   static const String change = 'assets/icons/change.png';
   static const String ai = 'assets/icons/ai.png';
   static const String handle = 'assets/icons/handle.png';
+  static const String arrowLeft = 'assets/icons/arrow_left.png';
+  static const String calender = 'assets/icons/calender.png';
 
 
 }

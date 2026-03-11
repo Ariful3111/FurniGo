@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/sell/models/sell_model.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_action_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_expanded.dart';
@@ -36,7 +38,7 @@ class SellTableExpanded extends StatelessWidget {
         SizedBox(height: 8.h),
         CustomTableActionButton(
           onTap: () {
-            // Get.toNamed(AppRoutes.rentalPendingView, arguments: rental);
+            Get.toNamed(AppRoutes.sellDetails, arguments: sellModel);
           },
         ),
       ],

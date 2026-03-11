@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
@@ -13,6 +15,7 @@ class AcceptDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    RentalQuotesController quotesController = Get.find();
     return Dialog(
       alignment: Alignment.center,
       child: Container(
@@ -57,11 +60,19 @@ class AcceptDialog extends StatelessWidget {
                       Navigator.pop(context);
                       showDialog(
                         context: context,
-                         barrierColor: isDark
-                    ? AppColors.whiteColor.withValues(alpha: 0.3)
-                    : null,
+                        barrierColor: isDark
+                            ? AppColors.whiteColor.withValues(alpha: 0.3)
+                            : null,
                         builder: (context) {
-                          return CustomPaymentDialog();
+                          return CustomPaymentDialog(
+                            cardList: quotesController.cardList,
+                            selectedCard: quotesController.selectedCard,
+                            onSelect: (value) {
+                              if (value != null) {
+                                quotesController.selectedCard.value = value;
+                              }
+                            },
+                          );
                         },
                       );
                     },

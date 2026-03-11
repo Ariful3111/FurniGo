@@ -21,4 +21,7 @@ class AppRoutes {
   static const String profileSettingView = '/profileSettingView';
   static const String sellView = '/sellView';
   static const String sellDetails = '/sellDetails';
+  static const String aiDesignView = '/aiDesignView';
+  static const String aiDesignDetailsView = '/aiDesignDetailsView';
+  static const String transactionView = '/transactionView';
 }

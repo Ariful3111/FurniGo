@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
+import 'package:zb_dezign/features/ai_design/bindings/ai_design_bindings.dart';
+import 'package:zb_dezign/features/ai_design/views/ai_design_details.dart';
+import 'package:zb_dezign/features/ai_design/views/ai_design_view.dart';
 import 'package:zb_dezign/features/auth/bindings/auth_bindings.dart';
 import 'package:zb_dezign/features/auth/views/email_verification_view.dart';
 import 'package:zb_dezign/features/auth/views/forgot_password_view.dart';
@@ -30,6 +33,8 @@ import 'package:zb_dezign/features/rental/views/rental_view.dart';
 import 'package:zb_dezign/features/sell/bindings/sell_bindings.dart';
 import 'package:zb_dezign/features/sell/views/sell_details.dart';
 import 'package:zb_dezign/features/sell/views/sell_view.dart';
+import 'package:zb_dezign/features/transaction/bindings/transaction_bindings.dart';
+import 'package:zb_dezign/features/transaction/views/transaction_view.dart';
 
 final List<GetPage> appRoutes = [
   GetPage(
@@ -141,5 +146,20 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.sellDetails,
     page: () => SellDetails(),
     binding: SellBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.aiDesignView,
+    page: () => AiDesignView(),
+    binding: AiDesignBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.aiDesignDetailsView,
+    page: () => AiDesignDetails(),
+    binding: AiDesignBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.transactionView,
+    page: () => TransactionView(),
+    binding: TransactionBindings(),
   ),
 ];

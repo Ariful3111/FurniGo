@@ -5,6 +5,8 @@ import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/ren
 enum QuoteItemAction { none, approved, change, closed }
 
 class RentalQuotesController extends GetxController {
+  List<String> cardList = ['25144654564', '6546546464', '365465464456'];
+  RxString selectedCard = ''.obs;
   List furniture = [
     {
       'title': 'Master Bedroom',

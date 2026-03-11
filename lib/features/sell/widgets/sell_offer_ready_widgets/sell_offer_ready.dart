@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog_method.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_success_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_reject_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -11,7 +10,8 @@ import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class SellOfferReady extends StatelessWidget {
   final String amount;
-  const SellOfferReady({super.key, required this.amount});
+  final VoidCallback onPayment;
+  const SellOfferReady({super.key, required this.amount, required this.onPayment});
 
   @override
   Widget build(BuildContext context) {
@@ -75,15 +75,7 @@ class SellOfferReady extends StatelessWidget {
                             padding: EdgeInsets.only(top: 12.h),
                             child: CustomPrimaryButton(
                               text: 'Add account information',
-                              onPressed: () {
-                                Navigator.pop(context);
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CustomPaymentDialogMethod();
-                                  },
-                                );
-                              },
+                              onPressed: onPayment,
                             ),
                           ),
                         );

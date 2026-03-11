@@ -5,6 +5,7 @@ import 'package:zb_dezign/features/sell/controller/sell_controller.dart';
 import 'package:zb_dezign/features/sell/widgets/sell_helper.dart';
 import 'package:zb_dezign/features/sell/widgets/sell_view_widgets/sell_view_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dart';
 
 class SellView extends StatelessWidget {
@@ -17,7 +18,12 @@ class SellView extends StatelessWidget {
     return CustomContainer(
       child: ListView(
         children: [
-          SellHelper().sellHeader(context: context, isDark: isDark),
+          SellHelper().sellHeader(context: context, isDark: isDark, onTap: () {  showDialog(
+              context: context,
+              builder: (context) {
+                return CustomDrawer();
+              },
+            ); }),
           SizedBox(height: 16.h),
           SellViewTable(),
           SizedBox(height: 24.h),
