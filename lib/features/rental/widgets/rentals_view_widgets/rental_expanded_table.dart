@@ -28,7 +28,7 @@ class RentalExpandedTable extends StatelessWidget {
         Row(
           children: [
             CustomPrimaryText(
-              text: 'Status : :'.toUpperCase(),
+              text: 'Status:'.toUpperCase(),
               fontSize: 12.sp,
               fontWeight: FontWeight.w600,
               color: isDark

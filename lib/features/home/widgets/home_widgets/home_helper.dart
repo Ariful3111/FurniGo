@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
@@ -20,21 +19,25 @@ class HomeHelper {
     required Widget child,
     double? radius,
   }) {
-    return ClipRRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            color: Color(0xFF4F4F4F).withValues(alpha: 0.1),
-            borderRadius: BorderRadiusGeometry.circular(radius ?? 8.r),
-            border: Border.all(
-              width: 1.r,
-              color: AppColors.whiteColor.withValues(alpha: 0.5),
+    final r = BorderRadius.circular(radius ?? 8.r);
+    return RepaintBoundary(
+      child: ClipRRect(
+        borderRadius: r,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          child: Container(
+            height: height,
+            width: width,
+            decoration: BoxDecoration(
+              color: Color(0xFF4F4F4F).withValues(alpha: 0.1),
+              borderRadius: r,
+              border: Border.all(
+                width: 1.r,
+                color: AppColors.whiteColor.withValues(alpha: 0.5),
+              ),
             ),
+            child: child,
           ),
-          child: child,
         ),
       ),
     );
@@ -54,13 +57,17 @@ class HomeHelper {
         ),
         GestureDetector(
           onTap: onTap,
-          child: CustomPrimaryText(text: 'See All', fontSize: 14.sp,decoration: TextDecoration.underline,),
+          child: CustomPrimaryText(
+            text: 'See All',
+            fontSize: 14.sp,
+            decoration: TextDecoration.underline,
+          ),
         ),
       ],
     );
   }
-  
 }
+
 enum SplitSide { left, right }
 
 class SplitImageClipper extends CustomClipper<Rect> {

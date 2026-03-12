@@ -13,7 +13,6 @@ class HomeShop extends StatelessWidget {
       height: 100.h,
       child: ListView.builder(
         itemCount: 10,
-        shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
           return Container(
@@ -22,12 +21,21 @@ class HomeShop extends StatelessWidget {
             height: 100.h,
             width: 170.w,
             decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage(ImagesPath.home),fit: BoxFit.cover),
-              borderRadius: BorderRadius.circular(12.r)
+              image: DecorationImage(
+                image: AssetImage(ImagesPath.home),
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.low,
+              ),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: CustomPrimaryText(text: 'living room',fontSize: 14.sp,color: AppColors.whiteColor,)),
+              child: CustomPrimaryText(
+                text: 'living room',
+                fontSize: 14.sp,
+                color: AppColors.whiteColor,
+              ),
+            ),
           );
         },
       ),

@@ -14,4 +14,5 @@ class ImagesPath {
   static const String aiAfter = 'assets/images/ai_after.png';
   static const String sell = 'assets/images/sell.png';
   static const String rent = 'assets/images/rent.png';
+  static const String profileBg = 'assets/images/profile_bg.png';
 }

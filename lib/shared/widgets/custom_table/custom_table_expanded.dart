@@ -62,12 +62,13 @@ Widget buildDetailRow(
   String value, {
   bool isBold = false,
   required bool isDark,
+  Color ? valueColor,
 }) {
   return RichText(
     text: TextSpan(
       children: [
         TextSpan(
-          text: '$label : '.toUpperCase(),
+          text: '$label: '.toUpperCase(),
           style: GoogleFonts.montserrat(
             fontSize: 12.sp,
             fontWeight: FontWeight.w600,
@@ -78,14 +79,14 @@ Widget buildDetailRow(
           text: value,
           style: GoogleFonts.montserrat(
             fontSize: 12.sp,
-            fontWeight: FontWeight.w400,
+            fontWeight:isBold? FontWeight.w600:FontWeight.w400,
             color: isBold
                 ? isDark
                       ? AppColors.whiteColor
                       : AppColors.darkTextColor
                 : isDark
-                ? AppColors.primaryBorderColor
-                : AppColors.greyColor,
+                ?valueColor?? AppColors.primaryBorderColor
+                :valueColor?? AppColors.greyColor,
           ),
         ),
       ],

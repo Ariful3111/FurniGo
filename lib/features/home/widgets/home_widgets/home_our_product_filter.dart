@@ -26,8 +26,7 @@ class HomeOurProductFilter extends StatelessWidget {
     ];
     return SizedBox(
       height: 45.h,
-      child: ListView.builder(
-        shrinkWrap: true,
+       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Obx(() {
@@ -36,7 +35,7 @@ class HomeOurProductFilter extends StatelessWidget {
               onTap: () {
                 homeController.productIndex.value = index;
               },
-              child: AnimatedSize(
+              child: AnimatedSize( 
                 duration: Duration(milliseconds: 300),
                 child: selected
                     ? Container(

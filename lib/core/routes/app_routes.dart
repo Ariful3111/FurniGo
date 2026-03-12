@@ -4,7 +4,7 @@ class AppRoutes {
   static const String userModeView = '/userModeView';
   static const String signUpView = '/signUpView';
   static const String signUpOptionView = '/signUpOptionView';
-  static const String rentBusinessIdentification = '/rentBusinessIdentification';
+  static const String rentRequestView = '/rentRequestView';
   static const String rentalView = '/rentalView';
   static const String forgotPasswordView = '/forgotPasswordView';
   static const String otpView = '/otpView';
@@ -24,4 +24,5 @@ class AppRoutes {
   static const String aiDesignView = '/aiDesignView';
   static const String aiDesignDetailsView = '/aiDesignDetailsView';
   static const String transactionView = '/transactionView';
+  static const String transactionDetailView = '/transactionDetailView';
 }

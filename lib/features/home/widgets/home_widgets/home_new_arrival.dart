@@ -20,7 +20,6 @@ class HomeNewArrival extends StatelessWidget {
       height: 240.h,
       child: ListView.builder(
         itemCount: 10,
-        shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Padding(
