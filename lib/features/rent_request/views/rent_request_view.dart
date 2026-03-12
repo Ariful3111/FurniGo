@@ -11,8 +11,8 @@ import 'package:zb_dezign/features/rent_request/widgets/step_count.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentBusinessIdentification extends StatelessWidget {
-  const RentBusinessIdentification({super.key});
+class RentRequestView extends StatelessWidget {
+  const RentRequestView({super.key});
 
   @override
   Widget build(BuildContext context) {

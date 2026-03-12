@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/images_path.dart';
-import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/core/theme/theme_controller.dart';
 
 class OnboardingController extends GetxController {
@@ -57,7 +56,6 @@ class OnboardingController extends GetxController {
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
-          Get.toNamed(AppRoutes.signInView);
         }
         Future.delayed(Duration(milliseconds: 500), () {
           dragOffset.value = 0.0;

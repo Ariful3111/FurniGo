@@ -6,7 +6,7 @@ import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/core/routes/routes.dart';
 import 'package:zb_dezign/core/theme/app_theme.dart';
 import 'package:zb_dezign/core/theme/theme_controller.dart';
-import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
+import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: Get.find<ThemeController>().currentTheme,
-            initialBinding: DashboardBindings(),
+            initialBinding: HomeBindings(),
             initialRoute: AppRoutes.bottomNav,
             getPages: appRoutes,
           );

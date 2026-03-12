@@ -26,7 +26,7 @@ import 'package:zb_dezign/features/profile/bindings/profile_bindings.dart';
 import 'package:zb_dezign/features/profile/views/profile_setting_view.dart';
 import 'package:zb_dezign/features/profile/views/profile_views.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
-import 'package:zb_dezign/features/rent_request/views/rent_business_identification.dart';
+import 'package:zb_dezign/features/rent_request/views/rent_request_view.dart';
 import 'package:zb_dezign/features/rental/bindings/rental_bindings.dart';
 import 'package:zb_dezign/features/rental/views/rental_pending_view.dart';
 import 'package:zb_dezign/features/rental/views/rental_view.dart';
@@ -34,6 +34,7 @@ import 'package:zb_dezign/features/sell/bindings/sell_bindings.dart';
 import 'package:zb_dezign/features/sell/views/sell_details.dart';
 import 'package:zb_dezign/features/sell/views/sell_view.dart';
 import 'package:zb_dezign/features/transaction/bindings/transaction_bindings.dart';
+import 'package:zb_dezign/features/transaction/views/transaction_details_view.dart';
 import 'package:zb_dezign/features/transaction/views/transaction_view.dart';
 
 final List<GetPage> appRoutes = [
@@ -63,8 +64,8 @@ final List<GetPage> appRoutes = [
     binding: AuthBindings(),
   ),
   GetPage(
-    name: AppRoutes.rentBusinessIdentification,
-    page: () => RentBusinessIdentification(),
+    name: AppRoutes.rentRequestView,
+    page: () => RentRequestView(),
     binding: RentBindings(),
   ),
   GetPage(
@@ -105,7 +106,7 @@ final List<GetPage> appRoutes = [
   GetPage(
     name: AppRoutes.bottomNav,
     page: () => BottomNavView(),
-    binding: HomeBindings(),
+    bindings: [HomeBindings(),DashboardBindings()]
   ),
   GetPage(
     name: AppRoutes.dashboardPaymentView,
@@ -160,6 +161,11 @@ final List<GetPage> appRoutes = [
   GetPage(
     name: AppRoutes.transactionView,
     page: () => TransactionView(),
+    binding: TransactionBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.transactionDetailView,
+    page: () => TransactionDetailsView(),
     binding: TransactionBindings(),
   ),
 ];

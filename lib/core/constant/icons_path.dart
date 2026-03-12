@@ -100,7 +100,11 @@ class IconsPath {
   static const String ai = 'assets/icons/ai.png';
   static const String handle = 'assets/icons/handle.png';
   static const String arrowLeft = 'assets/icons/arrow_left.png';
+  static const String arrowRight = 'assets/icons/arrow_right.png';
   static const String calender = 'assets/icons/calender.png';
+  static const String profileEdit = 'assets/icons/profile_edit.png';
+  static const String logoDark = 'assets/icons/logo_dark.png';
+  static const String logoLight = 'assets/icons/logo_light.png';
 
 
 }

@@ -13,8 +13,7 @@ class OnboardingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        bool isDark = Theme.of(context).brightness == Brightness.dark;
-
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     OnboardingController onboardingController = Get.find();
     final page = onboardingController.onboardingItems.length;
     return Row(
@@ -39,14 +38,15 @@ class OnboardingHeader extends StatelessWidget {
           ),
         ),
         Spacer(),
-        Image.asset(IconsPath.header, height: 28.h, width: 28.w),
+        Image.asset(isDark? IconsPath.logoDark:IconsPath.logoLight, height: 40.h, width: 40.w),
         SizedBox(width: 8.w),
-        CustomWhiteText(text: 'ZB DEZIGN',color: isDark?AppColors.whiteColor:null,),
+        CustomWhiteText(
+          text: 'ZB DEZIGN',
+          color: isDark ? AppColors.whiteColor : null,
+        ),
         Spacer(),
         Obx(
-          () =>
-              onboardingController.currentIndex.value ==
-                  page - 1
+          () => onboardingController.currentIndex.value == page - 1
               ? SizedBox()
               : HeaderButton(
                   height: 40.h,
@@ -56,7 +56,16 @@ class OnboardingHeader extends StatelessWidget {
                     if (onboardingController.pageController.hasClients) {
                       onboardingController.pageController.animateToPage(
                         page - 1,
-                        duration: Duration(milliseconds:onboardingController.currentIndex.value==page-3?500 :onboardingController.currentIndex.value==page-2? 300:800),
+                        duration: Duration(
+                          milliseconds:
+                              onboardingController.currentIndex.value ==
+                                  page - 3
+                              ? 500
+                              : onboardingController.currentIndex.value ==
+                                    page - 2
+                              ? 300
+                              : 800,
+                        ),
                         curve: Curves.linear,
                       );
                     }

@@ -74,7 +74,7 @@ class CustomSpanText extends StatelessWidget {
             recognizer: TapGestureRecognizer()..onTap = onTap,
             style:
                 textStyle ??
-                GoogleFonts.inter(
+                GoogleFonts.montserrat(
                   color: isDark
                       ? spanColor ?? AppColors.boxColor
                       : spanColor ?? AppColors.primaryColor,

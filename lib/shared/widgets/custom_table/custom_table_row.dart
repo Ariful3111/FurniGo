@@ -16,6 +16,7 @@ class CustomTableRow extends StatelessWidget {
   final Widget action;
   final Widget Function(int index, dynamic row)? actionBuilder;
   final bool isStatus;
+  final int? buttonFlex;
   const CustomTableRow({
     super.key,
     required this.rows,
@@ -27,7 +28,7 @@ class CustomTableRow extends StatelessWidget {
     required this.buildExpanded,
     required this.action,
     this.actionBuilder,
-    required this.isStatus,
+    required this.isStatus, this.buttonFlex,
   });
 
   @override
@@ -73,7 +74,7 @@ class CustomTableRow extends StatelessWidget {
                       color: isDark
                           ? AppColors.whiteColor
                           : AppColors.titleTextColor,
-                          textAlign: TextAlign.center,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   Expanded(
@@ -87,11 +88,11 @@ class CustomTableRow extends StatelessWidget {
                               color: isDark
                                   ? AppColors.whiteColor
                                   : AppColors.darkTextColor,
-                                  textAlign: TextAlign.center,
+                              textAlign: TextAlign.center,
                             ),
                     ),
                   ),
-                  Expanded(flex: 2, child: actionWidget),
+                  Expanded(flex:buttonFlex?? 2, child: actionWidget),
                 ],
               ),
             ),

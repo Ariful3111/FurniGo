@@ -14,21 +14,20 @@ import 'package:zb_dezign/features/home/widgets/home_widgets/home_shop.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
-
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Container(
-        height: MediaQuery.heightOf(context),
         width: MediaQuery.widthOf(context),
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkColor : AppColors.whiteColor,
         ),
         child: ListView(
           padding: EdgeInsets.zero,
+          cacheExtent: 1200,
           children: [
-            HomeHeader(),
+            RepaintBoundary(child: HomeHeader()),
             SizedBox(height: 20.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -59,15 +58,15 @@ class HomeView extends StatelessWidget {
                 ],
               ),
             ),
-            HomeProductPlacement(),
+            RepaintBoundary(child: HomeProductPlacement()),
             SizedBox(height: 20.h),
-            HomeOurProducts(),
+            RepaintBoundary(child: HomeOurProducts()),
             SizedBox(height: 40.h),
             HomeSell(),
             SizedBox(height: 40.h),
             HomeRent(),
             SizedBox(height: 20.h),
-            HomeAiDesign(),
+            RepaintBoundary(child: HomeAiDesign()),
           ],
         ),
       ),

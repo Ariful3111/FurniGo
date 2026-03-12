@@ -14,7 +14,7 @@ class AuthHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
+        InkWell(
           onTap: () {
             Navigator.pop(context);
           },
@@ -34,7 +34,7 @@ class AuthHeader extends StatelessWidget {
         SizedBox(height: 54.h),
         Row(
           children: [
-            Image.asset(IconsPath.authLogo, height: 28.h, width: 28.w,color: isDark?AppColors.whiteColor:null,),
+            Image.asset(isDark? IconsPath.logoDark:IconsPath.logoLight, height: 28.h, width: 28.w,),
             SizedBox(width: 18.w),
             CustomPrimaryText(
               text: 'ZB DEZIGN',

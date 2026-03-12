@@ -12,11 +12,13 @@ class CustomAppbar extends StatelessWidget {
   final String title;
   final String? icon;
   final VoidCallback onDrawerTap;
+  final bool isIcon;
   const CustomAppbar({
     super.key,
     required this.title,
     required this.onDrawerTap,
     this.icon,
+    this.isIcon = true,
   });
 
   @override
@@ -26,12 +28,12 @@ class CustomAppbar extends StatelessWidget {
       children: [
         InkWell(
           onTap: onDrawerTap,
-          child: Image.asset(
+          child:isIcon?Image.asset(
             icon ?? IconsPath.drawer,
             height: 24.h,
             width: 24.w,
             color: isDark ? AppColors.whiteColor : null,
-          ),
+          ):SizedBox.shrink(),
         ),
         SizedBox(width: 8.w),
         CustomPrimaryText(

@@ -5,8 +5,8 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class CustomTableStatus extends StatelessWidget {
   final String status;
-
-  const CustomTableStatus({super.key, required this.status});
+  final double ? width;
+  const CustomTableStatus({super.key, required this.status, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +36,16 @@ class CustomTableStatus extends StatelessWidget {
             : AppColors.reviseBGColor;
         textColor = isDark
             ? AppColors.darkReviseTextColor
-            : AppColors.reviseTextColor; 
+            : AppColors.reviseTextColor;
         break;
       case 'Active' ||
           'Out for delivery' ||
           'Offer Ready' ||
           'Offer Accepted' ||
           'Received' ||
-          'Delivered'||'Accepted'||'Success':
+          'Delivered' ||
+          'Accepted' ||
+          'Success':
         bgColor = isDark
             ? AppColors.darkActiveBGColor
             : AppColors.activeBGColor;
@@ -77,6 +79,7 @@ class CustomTableStatus extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      width: width,
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(50.r),

@@ -26,7 +26,7 @@ class OnboardLogin extends StatelessWidget {
         SizedBox(height: 20.h),
         LoginButton(
           onTap: () {
-            Get.toNamed(AppRoutes.signInView);
+           
           },
           icon: IconsPath.google,
           title: 'Continue With Goggle',
@@ -42,9 +42,11 @@ class OnboardLogin extends StatelessWidget {
         ),
         SizedBox(height: 12.h),
         LoginButton(
-          onTap: () {},
+          onTap: () {
+             Get.toNamed(AppRoutes.signInView);
+          },
           icon: IconsPath.gmail,
-          title: 'Continue With Gmail',
+          title: 'Continue With Email',
           color: AppColors.primaryColor,
           fontColor: AppColors.whiteColor,
           borderColor: Colors.transparent,

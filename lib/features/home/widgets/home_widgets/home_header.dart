@@ -23,7 +23,8 @@ class HomeHeader extends StatelessWidget {
         ),
         image: DecorationImage(
           image: AssetImage(ImagesPath.home),
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
+          filterQuality: FilterQuality.low,
         ),
       ),
       child: Column(
@@ -48,8 +49,8 @@ class HomeHeader extends StatelessWidget {
             color: AppColors.primaryBorderColor,
             shadow: [HomeHelper().boxShadow()],
           ),
-          SizedBox(height: 28.h,),
-          HomeSearchFilter()
+          SizedBox(height: 28.h),
+          HomeSearchFilter(),
         ],
       ),
     );
