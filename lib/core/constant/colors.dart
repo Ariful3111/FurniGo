@@ -78,7 +78,7 @@ class AppColors {
       whiteColor,
     ],
   );
-  static Gradient darkAuthBG = LinearGradient(
+  static LinearGradient darkAuthBG = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [

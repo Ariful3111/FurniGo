@@ -105,6 +105,7 @@ class IconsPath {
   static const String profileEdit = 'assets/icons/profile_edit.png';
   static const String logoDark = 'assets/icons/logo_dark.png';
   static const String logoLight = 'assets/icons/logo_light.png';
+  static const String credit = 'assets/icons/credit.png';
 
 
 }
