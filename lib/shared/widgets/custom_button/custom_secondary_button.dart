@@ -14,6 +14,7 @@ class CustomSecondaryButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color? backgroundColor;
   final Color? textColor;
+  final Color? iconColor;
   final double? radius;
   final BoxDecoration? boxDecoration;
   final Widget? child;
@@ -39,7 +40,7 @@ class CustomSecondaryButton extends StatelessWidget {
     this.fontWeight,
     this.padding,
     this.border,
-    this.boxShadow,
+    this.boxShadow, this.iconColor,
   });
 
   @override
@@ -68,7 +69,7 @@ class CustomSecondaryButton extends StatelessWidget {
               icon,
               height: iconHeight ?? 16.h,
               width: iconWidth ?? 16.w,
-              color: isDark?AppColors.whiteColor:null,
+              color: isDark?AppColors.whiteColor:iconColor,
             ),
             SizedBox(width: 4.w),
             Expanded(

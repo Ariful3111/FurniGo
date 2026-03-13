@@ -13,6 +13,8 @@ import 'package:zb_dezign/features/auth/views/signin_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_option_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_view.dart';
 import 'package:zb_dezign/features/auth/views/user_mode_view.dart';
+import 'package:zb_dezign/features/credit_balance/bindings/credit_balance_bindings.dart';
+import 'package:zb_dezign/features/credit_balance/views/credit_balance_view.dart';
 import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_payment_view.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_view.dart';
@@ -167,5 +169,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.transactionDetailView,
     page: () => TransactionDetailsView(),
     binding: TransactionBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.creditBalanceView,
+    page: () => CreditBalanceView(),
+    binding: CreditBalanceBindings(),
   ),
 ];

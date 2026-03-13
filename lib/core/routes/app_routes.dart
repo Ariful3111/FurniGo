@@ -25,4 +25,5 @@ class AppRoutes {
   static const String aiDesignDetailsView = '/aiDesignDetailsView';
   static const String transactionView = '/transactionView';
   static const String transactionDetailView = '/transactionDetailView';
+  static const String creditBalanceView = '/creditBalanceView';
 }
