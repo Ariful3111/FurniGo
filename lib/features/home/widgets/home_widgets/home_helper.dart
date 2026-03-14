@@ -19,25 +19,21 @@ class HomeHelper {
     required Widget child,
     double? radius,
   }) {
-    final r = BorderRadius.circular(radius ?? 8.r);
-    return RepaintBoundary(
-      child: ClipRRect(
-        borderRadius: r,
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-          child: Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              color: Color(0xFF4F4F4F).withValues(alpha: 0.1),
-              borderRadius: r,
-              border: Border.all(
-                width: 1.r,
-                color: AppColors.whiteColor.withValues(alpha: 0.5),
-              ),
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+            color: Color(0xFF4F4F4F).withValues(alpha: 0.1),
+            borderRadius: BorderRadiusGeometry.circular(radius ?? 8.r),
+            border: Border.all(
+              width: 1.r,
+              color: AppColors.whiteColor.withValues(alpha: 0.5),
             ),
-            child: child,
           ),
+          child: child,
         ),
       ),
     );

@@ -19,15 +19,15 @@ class HomeView extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Container(
+        height: MediaQuery.heightOf(context),
         width: MediaQuery.widthOf(context),
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkColor : AppColors.whiteColor,
         ),
         child: ListView(
           padding: EdgeInsets.zero,
-          cacheExtent: 1200,
           children: [
-            RepaintBoundary(child: HomeHeader()),
+            HomeHeader(),
             SizedBox(height: 20.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -58,15 +58,15 @@ class HomeView extends StatelessWidget {
                 ],
               ),
             ),
-            RepaintBoundary(child: HomeProductPlacement()),
+            HomeProductPlacement(),
             SizedBox(height: 20.h),
-            RepaintBoundary(child: HomeOurProducts()),
+            HomeOurProducts(),
             SizedBox(height: 40.h),
             HomeSell(),
             SizedBox(height: 40.h),
             HomeRent(),
             SizedBox(height: 20.h),
-            RepaintBoundary(child: HomeAiDesign()),
+            HomeAiDesign(),
           ],
         ),
       ),

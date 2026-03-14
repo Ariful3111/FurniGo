@@ -16,7 +16,7 @@ class SharedContainer extends StatelessWidget {
   final DecorationImage? image;
   const SharedContainer({
     super.key,
-     this.child,
+    this.child,
     this.padding,
     this.radius,
     this.border,
@@ -25,7 +25,8 @@ class SharedContainer extends StatelessWidget {
     this.margin,
     this.height,
     this.width,
-    this.gradient, this.image,
+    this.gradient,
+    this.image,
   });
 
   @override
@@ -36,7 +37,7 @@ class SharedContainer extends StatelessWidget {
       padding:
           padding ?? EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
       margin: margin,
-      width: width ?? MediaQuery.widthOf(context),
+      width: width,
       decoration: BoxDecoration(
         color: gradient == null
             ? isDark

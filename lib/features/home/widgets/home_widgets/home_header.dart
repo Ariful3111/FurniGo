@@ -23,8 +23,7 @@ class HomeHeader extends StatelessWidget {
         ),
         image: DecorationImage(
           image: AssetImage(ImagesPath.home),
-          fit: BoxFit.cover,
-          filterQuality: FilterQuality.low,
+          fit: BoxFit.fill,
         ),
       ),
       child: Column(

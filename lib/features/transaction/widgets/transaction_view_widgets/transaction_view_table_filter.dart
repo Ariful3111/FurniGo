@@ -17,16 +17,10 @@ class TransactionViewTableFilter extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     TransactionController transactionController = Get.find();
     return GestureDetector(
-      onTap: () async {
-        await showDialog(
-          barrierColor: isDark
-              ? AppColors.whiteColor.withValues(alpha: 0.3)
-              : null,
-          context: context,
-          builder: (context) {
-            return TransactionCalender();
-          },
-        );
+      onTap: () {
+        showDialog(context: context, builder: (context){
+          return TransactionCalender();
+        });
       },
       child: Row(
         children: [
@@ -41,42 +35,34 @@ class TransactionViewTableFilter extends StatelessWidget {
                     : AppColors.fieldBorderColorLight,
               ),
               radius: 16.r,
-              child: Obx(() {
-                final fromText = transactionController.formatDate(
-                  transactionController.fromDate.value,
-                );
-                final toText = transactionController.formatDate(
-                  transactionController.toDate.value,
-                );
-                return Row(
-                  children: [
-                    Image.asset(
-                      IconsPath.calender,
-                      height: 16.h,
-                      width: 16.w,
-                      color: isDark ? AppColors.whiteColor : null,
+              child: Row(
+                children: [
+                  Image.asset(
+                    IconsPath.calender,
+                    height: 16.h,
+                    width: 16.w,
+                    color: isDark ? AppColors.whiteColor : null,
+                  ),
+                  SizedBox(width: 10.w),
+                  text(text: '04/09/2025', isDark: isDark),
+                  SizedBox(width: 6.w),
+                  arrowButton(onTap: () {}, isDark: isDark),
+                  SizedBox(width: 12.w),
+                  Container(
+                    width: 8.w,
+                    height: 1.h,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppColors.darkPrimaryTextColor
+                          : Color(0xFF989898),
                     ),
-                    SizedBox(width: 10.w),
-                    text(text: fromText, isDark: isDark),
-                    SizedBox(width: 6.w),
-                    arrowButton(onTap: () {}, isDark: isDark),
-                    SizedBox(width: 12.w),
-                    Container(
-                      width: 8.w,
-                      height: 1.h,
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? AppColors.darkPrimaryTextColor
-                            : Color(0xFF989898),
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    text(text: toText, isDark: isDark),
-                    SizedBox(width: 6.w),
-                    arrowButton(onTap: () {}, isDark: isDark),
-                  ],
-                );
-              }),
+                  ),
+                  SizedBox(width: 12.w),
+                  text(text: '04/09/2025', isDark: isDark),
+                  SizedBox(width: 6.w),
+                  arrowButton(onTap: () {}, isDark: isDark),
+                ],
+              ),
             ),
           ),
           SizedBox(width: 12.w),

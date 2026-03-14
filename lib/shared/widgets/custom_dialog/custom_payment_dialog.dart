@@ -13,7 +13,7 @@ class CustomPaymentDialog extends StatelessWidget {
   final String? buttonText;
   final List<String> cardList;
   final RxString selectedCard;
-  final void Function(String?) onSelect;
+  final void Function(String? value) onSelect;
   const CustomPaymentDialog({
     super.key,
     this.icon,
