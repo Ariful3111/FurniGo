@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/credit_balance/controller/credit_balance_controller.dart';
+import 'package:zb_dezign/features/credit_balance/widgets/credit_balance_view_widgets/credit_items.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
@@ -11,6 +16,7 @@ class CreditSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+        CreditBalanceController creditBalanceController = Get.find();
     return Column(
       children: [
         SharedContainer(
@@ -22,8 +28,8 @@ class CreditSection extends StatelessWidget {
           gradient: isDark
               ? AppColors.darkAuthBG
               : LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  begin: Alignment.topRight,
                   colors: [
                     Color(0xFFD3EBFF),
                     Color(0xFFE8F5FF),
@@ -56,73 +62,33 @@ class CreditSection extends StatelessWidget {
                     : AppColors.secondaryTextColor,
               ),
               SizedBox(height: 24.h),
-              Column(
-                children: [
-                  Row(
-                    children: const [
-                      Expanded(
-                        child: CreditItem(
-                          credit: "40 Credit",
-                          price: "\$25.00",
-                          isSelected: true,
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: CreditItem(
-                          credit: "80 Credit",
-                          price: "\$125.00",
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CreditItem(
-                          credit: "120 Credit",
-                          price: "\$225.00",
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: CreditItem(
-                          credit: "160 Credit",
-                          price: "\$325.00",
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 12),
-
-                  Row(
-                    children: const [
-                      Expanded(
-                        child: CreditItem(
-                          credit: "200 Credit",
-                          price: "\$425.00",
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: CreditItem(
-                          credit: "250 Credit",
-                          price: "\$500.00",
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
+              CreditItems(),
               SizedBox(height: 24.h),
-
               CustomPrimaryButton(
                 text: "Proceed to Payment",
                 backgroundColor: AppColors.primaryColor,
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                context: context,
+                builder: (context) {
+                  return CustomPaymentDialog(
+                    cardList: creditBalanceController.cardList,
+                    selectedCard: creditBalanceController.selectedCard,
+                    onSelect: (value) {
+                      creditBalanceController.selectedCard.value = value!;
+                    },
+                    icon: IconsPath.success,
+                  );
+                },
+              );
+                },
+                boxShadow: [
+                  shadow(dy: 98, blurRadius: 28, alpha: 0.0),
+                  shadow(dy: 63, blurRadius: 25, alpha: 0.01),
+                  shadow(dy: 35, blurRadius: 21, alpha: 0.05),
+                  shadow(dy: 16, blurRadius: 16, alpha: 0.09),
+                  shadow(dy: 4, blurRadius: 9, alpha: 0.1),
+                ],
               ),
             ],
           ),
@@ -130,69 +96,16 @@ class CreditSection extends StatelessWidget {
       ],
     );
   }
-}
 
-class CreditItem extends StatelessWidget {
-  final String credit;
-  final String price;
-  final bool isSelected;
-  const CreditItem({
-    super.key,
-    required this.credit,
-    required this.price,
-    this.isSelected = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return SharedContainer(
-      height: 79.h,
-      radius: 12.r,
-      padding: EdgeInsets.all(12.w),
-      color: isSelected
-          ? (isDark ? AppColors.darkPendingBGColor : AppColors.pendingBGColor)
-          : null,
-      border: Border.all(
-        color: isSelected
-            ? AppColors.primaryColor
-            : (isDark
-                  ? AppColors.darkBorderColor
-                  : AppColors.primaryBorderColor),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.credit_card,
-                size: 16,
-                color: isDark
-                    ? AppColors.darkPrimaryTextColor
-                    : AppColors.titleColor,
-              ),
-              SizedBox(width: 8.w),
-              CustomPrimaryText(
-                text: credit,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: isDark ? AppColors.whiteColor : AppColors.titleColor,
-              ),
-            ],
-          ),
-          Spacer(),
-          CustomPrimaryText(
-            text: price,
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-            color: isDark
-                ? AppColors.darkPrimaryTextColor
-                : AppColors.titleColor,
-          ),
-        ],
-      ),
+  BoxShadow shadow({
+    required double dy,
+    required double blurRadius,
+    required double alpha,
+  }) {
+    return BoxShadow(
+      offset: Offset(0, dy),
+      blurRadius: blurRadius,
+      color: AppColors.shadowColor.withValues(alpha: alpha),
     );
   }
 }

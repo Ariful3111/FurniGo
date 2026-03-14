@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_payment_widgets/dashboard_payment_header.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_payment_widgets/dashboard_payment_items.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_payment_widgets/dashboard_payment_save.dart';
@@ -8,7 +9,6 @@ import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_banner.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
-import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class DashboardPaymentView extends StatelessWidget {
@@ -21,13 +21,9 @@ class DashboardPaymentView extends StatelessWidget {
         children: [
           CustomAppbar(
             title: 'Dashboard',
+            icon: IconsPath.back,
             onDrawerTap: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return CustomDrawer();
-                },
-              );
+              Navigator.pop(context);
             },
           ),
           SizedBox(height: 12.h),
@@ -49,7 +45,8 @@ class DashboardPaymentView extends StatelessWidget {
                 SizedBox(height: 12.h),
                 DashboardPaymentSave(),
               ],
-            ))
+            ),
+          ),
         ],
       ),
     );

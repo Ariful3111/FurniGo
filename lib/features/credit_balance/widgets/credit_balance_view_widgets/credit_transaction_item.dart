@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/credit_balance/models/credit_transaction_model.dart';
+import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class CreditTransactionItem extends StatelessWidget {
   final CreditTransaction transaction;
 
-  const CreditTransactionItem({
-    super.key,
-    required this.transaction,
-  });
+  const CreditTransactionItem({super.key, required this.transaction});
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     bool isPositive = transaction.amount > 0;
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE9E9E9),
-        borderRadius: BorderRadius.circular(10),
+    return SharedContainer(
+      margin: EdgeInsets.only(bottom:4.h),
+      padding: EdgeInsets.all(10.r),
+      radius: 10.r,
+      color: isDark ? AppColors.labelColor : AppColors.primaryBorderColor,
+      border: Border.all(
+        color: isDark ? AppColors.darkBorderColor : AppColors.borderColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,31 +28,46 @@ class CreditTransactionItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                transaction.title,
-                style: const TextStyle(fontWeight: FontWeight.w500),
+              CustomPrimaryText(
+                text: transaction.title,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
               ),
-              Text(
-                transaction.date,
-                style: const TextStyle(fontSize: 12),
+              SizedBox(height: 2.h),
+              CustomPrimaryText(
+                text: transaction.date,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                color: isDark
+                    ? AppColors.darkPrimaryTextColor
+                    : AppColors.greyTextColor,
               ),
             ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 4,
+          SharedContainer(
+            padding: EdgeInsets.symmetric(horizontal: 6.26.w, vertical: 5.22.h),
+            color: isDark ? AppColors.darkColor : AppColors.whiteColor,
+            radius: 20.r,
+            child: CustomPrimaryText(
+              text: _amountText(isPositive),
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.labelColor,
             ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              "${isPositive ? "+" : ""}${transaction.amount}",
-            ),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  String _amountText(bool isPositive) {
+    final int intValue = transaction.amount.toInt();
+    final bool isWholeNumber = transaction.amount == intValue;
+    final String value = isWholeNumber
+        ? intValue.toString()
+        : transaction.amount.toStringAsFixed(2);
+
+    return isPositive ? '+$value' : value;
   }
 }

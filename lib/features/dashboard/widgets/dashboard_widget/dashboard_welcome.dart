@@ -12,6 +12,7 @@ class DashboardWelcome extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
+      width: MediaQuery.widthOf(context),
       padding: EdgeInsets.all(8.r),
       radius: 12.r,
       child: Column(
