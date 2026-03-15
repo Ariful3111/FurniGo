@@ -2,57 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/profile/controllers/profile_setting_controller.dart';
+import 'package:zb_dezign/features/profile/controllers/profile_update_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class ProfileSettingInfoFields extends StatelessWidget {
+class ProfileSettingInfoFields extends GetWidget<ProfileUpdateController> {
   const ProfileSettingInfoFields({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    ProfileSettingController profileSettingController = Get.find();
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           field(
-            controller: profileSettingController.nameController,
+            controller: controller.nameController,
             text: 'Full Name',
             isDark: isDark,
             labelText: 'Enter your name',
-            readOnly: !profileSettingController.isEdit.value,
+            readOnly: !controller.isEdit.value,
           ),
           SizedBox(height: 12.h),
           field(
-            controller: profileSettingController.emailController,
+            controller: controller.emailController,
             text: 'Email',
             isDark: isDark,
             labelText: 'Enter your email',
-            readOnly: !profileSettingController.isEdit.value,
+            readOnly: !controller.isEdit.value,
           ),
           SizedBox(height: 12.h),
           field(
-            controller: profileSettingController.phoneController,
+            controller: controller.phoneController,
             text: 'Phone',
             isDark: isDark,
             labelText: 'Enter your phone number',
-            readOnly: !profileSettingController.isEdit.value,
+            readOnly: !controller.isEdit.value,
           ),
           SizedBox(height: 12.h),
-          field(
-            controller: profileSettingController.addressController,
-            text: 'Address',
-            isDark: isDark,
-            labelText: 'Enter your address',
-            readOnly: !profileSettingController.isEdit.value,
-          ),
           AnimatedSize(
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            child: profileSettingController.isEdit.value
+            child: controller.isEdit.value
                 ? Column(
                     key: ValueKey('Save'),
                     children: [
@@ -68,8 +60,7 @@ class ProfileSettingInfoFields extends StatelessWidget {
                         width: 150.w,
                         text: 'Save Changes',
                         onPressed: () {
-                          profileSettingController.isEdit.value =
-                              !profileSettingController.isEdit.value;
+                          controller.isEdit.value = !controller.isEdit.value;
                         },
                       ),
                     ],

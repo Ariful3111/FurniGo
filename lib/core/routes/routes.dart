@@ -25,6 +25,7 @@ import 'package:zb_dezign/features/home/views/bottom_nav_view.dart';
 import 'package:zb_dezign/features/notification/bindings/notification_bindings.dart';
 import 'package:zb_dezign/features/notification/views/notification_view.dart';
 import 'package:zb_dezign/features/profile/bindings/profile_bindings.dart';
+import 'package:zb_dezign/features/profile/bindings/profile_settings_bindings.dart';
 import 'package:zb_dezign/features/profile/views/profile_setting_view.dart';
 import 'package:zb_dezign/features/profile/views/profile_views.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
@@ -140,7 +141,7 @@ final List<GetPage> appRoutes = [
   GetPage(
     name: AppRoutes.profileSettingView,
     page: () => ProfileSettingView(),
-    binding: ProfileBindings(),
+    binding: ProfileSettingsBindings(),
   ),
   GetPage(
     name: AppRoutes.sellView,
