@@ -6,13 +6,12 @@ import 'package:zb_dezign/features/ai_design/controller/ai_design_details_contro
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/details_row_model.dart';
 
-class AiInteriorDesign extends StatelessWidget {
+class AiInteriorDesign extends GetWidget<AiDesignDetailsController> {
   const AiInteriorDesign({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    AiDesignDetailsController aiDesignDetailsController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,15 +30,17 @@ class AiInteriorDesign extends StatelessWidget {
               : AppColors.greyTextColor,
         ),
         SizedBox(height: 20.h),
-        ...List.generate(aiDesignDetailsController.roomDetails.length, (index) {
+        ...List.generate(controller.roomDetails.length, (index) {
           return Padding(
-            padding: EdgeInsets.only(bottom:aiDesignDetailsController.roomDetails.length-1==index?0: 24.h),
+            padding: EdgeInsets.only(
+              bottom: controller.roomDetails.length - 1 == index ? 0 : 24.h,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                text(text: aiDesignDetailsController.roomTitle[index], isDark: isDark),
-                SizedBox(height: 12.h,),
-                DetailsRowModel(data: aiDesignDetailsController.roomDetails[index]),
+                text(text: controller.roomTitle[index], isDark: isDark),
+                SizedBox(height: 12.h),
+                DetailsRowModel(data: controller.roomDetails[index]),
               ],
             ),
           );

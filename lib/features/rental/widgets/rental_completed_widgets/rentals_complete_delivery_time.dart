@@ -7,12 +7,11 @@ import 'package:zb_dezign/features/rental/controller/rentals_complete_controller
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentalsCompleteDeliveryTime extends StatelessWidget {
+class RentalsCompleteDeliveryTime extends GetWidget<RentalsCompleteController> {
   const RentalsCompleteDeliveryTime({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentalsCompleteController completeController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Column(
@@ -24,26 +23,24 @@ class RentalsCompleteDeliveryTime extends StatelessWidget {
             color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
           ),
           SizedBox(height: 12.h),
-          ...List.generate(completeController.timeIndex.length, (index) {
+          ...List.generate(controller.timeIndex.length, (index) {
             return Padding(
               padding: EdgeInsets.only(
-                bottom: completeController.timeIndex.length - 1 == index
-                    ? 0
-                    : 12.h,
+                bottom: controller.timeIndex.length - 1 == index ? 0 : 12.h,
               ),
               child: Column(
-                children: List.generate(completeController.time.length, (i) {
+                children: List.generate(controller.time.length, (i) {
                   return Row(
                     children: [
                       CustomRadioButton(
                         value: i,
-                        groupValue: completeController.timeIndex[index],
+                        groupValue: controller.timeIndex[index],
                         onChange: (value) {
-                          completeController.timeIndex[index] = i;
-                          completeController.timeIndex.refresh();
+                          controller.timeIndex[index] = i;
+                          controller.timeIndex.refresh();
                         },
                       ),
-                      completeController.time[i] == 'Other'
+                      controller.time[i] == 'Other'
                           ? Container(
                               height: 36.h,
                               width: 251.w,
@@ -59,15 +56,14 @@ class RentalsCompleteDeliveryTime extends StatelessWidget {
                                 ],
                               ),
                               child: OtherField(
-                                controller: completeController.otherController,
-                                readOnly:
-                                    completeController.timeIndex[index] == 3
+                                controller: controller.otherController,
+                                readOnly: controller.timeIndex[index] == 3
                                     ? false
                                     : true,
                               ),
                             )
                           : CustomPrimaryText(
-                              text: completeController.time[i],
+                              text: controller.time[i],
                               fontWeight: FontWeight.w400,
                               fontSize: 14.sp,
                               color: isDark
@@ -83,7 +79,7 @@ class RentalsCompleteDeliveryTime extends StatelessWidget {
           SizedBox(height: 15.h),
           GestureDetector(
             onTap: () {
-              completeController.timeIndex.add(0);
+              controller.timeIndex.add(0);
             },
             child: Container(
               height: 40.h,

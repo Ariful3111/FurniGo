@@ -7,13 +7,12 @@ import 'package:zb_dezign/features/dashboard/controller/dashboard_controller.dar
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class DashboardQuickAction extends StatelessWidget {
+class DashboardQuickAction extends GetWidget<DashboardController> {
   final String? text;
   const DashboardQuickAction({super.key, this.text});
 
   @override
   Widget build(BuildContext context) {
-    DashboardController dashboardController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,9 +32,9 @@ class DashboardQuickAction extends StatelessWidget {
           ),
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: dashboardController.quickAction.length,
+          itemCount: controller.quickAction.length,
           itemBuilder: (context, index) {
-            final element = dashboardController.quickAction[index];
+            final element = controller.quickAction[index];
             return GestureDetector(
               onTap: () {
                 Get.toNamed(element['page']);

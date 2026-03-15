@@ -10,13 +10,12 @@ import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class DashboardTable extends StatelessWidget {
+class DashboardTable extends GetWidget<DashboardController> {
   const DashboardTable({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    DashboardController dashboardController = Get.find();
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.r),
       width: MediaQuery.widthOf(context),
@@ -32,7 +31,7 @@ class DashboardTable extends StatelessWidget {
             child: DashboardPropertyHeader(title: 'Recent orders', onTap: () {  },)),
           CustomDivider(),
           Obx(() {
-            final tableRows = dashboardController.recentOrderModel
+            final tableRows = controller.recentOrderModel
                 .map(
                   (order) => {
                     'id': order.id,
@@ -42,7 +41,7 @@ class DashboardTable extends StatelessWidget {
                   },
                 )
                 .toList();
-            final expandedFlags = dashboardController.expandedList.toList();
+            final expandedFlags = controller.expandedList.toList();
             return CustomTable(
               rows: tableRows,
               id: 'id',
@@ -50,15 +49,15 @@ class DashboardTable extends StatelessWidget {
               title: 'title',
               expandedList: expandedFlags,
               onExpand: (index) {
-                dashboardController.expandedList[index] =
-                    !dashboardController.expandedList[index];
+                controller.expandedList[index] =
+                    !controller.expandedList[index];
               },
               buildExpanded: (index, row) {
                 final RecentOrderModel orderModel =
                     row['model'] as RecentOrderModel;
                 return DashboardTableExpanded(orderModel: orderModel);
               },
-              headerList: dashboardController.dashboardTableColumn,
+              headerList: controller.dashboardTableColumn,
               action: Padding(
                 padding:  EdgeInsets.only(left: 25.w),
                 child: CustomPrimaryText(

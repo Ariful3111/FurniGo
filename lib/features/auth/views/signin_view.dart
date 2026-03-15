@@ -13,13 +13,12 @@ import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
 
-class SigninView extends StatelessWidget {
+class SigninView extends GetView<SigninController> {
   const SigninView({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    SigninController signinController = Get.find();
     final fromKey = GlobalKey<FormState>();
     return CustomContainer(
       gradient:isDark? AppColors.darkAuthBG:AppColors.authBG,
@@ -41,7 +40,7 @@ class SigninView extends StatelessWidget {
               title: 'Don\'t have an account? ',
               spantext: 'Create New Account',
               onTap: () {
-                signinController.signup(formKey: fromKey);
+                controller.signup(formKey: fromKey);
               },
               decoration: TextDecoration.underline,
             ),
@@ -49,14 +48,14 @@ class SigninView extends StatelessWidget {
             SigninForm(formKey: fromKey),
             SizedBox(height: 20.h),
             Obx(() {
-              return signinController.isLoading.value
+              return controller.isLoading.value
                   ? ButtonLoading()
                   : CustomPrimaryButton(
                       height: 48.h,
                       fontSize: 16.sp,
                       text: 'Sign In',
                       onPressed: () async {
-                        await signinController.userLogin(formKey: fromKey);
+                        await controller.userLogin(formKey: fromKey);
                       },
                     );
             }),

@@ -6,13 +6,12 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/home/controller/home_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class HomeOurProductFilter extends StatelessWidget {
+class HomeOurProductFilter extends GetWidget<HomeController> {
   const HomeOurProductFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    HomeController homeController = Get.find();
     List title = [
       'Table',
       'Chair',
@@ -31,10 +30,10 @@ class HomeOurProductFilter extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Obx(() {
-            final selected = homeController.productIndex.value == index;
+            final selected = controller.productIndex.value == index;
             return GestureDetector(
               onTap: () {
-                homeController.productIndex.value = index;
+                controller.productIndex.value = index;
               },
               child: AnimatedSize(
                 duration: Duration(milliseconds: 300),

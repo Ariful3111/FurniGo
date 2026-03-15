@@ -28,8 +28,8 @@ class CreditHeader extends StatelessWidget {
           ],
         ),
         Spacer(),
-        Image.asset(IconsPath.creditCoin,height: 14.h,width: 14.w,),
-        SizedBox(width: 2.w,),
+        Image.asset(IconsPath.creditCoin, height: 14.h, width: 14.w),
+        SizedBox(width: 2.w),
         CustomPrimaryText(text: "Balance: 1250", fontSize: 14.sp),
       ],
     );

@@ -9,12 +9,11 @@ import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class CategoryView extends StatelessWidget {
+class CategoryView extends GetView<DashboardController> {
   const CategoryView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    DashboardController dashboardController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomContainer(
       child: ListView(
@@ -25,18 +24,19 @@ class CategoryView extends StatelessWidget {
             radius: 16.r,
             padding: EdgeInsets.all(16.r),
             child: Column(
-              children: List.generate(dashboardController.quickAction.length, (
+              children: List.generate(controller.quickAction.length, (
                 index,
               ) {
-                final item = dashboardController.quickAction[index];
+                final item = controller.quickAction[index];
                 return GestureDetector(
                   onTap: () {
                     Get.toNamed(item['page']);
                   },
                   child: SharedContainer(
+                    width: MediaQuery.widthOf(context),
                     margin: EdgeInsets.only(
                       bottom:
-                          dashboardController.quickAction.length - 1 == index
+                          controller.quickAction.length - 1 == index
                           ? 0
                           : 8.h,
                     ),

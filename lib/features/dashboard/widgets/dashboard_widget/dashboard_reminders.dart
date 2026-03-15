@@ -8,15 +8,14 @@ import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class DashboardReminders extends StatelessWidget {
+class DashboardReminders extends GetWidget<ReminderController> {
   const DashboardReminders({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ReminderController reminderController = Get.find();
 
     return Obx(() {
-      final reminders = reminderController.reminderList;
+      final reminders = controller.reminderList;
       if (reminders.isEmpty) {
         return SizedBox.shrink();
       }
@@ -35,7 +34,7 @@ class DashboardReminders extends StatelessWidget {
                   key: ObjectKey(item),
                   direction: DismissDirection.startToEnd,
                   onDismissed: (direction) {
-                    reminderController.reminderList.removeAt(index);
+                    controller.reminderList.removeAt(index);
                   },
                   child: DashboardCard(
                     title: item.title,
@@ -43,7 +42,7 @@ class DashboardReminders extends StatelessWidget {
                     time: item.time,
                     icon: item.icon,
                     isLastIndex:
-                        reminderController.reminderList.length - 1 == index,
+                        controller.reminderList.length - 1 == index,
                     button: Align(
                       alignment: Alignment.centerRight,
                       child: CustomPrimaryButton(

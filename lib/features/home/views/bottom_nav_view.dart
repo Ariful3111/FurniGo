@@ -6,16 +6,15 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/home/controller/bottom_nav_controller.dart';
 
-class BottomNavView extends StatelessWidget {
+class BottomNavView extends GetView<BottomNavController> {
   const BottomNavView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    BottomNavController bottomNavController = Get.find();
     return Obx(
       () => Scaffold(
         body:
-            bottomNavController.pages[bottomNavController.selectedIndex.value],
+            controller.pages[controller.selectedIndex.value],
         bottomNavigationBar: Container(
           margin: EdgeInsets.all(25.r),
           
@@ -84,7 +83,7 @@ class BottomNavView extends StatelessWidget {
               ),
             ],
             onTap: (index) {
-              bottomNavController.selectedIndex.value = index;
+              controller.selectedIndex.value = index;
             },
           ),
         ),

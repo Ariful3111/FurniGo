@@ -25,7 +25,7 @@ class DashboardInfo extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 8.w,
         mainAxisSpacing: 8.h,
-        childAspectRatio: 2.3
+        childAspectRatio: 2.3,
       ),
       itemCount: item.length,
       shrinkWrap: true,

@@ -17,7 +17,8 @@ class DashboardCard extends StatelessWidget {
     required this.sub,
     required this.time,
     required this.icon,
-    required this.isLastIndex, required this.button,
+    required this.isLastIndex,
+    required this.button,
   });
 
   @override

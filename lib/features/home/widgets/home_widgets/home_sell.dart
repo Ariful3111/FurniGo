@@ -13,7 +13,9 @@ class HomeSell extends StatelessWidget {
       title: 'Sell. Quote. Get Paid.',
       sub: 'Sell quality pieces with smart pricing and hassle-free pickup.',
       buttonTitle: 'Sell Now',
-      onTap: () {}, buttonWidth: 122.w, image: ImagesPath.sell,
+      onTap: () {},
+      buttonWidth: 122.w,
+      image: ImagesPath.sell,
     );
   }
 }

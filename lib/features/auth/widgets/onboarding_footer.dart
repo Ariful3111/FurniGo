@@ -58,7 +58,7 @@ class OnboardingFooter extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 38.h),
-                    OnboardingSlider(isLast: isLast,),
+                    OnboardingSlider(isLast: isLast),
                   ],
                 ),
         ),

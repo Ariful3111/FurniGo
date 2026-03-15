@@ -30,12 +30,25 @@ class DashboardTableExpanded extends StatelessWidget {
             CustomTableStatus(status: orderModel.status),
           ],
         ),
-        SizedBox(height: 8.h,),
-        buildDetailRow('eta:'.toUpperCase(), orderModel.eta.toUpperCase(), isDark: isDark),
-        SizedBox(height: 8.h,),
-        buildDetailRow('total:'.toUpperCase(), orderModel.total.toUpperCase(), isDark: isDark),
-        SizedBox(height: 8.h,),
-        buildDetailRow('action:'.toUpperCase(), orderModel.action.toUpperCase(), isDark: isDark),
-    ]);
+        SizedBox(height: 8.h),
+        buildDetailRow(
+          'eta:'.toUpperCase(),
+          orderModel.eta.toUpperCase(),
+          isDark: isDark,
+        ),
+        SizedBox(height: 8.h),
+        buildDetailRow(
+          'total:'.toUpperCase(),
+          orderModel.total.toUpperCase(),
+          isDark: isDark,
+        ),
+        SizedBox(height: 8.h),
+        buildDetailRow(
+          'action:'.toUpperCase(),
+          orderModel.action.toUpperCase(),
+          isDark: isDark,
+        ),
+      ],
+    );
   }
 }

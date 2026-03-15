@@ -10,7 +10,7 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_timeline/custom_payment_timeline.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class DashboardPaymentSchedule extends StatelessWidget {
+class DashboardPaymentSchedule extends GetWidget<DashboardPaymentController> {
   const DashboardPaymentSchedule({super.key});
 
   @override
@@ -21,7 +21,6 @@ class DashboardPaymentSchedule extends StatelessWidget {
       {"date": "Dec 15", "amount": "\$125.00", "active": false, 'paid': 'Paid'},
     ];
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    DashboardPaymentController dashboardPaymentController = Get.find();
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
       radius: 20.sp,
@@ -94,11 +93,11 @@ class DashboardPaymentSchedule extends StatelessWidget {
                 builder: (context) {
                   return CustomPaymentDialog(
                     icon: IconsPath.success,
-                    cardList: dashboardPaymentController.cardList,
-                    selectedCard: dashboardPaymentController.selectedCard,
+                    cardList: controller.cardList,
+                    selectedCard: controller.selectedCard,
                     onSelect: (value) {
                       if (value != null) {
-                        dashboardPaymentController.selectedCard.value = value;
+                        controller.selectedCard.value = value;
                       }
                     },
                   );

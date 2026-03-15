@@ -3,21 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/dashboard/controller/order_controller.dart';
+import 'package:zb_dezign/features/order/controller/order_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class OrderHeader extends StatelessWidget {
+class OrderHeader extends GetWidget<OrderController> {
   const OrderHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    OrderController orderController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(() {
       return AnimatedSwitcher(
-        duration: Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 500),
         switchInCurve: Curves.easeOutCubic,
         switchOutCurve: Curves.easeInCubic,
         transitionBuilder: (child, animation) {
@@ -32,7 +31,7 @@ class OrderHeader extends StatelessWidget {
             ),
           );
         },
-        child: orderController.isSearch.value
+        child: controller.isSearch.value
             ? SizedBox(
                 key: ValueKey('Field'),
                 child: CustomTextFormField(
@@ -40,13 +39,12 @@ class OrderHeader extends StatelessWidget {
                   labelText: 'Search Your Order',
                   maxLines: 1,
                   borderRadius: 12.r,
-                  controller: orderController.orderController,
+                  controller: controller.orderController,
                   suffixIcon: Padding(
                     padding: EdgeInsets.only(right: 8.w),
                     child: InkWell(
                       onTap: () {
-                        orderController.isSearch.value =
-                            !orderController.isSearch.value;
+                        controller.isSearch.value = !controller.isSearch.value;
                       },
                       child: Image.asset(
                         IconsPath.search,
@@ -82,8 +80,8 @@ class OrderHeader extends StatelessWidget {
                         button(
                           imagePath: IconsPath.search,
                           onTap: () {
-                            orderController.isSearch.value =
-                                !orderController.isSearch.value;
+                            controller.isSearch.value =
+                                !controller.isSearch.value;
                           },
                           isDark: isDark,
                         ),

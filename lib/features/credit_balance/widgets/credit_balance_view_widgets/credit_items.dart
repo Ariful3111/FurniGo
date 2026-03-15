@@ -7,12 +7,11 @@ import 'package:zb_dezign/features/credit_balance/controller/credit_balance_cont
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class CreditItems extends StatelessWidget {
+class CreditItems extends GetWidget<CreditBalanceController> {
   const CreditItems({super.key});
 
   @override
   Widget build(BuildContext context) {
-    CreditBalanceController creditBalanceController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -26,11 +25,10 @@ class CreditItems extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Obx(() {
-          final isSelected =
-              creditBalanceController.selectedItem.value == index;
+          final isSelected = controller.selectedItem.value == index;
           return GestureDetector(
             onTap: () {
-              creditBalanceController.selectedItem.value = index;
+              controller.selectedItem.value = index;
             },
             child: SharedContainer(
               radius: 12.r,
@@ -42,19 +40,16 @@ class CreditItems extends StatelessWidget {
                   : AppColors.whiteColor,
               border: Border.all(
                 width: 1.r,
-                color: isSelected ? AppColors.primaryColor : AppColors.primaryBorderColor,
+                color: isSelected
+                    ? AppColors.primaryColor
+                    : AppColors.primaryBorderColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Image.asset(
-                        IconsPath.credit,
-                        height: 16.h,
-                        width: 16.w,
-                        
-                      ),
+                      Image.asset(IconsPath.credit, height: 16.h, width: 16.w),
                       SizedBox(width: 8.w),
                       CustomPrimaryText(
                         text: '40 Credit',

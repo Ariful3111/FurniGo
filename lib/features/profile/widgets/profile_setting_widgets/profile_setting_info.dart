@@ -8,12 +8,11 @@ import 'package:zb_dezign/features/profile/widgets/profile_setting_widgets/profi
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class ProfileSettingInfo extends StatelessWidget {
+class ProfileSettingInfo extends GetWidget<ProfileSettingController> {
   const ProfileSettingInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ProfileSettingController profileSettingController = Get.find();
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
       child: Column(
@@ -27,8 +26,8 @@ class ProfileSettingInfo extends StatelessWidget {
             text: 'Edit',
             icon: IconsPath.edit,
             onPressed: () {
-              profileSettingController.isEdit.value =
-                  !profileSettingController.isEdit.value;
+              controller.isEdit.value =
+                  !controller.isEdit.value;
             },
           ), 
           ),

@@ -13,7 +13,8 @@ class HeaderButton extends StatelessWidget {
     required this.height,
     required this.width,
     required this.child,
-    required this.radius, required this.onTap,
+    required this.radius,
+    required this.onTap,
   });
 
   @override

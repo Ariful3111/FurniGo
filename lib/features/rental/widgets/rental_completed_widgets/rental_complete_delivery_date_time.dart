@@ -8,12 +8,12 @@ import 'package:zb_dezign/features/rental/widgets/rental_completed_widgets/renta
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_date_fields.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentalCompleteDeliveryDateTime extends StatelessWidget {
+class RentalCompleteDeliveryDateTime
+    extends GetWidget<RentalsCompleteController> {
   const RentalCompleteDeliveryDateTime({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentalsCompleteController completeController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,14 +40,14 @@ class RentalCompleteDeliveryDateTime extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         CustomDateField(
-          controller: completeController.dateController,
+          controller: controller.dateController,
           onTap: () {
             DatePicker.pickDate(
               context: context,
               onDateSelected: (date) {
                 final String formattedDate =
                     '${date.day}/${date.month}/${date.year}';
-                completeController.dateController.text = formattedDate;
+                controller.dateController.text = formattedDate;
               },
             );
           },

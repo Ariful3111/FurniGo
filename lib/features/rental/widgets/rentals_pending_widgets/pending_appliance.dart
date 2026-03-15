@@ -5,14 +5,12 @@ import 'package:zb_dezign/features/rental/model/rental_model.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rental_quotes_furniture_widget.dart';
 import 'package:zb_dezign/shared/widgets/details_row_model.dart';
 
-class PendingAppliance extends StatelessWidget {
+class PendingAppliance extends GetWidget<RentalQuotesController> {
   const PendingAppliance({super.key});
 
   @override
   Widget build(BuildContext context) {
     final RentalModel rentalModel = Get.arguments as RentalModel;
-    RentalQuotesController quotesController = Get.find();
-
     var appliance = [
       {
         'title': 'Reception',
@@ -28,7 +26,7 @@ class PendingAppliance extends StatelessWidget {
       },
     ];
     return rentalModel.status == 'Quote Sent'
-        ? RentalQuotesFurnitureWidget(itemList: quotesController.appliance, isOpen: quotesController.isOpenAppliance,)
+        ? RentalQuotesFurnitureWidget(itemList: controller.appliance, isOpen: controller.isOpenAppliance,)
         : DetailsRowModel(data: appliance);
   }
 }

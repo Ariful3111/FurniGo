@@ -15,7 +15,7 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
-class SignupView extends StatelessWidget {
+class SignupView extends GetView<SignupController> {
   const SignupView({super.key});
 
   @override
@@ -23,7 +23,6 @@ class SignupView extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark; 
     final fromKey = GlobalKey<FormState>();
     UserModeController userModeController = Get.find();
-    SignupController signupController = Get.find();
     return CustomContainer(
       gradient:isDark?AppColors.darkAuthBG: AppColors.authBG,
       child: SingleChildScrollView(
@@ -59,26 +58,26 @@ class SignupView extends StatelessWidget {
             SizedBox(height: 35.h),
             Obx(
               () => AuthCheckBox(
-                isChecked: signupController.isChecked.value,
+                isChecked: controller.isChecked.value,
                 onChange: (value) {
-                  signupController.isChecked.value = value;
+                  controller.isChecked.value = value;
                 },
               ),
             ),
             SizedBox(height: 32.h),
             Obx(() {
-              return signupController.isLoading.value
+              return controller.isLoading.value
                   ? ButtonLoading()
                   : CustomPrimaryButton(
                       height: 48.h,
                       fontSize: 16.sp,
                       text: 'Sign Up',
-                      backgroundColor: signupController.isChecked.value
+                      backgroundColor: controller.isChecked.value
                           ? null
                           : AppColors.buttonTextColor,
                       onPressed: () async {
-                        if (signupController.isChecked.value) {
-                          await signupController.register(formKey: fromKey);
+                        if (controller.isChecked.value) {
+                          await controller.register(formKey: fromKey);
                         } else {
                           ErrorSnackbar.show(
                             description:

@@ -6,14 +6,13 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/auth/controller/onboarding_controller.dart';
 
-class OnboardingExpandButton extends StatelessWidget {
+class OnboardingExpandButton extends GetWidget<OnboardingController> {
   final bool isLast;
   const OnboardingExpandButton({super.key, required this.isLast});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    OnboardingController onboardingController = Get.find();
     return Obx(
       () => Padding(
         padding: EdgeInsets.all(4.r),
@@ -22,15 +21,14 @@ class OnboardingExpandButton extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           child: GestureDetector(
             onHorizontalDragUpdate: (details) =>
-                onboardingController.updateDrag(details.delta.dx),
-            onHorizontalDragEnd: (_) =>
-                onboardingController.endDrag(isLast: isLast),
+                controller.updateDrag(details.delta.dx),
+            onHorizontalDragEnd: (_) => controller.endDrag(isLast: isLast),
             child: Row(
               children: [
                 FadeIn(
                   delay: Duration(milliseconds: 400),
                   child: Transform.translate(
-                    offset: Offset(onboardingController.dragOffset.value.w, 0),
+                    offset: Offset(controller.dragOffset.value.w, 0),
                     child: Container(
                       height: 52.h,
                       width: 52.w,
@@ -55,11 +53,9 @@ class OnboardingExpandButton extends StatelessWidget {
                 ...List.generate(3, (index) {
                   return FadeIn(
                     delay: Duration(milliseconds: 800 + (index * 200)),
-                    child: onboardingController.dragOffset < 20.w
+                    child: controller.dragOffset < 20.w
                         ? Obx(() {
-                            double opacity = onboardingController.syncOpacity(
-                              index,
-                            );
+                            double opacity = controller.syncOpacity(index);
                             return ShaderMask(
                               blendMode: BlendMode.srcIn,
                               shaderCallback: (bounds) {

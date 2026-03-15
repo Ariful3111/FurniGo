@@ -28,12 +28,15 @@ class DashboardPaymentSave extends StatelessWidget {
             fontSize: 14.sp,
             color: isDark ? AppColors.whiteColor : AppColors.labelColor,
           ),
-          SizedBox(height: 10.h,),
+          SizedBox(height: 10.h),
           CustomPrimaryText(
-            text: 'Extend your rental for 3 more months and get 7% off your remaining payments.',
+            text:
+                'Extend your rental for 3 more months and get 7% off your remaining payments.',
             fontWeight: FontWeight.w400,
             fontSize: 12.sp,
-            color: isDark ? AppColors.darkPendingTextColor : AppColors.labelColor,
+            color: isDark
+                ? AppColors.darkPendingTextColor
+                : AppColors.labelColor,
           ),
         ],
       ),

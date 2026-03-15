@@ -6,15 +6,16 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class SellHelper {
-  Widget sellHeader({required bool isDark, required BuildContext context,String ? icon,required VoidCallback onTap}) {
+  Widget sellHeader({
+    required bool isDark,
+    required BuildContext context,
+    String? icon,
+    required VoidCallback onTap,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomAppbar(
-          title: 'Sell Quotes',
-          icon: icon,
-          onDrawerTap: onTap,
-        ),
+        CustomAppbar(title: 'Sell Quotes', icon: icon, onDrawerTap: onTap),
         SizedBox(height: 12.h),
         SharedContainer(
           radius: 12.r,

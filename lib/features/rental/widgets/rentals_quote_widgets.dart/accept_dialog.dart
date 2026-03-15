@@ -9,13 +9,12 @@ import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dar
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class AcceptDialog extends StatelessWidget {
+class AcceptDialog extends GetWidget<RentalQuotesController> {
   const AcceptDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    RentalQuotesController quotesController = Get.find();
     return Dialog(
       alignment: Alignment.center,
       child: Container(
@@ -65,11 +64,11 @@ class AcceptDialog extends StatelessWidget {
                             : null,
                         builder: (context) {
                           return CustomPaymentDialog(
-                            cardList: quotesController.cardList,
-                            selectedCard: quotesController.selectedCard,
+                            cardList: controller.cardList,
+                            selectedCard: controller.selectedCard,
                             onSelect: (value) {
                               if (value != null) {
-                                quotesController.selectedCard.value = value;
+                                controller.selectedCard.value = value;
                               }
                             },
                           );

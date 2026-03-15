@@ -24,7 +24,9 @@ class DashboardPaymentHeader extends StatelessWidget {
                       text: 'Rental RNT-2024-001',
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
-                      color: isDark ? AppColors.whiteColor : AppColors.labelColor,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.labelColor,
                       textOverflow: TextOverflow.ellipsis,
                     ),
                   ),

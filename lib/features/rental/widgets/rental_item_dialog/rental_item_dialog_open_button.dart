@@ -6,12 +6,11 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentalItemDialogOpenButton extends StatelessWidget {
+class RentalItemDialogOpenButton extends GetWidget<RentalQuotesController> {
   const RentalItemDialogOpenButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final RentalQuotesController controller = Get.find();
     return Obx(() {
       final int itemCount =
           controller.approvedItems.length + controller.revisedItems.length;

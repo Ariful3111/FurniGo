@@ -17,26 +17,20 @@ class OrderButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            flex: 5,
-            child: button(
-              text: 'Download Invoices',
-              icon: IconsPath.download,
-              onPressed: () {},
-              isDark: isDark,
-            ),
+          button(
+            text: 'Download Invoices',
+            icon: IconsPath.download,
+            onPressed: () {},
+            isDark: isDark,
           ),
           SizedBox(width: 12.w),
-          Expanded(
-            flex: 4,
-            child: button(
-              text: 'View Details',
-              icon: IconsPath.view,
-              onPressed: () {
-                Get.toNamed(AppRoutes.orderDetailsView);
-              },
-              isDark: isDark,
-            ),
+          button(
+            text: 'View Details',
+            icon: IconsPath.view,
+            onPressed: () {
+              Get.toNamed(AppRoutes.orderDetailsView);
+            },
+            isDark: isDark,
           ),
         ],
       ),

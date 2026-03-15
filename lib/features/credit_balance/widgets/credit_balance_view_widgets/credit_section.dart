@@ -10,13 +10,12 @@ import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dar
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class CreditSection extends StatelessWidget {
+class CreditSection extends GetWidget<CreditBalanceController> {
   const CreditSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-        CreditBalanceController creditBalanceController = Get.find();
     return Column(
       children: [
         SharedContainer(
@@ -69,18 +68,18 @@ class CreditSection extends StatelessWidget {
                 backgroundColor: AppColors.primaryColor,
                 onPressed: () {
                   showDialog(
-                context: context,
-                builder: (context) {
-                  return CustomPaymentDialog(
-                    cardList: creditBalanceController.cardList,
-                    selectedCard: creditBalanceController.selectedCard,
-                    onSelect: (value) {
-                      creditBalanceController.selectedCard.value = value!;
+                    context: context,
+                    builder: (context) {
+                      return CustomPaymentDialog(
+                        cardList: controller.cardList,
+                        selectedCard: controller.selectedCard,
+                        onSelect: (value) {
+                          controller.selectedCard.value = value!;
+                        },
+                        icon: IconsPath.success,
+                      );
                     },
-                    icon: IconsPath.success,
                   );
-                },
-              );
                 },
                 boxShadow: [
                   shadow(dy: 98, blurRadius: 28, alpha: 0.0),

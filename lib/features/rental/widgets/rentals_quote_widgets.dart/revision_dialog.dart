@@ -19,10 +19,8 @@ class RevisionDialog extends StatelessWidget {
         padding: EdgeInsets.all(13.58.r),
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkColor : AppColors.whiteColor,
-          borderRadius: BorderRadius.circular(16.3.r), 
-          boxShadow: [
-            rentalShadow(y: 5.43, blur: 19.02),
-          ],
+          borderRadius: BorderRadius.circular(16.3.r),
+          boxShadow: [rentalShadow(y: 5.43, blur: 19.02)],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,7 +42,7 @@ class RevisionDialog extends StatelessWidget {
               color: isDark
                   ? AppColors.primaryBorderColor
                   : AppColors.greyTextColor,
-                  textAlign: TextAlign.center,
+              textAlign: TextAlign.center,
             ),
             SizedBox(height: 8.h),
             Row(

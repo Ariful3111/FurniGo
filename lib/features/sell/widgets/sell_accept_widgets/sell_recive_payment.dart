@@ -17,21 +17,22 @@ class SellRecivePayment extends StatelessWidget {
             text(text: 'Account Information', isDark: isDark),
             Spacer(),
             Image.asset(IconsPath.visa, height: 20.h, width: 32.w),
-            SizedBox(width: 12.w,),
-            text(text: '45531213', isDark: isDark,fontWeight: FontWeight.w400),
+            SizedBox(width: 12.w),
+            text(text: '45531213', isDark: isDark, fontWeight: FontWeight.w400),
           ],
         ),
-        SizedBox(height: 20.h,),
+        SizedBox(height: 20.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             text(text: 'Date', isDark: isDark),
-            text(text: '12/8/26', isDark: isDark,fontWeight: FontWeight.w400)
+            text(text: '12/8/26', isDark: isDark, fontWeight: FontWeight.w400),
           ],
-        )
+        ),
       ],
     );
   }
+
   Widget text({
     required String text,
     required bool isDark,
