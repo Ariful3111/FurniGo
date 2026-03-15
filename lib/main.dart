@@ -4,27 +4,40 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/di/dependency_injection.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/core/routes/routes.dart';
+import 'package:zb_dezign/core/theme/app_theme.dart';
+import 'package:zb_dezign/core/theme/theme_controller.dart';
 import 'package:zb_dezign/features/auth/bindings/auth_bindings.dart';
+import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
 
-void main()async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- await DependencyInjection.init();
-  runApp(const MyApp());
+  String token = await DependencyInjection.init();
+  runApp(MyApp(token: token));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String token;
+  const MyApp({required this.token, super.key});
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: Size(430, 932),
-      builder: (context, child) => GetMaterialApp(
-        title: 'ZB DEZIGN',
-        debugShowCheckedModeBanner: false,
-        initialBinding: AuthBindings(),
-        initialRoute: AppRoutes.rentalView,
-        getPages: appRoutes,
-      ),
+      builder: (context, child) {
+        return Obx(() {
+          return GetMaterialApp(
+            title: 'ZB DEZIGN',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: Get.find<ThemeController>().currentTheme,
+            initialBinding: token.isEmpty ? AuthBindings() : HomeBindings(),
+            initialRoute: token.isEmpty
+                ? AppRoutes.onboardingView
+                : AppRoutes.bottomNav,
+            getPages: appRoutes,
+          );
+        });
+      },
     );
   }
 }

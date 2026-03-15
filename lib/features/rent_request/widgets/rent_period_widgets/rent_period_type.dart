@@ -31,26 +31,29 @@ class RentPeriodType extends StatelessWidget {
             color: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
-          ...List.generate(rentPeriodController.type.length, (index) {
-            return Row(
-              children: [
-                Obx(
-                  () => CustomRadioButton(
-                    value: index,
-                    groupValue: rentPeriodController.selectedType.value,
-                    onChange: (value) {
-                      rentPeriodController.selectedType.value = value!;
-                    },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(rentPeriodController.type.length, (index) {
+              return Row(
+                children: [
+                  Obx(
+                    () => CustomRadioButton(
+                      value: index,
+                      groupValue: rentPeriodController.selectedType.value,
+                      onChange: (value) {
+                        rentPeriodController.selectedType.value = value!;
+                      },
+                    ),
                   ),
-                ),
-                CustomPrimaryText(
-                  text: rentPeriodController.type[index],
-                  fontSize: 14.sp,
-                  color: AppColors.darkColor,
-                ),
-              ],
-            );
-          }),
+                  CustomPrimaryText(
+                    text: rentPeriodController.type[index],
+                    fontSize: 14.sp,
+                    color: AppColors.darkColor,
+                  ),
+                ],
+              );
+            }),
+          ),
           SizedBox(height: 24.h),
           RentPeriodTypeBudget(),
         ],

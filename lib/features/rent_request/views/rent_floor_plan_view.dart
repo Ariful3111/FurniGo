@@ -5,6 +5,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_floor_plan_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_floor_plan_widgets/floor_plan_widgets.dart';
 import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
+import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_switch_button.dart';
@@ -24,7 +25,7 @@ class RentFloorPlanView extends StatelessWidget {
             children: [
               Center(child: PageCount(text: 'Floor Plan')),
               SizedBox(height: 20.h),
-              propertyDivider(),
+              CustomDivider(),
               SizedBox(height: 24.h),
               CustomPrimaryText(
                 text: 'Floorplan & dimensions',
@@ -43,7 +44,7 @@ class RentFloorPlanView extends StatelessWidget {
                             'Sharing your floor plan helps us design your space faster and more accurately.',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xFF6A7282),
+                        color: AppColors.greyColor,
                       ),
                     ),
                     Obx(

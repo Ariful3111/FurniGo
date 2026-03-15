@@ -42,15 +42,6 @@ class OnboardingView extends StatelessWidget {
                   return OnboardingFooter(
                     title: item['title'],
                     subTitle: item['subTitle'],
-                    onTap: () {
-                      if (onboardingController.pageController.hasClients &&
-                          !isLast) {
-                        onboardingController.pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
                     isLast: isLast,
                   );
                 }),

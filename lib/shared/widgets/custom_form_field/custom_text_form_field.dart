@@ -12,6 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? obscureText;
   final TextInputType? keyboardType;
   final Color? textColor;
+  final Color? cursorColor;
   final Color? labelColor;
   final double? fontSize;
   final double? labelFontSize;
@@ -84,7 +85,8 @@ class CustomTextFormField extends StatelessWidget {
     this.borderWidth,
     this.labelColor,
     this.borderColor,
-    this.labelFontSize, this.labelFontWeight,
+    this.labelFontSize,
+    this.labelFontWeight, this.cursorColor,
   });
 
   @override
@@ -105,13 +107,13 @@ class CustomTextFormField extends StatelessWidget {
       focusNode: focusNode,
       style: GoogleFonts.montserrat(
         color: isDark
-            ? textColor ?? AppColors.darkColor
+            ? textColor ?? AppColors.whiteColor
             : textColor ?? AppColors.darkColor,
         fontSize: fontSize ?? 16.sp,
         fontWeight: fontWeight ?? FontWeight.w500,
         height: fontHeight,
       ),
-      cursorColor: isDark ? AppColors.darkColor : AppColors.darkColor,
+      cursorColor: isDark ?cursorColor?? AppColors.whiteColor : cursorColor?? AppColors.darkColor,
       decoration: InputDecoration(
         floatingLabelBehavior: floatingLabelBehavior,
         hintTextDirection: hintDirection,
@@ -122,7 +124,9 @@ class CustomTextFormField extends StatelessWidget {
             labelTextWidget ??
             CustomPrimaryText(
               text: labelText ?? "",
-              color: labelColor ?? AppColors.fieldTextColor,
+              color: isDark
+                  ? labelColor ?? AppColors.primaryBorderColor
+                  : labelColor ?? AppColors.fieldTextColor,
               fontSize: labelFontSize ?? 16.sp,
               fontWeight: labelFontWeight,
             ),
@@ -145,7 +149,7 @@ class CustomTextFormField extends StatelessWidget {
               BorderSide(
                 width: borderWidth ?? 1.r,
                 color: isDark
-                    ? borderColor ?? AppColors.fieldBorderColorLight
+                    ? borderColor ?? AppColors.darkBorderColor
                     : borderColor ?? AppColors.fieldBorderColorLight,
               ),
         ),
@@ -156,7 +160,7 @@ class CustomTextFormField extends StatelessWidget {
               BorderSide(
                 width: borderWidth ?? 1.r,
                 color: isDark
-                    ? borderColor ?? AppColors.fieldBorderColorLight
+                    ? borderColor ?? AppColors.darkBorderColor
                     : borderColor ?? AppColors.fieldBorderColorLight,
               ),
         ),
@@ -167,13 +171,13 @@ class CustomTextFormField extends StatelessWidget {
               BorderSide(
                 width: borderWidth ?? 1.r,
                 color: isDark
-                    ? borderColor ?? AppColors.fieldBorderColorLight
+                    ? borderColor ?? AppColors.darkBorderColor
                     : borderColor ?? AppColors.fieldBorderColorLight,
               ),
         ),
         filled: isFilled ?? true,
         fillColor: isDark
-            ? fillColor ?? AppColors.whiteColor
+            ? fillColor ?? AppColors.labelColor
             : fillColor ?? AppColors.whiteColor,
       ),
     );

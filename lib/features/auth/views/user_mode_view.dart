@@ -16,9 +16,11 @@ class UserModeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     UserModeController userModeController = Get.find();
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient:isDark?AppColors.darkAuthBG: AppColors.authBG,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -29,12 +31,14 @@ class UserModeView extends StatelessWidget {
             text: 'How will you use ZB Design?',
             fontSize: 24.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.darkColor,
+            color:isDark?AppColors.primaryBorderColor: AppColors.darkColor,
           ),
           SizedBox(height: 32.h),
           UserOption(),
           SizedBox(height: 42.h),
           CustomPrimaryButton(
+            height: 48.h, 
+            fontSize: 16.sp,
             text: 'Continue',
             onPressed: () {
               if (userModeController.selectedIndex.value == 0) {
@@ -50,19 +54,19 @@ class UserModeView extends StatelessWidget {
             height: 48.h,
             width: MediaQuery.widthOf(context),
             decoration: BoxDecoration(
-              color: Color(0xFFFFF3D0),
-              border: Border.all(width: 1.r, color: Color(0xFFFEE498)),
+              color:isDark?AppColors.darkErrorBG: Color(0xFFFFF3D0),
+              border: Border.all(width: 1.r, color:isDark?AppColors.darkErrorBorder: Color(0xFFFEE498)),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Row(
               children: [
-                Image.asset(IconsPath.info, height: 16.h, width: 16.w),
+                Image.asset(IconsPath.info, height: 16.h, width: 16.w,color: isDark?AppColors.darkPendingTextColor:null,),
                 SizedBox(width: 10.w),
                 CustomPrimaryText(
                   text: 'You can add or switch profiles later.',
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.darkColor,
+                  color:isDark? AppColors.darkPendingTextColor:AppColors.darkColor,
                 ),
               ],
             ),

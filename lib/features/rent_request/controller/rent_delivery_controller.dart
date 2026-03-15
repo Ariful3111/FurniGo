@@ -8,6 +8,7 @@ class RentDeliveryController extends GetxController {
   TextEditingController zipController = TextEditingController();
   TextEditingController deliveryDateController = TextEditingController();
   TextEditingController otherDateController = TextEditingController();
+  TextEditingController numberDateController = TextEditingController();
   RxBool isChecked = false.obs;
   RxBool isSetup = false.obs;
   List<String> city = ['City 1', 'City 2', 'City 3'];
@@ -49,6 +50,7 @@ class RentDeliveryController extends GetxController {
     zipController.dispose();
     deliveryDateController.dispose();
     otherDateController.dispose();
+    numberDateController.dispose();
     super.dispose();
   }
 }

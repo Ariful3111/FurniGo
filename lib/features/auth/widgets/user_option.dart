@@ -11,6 +11,8 @@ class UserOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     UserModeController userModeController = Get.find();
     return Column(
       children: List.generate(userModeController.userItem.length, (index) {
@@ -20,8 +22,11 @@ class UserOption extends StatelessWidget {
           margin: EdgeInsets.only(bottom: index == 0 ? 20.h : 0),
           width: MediaQuery.widthOf(context),
           decoration: BoxDecoration(
-            color: AppColors.whiteColor,
-            border: Border.all(width: 1.r, color: Color(0xFFE8E6EB)),
+            color: isDark ? AppColors.labelColor : AppColors.whiteColor,
+            border: Border.all(
+              width: 1.r,
+              color: isDark ? AppColors.darkBorderColor : AppColors.boxColor,
+            ),
             borderRadius: BorderRadius.circular(16.r),
             boxShadow: [
               BoxShadow(
@@ -41,7 +46,7 @@ class UserOption extends StatelessWidget {
                   CustomPrimaryText(
                     text: item['title'],
                     fontSize: 18.sp,
-                    color: Color(0xFF121212),
+                    color:isDark?AppColors.whiteColor: Color(0xFF121212),
                     textOverflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4.h),
@@ -49,7 +54,7 @@ class UserOption extends StatelessWidget {
                     text: item['subTitle'],
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF4D4D4D),
+                    color:isDark?AppColors.primaryBorderColor: Color(0xFF4D4D4D),
                   ),
                 ],
               ),

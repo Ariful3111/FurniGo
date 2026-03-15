@@ -11,7 +11,7 @@ class RentAppliance extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SharedContainer(child: PageCount(text: 'Furniture Requirements')),
+        SharedContainer(child: PageCount(text: 'Appliance')),
         SizedBox(height: 20.h),
         RentApplianceWidgets(),
       ],

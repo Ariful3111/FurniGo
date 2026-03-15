@@ -13,6 +13,7 @@ class CustomPrimaryText extends StatelessWidget {
   final TextAlign? textAlign;
   final TextOverflow? textOverflow;
   final List<Shadow> ?shadow;
+  final TextDecoration? decoration;
   const CustomPrimaryText({
     super.key,
     required this.text,
@@ -20,11 +21,12 @@ class CustomPrimaryText extends StatelessWidget {
     this.fontWeight, 
     this.color,
     this.textAlign,
-    this.textOverflow, this.shadow,
+    this.textOverflow, this.shadow, this.decoration,
   });
 
   @override
   Widget build(BuildContext context) { 
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Text(
       text,
       textAlign: textAlign,
@@ -32,8 +34,9 @@ class CustomPrimaryText extends StatelessWidget {
       style: GoogleFonts.montserrat(
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.w500,
-        color:color?? AppColors.primaryColor,
-        shadows: shadow
+        color:isDark?color?? AppColors.whiteColor:color?? AppColors.primaryColor,
+        shadows: shadow,
+        decoration: decoration,
       ),
     );
   }

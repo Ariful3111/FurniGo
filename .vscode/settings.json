@@ -5,7 +5,9 @@
         "Floorplan",
         "Glassmorphic",
         "glassmorphism",
-        "instalments"
+        "instalments",
+        "LTWH",
+        "Recive"
     ],
     "cmake.ignoreCMakeListsMissing": true
 }

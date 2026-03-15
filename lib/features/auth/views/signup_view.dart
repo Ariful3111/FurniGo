@@ -20,11 +20,12 @@ class SignupView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark; 
     final fromKey = GlobalKey<FormState>();
     UserModeController userModeController = Get.find();
     SignupController signupController = Get.find();
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient:isDark?AppColors.darkAuthBG: AppColors.authBG,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,20 +38,21 @@ class SignupView extends StatelessWidget {
               onTap: () {
                 Get.toNamed(AppRoutes.signInView);
               },
+              decoration: TextDecoration.underline,
             ),
             SizedBox(height: 40.h),
             userModeController.selectedIndex.value == 0
                 ? CustomPrimaryText(
-                    text: 'Create your personal account.',
+                    text: 'Create your personal account',
                     fontSize: 22.sp,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.darkColor,
+                    color:isDark?AppColors.whiteColor: AppColors.darkColor,
                   )
                 : CustomPrimaryText(
-                    text: 'Create your Business account.',
+                    text: 'Create your Business account',
                     fontSize: 22.sp,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.darkColor,
+                    color:isDark?AppColors.whiteColor: AppColors.darkColor,
                   ),
             SizedBox(height: 22.h),
             SignupForm(formKey: fromKey),
@@ -68,11 +70,20 @@ class SignupView extends StatelessWidget {
               return signupController.isLoading.value
                   ? ButtonLoading()
                   : CustomPrimaryButton(
+                      height: 48.h,
+                      fontSize: 16.sp,
                       text: 'Sign Up',
-                      backgroundColor:signupController.isChecked.value?null:AppColors.buttonTextColor ,
+                      backgroundColor: signupController.isChecked.value
+                          ? null
+                          : AppColors.buttonTextColor,
                       onPressed: () async {
-                        if(signupController.isChecked.value){await signupController.register(formKey: fromKey);}else{
-                          ErrorSnackbar.show(description: 'Please Agree to the Terms & Privacy Policy');
+                        if (signupController.isChecked.value) {
+                          await signupController.register(formKey: fromKey);
+                        } else {
+                          ErrorSnackbar.show(
+                            description:
+                                'Please Agree to the Terms & Privacy Policy',
+                          );
                         }
                       },
                     );

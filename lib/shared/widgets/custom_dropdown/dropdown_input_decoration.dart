@@ -18,7 +18,7 @@ class DropdownInputDecoration {
     return InputDecorationTheme(
       filled: true,
       fillColor: isDark
-          ? fillColor ?? AppColors.whiteColor
+          ? fillColor ?? AppColors.labelColor
           : fillColor ?? AppColors.whiteColor,
       contentPadding: contentPadding,
       focusColor: Colors.transparent,
@@ -29,7 +29,7 @@ class DropdownInputDecoration {
             borderSide: BorderSide(
               width: borderWidth ?? 1.2.r,
               color: isDark
-                  ? AppColors.fieldBorderColorLight
+                  ? AppColors.darkBorderColor
                   : AppColors.fieldBorderColorLight,
             ),
           ),
@@ -40,7 +40,7 @@ class DropdownInputDecoration {
             borderSide: BorderSide(
               width: focusBorderWidth ?? 1.2.r,
               color: isDark
-                  ? AppColors.fieldBorderColorLight
+                  ? AppColors.darkBorderColor
                   : AppColors.fieldBorderColorLight,
             ),
           ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zb_dezign/features/rent_request/widgets/rent_floor_plan_widgets/kitchen_floor.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_floor_plan_widgets/office_floor.dart';
-import 'package:zb_dezign/features/rent_request/widgets/rent_floor_plan_widgets/showroom_floor.dart';
 
 class RentFloorPlanController extends GetxController {
   TextEditingController lengthController = TextEditingController();
@@ -11,8 +9,8 @@ class RentFloorPlanController extends GetxController {
   RxList<bool> isOpenList = <bool>[].obs;
   List widgets = [
     {'title': 'Office', 'child': OfficeFloor()},
-    {'title': 'Kitchen', 'child': KitchenFloor()},
-    {'title': 'Showroom', 'child': ShowroomFloor()},
+    {'title': 'Kitchen', 'child': OfficeFloor()},
+    {'title': 'Showroom', 'child': OfficeFloor()},
   ];
 
   @override

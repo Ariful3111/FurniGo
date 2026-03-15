@@ -16,6 +16,8 @@ class CustomPrimaryButton extends StatelessWidget {
   final Widget? child;
   final FontWeight? fontWeight;
   final EdgeInsets? padding;
+  final BoxBorder? border;
+  final List<BoxShadow>? boxShadow;
   const CustomPrimaryButton({
     super.key,
     this.height,
@@ -28,31 +30,41 @@ class CustomPrimaryButton extends StatelessWidget {
     this.borderRadius,
     this.child,
     this.boxDecoration,
-    this.fontWeight, this.padding,
+    this.fontWeight,
+    this.padding, this.border, this.boxShadow,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        padding: padding??EdgeInsets.symmetric(horizontal: 16.w,vertical: 12.h),
-        height: height??48.h,
-        width: width ?? MediaQuery.widthOf(context),
+        padding:
+            padding ?? EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        height: height ?? 40.h,
+        width: width,
         decoration:
             boxDecoration ??
             BoxDecoration(
-              color: backgroundColor ?? AppColors.primaryColor,
+              color: isDark
+                  ? backgroundColor ?? AppColors.whiteColor
+                  : backgroundColor ?? AppColors.primaryColor,
               borderRadius: borderRadius ?? BorderRadius.circular(100.r),
+              border: border,
+              boxShadow: boxShadow
             ),
         child:
             child ??
             Center(
               child: CustomPrimaryText(
                 text: text,
-                color: textColor ?? AppColors.whiteColor,
-                fontSize: fontSize ?? 16.sp,
-                fontWeight: fontWeight ?? FontWeight.w500,
+                color: isDark
+                    ?textColor?? AppColors.darkColor
+                    : textColor ?? AppColors.whiteColor,
+                fontSize: fontSize ?? 14.sp,
+                fontWeight: fontWeight,
+                textAlign: TextAlign.center,
               ),
             ),
       ),

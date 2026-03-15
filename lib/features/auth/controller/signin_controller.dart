@@ -29,6 +29,7 @@ class SigninController extends GetxController {
         (data) async {
           await storage.write(key: storage.tokenKey, value: data.token);
           SuccessSnackbar.show(description: 'Login Successful');
+          Get.toNamed(AppRoutes.bottomNav);
         },
       );
     }

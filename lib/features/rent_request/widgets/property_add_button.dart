@@ -19,7 +19,7 @@ class PropertyAddButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
           borderRadius: BorderRadius.circular(100.r),
-          border: Border.all(width: 1.r, color: Color(0xFF4C4C4C)),
+          border: Border.all(width: 1.r, color: AppColors.greyTextColor),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

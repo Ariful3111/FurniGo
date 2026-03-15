@@ -56,6 +56,7 @@ class RentFurnitureDetails extends StatelessWidget {
           fontSize: 14.sp,
           color: AppColors.darkColor,
         ),
+        SizedBox(height: 12.h,),
         RentFurniturePreference()
       ],
     );

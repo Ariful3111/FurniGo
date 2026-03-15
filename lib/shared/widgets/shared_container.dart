@@ -3,19 +3,52 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 
 class SharedContainer extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final double? radius;
-  const SharedContainer({super.key, required this.child, this.padding, this.radius});
+  final BoxBorder? border;
+  final Color? color;
+  final List<BoxShadow>? boxShadow;
+  final double? height;
+  final double? width;
+  final LinearGradient? gradient;
+  final DecorationImage? image;
+  const SharedContainer({
+    super.key,
+    this.child,
+    this.padding,
+    this.radius,
+    this.border,
+    this.color,
+    this.boxShadow,
+    this.margin,
+    this.height,
+    this.width,
+    this.gradient,
+    this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding:padding?? EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
-      width: MediaQuery.widthOf(context),
+      height: height,
+      padding:
+          padding ?? EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
+      margin: margin,
+      width: width,
       decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(radius?? 24.r),
+        color: gradient == null
+            ? isDark
+                  ? color ?? AppColors.labelColor
+                  : color ?? AppColors.whiteColor
+            : null,
+        borderRadius: BorderRadius.circular(radius ?? 24.r),
+        border: border,
+        boxShadow: boxShadow,
+        gradient: gradient,
+        image: image,
       ),
       child: child,
     );

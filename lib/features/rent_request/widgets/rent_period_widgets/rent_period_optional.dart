@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_period_controller.dart';
-import 'package:zb_dezign/features/rent_request/widgets/other_field.dart';
+import 'package:zb_dezign/shared/widgets/custom_form_field/other_field.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -31,27 +31,32 @@ class RentPeriodOptional extends StatelessWidget {
             color: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
-          ...List.generate(rentPeriodController.option.length, (index) {
-            return Row(
-              children: [
-                Obx(
-                  () => CustomRadioButton(
-                    value: index,
-                    groupValue: rentPeriodController.selectedOption.value,
-                    onChange: (value) {
-                      rentPeriodController.selectedOption.value = value!;
-                    },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(rentPeriodController.option.length, (index) {
+            return SizedBox(
+              width: 171.w,
+              child: Row(
+                children: [
+                  Obx(
+                    () => CustomRadioButton(
+                      value: index,
+                      groupValue: rentPeriodController.selectedOption.value,
+                      onChange: (value) {
+                        rentPeriodController.selectedOption.value = value!;
+                      },
+                    ),
                   ),
-                ),
-                CustomPrimaryText(
-                  text: rentPeriodController.option[index],
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.darkColor,
-                ),
-              ],
+                  CustomPrimaryText(
+                    text: rentPeriodController.option[index],
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.darkColor,
+                  ),
+                ],
+              ),
             );
-          }),
+          }),),
           SizedBox(height: 12.h),
           CustomPrimaryText(
             text: 'Weight/load restrictions',
@@ -63,6 +68,7 @@ class RentPeriodOptional extends StatelessWidget {
             controller: rentPeriodController.weightController,
             width: 158.w,
             labelText: 'Enter Weight/Load',
+            keyboardType: TextInputType.numberWithOptions(),
           ),
           SizedBox(height: 12.h),
           CustomPrimaryText(

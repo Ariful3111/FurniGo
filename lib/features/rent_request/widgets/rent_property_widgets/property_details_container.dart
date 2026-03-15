@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/widgets/other_field.dart';
+import 'package:zb_dezign/shared/widgets/custom_form_field/other_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -74,11 +74,11 @@ class PropertyDetailsContainer extends StatelessWidget {
               Spacer(),
               button(
                 child: InkWell(
-                  onTap: onRemoved,
+                  onTap:isChecked? onRemoved:(){},
                   child: Icon(
                     Icons.remove,
                     size: 12.r,
-                    color: AppColors.darkColor,
+                    color:isChecked? AppColors.darkColor:Color(0xFFC0C0C0),
                   ),
                 ),
               ),
@@ -87,17 +87,17 @@ class PropertyDetailsContainer extends StatelessWidget {
                 child: CustomPrimaryText(
                   text: count,
                   fontSize: 10.sp,
-                  color: AppColors.buttonTextColor,
+                  color:isChecked? AppColors.buttonTextColor:Color(0xFFC0C0C0),
                 ),
               ),
               SizedBox(width: 1.63.w),
               button(
                 child: InkWell(
-                  onTap: onAdd,
+                  onTap:isChecked? onAdd:(){},
                   child: Icon(
                     Icons.add,
                     size: 12.r,
-                    color: AppColors.darkColor,
+                    color:isChecked? AppColors.darkColor:Color(0xFFC0C0C0),
                   ),
                 ),
               ),

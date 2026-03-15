@@ -18,13 +18,15 @@ class OnboardLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       key: key,
       children: [
         SizedBox(height: 20.h),
         LoginButton(
           onTap: () {
-            Get.toNamed(AppRoutes.signInView);
+           
           },
           icon: IconsPath.google,
           title: 'Continue With Goggle',
@@ -34,14 +36,17 @@ class OnboardLogin extends StatelessWidget {
         LoginButton(
           onTap: () {},
           icon: IconsPath.apple,
+          iconColor: isDark?AppColors.whiteColor:null,
           title: 'Continue With Apple',
           borderColor: Color(0xFFBEBEBE),
         ),
         SizedBox(height: 12.h),
         LoginButton(
-          onTap: () {},
-          icon: IconsPath.google,
-          title: 'Continue With Gmail',
+          onTap: () {
+             Get.toNamed(AppRoutes.signInView);
+          },
+          icon: IconsPath.gmail,
+          title: 'Continue With Email',
           color: AppColors.primaryColor,
           fontColor: AppColors.whiteColor,
           borderColor: Colors.transparent,

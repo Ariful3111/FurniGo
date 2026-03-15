@@ -20,10 +20,12 @@ class SignupOptionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    
     UserModeController userModeController = Get.find();
     SignupOptionController signupOptionController = Get.find();
     return CustomContainer(
-      gradient: AppColors.authBG,
+      gradient:isDark? AppColors.darkAuthBG:AppColors.authBG,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -36,6 +38,7 @@ class SignupOptionView extends StatelessWidget {
             onTap: () {
               Get.toNamed(AppRoutes.signInView);
             },
+            decoration: TextDecoration.underline,
           ),
           SizedBox(height: 40.h),
           userModeController.selectedIndex.value == 0
@@ -43,13 +46,13 @@ class SignupOptionView extends StatelessWidget {
                   text: 'Sign up for your personal account',
                   fontSize: 22.sp,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.darkColor,
+                  color:isDark?AppColors.primaryBorderColor: AppColors.darkColor,
                 )
               : CustomPrimaryText(
                   text: 'Sign up for your business account',
                   fontSize: 22.sp,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.darkColor,
+                  color:isDark?AppColors.primaryBorderColor: AppColors.darkColor,
                 ),
           SizedBox(height: 32.h),
           LoginButton(
@@ -63,12 +66,13 @@ class SignupOptionView extends StatelessWidget {
             onTap: () {},
             icon: IconsPath.apple,
             title: 'Continue With Apple',
+            iconColor: isDark?AppColors.whiteColor:null,
             radius: 12.r,
           ),
           SizedBox(height: 16.h),
           LoginButton(
             onTap: () {},
-            icon: IconsPath.gmail,
+            icon: IconsPath.authEmail,
             title: 'Continue With email',
             radius: 12.r,
           ),
@@ -84,6 +88,8 @@ class SignupOptionView extends StatelessWidget {
           SizedBox(height: 32.h),
           Obx(
             () => CustomPrimaryButton(
+              height: 48.h,
+              fontSize: 16.sp,
               text: 'Continue',
               backgroundColor: !signupOptionController.isChecked.value
                   ? AppColors.buttonTextColor

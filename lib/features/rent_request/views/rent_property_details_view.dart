@@ -7,12 +7,14 @@ import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
 import 'package:zb_dezign/features/rent_request/widgets/property_add_button.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/property_details_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/property_details_field.dart';
+import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
-import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentPropertyDetailsView extends StatelessWidget {
-  const RentPropertyDetailsView({super.key});
+  final GlobalKey<FormState> formKey;
+
+  const RentPropertyDetailsView({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class RentPropertyDetailsView extends StatelessWidget {
         children: [
           Center(child: PageCount(text: 'Property Details')),
           SizedBox(height: 20.h),
-          propertyDivider(),
+          CustomDivider(),
           SizedBox(height: 24.h),
           CustomPrimaryText(
             text: 'Property Details',
@@ -31,7 +33,7 @@ class RentPropertyDetailsView extends StatelessWidget {
             color: AppColors.darkColor,
           ),
           SizedBox(height: 20.h),
-          PropertyDetailsField(),
+          PropertyDetailsField(formKey: formKey,),
           SizedBox(height: 20.h),
           CustomPrimaryText(
             text: 'Space Breakdown',

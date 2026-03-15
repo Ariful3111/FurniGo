@@ -24,6 +24,8 @@ class CustomDropdownMenu extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final TextAlign? textAlign;
   final double? fontSize;
+  final double? height;
+  final double? width;
   final TextStyle? textStyle;
   final Color? fillColor;
   final Color? textColor;
@@ -63,73 +65,77 @@ class CustomDropdownMenu extends StatelessWidget {
     this.trailingIconWidth,
     this.menuFontSize,
     this.alignmentGeometry,
-    this.textColor, this.labelColor,
+    this.textColor, this.labelColor, this.height, this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
-      () => DropdownMenu<String>(
-        initialSelection: isSelect.value,
-        textAlign: textAlign ?? TextAlign.left,
-        textStyle:
-            textStyle ??
-            GoogleFonts.montserrat(
-              fontSize: fontSize ?? 14.sp,
-              fontWeight: FontWeight.w500,
-              color: isDark
-                  ? AppColors.labelColor
-                  : textColor ?? AppColors.labelColor,
+      () => SizedBox(
+        height: height,
+        width: width??MediaQuery.widthOf(context),
+        child: DropdownMenu<String>(
+          initialSelection: isSelect.value,
+          textAlign: textAlign ?? TextAlign.left,
+          textStyle:
+              textStyle ??
+              GoogleFonts.montserrat(
+                fontSize: fontSize ?? 14.sp,
+                fontWeight: FontWeight.w500,
+                color: isDark
+                    ? AppColors.labelColor
+                    : textColor ?? AppColors.labelColor,
+              ),
+          label: CustomPrimaryText(
+            text: label,
+            fontSize: 14.sp,
+            color:labelColor?? AppColors.labelColor,
+          ),
+          inputDecorationTheme: DropdownInputDecoration().inputDecoration(
+            context: context,
+            fillColor: fillColor,
+            enableBorder: enableBorder,
+            focusBorder: focusBorder,
+            focusBorderWidth: focusBorderWidth,
+            borderWidth: borderWidth,
+            borderRadius: borderRadius,
+            focusBorderRadius: focusBorderRadius,
+            contentPadding: contentPadding,
+          ),
+          expandedInsets: expandedInsets,
+          trailingIcon: Image.asset(
+            IconsPath.downArrow,
+            height: trailingIconHeight ?? 24.h,
+            width: trailingIconWidth ?? 24.w,
+            color: trailingIconColor,
+          ),
+          selectedTrailingIcon: Image.asset(
+            IconsPath.upArrow,
+            height: selectedTrailingIconHeight ?? 24.h,
+            width: selectedTrailingIconWidth ?? 24.w,
+            color: selectedTrailingIconColor,
+          ),
+          width: MediaQuery.widthOf(context),
+          menuStyle: MenuStyle(
+            maximumSize: WidgetStatePropertyAll(
+              Size(320.w, MediaQuery.heightOf(context)),
             ),
-        label: CustomPrimaryText(
-          text: label,
-          fontSize: 14.sp,
-          color:labelColor?? AppColors.labelColor,
-        ),
-        inputDecorationTheme: DropdownInputDecoration().inputDecoration(
-          context: context,
-          fillColor: fillColor,
-          enableBorder: enableBorder,
-          focusBorder: focusBorder,
-          focusBorderWidth: focusBorderWidth,
-          borderWidth: borderWidth,
-          borderRadius: borderRadius,
-          focusBorderRadius: focusBorderRadius,
-          contentPadding: contentPadding,
-        ),
-        expandedInsets: expandedInsets,
-        trailingIcon: Image.asset(
-          IconsPath.downArrow,
-          height: trailingIconHeight ?? 24.h,
-          width: trailingIconWidth ?? 24.w,
-          color: trailingIconColor,
-        ),
-        selectedTrailingIcon: Image.asset(
-          IconsPath.upArrow,
-          height: selectedTrailingIconHeight ?? 24.h,
-          width: selectedTrailingIconWidth ?? 24.w,
-          color: selectedTrailingIconColor,
-        ),
-        width: MediaQuery.widthOf(context),
-        menuStyle: MenuStyle(
-          maximumSize: WidgetStatePropertyAll(
-            Size(320.w, MediaQuery.heightOf(context)),
+            backgroundColor: WidgetStateProperty.all(AppColors.whiteColor),
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+            ),
+            shadowColor: WidgetStatePropertyAll(
+              AppColors.shadowColor.withValues(alpha: 0.1),
+            ),
           ),
-          backgroundColor: WidgetStateProperty.all(AppColors.whiteColor),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+          alignmentOffset: offset ?? Offset(20, 0),
+          onSelected: onSelect,
+          dropdownMenuEntries: DropdownMenuItems().dropdownMenuItem(
+            option: option,
+            context: context,
+            isSelect: isSelect,
           ),
-          shadowColor: WidgetStatePropertyAll(
-            AppColors.shadowColor.withValues(alpha: 0.1),
-          ),
-        ),
-        alignmentOffset: offset ?? Offset(20, 0),
-        onSelected: onSelect,
-        dropdownMenuEntries: DropdownMenuItems().dropdownMenuItem(
-          option: option,
-          context: context,
-          isSelect: isSelect,
         ),
       ),
     );

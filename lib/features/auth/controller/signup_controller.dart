@@ -23,17 +23,18 @@ class SignupController extends GetxController {
   final storage = Get.find<StorageService>();
 
   Future<void> register({required GlobalKey<FormState> formKey}) async {
-    
     if (formKey.currentState?.validate() ?? false) {
       isLoading.value = true;
-
       final response = await registerRepository.execute(
         name: nameController.text,
         email: emailController.text,
         phone: phoneController.text,
         password: passwordController.text,
         confirmPassword: confirmPasswordController.text,
-        abn: abnController.text.isNotEmpty ? abnController.text : "", userType: Get.find<UserModeController>().selectedIndex.value==0?'customer':'business',
+        abn: abnController.text.isNotEmpty ? abnController.text : "",
+        userType: Get.find<UserModeController>().selectedIndex.value == 0
+            ? 'customer'
+            : 'business',
       );
       isLoading.value = false;
       response.fold(
@@ -46,7 +47,7 @@ class SignupController extends GetxController {
             value: data.token.toString(),
           );
           SuccessSnackbar.show(description: 'Registration Successful');
-          Get.toNamed(AppRoutes.rentBusinessIdentification);
+          Get.toNamed(AppRoutes.emailVerificationView);
         },
       );
     }

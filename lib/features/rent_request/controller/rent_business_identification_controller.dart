@@ -18,11 +18,13 @@ class RentBusinessIdentificationController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController abnController = TextEditingController();
   TextEditingController businessSiteController = TextEditingController();
+  ScrollController rentController = ScrollController();
   RxInt currentIndex = 0.obs;
-  List<Widget> rentWidgets = [
-    RentBusinessIdentificationForm(),
+  final formKey = GlobalKey<FormState>();
+  late final List<Widget> rentWidgets = [
+    RentBusinessIdentificationForm(formKey: formKey),
     RentPropertyTypeView(),
-    RentPropertyDetailsView(),
+    RentPropertyDetailsView(formKey: formKey,),
     RentFloorPlanView(),
     RentFurniture(),
     RentAppliance(),

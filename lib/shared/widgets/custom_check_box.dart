@@ -8,14 +8,19 @@ class CustomCheckBox extends StatelessWidget {
   const CustomCheckBox({
     super.key,
     required this.isChecked,
-    required this.onChange, this.color,
+    required this.onChange,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Checkbox(
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Checkbox( 
       visualDensity: VisualDensity.compact,
-      activeColor:color?? AppColors.primaryColor,
+      activeColor: isDark
+          ? color ?? AppColors.boxColor
+          : color ?? AppColors.primaryColor,
       value: isChecked,
       onChanged: onChange,
     );

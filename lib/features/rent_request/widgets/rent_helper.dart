@@ -16,10 +16,6 @@ Widget optionContainer({required BuildContext context, required Widget child}) {
   );
 }
 
-Widget propertyDivider() {
-  return Divider(color: AppColors.borderColor, thickness: 1);
-}
-
 Widget myButton({
   BoxBorder? border,
   required VoidCallback onTap,

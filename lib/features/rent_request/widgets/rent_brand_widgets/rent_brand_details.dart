@@ -44,7 +44,8 @@ class RentBrandDetails extends StatelessWidget {
         PropertyImage(
           title:
               'Upload your brand kit, logo files, or style guide to ensure accurate customization.',
-          onTap: () {},
+          onGallery: () {},
+          onCamera: () {},
         ),
         SizedBox(height: 20.h),
       ],

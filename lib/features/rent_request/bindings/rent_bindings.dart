@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_additional_note_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_appliance_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_brand_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_business_identification_controller.dart';
@@ -23,5 +24,6 @@ class RentBindings implements Bindings {
     Get.lazyPut(() => RentPeriodController());
     Get.lazyPut(() => RentDeliveryController());
     Get.lazyPut(() => RentReviewController());
+    Get.lazyPut(() => RentAdditionalNoteController());
   }
 }
