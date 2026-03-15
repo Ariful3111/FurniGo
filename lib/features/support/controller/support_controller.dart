@@ -14,4 +14,19 @@ class SupportController extends GetxController{
     "Delivery Issue",
     "Technical Issue",
   ];
+
+  List<Map<String, dynamic>> tickets = [
+    {
+      "title": "Delivery Delayed for Sofa",
+      "id": "#TKT-9921",
+      "time": "Updated 2 hours ago",
+      "status": "Open"
+    },
+    {
+      "title": "Change of Address",
+      "id": "#TKT-8822",
+      "time": "Updated 3 days ago",
+      "status": "Resolved"
+    },
+  ];
 }

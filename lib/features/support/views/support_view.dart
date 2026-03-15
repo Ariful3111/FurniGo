@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/support/widgets/create_ticket.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/support/widgets/support_contact.dart';
+import 'package:zb_dezign/features/support/widgets/support_create_ticket.dart';
+import 'package:zb_dezign/features/support/widgets/support_faq.dart';
+import 'package:zb_dezign/features/support/widgets/support_recent_ticket.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
+import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -49,12 +54,29 @@ class SupportView extends StatelessWidget {
                       ? AppColors.primaryBorderColor
                       : AppColors.secondaryTextColor,
                 ),
-                
               ],
             ),
           ),
           SizedBox(height: 16.h),
-                CreateTicket(),
+          SupportCreateTicket(),
+          SizedBox(height: 12.h),
+          SupportContact(),
+          SizedBox(height: 12.h),
+          SupportRecentTicket(),
+          SizedBox(height: 12.h),
+          SupportFaq(),
+          SizedBox(height: 12.h),
+          Center(
+            child: CustomSecondaryButton(
+              text: 'Support',
+              textColor: AppColors.whiteColor,
+              icon: IconsPath.drawerSupport,
+              iconColor: AppColors.whiteColor,
+              onPressed: () {},
+              backgroundColor: AppColors.primaryColor,
+              width: 110.w,
+            ),
+          ),
         ],
       ),
     );
