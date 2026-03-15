@@ -106,6 +106,8 @@ class IconsPath {
   static const String logoDark = 'assets/icons/logo_dark.png';
   static const String logoLight = 'assets/icons/logo_light.png';
   static const String credit = 'assets/icons/credit.png';
-
+  static const String creditCoin = 'assets/icons/credit_coin.png';
+  static const String call = 'assets/icons/call.png';
+  
 
 }

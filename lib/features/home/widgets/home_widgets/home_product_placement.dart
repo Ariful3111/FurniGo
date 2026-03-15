@@ -38,7 +38,6 @@ class HomeProductPlacement extends StatelessWidget {
                     image: DecorationImage(
                       image: AssetImage(ImagesPath.placement),
                       fit: BoxFit.cover,
-                      filterQuality: FilterQuality.low,
                     ),
                     borderRadius: BorderRadius.circular(16.r),
                   ),
