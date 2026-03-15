@@ -11,12 +11,11 @@ import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class RentalsCompleteDelivery extends StatelessWidget {
+class RentalsCompleteDelivery extends GetWidget<RentalsCompleteController> {
   const RentalsCompleteDelivery({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentalsCompleteController completeController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
@@ -33,14 +32,14 @@ class RentalsCompleteDelivery extends StatelessWidget {
               ),
               SizedBox(height: 9.h),
               CustomTableStatus(
-                status: completeController.deliveryStatus
+                status: controller.deliveryStatus
                     ? 'Pending'
                     : 'Completed',
               ),
               SizedBox(height: 12.h),
               CustomDivider(),
               SizedBox(height: 12.h),
-              completeController.deliveryStatus
+              controller.deliveryStatus
                   ? RentalCompleteDeliveryDateTime()
                   : RentalsCompleteDeliveryStatus(),
             ],

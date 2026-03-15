@@ -5,7 +5,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.dart';
 
-class RentalQuotesFurnitureAction extends StatelessWidget {
+class RentalQuotesFurnitureAction extends GetWidget<RentalQuotesController> {
   final int index;
   final String category;
 
@@ -17,12 +17,11 @@ class RentalQuotesFurnitureAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RentalQuotesController quotesController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(() {
       final actions = category == 'furniture'
-          ? quotesController.furnitureActions
-          : quotesController.applianceActions;
+          ? controller.furnitureActions
+          : controller.applianceActions;
 
       final action = index < actions.length
           ? actions[index]
@@ -35,7 +34,7 @@ class RentalQuotesFurnitureAction extends StatelessWidget {
         children: [
           button(
             onTap: () {
-              quotesController.toggleItemAction(
+              controller.toggleItemAction(
                 index,
                 QuoteItemAction.approved,
                 category: category,
@@ -49,7 +48,7 @@ class RentalQuotesFurnitureAction extends StatelessWidget {
           SizedBox(width: 6.4.w),
           button(
             onTap: () {
-              quotesController.toggleItemAction(
+              controller.toggleItemAction(
                 index,
                 QuoteItemAction.change,
                 category: category,
@@ -73,7 +72,7 @@ class RentalQuotesFurnitureAction extends StatelessWidget {
           SizedBox(width: 6.4.w),
           button(
             onTap: () {
-              quotesController.toggleItemAction(
+              controller.toggleItemAction(
                 index,
                 QuoteItemAction.closed,
                 category: category,

@@ -10,18 +10,17 @@ import 'package:zb_dezign/features/transaction/widgets/transaction_view_widgets/
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_view_button.dart';
 
-class TransactionViewTable extends StatelessWidget {
+class TransactionViewTable extends GetWidget<TransactionController> {
   const TransactionViewTable({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TransactionController transactionController = Get.find();
     return Column(
       children: [
         TransactionViewTableFilter(),
         SizedBox(height: 12.h),
         Obx(() {
-          final tableRows = transactionController.transaction
+          final tableRows = controller.transaction
               .map(
                 (trans) => {
                   'id': trans.id,
@@ -31,7 +30,7 @@ class TransactionViewTable extends StatelessWidget {
                 },
               )
               .toList();
-          final expandedFlag = transactionController.expandedList.toList();
+          final expandedFlag = controller.expandedList.toList();
           return CustomTable(
             rows: tableRows,
             id: 'id',
@@ -39,8 +38,8 @@ class TransactionViewTable extends StatelessWidget {
             title: 'title',
             expandedList: expandedFlag,
             onExpand: (index) {
-              transactionController.expandedList[index] =
-                  !transactionController.expandedList[index];
+              controller.expandedList[index] =
+                  !controller.expandedList[index];
             },
             buildExpanded: (index, row) {
               final TransactionModel transactionModel =
@@ -49,7 +48,7 @@ class TransactionViewTable extends StatelessWidget {
                 transactionModel: transactionModel,
               );
             },
-            headerList: transactionController.transTableColumn,
+            headerList: controller.transTableColumn,
             action: SizedBox.shrink(),
             actionBuilder: (index, row) {
               final TransactionModel transactionModel =

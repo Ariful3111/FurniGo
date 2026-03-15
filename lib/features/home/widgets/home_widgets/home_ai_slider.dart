@@ -6,17 +6,16 @@ import 'package:zb_dezign/core/constant/images_path.dart';
 import 'package:zb_dezign/features/home/controller/home_controller.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_helper.dart';
 
-class HomeAiSlider extends StatelessWidget {
+class HomeAiSlider extends GetWidget<HomeController> {
   const HomeAiSlider({super.key});
 
   @override
   Widget build(BuildContext context) {
-    HomeController homeController = Get.find();
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
           onHorizontalDragUpdate: (details) {
-            homeController.updatePosition(
+            controller.updatePosition(
               details.localPosition.dx,
               constraints.maxWidth,
             );
@@ -29,7 +28,7 @@ class HomeAiSlider extends StatelessWidget {
                   Positioned.fill(
                     child: ClipRect(
                       clipper: SplitImageClipper(
-                        position: homeController.position.value,
+                        position: controller.position.value,
                         side: SplitSide.left,
                       ),
                       child: Image.asset(
@@ -41,7 +40,7 @@ class HomeAiSlider extends StatelessWidget {
                   Positioned.fill(
                     child: ClipRect(
                       clipper: SplitImageClipper(
-                        position: homeController.position.value,
+                        position: controller.position.value,
                         side: SplitSide.right,
                       ),
                       child: Image.asset(ImagesPath.aiAfter, fit: BoxFit.cover),
@@ -49,7 +48,7 @@ class HomeAiSlider extends StatelessWidget {
                   ),
 
                   Positioned(
-                    left: constraints.maxWidth * homeController.position.value,
+                    left: constraints.maxWidth * controller.position.value,
                     top: 0,
                     bottom: 0,
                     child: Container(
@@ -59,7 +58,7 @@ class HomeAiSlider extends StatelessWidget {
                   ),
                   Positioned(
                     left:
-                        constraints.maxWidth * homeController.position.value -
+                        constraints.maxWidth * controller.position.value -
                         10.w,
                     top: 0,
                     bottom: 0,

@@ -6,12 +6,11 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/home/controller/home_controller.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class HomeProductPlacementButton extends StatelessWidget {
+class HomeProductPlacementButton extends GetWidget<HomeController> {
   const HomeProductPlacementButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    HomeController homeController = Get.find();
     List icon = [
       IconsPath.scan,
       IconsPath.swap,
@@ -30,10 +29,10 @@ class HomeProductPlacementButton extends StatelessWidget {
         Column(
           children: List.generate(color.length, (index) {
             return Obx(() {
-              final selected = homeController.colorIndex.value == index;
+              final selected = controller.colorIndex.value == index;
               return InkWell(
                 onTap: () {
-                  homeController.colorIndex.value = index;
+                  controller.colorIndex.value = index;
                 },
                 child: Container(
                   height: 13.08.h,

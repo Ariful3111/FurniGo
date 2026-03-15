@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/dashboard/widgets/order_details_widgets/order_details_status.dart';
-import 'package:zb_dezign/features/dashboard/widgets/order_details_widgets/order_details_info.dart';
+import 'package:zb_dezign/features/order/widgets/order_details_widgets/order_details_status.dart';
+import 'package:zb_dezign/features/order/widgets/order_details_widgets/order_details_info.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -34,12 +34,12 @@ class OrderDetailsView extends StatelessWidget {
               color: isDark ? AppColors.whiteColor : AppColors.titleColor,
             ),
           ),
-          SizedBox(height: 16.h,),
+          SizedBox(height: 16.h),
           OrderDetailsInfo(),
-          SizedBox(height: 16.h,),
+          SizedBox(height: 16.h),
           OrderDetailsStatus(),
-          SizedBox(height: 16.h,),
-        ], 
+          SizedBox(height: 16.h),
+        ],
       ),
     );
   }

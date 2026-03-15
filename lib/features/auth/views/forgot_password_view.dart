@@ -13,15 +13,14 @@ import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
 
-class ForgotPasswordView extends StatelessWidget {
+class ForgotPasswordView extends GetView<ForgotPasswordController> {
   const ForgotPasswordView({super.key});
 
   @override
   Widget build(BuildContext context) {
-        bool isDark = Theme.of(context).brightness == Brightness.dark;
-    ForgotPasswordController forgotPasswordController = Get.find();
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomContainer(
-      gradient:isDark?AppColors.darkAuthBG: AppColors.authBG,
+      gradient: isDark ? AppColors.darkAuthBG : AppColors.authBG,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +32,7 @@ class ForgotPasswordView extends StatelessWidget {
               text: 'Reset Password',
               fontSize: 31.sp,
               fontWeight: FontWeight.w600,
-              color:isDark?AppColors.whiteColor: AppColors.darkColor,
+              color: isDark ? AppColors.whiteColor : AppColors.darkColor,
             ),
             SizedBox(height: 12.h),
             CustomSpanText(
@@ -41,7 +40,7 @@ class ForgotPasswordView extends StatelessWidget {
               spantext: 'Create New Account',
               onTap: () {
                 Get.toNamed(AppRoutes.signUpView);
-                forgotPasswordController.emailController.clear();
+                controller.emailController.clear();
               },
               decoration: TextDecoration.underline,
             ),
@@ -49,10 +48,11 @@ class ForgotPasswordView extends StatelessWidget {
             authField(
               text: 'Email Address',
               labelText: 'Enter Your Email Address',
-              controller: forgotPasswordController.emailController,
+              controller: controller.emailController,
               icon: IconsPath.email,
               validation: AutovalidateMode.onUserInteraction,
-              validator: emailValidation, context: context,
+              validator: emailValidation,
+              context: context,
             ),
             SizedBox(height: 24.h),
             CustomPrimaryButton(

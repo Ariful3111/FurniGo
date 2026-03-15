@@ -13,7 +13,7 @@ class DashboardMembershipNotice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLastIndex = false;
-        bool isDark = Theme.of(context).brightness == Brightness.dark;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       padding: EdgeInsets.all(16.r),
       child: Column(
@@ -33,19 +33,30 @@ class DashboardMembershipNotice extends StatelessWidget {
                 CustomPrimaryButton(
                   backgroundColor: AppColors.whiteColor,
                   height: 36.h,
-                  border: Border.all(width: 1.r,color: isDark?AppColors.darkBorderColor:Color(0xFFEBEDF0)),
+                  border: Border.all(
+                    width: 1.r,
+                    color: isDark
+                        ? AppColors.darkBorderColor
+                        : Color(0xFFEBEDF0),
+                  ),
                   width: 100.w,
                   textColor: AppColors.labelColor,
-                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 8.h,
+                    horizontal: 16.w,
+                  ),
                   text: 'View Detail',
                   fontSize: 12.sp,
                   onPressed: () {},
                 ),
-                SizedBox(width: 8.w,),
+                SizedBox(width: 8.w),
                 CustomPrimaryButton(
                   height: 36.h,
                   width: 90.w,
-                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 8.h,
+                    horizontal: 16.w,
+                  ),
                   text: 'Pay Now',
                   fontSize: 12.sp,
                   onPressed: () {},

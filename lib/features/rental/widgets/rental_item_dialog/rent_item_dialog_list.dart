@@ -7,12 +7,11 @@ import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.da
 import 'package:zb_dezign/features/rental/widgets/rental_item_dialog/rent_item_dialog_header.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentItemDialogList extends StatelessWidget {
+class RentItemDialogList extends GetWidget<RentalQuotesController> {
   const RentItemDialogList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentalQuotesController controller = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Expanded(

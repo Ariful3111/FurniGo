@@ -18,7 +18,7 @@ class DashboardActiveRentals extends StatelessWidget {
       child: Column(
         children: [
           DashboardPropertyHeader(title: 'Active rentals', onTap: () {}),
-          SizedBox(height: 16.h,),
+          SizedBox(height: 16.h),
           ...List.generate(2, (index) {
             return SharedContainer(
               padding: EdgeInsets.all(16.r),
@@ -63,7 +63,7 @@ class DashboardActiveRentals extends StatelessWidget {
                       ),
                     ],
                   ),
-                  CustomTableStatus(status: 'Active')
+                  CustomTableStatus(status: 'Active'),
                 ],
               ),
             );

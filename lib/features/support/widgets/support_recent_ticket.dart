@@ -7,13 +7,12 @@ import 'package:zb_dezign/features/support/widgets/support_recent_tickets_items.
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class SupportRecentTicket extends StatelessWidget {
+class SupportRecentTicket extends GetWidget<SupportController> {
   const SupportRecentTicket({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    SupportController supportController = Get.find();
     return SharedContainer(
       padding: EdgeInsets.all(20.w),
       radius: 20.r,
@@ -29,8 +28,8 @@ class SupportRecentTicket extends StatelessWidget {
           ),
           SizedBox(height: 20.h),
           Column(
-            children: List.generate(supportController.tickets.length, (index) {
-              final ticket = supportController.tickets[index];
+            children: List.generate(controller.tickets.length, (index) {
+              final ticket = controller.tickets[index];
               return Padding(
                 padding: EdgeInsets.only(bottom: 12.h),
                 child: SupportRecentTicketsItems(ticket: ticket),

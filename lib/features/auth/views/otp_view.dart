@@ -21,7 +21,6 @@ class OtpView extends StatelessWidget {
       return theme.textTheme.headlineMedium?.copyWith(color: color) ??
           TextStyle(color: color);
     }
-
     List<TextStyle> otpStyle = [
       createStyle(isDark? AppColors.whiteColor:AppColors.primaryColor),
       createStyle(isDark? AppColors.whiteColor:AppColors.primaryColor),

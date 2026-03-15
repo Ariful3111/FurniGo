@@ -12,13 +12,12 @@ import 'package:zb_dezign/shared/extensions/validators/name_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/password_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/phone_validator.dart';
 
-class SignupForm extends StatelessWidget {
+class SignupForm extends GetWidget<SignupController> {
   final GlobalKey<FormState> formKey;
   const SignupForm({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
-    SignupController signupController = Get.find();
     UserModeController userModeController = Get.find();
     return Form(
       key: formKey,
@@ -30,7 +29,7 @@ class SignupForm extends StatelessWidget {
             labelText: userModeController.selectedIndex.value == 0
                 ? 'Enter your  name'
                 : 'Enter your business name',
-            controller: signupController.nameController,
+            controller: controller.nameController,
             icon: userModeController.selectedIndex.value == 0
                 ? IconsPath.user
                 : IconsPath.bag,
@@ -44,7 +43,7 @@ class SignupForm extends StatelessWidget {
             labelText: userModeController.selectedIndex.value == 0
                 ? 'Enter your email'
                 : 'Enter your business email',
-            controller: signupController.emailController,
+            controller: controller.emailController,
             icon: IconsPath.email,
             validation: AutovalidateMode.onUserInteraction,
             validator: emailValidation,
@@ -54,7 +53,7 @@ class SignupForm extends StatelessWidget {
           authField(
             text: 'Password *',
             labelText: 'Enter your password',
-            controller: signupController.passwordController,
+            controller: controller.passwordController,
             icon: IconsPath.pass,
             validation: AutovalidateMode.onUserInteraction,
             validator: passwordValidation,
@@ -64,11 +63,11 @@ class SignupForm extends StatelessWidget {
           authField(
             text: 'Confirm Password *',
             labelText: 'Re-Enter your password',
-            controller: signupController.confirmPasswordController,
+            controller: controller.confirmPasswordController,
             icon: IconsPath.pass,
             validation: AutovalidateMode.onUserInteraction,
             validator: (value) => confirmPasswordValidation(
-              signupController.passwordController.text,
+              controller.passwordController.text,
               value,
             ),
             context: context,
@@ -79,7 +78,7 @@ class SignupForm extends StatelessWidget {
             labelText: userModeController.selectedIndex.value == 0
                 ? 'Enter your phone number'
                 : 'Enter your business phone number',
-            controller: signupController.phoneController,
+            controller: controller.phoneController,
             icon: IconsPath.phone,
             validation: AutovalidateMode.onUserInteraction,
             validator: phoneValidation,
@@ -91,7 +90,7 @@ class SignupForm extends StatelessWidget {
             authField(
               text: 'ABN Number *',
               labelText: 'Enter ABN number',
-              controller: signupController.abnController,
+              controller: controller.abnController,
               icon: IconsPath.file,
               validation: AutovalidateMode.onUserInteraction,
               validator: abnValidation,

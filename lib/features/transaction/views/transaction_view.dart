@@ -11,13 +11,12 @@ import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dar
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class TransactionView extends StatelessWidget {
+class TransactionView extends GetView<TransactionController> {
   const TransactionView({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    TransactionController transactionController = Get.find();
     return CustomContainer(
       child: ListView(
         children: [
@@ -45,8 +44,8 @@ class TransactionView extends StatelessWidget {
           TransactionViewTable(),
           SizedBox(height: 24.h),
           CustomPagination(
-            currentPage: transactionController.currentPage,
-            totalPage: transactionController.totalPages,
+            currentPage: controller.currentPage,
+            totalPage: controller.totalPages,
           ),
         ],
       ),

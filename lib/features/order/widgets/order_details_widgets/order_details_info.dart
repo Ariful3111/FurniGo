@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/dashboard/widgets/order_widgets/order_button.dart';
-import 'package:zb_dezign/features/dashboard/widgets/order_widgets/order_info.dart';
+import 'package:zb_dezign/features/order/widgets/order_widgets/order_button.dart';
+import 'package:zb_dezign/features/order/widgets/order_widgets/order_info.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -34,11 +34,12 @@ class OrderDetailsInfo extends StatelessWidget {
           SizedBox(height: 16.h),
           ...List.generate(2, (index) {
             return SharedContainer(
-              margin: EdgeInsets.only(bottom: index==1?0:12.h),
-              color: isDark?AppColors.darkColor:Color(0xFFF3F3F3),
+              margin: EdgeInsets.only(bottom: index == 1 ? 0 : 12.h),
+              color: isDark ? AppColors.darkColor : Color(0xFFF3F3F3),
               radius: 16.r,
               padding: EdgeInsets.all(12.r),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadiusGeometry.circular(6.r),

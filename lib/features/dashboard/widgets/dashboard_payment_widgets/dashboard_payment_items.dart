@@ -27,7 +27,7 @@ class DashboardPaymentItems extends StatelessWidget {
           SizedBox(height: 20.h),
           ...List.generate(3, (index) {
             return SharedContainer(
-              margin: EdgeInsets.only(bottom:2==index? 0:10.h),
+              margin: EdgeInsets.only(bottom: 2 == index ? 0 : 10.h),
               radius: 18.r,
               padding: REdgeInsets.all(10.r),
               border: Border.all(
