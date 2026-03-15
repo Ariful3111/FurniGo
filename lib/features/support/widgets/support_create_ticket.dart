@@ -9,8 +9,8 @@ import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_fiel
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class CreateTicket extends StatelessWidget {
-  const CreateTicket({super.key});
+class SupportCreateTicket extends StatelessWidget {
+  const SupportCreateTicket({super.key});
 
   @override
   Widget build(BuildContext context) {
