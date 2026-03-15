@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/features/auth/controller/email_verification_controller.dart';
 import 'package:zb_dezign/features/auth/controller/forgot_password_controller.dart';
 import 'package:zb_dezign/features/auth/controller/new_password_controller.dart';
-import 'package:zb_dezign/features/auth/controller/onboarding_controller.dart';
 import 'package:zb_dezign/features/auth/controller/otp_controller.dart';
 import 'package:zb_dezign/features/auth/controller/signin_controller.dart';
 import 'package:zb_dezign/features/auth/controller/signup_controller.dart';
@@ -14,7 +13,6 @@ import 'package:zb_dezign/features/auth/repositories/register_repo.dart';
 class AuthBindings implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => OnboardingController());
     Get.lazyPut(() => SigninController(loginRepository: Get.find()));
     Get.lazyPut(() => LoginRepository(postWithResponse: Get.find()));
     Get.lazyPut(() => SigninController(loginRepository: Get.find()));

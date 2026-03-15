@@ -9,13 +9,12 @@ import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class TransactionDetailsInfo extends StatelessWidget {
+class TransactionDetailsInfo extends GetWidget<TransactionDetailsController> {
   const TransactionDetailsInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    TransactionDetailsController transactionDetailsController = Get.find();
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
       child: Column(
@@ -37,13 +36,13 @@ class TransactionDetailsInfo extends StatelessWidget {
           ),
           SizedBox(height: 26.h),
           ...List.generate(
-            transactionDetailsController.transactionInfo.length,
+            controller.transactionInfo.length,
             (index) {
-              final item = transactionDetailsController.transactionInfo[index];
+              final item = controller.transactionInfo[index];
               return Padding(
                 padding: EdgeInsets.only(
                   bottom:
-                      transactionDetailsController.transactionInfo.length - 1 ==
+                      controller.transactionInfo.length - 1 ==
                           index
                       ? 0
                       : 12.0.h,
@@ -123,7 +122,7 @@ class TransactionDetailsInfo extends StatelessWidget {
                             flex: item['title'] == 'Status' ? 1 : 2,
                             child: item['title'] == 'Status'
                                 ? CustomTableStatus(
-                                    status: transactionDetailsController
+                                    status: controller
                                         .transactionModel
                                         .status,
                                   )

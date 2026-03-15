@@ -9,15 +9,14 @@ import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rev
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentalQuotesCalculationAmount extends StatelessWidget {
+class RentalQuotesCalculationAmount extends GetWidget<RentalQuotesController> {
   const RentalQuotesCalculationAmount({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    RentalQuotesController quotesController = Get.find();
     return Obx(() {
-      final bool isRevisionMode = quotesController.hasResetItem;
+      final bool isRevisionMode = controller.hasResetItem;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -7,16 +7,15 @@ import 'package:zb_dezign/features/profile/widgets/profile_view_widgets/theme_mo
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class ProfileViewItems extends StatelessWidget {
+class ProfileViewItems extends GetWidget<ProfileController> {
   const ProfileViewItems({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    ProfileController profileController = Get.find();
     return Column(
-      children: List.generate(profileController.profileList.length, (index) {
-        final item = profileController.profileList[index];
+      children: List.generate(controller.profileList.length, (index) {
+        final item = controller.profileList[index];
         return GestureDetector(
           onTap: (){
             if(item['route']!=null){
@@ -25,7 +24,7 @@ class ProfileViewItems extends StatelessWidget {
           },
           child: SharedContainer(
             margin: EdgeInsets.only(
-              bottom: profileController.profileList.length - 1 == index ? 0 : 8.h,
+              bottom: controller.profileList.length - 1 == index ? 0 : 8.h,
             ),
             padding: EdgeInsets.all(8.r),
             radius: 12.r,

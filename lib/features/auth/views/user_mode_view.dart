@@ -11,14 +11,12 @@ import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dar
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class UserModeView extends StatelessWidget {
+class UserModeView extends GetView<UserModeController> {
   const UserModeView({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-
-    UserModeController userModeController = Get.find();
     return CustomContainer(
       gradient:isDark?AppColors.darkAuthBG: AppColors.authBG,
       child: Column(
@@ -41,9 +39,9 @@ class UserModeView extends StatelessWidget {
             fontSize: 16.sp,
             text: 'Continue',
             onPressed: () {
-              if (userModeController.selectedIndex.value == 0) {
+              if (controller.selectedIndex.value == 0) {
                 Get.toNamed(AppRoutes.signUpOptionView);
-              } else if (userModeController.selectedIndex.value == 1) {
+              } else if (controller.selectedIndex.value == 1) {
                  Get.toNamed(AppRoutes.signUpOptionView);
               }
             },

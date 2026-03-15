@@ -11,13 +11,12 @@ import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dar
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class AiDesignView extends StatelessWidget {
+class AiDesignView extends GetView<AiDesignController> {
   const AiDesignView({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    AiDesignController aiDesignController = Get.find();
     return CustomContainer(
       child: ListView(
         children: [
@@ -45,8 +44,8 @@ class AiDesignView extends StatelessWidget {
           AiDesignTable(),
           SizedBox(height: 24.h),
           CustomPagination(
-            currentPage: aiDesignController.currentPage,
-            totalPage: aiDesignController.totalPages,
+            currentPage: controller.currentPage,
+            totalPage: controller.totalPages,
           ),
         ],
       ),

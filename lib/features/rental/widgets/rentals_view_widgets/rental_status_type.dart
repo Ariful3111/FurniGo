@@ -3,19 +3,18 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/features/rental/controller/rental_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_filter.dart';
 
-class RentalStatusType extends StatelessWidget {
+class RentalStatusType extends GetWidget<RentalController> {
   const RentalStatusType({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentalController rentalController = Get.find();
     return Obx(
       () => CustomTableFilter(
         onTap: (value) {
-          rentalController.statusIndex.value = value;
+          controller.statusIndex.value = value;
         },
-        item: rentalController.statusList,
-        selectedIndex: rentalController.statusIndex.value,
+        item: controller.statusList,
+        selectedIndex: controller.statusIndex.value,
       ),
     );
   }

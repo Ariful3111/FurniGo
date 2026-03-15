@@ -61,7 +61,10 @@ class RentalsQuoteItemDetailsInfo extends StatelessWidget {
         SizedBox(height: 14.h),
         ...List.generate(details.length, (index) {
           return Padding(
-            padding: EdgeInsets.only(bottom:details.length-1==index? 0:4.h,left: 16.w),
+            padding: EdgeInsets.only(
+              bottom: details.length - 1 == index ? 0 : 4.h,
+              left: 16.w,
+            ),
             child: CustomPrimaryText(
               text: details[index],
               fontSize: 14.sp,

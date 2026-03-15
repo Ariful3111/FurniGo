@@ -3,19 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/dashboard/controller/order_details_controller.dart';
+import 'package:zb_dezign/features/order/controller/order_details_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_rating_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class OrderDetailsStatus extends StatelessWidget {
+class OrderDetailsStatus extends GetWidget<OrderDetailsController> {
   const OrderDetailsStatus({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    OrderDetailsController orderDetailsController = Get.find();
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
 
@@ -62,19 +61,22 @@ class OrderDetailsStatus extends StatelessWidget {
                 text: 'Add Review',
                 onPressed: () {
                   showDialog(
-                    barrierColor: isDark?AppColors.whiteColor.withValues(alpha: 0.2):null,
+                    barrierColor: isDark
+                        ? AppColors.whiteColor.withValues(alpha: 0.2)
+                        : null,
                     context: context,
                     builder: (context) {
-                      return Obx(()=> CustomRatingDialog(
-                        onSubmitTap: () {
-                          
-                        },
-                        rating: orderDetailsController.rating.value,
-                        textEditingController: orderDetailsController.ratingController,
-                        onRatingUpdate: (double value) {
-                          orderDetailsController.rating.value = value;
-                        },
-                      ));
+                      return Obx(
+                        () => CustomRatingDialog(
+                          onSubmitTap: () {},
+                          rating: controller.rating.value,
+                          textEditingController:
+                              controller.ratingController,
+                          onRatingUpdate: (double value) {
+                            controller.rating.value = value;
+                          },
+                        ),
+                      );
                     },
                   );
                 },

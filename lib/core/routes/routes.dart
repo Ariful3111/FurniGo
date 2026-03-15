@@ -4,6 +4,7 @@ import 'package:zb_dezign/features/ai_design/bindings/ai_design_bindings.dart';
 import 'package:zb_dezign/features/ai_design/views/ai_design_details.dart';
 import 'package:zb_dezign/features/ai_design/views/ai_design_view.dart';
 import 'package:zb_dezign/features/auth/bindings/auth_bindings.dart';
+import 'package:zb_dezign/features/auth/bindings/onboard_bindings.dart';
 import 'package:zb_dezign/features/auth/views/email_verification_view.dart';
 import 'package:zb_dezign/features/auth/views/forgot_password_view.dart';
 import 'package:zb_dezign/features/auth/views/new_password_view.dart';
@@ -18,12 +19,15 @@ import 'package:zb_dezign/features/credit_balance/views/credit_balance_view.dart
 import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_payment_view.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_view.dart';
-import 'package:zb_dezign/features/dashboard/views/order_details_view.dart';
-import 'package:zb_dezign/features/dashboard/views/order_view.dart';
+import 'package:zb_dezign/features/order/bindings/order_bindings.dart';
+import 'package:zb_dezign/features/order/views/order_details_view.dart';
+import 'package:zb_dezign/features/order/views/order_view.dart';
 import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
 import 'package:zb_dezign/features/home/views/bottom_nav_view.dart';
 import 'package:zb_dezign/features/notification/bindings/notification_bindings.dart';
 import 'package:zb_dezign/features/notification/views/notification_view.dart';
+import 'package:zb_dezign/features/payment/bindings/payment_bindings.dart';
+import 'package:zb_dezign/features/payment/views/payment_view.dart';
 import 'package:zb_dezign/features/profile/bindings/profile_bindings.dart';
 import 'package:zb_dezign/features/profile/views/profile_setting_view.dart';
 import 'package:zb_dezign/features/profile/views/profile_views.dart';
@@ -45,7 +49,7 @@ final List<GetPage> appRoutes = [
   GetPage(
     name: AppRoutes.onboardingView,
     page: () => OnboardingView(),
-    binding: AuthBindings(),
+    binding: OnboardBindings(),
   ),
   GetPage(
     name: AppRoutes.signInView,
@@ -120,7 +124,7 @@ final List<GetPage> appRoutes = [
   GetPage(
     name: AppRoutes.orderView,
     page: () => OrderView(),
-    binding: DashboardBindings(),
+    binding: OrderBindings(),
   ),
   GetPage(
     name: AppRoutes.orderDetailsView,
@@ -181,5 +185,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.supportView,
     page: () => SupportView(),
     binding: SupportBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.paymentView,
+    page: () => PaymentView(),
+    binding: PaymentBindings(),
   ),
 ];

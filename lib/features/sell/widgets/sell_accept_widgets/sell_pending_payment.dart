@@ -8,13 +8,12 @@ import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.d
 import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class SellPendingPayment extends StatelessWidget {
+class SellPendingPayment extends GetWidget<SellDetailsController> {
   const SellPendingPayment({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    SellDetailsController sellDetailsController = Get.find();
     return Column(
       children: [
         Row(
@@ -40,11 +39,11 @@ class SellPendingPayment extends StatelessWidget {
         SizedBox(height: 8.h),
         CustomPaymentDropdownMenu(
           height: 44.h,
-          cardList: sellDetailsController.cardList,
-          selectedCard: sellDetailsController.selectedCard,
+          cardList: controller.cardList,
+          selectedCard: controller.selectedCard,
           onSelect: (value) {
             if (value != null) {
-              sellDetailsController.selectedCard.value = value;
+              controller.selectedCard.value = value;
             }
           },
         ),

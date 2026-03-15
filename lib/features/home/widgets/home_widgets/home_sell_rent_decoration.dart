@@ -21,7 +21,10 @@ class HomeSellRentDecoration extends StatelessWidget {
     required this.sub,
     required this.buttonTitle,
     required this.onTap,
-    required this.buttonWidth, this.titleTextAlign, this.subTextAlign, required this.image,
+    required this.buttonWidth,
+    this.titleTextAlign,
+    this.subTextAlign,
+    required this.image,
   });
 
   @override
@@ -29,8 +32,11 @@ class HomeSellRentDecoration extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
-    color: isDark?AppColors.darkColor:AppColors.whiteColor,
-    border: Border.all(width: 4.r,color:isDark? AppColors.greyTextColor:AppColors.whiteColor),
+      color: isDark ? AppColors.darkColor : AppColors.whiteColor,
+      border: Border.all(
+        width: 4.r,
+        color: isDark ? AppColors.greyTextColor : AppColors.whiteColor,
+      ),
       boxShadow: [
         BoxShadow(
           offset: Offset(0, 8),
@@ -38,10 +44,7 @@ class HomeSellRentDecoration extends StatelessWidget {
           color: AppColors.shadowColor.withValues(alpha: 0.1),
         ),
       ],
-      image: DecorationImage(
-        image: AssetImage(image),
-        fit: BoxFit.cover,
-      ),
+      image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
       height: 260.h,
       child: Column(
         crossAxisAlignment: crossAxisAlignment,

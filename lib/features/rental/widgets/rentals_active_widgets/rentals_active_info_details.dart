@@ -11,14 +11,13 @@ import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class RentalsActiveInfoDetails extends StatelessWidget {
+class RentalsActiveInfoDetails extends GetWidget<RentalActiveController> {
   const RentalsActiveInfoDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
     final RentalModel rentalModel = Get.arguments as RentalModel;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    RentalActiveController activeController = Get.find();
     return SharedContainer(
       radius: 12.r,
       padding: EdgeInsets.all(20.r),
@@ -85,7 +84,7 @@ class RentalsActiveInfoDetails extends StatelessWidget {
                   text(text: 'Status', isDark: isDark),
                   SizedBox(height: 4.h),
                   CustomTableStatus(
-                    status: activeController.isInstallment
+                    status: controller.isInstallment
                         ? rentalModel.status
                         : '2nd installment: Due',
                   ),

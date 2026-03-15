@@ -9,13 +9,12 @@ import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_fiel
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class TransactionViewTableFilter extends StatelessWidget {
+class TransactionViewTableFilter extends GetWidget<TransactionController> {
   const TransactionViewTableFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    TransactionController transactionController = Get.find();
     return GestureDetector(
       onTap: () {
         showDialog(context: context, builder: (context){
@@ -69,7 +68,7 @@ class TransactionViewTableFilter extends StatelessWidget {
           Expanded(
             flex: 2,
             child: CustomTextFormField(
-              controller: transactionController.searchController,
+              controller: controller.searchController,
               labelText: 'Search',
               padding: EdgeInsets.all(4.r),
               labelColor: Color(0xFF9F9F9F),

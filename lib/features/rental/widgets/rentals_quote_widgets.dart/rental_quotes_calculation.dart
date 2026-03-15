@@ -11,7 +11,6 @@ class RentalQuotesCalculation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return SharedContainer(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
       border: Border.all(color: Color(0xFFB9F8CF), width: 1.2.r),

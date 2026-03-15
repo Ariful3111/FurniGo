@@ -39,7 +39,10 @@ class AiDesignTableExpanded extends StatelessWidget {
           text: 'View Details',
           icon: IconsPath.view,
           onPressed: () {
-            Get.toNamed(AppRoutes.aiDesignDetailsView,arguments: aiDesignModel);
+            Get.toNamed(
+              AppRoutes.aiDesignDetailsView,
+              arguments: aiDesignModel,
+            );
           },
         ),
       ],

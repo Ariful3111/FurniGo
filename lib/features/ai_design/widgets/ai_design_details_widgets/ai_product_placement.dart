@@ -58,12 +58,14 @@ class AiProductPlacement extends StatelessWidget {
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     return SharedContainer(
-                      margin: EdgeInsets.only(right: index==9?0:16.w),
+                      margin: EdgeInsets.only(right: index == 9 ? 0 : 16.w),
                       width: 40.h,
                       height: 40.h,
                       radius: 6.3.r,
                       padding: EdgeInsets.zero,
-                      color: isDark ? AppColors.labelColor : AppColors.fieldColor,
+                      color: isDark
+                          ? AppColors.labelColor
+                          : AppColors.fieldColor,
                       child: Center(
                         child: Image.asset(
                           IconsPath.furniture,

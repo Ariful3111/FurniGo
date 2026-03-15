@@ -8,7 +8,7 @@ import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/ren
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rentals_quote_item_details_preview.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentalsQuoteItemDetails extends StatelessWidget {
+class RentalsQuoteItemDetails extends GetWidget<RentalQuotesController> {
   final int index;
   final Map<String, dynamic> item;
   const RentalsQuoteItemDetails({
@@ -20,7 +20,6 @@ class RentalsQuoteItemDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    RentalQuotesController quotesController = Get.find();
     return Container(
       width: MediaQuery.widthOf(context),
       padding: EdgeInsets.all(12.r),
@@ -67,21 +66,17 @@ class RentalsQuoteItemDetails extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomPrimaryText(
-                text: item['name'],
-                fontSize: 22.sp,
-              ),
+              CustomPrimaryText(text: item['name'], fontSize: 22.sp),
               Obx(
                 () => InkWell(
                   onTap: () {
-                    quotesController.isShowInfo.value =
-                        !quotesController.isShowInfo.value;
+                    controller.isShowInfo.value = !controller.isShowInfo.value;
                   },
                   child: AnimatedRotation(
-                    turns: quotesController.isShowInfo.value ? 1 : 0,
+                    turns: controller.isShowInfo.value ? 1 : 0,
                     duration: Duration(milliseconds: 300),
                     child: Image.asset(
-                      quotesController.isShowInfo.value
+                      controller.isShowInfo.value
                           ? IconsPath.upArrow
                           : IconsPath.downArrow,
                       height: 20.h,
@@ -100,7 +95,7 @@ class RentalsQuoteItemDetails extends StatelessWidget {
             () => AnimatedSize(
               duration: const Duration(milliseconds: 300),
               curve: Curves.linear,
-              child: quotesController.isShowInfo.value
+              child: controller.isShowInfo.value
                   ? RentalsQuoteItemDetailsInfo(key: ValueKey('info'))
                   : SizedBox(key: ValueKey('empty')),
             ),

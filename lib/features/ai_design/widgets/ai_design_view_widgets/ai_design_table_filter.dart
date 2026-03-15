@@ -6,22 +6,21 @@ import 'package:zb_dezign/features/ai_design/controller/ai_design_controller.dar
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_filter.dart';
 
-class AiDesignTableFilter extends StatelessWidget {
+class AiDesignTableFilter extends GetWidget<AiDesignController> {
   const AiDesignTableFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
-    AiDesignController aiDesignController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(
           () => CustomTableFilter(
             onTap: (value) {
-              aiDesignController.selectedIndex.value = value;
+              controller.selectedIndex.value = value;
             },
-            item: aiDesignController.category,
-            selectedIndex: aiDesignController.selectedIndex.value,
+            item: controller.category,
+            selectedIndex: controller.selectedIndex.value,
           ),
         ),
         SizedBox(height: 12.h),
@@ -31,7 +30,7 @@ class AiDesignTableFilter extends StatelessWidget {
             height: 40.h,
             width: 166.w,
             child: CustomTextFormField(
-              controller: aiDesignController.searchController,
+              controller: controller.searchController,
               labelText: 'Search',
               padding: EdgeInsets.all(4.r),
               labelColor: Color(0xFF9F9F9F),

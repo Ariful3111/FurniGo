@@ -23,7 +23,6 @@ class ProfileViews extends StatelessWidget {
           ProfileUserInfo(),
           SizedBox(height: 20.h),
           ProfileViewItems(),
-          
           SizedBox(height: 20.h),
           CustomPrimaryButton(
             backgroundColor: AppColors.secondaryColor,

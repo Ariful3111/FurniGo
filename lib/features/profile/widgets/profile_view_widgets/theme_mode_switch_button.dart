@@ -5,17 +5,16 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/core/theme/theme_controller.dart';
 
-class ThemeModeSwitchButton extends StatelessWidget {
+class ThemeModeSwitchButton extends GetWidget<ThemeController> {
   const ThemeModeSwitchButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ThemeController themeController = Get.find();
     return Obx(() {
-      bool isDark = themeController.isDarkMode.value;
+      bool isDark = controller.isDarkMode.value;
       return GestureDetector(
         onTap: () {
-          themeController.changeTheme(!isDark);
+          controller.changeTheme(!isDark);
         },
         child: SizedBox(
           width: 44.44.w,
@@ -28,9 +27,7 @@ class ThemeModeSwitchButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   image: DecorationImage(
                     image: AssetImage(
-                      isDark
-                          ? IconsPath.themeDark
-                          : IconsPath.themeLight,
+                      isDark ? IconsPath.themeDark : IconsPath.themeLight,
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -46,7 +43,7 @@ class ThemeModeSwitchButton extends StatelessWidget {
                   width: 15.56.w,
                   height: 15.56.h,
                   margin: EdgeInsets.all(2.22.r),
-                  decoration:  BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.whiteColor,
                   ),

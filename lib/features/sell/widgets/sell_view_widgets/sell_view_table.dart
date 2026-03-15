@@ -9,19 +9,18 @@ import 'package:zb_dezign/features/sell/widgets/sell_view_widgets/sell_view_tabl
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_action_button.dart';
 
-class SellViewTable extends StatelessWidget {
+class SellViewTable extends GetWidget<SellController> {
   const SellViewTable({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SellController sellController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SellViewTableFilter(),
         SizedBox(height: 12.h),
         Obx(() {
-          final tableRows = sellController.filteredSell
+          final tableRows = controller.filteredSell
               .map(
                 (sell) => {
                   'id': sell.id,
@@ -31,7 +30,7 @@ class SellViewTable extends StatelessWidget {
                 },
               )
               .toList();
-          final expandedFlag = sellController.expandedList.toList();
+          final expandedFlag = controller.expandedList.toList();
           return CustomTable(
             rows: tableRows,
             id: 'id',
@@ -39,14 +38,14 @@ class SellViewTable extends StatelessWidget {
             title: 'title',
             expandedList: expandedFlag,
             onExpand: (index) {
-              sellController.expandedList[index] =
-                  !sellController.expandedList[index];
+              controller.expandedList[index] =
+                  !controller.expandedList[index];
             },
             buildExpanded: (index, row) {
               final SellModel sellModel = row['model'] as SellModel;
               return SellTableExpanded(sellModel: sellModel);
             },
-            headerList: sellController.sellTableColumn,
+            headerList: controller.sellTableColumn,
             action: SizedBox.shrink(),
             actionBuilder: (index, row) {
               final SellModel sellModel = row['model'] as SellModel;

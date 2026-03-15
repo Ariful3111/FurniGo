@@ -9,13 +9,12 @@ import 'package:zb_dezign/shared/widgets/custom_button/custom_switch_button.dart
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class ProfileSettingsNotifications extends StatelessWidget {
+class ProfileSettingsNotifications extends GetWidget<ProfileSettingController> {
   const ProfileSettingsNotifications({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    ProfileSettingController profileSettingController = Get.find();
     return SharedContainer(
       child: Column(
         children: [
@@ -25,14 +24,14 @@ class ProfileSettingsNotifications extends StatelessWidget {
             subtitle: 'Manage email and push notifications',
           ),
           SizedBox(height: 20.h),
-          ...List.generate(profileSettingController.notification.length, (
+          ...List.generate(controller.notification.length, (
             index,
           ) {
-            final item = profileSettingController.notification[index];
+            final item = controller.notification[index];
             return Padding(
               padding: EdgeInsets.only(
                 bottom:
-                    profileSettingController.notification.length - 1 == index
+                    controller.notification.length - 1 == index
                     ? 0
                     : 16.h,
               ),

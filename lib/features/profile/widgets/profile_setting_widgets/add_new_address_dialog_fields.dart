@@ -7,36 +7,34 @@ import 'package:zb_dezign/features/profile/controllers/profile_setting_controlle
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
-import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_phone_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class AddNewAddressDialogFields extends StatelessWidget {
+class AddNewAddressDialogFields extends GetWidget<ProfileSettingController> {
   const AddNewAddressDialogFields({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    ProfileSettingController profileSettingController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         title(text: 'Address Label', isDark: isDark),
         field(
-          controller: profileSettingController.addressLabelController,
+          controller: controller.addressLabelController,
           labelText: 'e.g., Home, Work, Warehouse..',
         ),
         SizedBox(height: 16.h),
         title(text: 'Full Name', isDark: isDark),
         field(
-          controller: profileSettingController.dialogNameController,
+          controller: controller.dialogNameController,
           labelText: 'Enter Your Name',
         ),
         SizedBox(height: 16.h),
         title(text: 'Address', isDark: isDark),
         field(
-          controller: profileSettingController.dialogAddressController,
+          controller: controller.dialogAddressController,
           suffixIcon: Padding(
             padding: EdgeInsetsGeometry.only(right: 12.w),
             child: Image.asset(IconsPath.search, height: 20.h, width: 20.w),
@@ -46,36 +44,16 @@ class AddNewAddressDialogFields extends StatelessWidget {
         SizedBox(height: 16.h),
         text(text: 'City', isDark: isDark),
         SizedBox(height: 8.h),
-        CustomDropdownMenu(
-          height: 44.h,
-          onSelect: (value) {
-            profileSettingController.selectedCity.value = value!;
-          },
-          option: profileSettingController.city,
-          isSelect: profileSettingController.selectedCity,
-          label: 'Select',
-          expandedInsets: EdgeInsets.zero,
-          offset: Offset(-1, 0),
-        ),
+        field(controller: controller.dialogCityController, labelText: 'Select City'),
         SizedBox(height: 20.h),
         text(text: 'State', isDark: isDark),
         SizedBox(height: 8.h),
-        CustomDropdownMenu(
-          height: 44.h,
-          onSelect: (value) {
-            profileSettingController.selectedState.value = value!;
-          },
-          option: profileSettingController.state,
-          isSelect: profileSettingController.selectedState,
-          label: 'Select',
-          expandedInsets: EdgeInsets.zero,
-          offset: Offset(-1, 0),
-        ),
+        field(controller: controller.dialogStateController, labelText: 'Select State'),
         SizedBox(height: 20.h),
         text(text: 'Zip Code', isDark: isDark),
         SizedBox(height: 8.h),
         field(
-          controller: profileSettingController.dialogZipController,
+          controller: controller.dialogZipController,
           labelText: 'Enter Zip Code',
         ),
         SizedBox(height: 16.h),
@@ -84,7 +62,7 @@ class AddNewAddressDialogFields extends StatelessWidget {
         SizedBox(
           height: 44.h,
           child: CustomPhoneField(
-            controller: profileSettingController.dialogPhoneController,
+            controller: controller.dialogPhoneController,
             labelText: 'Enter Your Phone Number',
           ),
         ),
@@ -93,9 +71,9 @@ class AddNewAddressDialogFields extends StatelessWidget {
           children: [
             Obx(
               () => CustomCheckBox(
-                isChecked: profileSettingController.isDefault.value,
+                isChecked: controller.isDefault.value,
                 onChange: (value) {
-                  profileSettingController.isDefault.value = value;
+                  controller.isDefault.value = value;
                 },
               ),
             ),
