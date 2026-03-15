@@ -30,7 +30,8 @@ class CustomTableCalender extends StatelessWidget {
     this.onRangeSelected,
     this.onDaySelected,
     this.onFormatChanged,
-    this.onPageChanged,  required this.selectDay,
+    this.onPageChanged,
+    required this.selectDay,
   });
 
   @override
@@ -72,8 +73,7 @@ class CustomTableCalender extends StatelessWidget {
               onFormatChanged: onFormatChanged,
               rowHeight: rowHeight,
               daysOfWeekHeight: weekBarHeight,
-              selectedDayPredicate: (day) =>
-                  isSameDay(day, selectDay),
+              selectedDayPredicate: (day) => isSameDay(day, selectDay),
               headerStyle: HeaderStyle(
                 titleCentered: true,
                 formatButtonVisible: false,
@@ -96,15 +96,21 @@ class CustomTableCalender extends StatelessWidget {
               daysOfWeekVisible: true,
               calendarStyle: CalendarStyle(
                 cellMargin: EdgeInsets.all(3.r),
-                selectedTextStyle: textDecoration(color:isDark?AppColors.primaryBorderColor :AppColors.whiteColor),
-                selectedDecoration: BoxDecoration(color: AppColors.primaryColor,shape: BoxShape.circle),
+                selectedTextStyle: textDecoration(
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.whiteColor,
+                ),
+                selectedDecoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  shape: BoxShape.circle,
+                ),
                 defaultTextStyle: textDecoration(
                   color: isDark ? AppColors.primaryBorderColor : null,
                 ),
-                todayTextStyle: textDecoration(color: AppColors.borderColor,),
+                todayTextStyle: textDecoration(color: AppColors.borderColor),
                 outsideTextStyle: textDecoration(
                   color: isDark ? AppColors.borderColor : Color(0xFF525E6F),
-                  
                 ),
                 weekendTextStyle: textDecoration(
                   color: isDark ? AppColors.primaryColor : null,
@@ -171,7 +177,11 @@ class CustomTableCalender extends StatelessWidget {
     );
   }
 
-  textDecoration({double? fontSize, FontWeight? fontWeight, Color? color}) {
+  TextStyle textDecoration({
+    double? fontSize,
+    FontWeight? fontWeight,
+    Color? color,
+  }) {
     return GoogleFonts.inter(
       fontSize: fontSize ?? 11.69.sp,
       fontWeight: fontWeight ?? FontWeight.w500,

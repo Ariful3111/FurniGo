@@ -6,16 +6,18 @@ import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/core/routes/routes.dart';
 import 'package:zb_dezign/core/theme/app_theme.dart';
 import 'package:zb_dezign/core/theme/theme_controller.dart';
+import 'package:zb_dezign/features/auth/bindings/auth_bindings.dart';
 import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DependencyInjection.init();
-  runApp(const MyApp());
+  String token = await DependencyInjection.init();
+  runApp(MyApp(token: token));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String token;
+  const MyApp({required this.token, super.key});
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -28,8 +30,10 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: Get.find<ThemeController>().currentTheme,
-            initialBinding: HomeBindings(),
-            initialRoute: AppRoutes.bottomNav,
+            initialBinding: token.isEmpty ? AuthBindings() : HomeBindings(),
+            initialRoute: token.isEmpty
+                ? AppRoutes.onboardingView
+                : AppRoutes.bottomNav,
             getPages: appRoutes,
           );
         });

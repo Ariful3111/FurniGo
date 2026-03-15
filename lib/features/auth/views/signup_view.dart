@@ -84,7 +84,6 @@ class SignupView extends StatelessWidget {
                             description:
                                 'Please Agree to the Terms & Privacy Policy',
                           );
-                          Get.toNamed(AppRoutes.emailVerificationView);
                         }
                       },
                     );
