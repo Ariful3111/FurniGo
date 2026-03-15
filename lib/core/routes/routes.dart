@@ -110,7 +110,7 @@ final List<GetPage> appRoutes = [
   GetPage(
     name: AppRoutes.bottomNav,
     page: () => BottomNavView(),
-    bindings: [HomeBindings(),DashboardBindings()]
+    bindings: [HomeBindings(), DashboardBindings(), ProfileBindings()],
   ),
   GetPage(
     name: AppRoutes.dashboardPaymentView,

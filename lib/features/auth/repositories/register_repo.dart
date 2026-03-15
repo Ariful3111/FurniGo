@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:zb_dezign/core/data/global_models/error_model.dart';
+import 'package:zb_dezign/core/data/networks/headers_manager.dart';
 import 'package:zb_dezign/core/data/networks/post_with_response.dart';
 import 'package:zb_dezign/features/auth/models/register_model.dart';
 
@@ -21,10 +22,7 @@ class RegisterRepository {
   }) async {
     final response = await postWithResponse.postData<RegisterModel>(
       url: "/api/auth/$userType/register",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
+      headers: HeadersManager.getHeaders(isContentType: true),
       body: jsonEncode({
         "name": name,
         "email": email,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:zb_dezign/core/data/global_models/error_model.dart';
+import 'package:zb_dezign/core/data/networks/headers_manager.dart';
 import 'package:zb_dezign/core/data/networks/post_with_response.dart';
 import 'package:zb_dezign/features/auth/models/forgot_password_model.dart';
 
@@ -14,10 +15,7 @@ class ForgotPasswordRepoSitory {
   }) async {
     final response = await postWithResponse.postData(
       url: '/api/auth/password/forgot',
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
+      headers: HeadersManager.getHeaders(isContentType: true),
       body: jsonEncode({'email': email}),
       fromJson: (json) => ForgotPasswordModel.fromJson(json),
     );

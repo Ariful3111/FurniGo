@@ -12,6 +12,9 @@ import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String token = await DependencyInjection.init();
+  if (token.isNotEmpty) {
+    debugPrint("Token: $token");
+  }
   runApp(MyApp(token: token));
 }
 
