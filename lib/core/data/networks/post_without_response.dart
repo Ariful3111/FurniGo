@@ -11,14 +11,14 @@ class PostWithoutResponse {
 
   Future<Either<ErrorModel, bool>> postData({
     required String url,
-    required Map body,
+    required Object body,
     Map<String, String>? headers,
   }) async {
     try {
       var response = await http.post(
         headers: headers ?? {},
         Uri.parse(baseUrl + url),
-        body: jsonEncode(body),
+        body: (body),
       );
       debugPrint(response.body);
       if (response.statusCode == 200 ||

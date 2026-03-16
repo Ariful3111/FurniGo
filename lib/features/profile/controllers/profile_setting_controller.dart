@@ -1,16 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileSettingController extends GetxController {
-  TextEditingController addressController = TextEditingController();
-  TextEditingController addressLabelController = TextEditingController();
-  TextEditingController dialogNameController = TextEditingController();
-  TextEditingController dialogPhoneController = TextEditingController();
-  TextEditingController dialogAddressController = TextEditingController();
-  TextEditingController dialogZipController = TextEditingController();
-  TextEditingController dialogCityController = TextEditingController();
-  TextEditingController dialogStateController = TextEditingController();
-  RxBool isDefault = false.obs;
   List notification = [
     {
       'title': 'Order updates',
@@ -33,13 +23,4 @@ class ProfileSettingController extends GetxController {
       'isOn': false.obs,
     },
   ];
-  @override
-  void dispose() {
-    addressController.dispose();
-    dialogAddressController.dispose();
-    dialogPhoneController.dispose();
-    addressLabelController.dispose();
-    dialogNameController.dispose();
-    super.dispose();
-  }
 }
