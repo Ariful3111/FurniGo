@@ -23,7 +23,7 @@ class ProfileUserImage extends StatelessWidget {
               height: 133.h,
             ),
           ),
-    
+
           Positioned(
             bottom: -12,
             child: Container(

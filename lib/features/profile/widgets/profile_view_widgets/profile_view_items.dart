@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/profile/controllers/profile_controller.dart';
+import 'package:zb_dezign/features/profile/controllers/profile_options_controller.dart';
 import 'package:zb_dezign/features/profile/widgets/profile_view_widgets/theme_mode_switch_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class ProfileViewItems extends GetWidget<ProfileController> {
+class ProfileViewItems extends GetWidget<ProfileOptionsController> {
   const ProfileViewItems({super.key});
 
   @override
@@ -17,8 +17,8 @@ class ProfileViewItems extends GetWidget<ProfileController> {
       children: List.generate(controller.profileList.length, (index) {
         final item = controller.profileList[index];
         return GestureDetector(
-          onTap: (){
-            if(item['route']!=null){
+          onTap: () {
+            if (item['route'] != null) {
               Get.toNamed(item['route']);
             }
           },
@@ -39,17 +39,17 @@ class ProfileViewItems extends GetWidget<ProfileController> {
                         ? AppColors.primaryGradient
                         : AppColors.darkPrimaryGradient.withOpacity(0.2),
                   ),
-          
+
                   child: Center(
                     child: Image.asset(
                       item['icon'],
                       height: 24.h,
                       width: 24.w,
-                      color:isDark? Color(0xFFBBD2F5):null,
+                      color: isDark ? Color(0xFFBBD2F5) : null,
                     ),
                   ),
                 ),
-          
+
                 SizedBox(width: 8.w),
                 CustomPrimaryText(
                   text: item['title'],
@@ -65,18 +65,22 @@ class ProfileViewItems extends GetWidget<ProfileController> {
                     width: 24.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100.r),
-                      gradient: AppColors.darkPrimaryGradient.withOpacity(isDark?1.0:0.5),
+                      gradient: AppColors.darkPrimaryGradient.withOpacity(
+                        isDark ? 1.0 : 0.5,
+                      ),
                     ),
                     child: Center(
                       child: CustomPrimaryText(
                         text: '3',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        color: isDark ? AppColors.whiteColor : Color(0xFF002256),
+                        color: isDark
+                            ? AppColors.whiteColor
+                            : Color(0xFF002256),
                       ),
                     ),
                   ),
-                  if (item['title'] == 'Switch Mode')ThemeModeSwitchButton(),
+                if (item['title'] == 'Switch Mode') ThemeModeSwitchButton(),
               ],
             ),
           ),

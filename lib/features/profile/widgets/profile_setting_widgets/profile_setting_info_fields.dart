@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/profile/controllers/profile_setting_controller.dart';
+import 'package:zb_dezign/features/profile/controllers/profile_update_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class ProfileSettingInfoFields extends GetWidget<ProfileSettingController> {
+class ProfileSettingInfoFields extends GetWidget<ProfileUpdateController> {
   const ProfileSettingInfoFields({super.key});
 
   @override
@@ -41,13 +41,6 @@ class ProfileSettingInfoFields extends GetWidget<ProfileSettingController> {
             readOnly: !controller.isEdit.value,
           ),
           SizedBox(height: 12.h),
-          field(
-            controller: controller.addressController,
-            text: 'Address',
-            isDark: isDark,
-            labelText: 'Enter your address',
-            readOnly: !controller.isEdit.value,
-          ),
           AnimatedSize(
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
@@ -67,8 +60,7 @@ class ProfileSettingInfoFields extends GetWidget<ProfileSettingController> {
                         width: 150.w,
                         text: 'Save Changes',
                         onPressed: () {
-                          controller.isEdit.value =
-                              !controller.isEdit.value;
+                          controller.isEdit.value = !controller.isEdit.value;
                         },
                       ),
                     ],

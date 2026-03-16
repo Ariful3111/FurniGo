@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/profile/controllers/profile_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
 
-class ProfileUserInfo extends StatelessWidget {
+class ProfileUserInfo extends GetWidget<ProfileController> {
   const ProfileUserInfo({super.key});
 
   @override
@@ -18,7 +20,7 @@ class ProfileUserInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomPrimaryText(
-              text: 'Sadman Sakib',
+              text: controller.userProfile.value?.data?.name ?? "User Name",
               fontWeight: FontWeight.w600,
               color: isDark ? AppColors.whiteColor : AppColors.darkColor,
             ),
@@ -31,7 +33,7 @@ class ProfileUserInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomPrimaryText(
-              text: 'sakib@gmail.com',
+              text: controller.userProfile.value?.data?.email ?? "User Email",
               fontSize: 16.sp,
               fontWeight: FontWeight.w400,
               color: isDark
@@ -47,7 +49,9 @@ class ProfileUserInfo extends StatelessWidget {
                   : AppColors.greyTextColor,
             ),
             CustomPrimaryText(
-              text: 'Personal',
+              text:
+                  controller.userProfile.value?.data?.type?.capitalizeFirst ??
+                  "Personal",
               fontSize: 16.sp,
               fontWeight: FontWeight.w400,
               color: isDark
