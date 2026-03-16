@@ -33,7 +33,7 @@ class SignupOptionView extends GetView<SignupOptionController> {
           SizedBox(height: 16.h),
           CustomSpanText(
             title: 'Already have an account? ',
-            spantext: 'Login Now',
+            spanText: 'Login Now',
             onTap: () {
               Get.toNamed(AppRoutes.signInView);
             },
