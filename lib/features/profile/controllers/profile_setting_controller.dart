@@ -11,23 +11,6 @@ class ProfileSettingController extends GetxController {
   TextEditingController dialogCityController = TextEditingController();
   TextEditingController dialogStateController = TextEditingController();
   RxBool isDefault = false.obs;
-  RxString selectedCity = ''.obs;
-  List city = ['Dhaka', 'Khulna'];
-  RxString selectedState = ''.obs;
-  List state = ['State1', 'State2'];
-
-  List addressList = [
-    {
-      'label': 'Home',
-      'address': '123 Main St, Sydney NSW 2000',
-      'default': true,
-    },
-    {
-      'label': 'Work',
-      'address': '456 Elm St, Sydney NSW 2000',
-      'default': false,
-    },
-  ];
   List notification = [
     {
       'title': 'Order updates',
