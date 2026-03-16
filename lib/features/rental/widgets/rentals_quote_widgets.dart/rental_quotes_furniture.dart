@@ -8,22 +8,21 @@ import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/ren
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentalQuotesFurniture extends StatelessWidget {
+class RentalQuotesFurniture extends GetWidget<RentalQuotesController> {
   final String category;
   const RentalQuotesFurniture({super.key, this.category = 'furniture'});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    RentalQuotesController rentalQuotesController = Get.find();
     return Obx(() {
       final items = category == 'furniture'
-          ? rentalQuotesController.furnitureItems
-          : rentalQuotesController.applianceItems;
+          ? controller.furnitureItems
+          : controller.applianceItems;
 
       final expandedList = category == 'furniture'
-          ? rentalQuotesController.isFurnitureExpanded
-          : rentalQuotesController.isApplianceExpanded;
+          ? controller.isFurnitureExpanded
+          : controller.isApplianceExpanded;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,12 +35,12 @@ class RentalQuotesFurniture extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    // rentalQuotesController.toggleItemExpanded(
+                    // controller.toggleItemExpanded(
                     //   index,
                     //   category: category,
                     // );
                   },
-                  child: RentalsQuoteItemDetails(item: item, index: index,),
+                  child: RentalsQuoteItemDetails(item: item, index: index),
                 ),
                 SizedBox(height: 20.h),
                 if (items.length - 1 != index) SizedBox(height: 20.h),
@@ -56,10 +55,7 @@ class RentalQuotesFurniture extends StatelessWidget {
               SizedBox(height: 12.h),
               InkWell(
                 onTap: () {
-                  rentalQuotesController.toggleItemExpanded(
-                    index,
-                    category: category,
-                  );
+                  controller.toggleItemExpanded(index, category: category);
                 },
                 child: Row(
                   children: [

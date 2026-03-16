@@ -6,23 +6,18 @@ import 'package:zb_dezign/features/rental/controller/rental_quotes_controller.da
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentItemDialogCalculation extends StatelessWidget {
+class RentItemDialogCalculation extends GetWidget<RentalQuotesController> {
   const RentItemDialogCalculation({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final RentalQuotesController controller = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.all(16.r),
       child: Obx(() {
         return Column(
           children: [
-            _buildSummaryRow(
-              label: 'Subtotal',
-              value: '\$400',
-              isDark: isDark,
-            ),
+            _buildSummaryRow(label: 'Subtotal', value: '\$400', isDark: isDark),
             SizedBox(height: 12.h),
             _buildSummaryRow(
               label: 'Discount (3%)',
@@ -53,7 +48,6 @@ class RentItemDialogCalculation extends StatelessWidget {
                         ? 'Request Revision'
                         : 'Accept',
                     fontSize: 12.sp,
-                    
                   ),
                 ),
                 SizedBox(width: 12.w),

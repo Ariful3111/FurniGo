@@ -7,23 +7,22 @@ import 'package:zb_dezign/features/profile/controllers/profile_setting_controlle
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class ProfileSettingAddressList extends StatelessWidget {
+class ProfileSettingAddressList extends GetWidget<ProfileSettingController> {
   const ProfileSettingAddressList({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    ProfileSettingController profileSettingController = Get.find();
     return Column(
-      children: List.generate(profileSettingController.addressList.length, (
+      children: List.generate(controller.addressList.length, (
         index,
       ) {
-        final item = profileSettingController.addressList[index];
+        final item = controller.addressList[index];
         return SharedContainer(
           padding: EdgeInsets.all(16.r),
           radius: 16.r,
           margin: EdgeInsets.only(
-            bottom: profileSettingController.addressList.length - 1 == index
+            bottom: controller.addressList.length - 1 == index
                 ? 0
                 : 12.h,
           ),

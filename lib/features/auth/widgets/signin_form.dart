@@ -9,13 +9,12 @@ import 'package:zb_dezign/shared/extensions/validators/email_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/password_validator.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class SigninForm extends StatelessWidget {
+class SigninForm extends GetWidget<SigninController> {
   final GlobalKey<FormState> formKey;
   const SigninForm({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
-    SigninController signinController = Get.find();
     return Form(
       key: formKey,
       child: Column(
@@ -23,7 +22,7 @@ class SigninForm extends StatelessWidget {
         children: [
           SizedBox(height: 8.h),
           authField(
-            controller: signinController.email,
+            controller: controller.email,
             labelText: 'Enter your email',
             validation: AutovalidateMode.onUserInteraction,
             validator: emailValidation,
@@ -33,7 +32,7 @@ class SigninForm extends StatelessWidget {
           SizedBox(height: 20.h),
           SizedBox(height: 8.h),
           authField(
-            controller: signinController.password,
+            controller: controller.password,
             labelText: 'Enter your Password',
             validation: AutovalidateMode.onUserInteraction,
             validator: passwordValidation,

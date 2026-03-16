@@ -40,8 +40,20 @@ class CustomDrawerController extends GetxController {
       'title': 'Transaction',
       'page': AppRoutes.transactionView,
     },
-    {'icon': IconsPath.drawerPayment, 'title': 'Payment', 'page': '/payment'},
-    {'icon': IconsPath.drawerSupport, 'title': 'Support', 'page': AppRoutes.supportView},
-    {'icon': IconsPath.drawerSetting, 'title': 'Setting', 'page': AppRoutes.profileSettingView},
+    {
+      'icon': IconsPath.drawerPayment,
+      'title': 'Payment',
+      'page': AppRoutes.paymentView,
+    },
+    {
+      'icon': IconsPath.drawerSupport,
+      'title': 'Support',
+      'page': AppRoutes.supportView,
+    },
+    {
+      'icon': IconsPath.drawerSetting,
+      'title': 'Setting',
+      'page': AppRoutes.profileSettingView,
+    },
   ];
 }

@@ -8,13 +8,12 @@ import 'package:zb_dezign/features/sell/controller/sell_details_controller.dart'
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class SellDetailsStatus extends StatelessWidget {
+class SellDetailsStatus extends GetWidget<SellDetailsController> {
   const SellDetailsStatus({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    SellDetailsController sellDetailsController = Get.find();
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Column(
@@ -27,8 +26,8 @@ class SellDetailsStatus extends StatelessWidget {
             color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
           ),
           SizedBox(height: 18.h),
-          ...List.generate(sellDetailsController.status.length, (index) {
-            final item = sellDetailsController.status[index];
+          ...List.generate(controller.status.length, (index) {
+            final item = controller.status[index];
             final isStatus = item['status'] == true;
             return SizedBox(
               height: 85.h,
@@ -67,7 +66,7 @@ class SellDetailsStatus extends StatelessWidget {
                   thickness: 2.w,
                 ),
                 isFirst: index == 0 ? true : false,
-                isLast: sellDetailsController.status.length - 1 == index
+                isLast: controller.status.length - 1 == index
                     ? true
                     : false,
                 endChild: Padding(

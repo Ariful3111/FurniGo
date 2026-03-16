@@ -1,18 +1,31 @@
 import 'package:get/get.dart';
-import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/core/routes/app_routes.dart';
+import 'package:zb_dezign/core/data/global_models/user_profile_model.dart';
+import 'package:zb_dezign/features/profile/repositories/get_profile_repo.dart';
+import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
 class ProfileController extends GetxController {
-  List profileList = [
-    {'icon':IconsPath.profileCategory,'title':'Dashboard',},
-    {'icon':IconsPath.profile,'title':'Profile & Settings','route':AppRoutes.profileSettingView,},
-    {'icon':IconsPath.profileNotification,'title':'Notifications',},
-    {'icon':IconsPath.profileMode,'title':'Switch Mode',},
-    {'icon':IconsPath.profileBalance,'title':'Credit Balance',},
-    {'icon':IconsPath.profileOrder,'title':'My Orders',},
-    {'icon':IconsPath.profileSubs,'title':'Subscription and Membership',},
-    {'icon':IconsPath.profileContact,'title':'Contact Us',},
-    {'icon':IconsPath.profileSupport,'title':'Support',},
-    {'icon':IconsPath.profilePrivacy,'title':'Privacy Policy',},
-  ];
+  final GetProfileRepository getProfileRepository;
+  ProfileController({required this.getProfileRepository});
+
+  final userProfile = Rxn<UserProfileModel>();
+  RxBool isLoading = true.obs;
+
+  Future<void> getUserProfile() async {
+    final response = await getProfileRepository.execute();
+    isLoading.value = false;
+    response.fold(
+      (error) {
+        ErrorSnackbar.show(description: error.message);
+      },
+      (data) {
+        userProfile.value = data;
+      },
+    );
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    getUserProfile();
+  }
 }

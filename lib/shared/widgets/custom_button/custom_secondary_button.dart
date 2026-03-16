@@ -72,13 +72,11 @@ class CustomSecondaryButton extends StatelessWidget {
               color: isDark?AppColors.whiteColor:iconColor,
             ),
             SizedBox(width: 4.w),
-            Expanded(
-              child: CustomPrimaryText(
-                text: text,
-                fontSize: fontSize ?? 12.sp,
-                color: textColor ?? AppColors.labelColor,
-                textOverflow: TextOverflow.ellipsis,
-              ),
+            CustomPrimaryText(
+              text: text,
+              fontSize: fontSize ?? 12.sp,
+              color: textColor ?? AppColors.labelColor,
+              textOverflow: TextOverflow.ellipsis,
             ),
           ],
         ),

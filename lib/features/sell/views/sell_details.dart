@@ -17,14 +17,13 @@ import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class SellDetails extends StatelessWidget {
+class SellDetails extends GetView<SellDetailsController> {
   const SellDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
     final SellModel sellModel = Get.arguments as SellModel;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    SellDetailsController sellDetailsController = Get.find();
     return CustomContainer(
       child: ListView(
         children: [
@@ -81,19 +80,20 @@ class SellDetails extends StatelessWidget {
                 onPayment: () {
                   Navigator.pop(context);
                   showDialog(
-                    barrierColor:
-                        isDark ? AppColors.whiteColor.withValues(alpha: 0.3) : null,
+                    barrierColor: isDark
+                        ? AppColors.whiteColor.withValues(alpha: 0.3)
+                        : null,
                     context: context,
                     builder: (context) {
                       return CustomPaymentDialog(
-                        title:'Card Information' ,
+                        title: 'Card Information',
                         sub: 'Receive your payment.',
                         buttonText: 'Done',
-                        cardList: sellDetailsController.cardList,
-                        selectedCard: sellDetailsController.selectedCard,
+                        cardList: controller.cardList,
+                        selectedCard: controller.selectedCard,
                         onSelect: (value) {
                           if (value != null) {
-                            sellDetailsController.selectedCard.value = value;
+                            controller.selectedCard.value = value;
                           }
                         },
                       );

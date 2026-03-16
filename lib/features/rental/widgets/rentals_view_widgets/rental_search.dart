@@ -5,19 +5,18 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/controller/rental_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 
-class RentalSearch extends StatelessWidget {
+class RentalSearch extends GetWidget<RentalController> {
   const RentalSearch({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentalController rentalController = Get.find();
     return SizedBox(
       height: 40.h,
       width: 166.w,
       child: CustomTextFormField(
         maxLines: 1,
         padding: EdgeInsets.zero,
-        controller: rentalController.searchController,
+        controller: controller.searchController,
         labelText: 'Search Rental...',
         labelFontSize: 12.sp,
         labelFontWeight: FontWeight.w400,

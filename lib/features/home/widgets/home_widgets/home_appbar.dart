@@ -1,8 +1,10 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -77,7 +79,9 @@ class HomeAppbar extends StatelessWidget {
           ),
           position: badges.BadgePosition.custom(start: 16.w, top: 9.h),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.notificationView);
+            },
             child: HomeHelper().blurContainer(
               height: 32.h,
               width: 32.w,

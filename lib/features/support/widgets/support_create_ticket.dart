@@ -9,12 +9,11 @@ import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_fiel
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class SupportCreateTicket extends StatelessWidget {
+class SupportCreateTicket extends GetWidget<SupportController> {
   const SupportCreateTicket({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SupportController supportController = Get.find();
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       padding: EdgeInsets.all(20.w),
@@ -25,29 +24,29 @@ class SupportCreateTicket extends StatelessWidget {
           SizedBox(height: 24.h),
           text(text: "Subject", isDark: isDark),
           CustomTextFormField(
-            controller: supportController.subjectController,
+            controller: controller.subjectController,
             labelText: "Brief description of the issue",
           ),
           SizedBox(height: 12.h),
           text(text: "Category", isDark: isDark),
           CustomDropdownMenu(
             label: 'Select Category',
-            option: supportController.categories,
-            isSelect: supportController.selectedCategory,
+            option: controller.categories,
+            isSelect: controller.selectedCategory,
             onSelect: (value) {
-              supportController.selectedCategory.value = value ?? "";
+              controller.selectedCategory.value = value ?? "";
             },
           ),
           SizedBox(height: 20.h),
           text(text: "Order ID (Optional)", isDark: isDark),
           CustomTextFormField(
-            controller: supportController.orderIdController,
+            controller: controller.orderIdController,
             labelText: "#ORD-...",
           ),
           SizedBox(height: 20.h),
           text(text: "Message", isDark: isDark),
           CustomTextFormField(
-            controller: supportController.messageController,
+            controller: controller.messageController,
             labelText: "Describe your issue in detail...",
             isAlignLabelWithHint: true,
             maxLines: 6,

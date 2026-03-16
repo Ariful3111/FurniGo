@@ -11,13 +11,12 @@ import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dar
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class NewPasswordView extends StatelessWidget {
+class NewPasswordView extends GetView<NewPasswordController> {
   const NewPasswordView({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    NewPasswordController newPasswordController = Get.find();
     return CustomContainer(
       gradient: isDark ? AppColors.darkAuthBG : AppColors.authBG,
       child: SingleChildScrollView(
@@ -46,7 +45,7 @@ class NewPasswordView extends StatelessWidget {
             authField(
               text: 'Password *',
               labelText: 'Enter your Password',
-              controller: newPasswordController.passwordController,
+              controller: controller.passwordController,
               icon: IconsPath.pass,
               context: context,
             ),
@@ -54,7 +53,7 @@ class NewPasswordView extends StatelessWidget {
             authField(
               text: 'Confirm Password *',
               labelText: 'Re-Enter your Password',
-              controller: newPasswordController.confirmPasswordController,
+              controller: controller.confirmPasswordController,
               icon: IconsPath.pass,
               context: context,
             ),

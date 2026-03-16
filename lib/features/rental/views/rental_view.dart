@@ -11,17 +11,24 @@ import 'package:zb_dezign/features/rental/widgets/rentals_view_widgets/rental_st
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 
-class RentalView extends StatelessWidget {
+class RentalView extends GetView<RentalController> {
   const RentalView({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    RentalController rentalController = Get.find();
     return CustomContainer(
       child: ListView(
         children: [
-          CustomAppbar(title: 'Rental', onDrawerTap: () {showDialog(context: context, builder: (context) => CustomDrawer());}),
+          CustomAppbar(
+            title: 'Rental',
+            onDrawerTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => CustomDrawer(),
+              );
+            },
+          ),
           SizedBox(height: 12.h),
           rentalsTop(isDark: isDark),
           SizedBox(height: 16.h),
@@ -32,8 +39,8 @@ class RentalView extends StatelessWidget {
           RentalTable(),
           SizedBox(height: 24.h),
           CustomPagination(
-            currentPage: rentalController.currentPage,
-            totalPage: rentalController.totalPages,
+            currentPage: controller.currentPage,
+            totalPage: controller.totalPages,
           ),
         ],
       ),

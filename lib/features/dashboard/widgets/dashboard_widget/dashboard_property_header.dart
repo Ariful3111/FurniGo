@@ -6,7 +6,11 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 class DashboardPropertyHeader extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
-  const DashboardPropertyHeader({super.key, required this.title, required this.onTap});
+  const DashboardPropertyHeader({
+    super.key,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

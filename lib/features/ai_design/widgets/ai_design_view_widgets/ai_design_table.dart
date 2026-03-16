@@ -10,18 +10,17 @@ import 'package:zb_dezign/features/ai_design/widgets/ai_design_view_widgets/ai_d
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table.dart';
 
-class AiDesignTable extends StatelessWidget {
+class AiDesignTable extends GetWidget<AiDesignController> {
   const AiDesignTable({super.key});
 
   @override
   Widget build(BuildContext context) {
-    AiDesignController aiDesignController = Get.find();
     return Column(
       children: [
         AiDesignTableFilter(),
         SizedBox(height: 12.h),
         Obx(() {
-          final tableRows = aiDesignController.filteredAi
+          final tableRows = controller.filteredAi
               .map(
                 (ai) => {
                   'id': ai.id,
@@ -31,7 +30,7 @@ class AiDesignTable extends StatelessWidget {
                 },
               )
               .toList();
-          final expandedFlag = aiDesignController.expandedList.toList();
+          final expandedFlag = controller.expandedList.toList();
           return CustomTable(
             rows: tableRows,
             id: 'id',
@@ -40,26 +39,28 @@ class AiDesignTable extends StatelessWidget {
             title: 'title',
             expandedList: expandedFlag,
             onExpand: (index) {
-              aiDesignController.expandedList[index] =
-                  !aiDesignController.expandedList[index];
+              controller.expandedList[index] = !controller.expandedList[index];
             },
             buildExpanded: (index, row) {
               final AiDesignModel aiDesignModel = row['model'] as AiDesignModel;
               return AiDesignTableExpanded(aiDesignModel: aiDesignModel);
             },
-            headerList: aiDesignController.aiTableColumn,
+            headerList: controller.aiTableColumn,
             action: SizedBox.shrink(),
             actionBuilder: (index, row) {
               final AiDesignModel aiDesignModel = row['model'] as AiDesignModel;
-              return CustomSecondaryButton(
-                text: 'View Details',
-                icon: IconsPath.view,
-                onPressed: () {
-                  Get.toNamed(
-                    AppRoutes.aiDesignDetailsView,
-                    arguments: aiDesignModel,
-                  );
-                },
+              return FittedBox(
+                fit: BoxFit.scaleDown,
+                child: CustomSecondaryButton(
+                  text: 'View Details',
+                  icon: IconsPath.view,
+                  onPressed: () {
+                    Get.toNamed(
+                      AppRoutes.aiDesignDetailsView,
+                      arguments: aiDesignModel,
+                    );
+                  },
+                ),
               );
             },
           );

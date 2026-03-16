@@ -10,14 +10,13 @@ import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentalsActiveInfoPayment extends StatelessWidget {
+class RentalsActiveInfoPayment extends GetWidget<RentalActiveController> {
   const RentalsActiveInfoPayment({super.key});
 
   @override
   Widget build(BuildContext context) {
     final RentalModel rentalModel = Get.arguments as RentalModel;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    RentalActiveController activeController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,7 +26,7 @@ class RentalsActiveInfoPayment extends StatelessWidget {
           color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
         ),
         SizedBox(height: 16.h),
-        activeController.isInstallment
+        controller.isInstallment
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -66,7 +65,7 @@ class RentalsActiveInfoPayment extends StatelessWidget {
             : RentalsActiveInstallment(),
         SizedBox(height: 16.h),
         rentalModel.status == 'Active'
-            ? activeController.isInstallment
+            ? controller.isInstallment
                   ? updatePayment()
                   : Row(
                       children: [
@@ -80,7 +79,7 @@ class RentalsActiveInfoPayment extends StatelessWidget {
         if (rentalModel.status == 'Active')
           CustomPrimaryButton(
             height: 40.h,
-            text: activeController.isInstallment ? 'Pay Now' : 'Pay Early',
+            text: controller.isInstallment ? 'Pay Now' : 'Pay Early',
             onPressed: () {},
             fontSize: 14.sp,
           ),

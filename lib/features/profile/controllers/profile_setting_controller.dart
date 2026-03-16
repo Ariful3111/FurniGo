@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileSettingController extends GetxController {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController addressLabelController = TextEditingController();
   TextEditingController dialogNameController = TextEditingController();
   TextEditingController dialogPhoneController = TextEditingController();
   TextEditingController dialogAddressController = TextEditingController();
   TextEditingController dialogZipController = TextEditingController();
+  TextEditingController dialogCityController = TextEditingController();
+  TextEditingController dialogStateController = TextEditingController();
   RxBool isDefault = false.obs;
   RxString selectedCity = ''.obs;
   List city = ['Dhaka', 'Khulna'];
   RxString selectedState = ''.obs;
   List state = ['State1', 'State2'];
-  RxBool isEdit = false.obs;
+
   List addressList = [
     {
       'label': 'Home',
@@ -53,9 +52,6 @@ class ProfileSettingController extends GetxController {
   ];
   @override
   void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    phoneController.dispose();
     addressController.dispose();
     dialogAddressController.dispose();
     dialogPhoneController.dispose();

@@ -15,17 +15,16 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
-class SignupOptionView extends StatelessWidget {
+class SignupOptionView extends GetView<SignupOptionController> {
   const SignupOptionView({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     UserModeController userModeController = Get.find();
-    SignupOptionController signupOptionController = Get.find();
     return CustomContainer(
-      gradient:isDark? AppColors.darkAuthBG:AppColors.authBG,
+      gradient: isDark ? AppColors.darkAuthBG : AppColors.authBG,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -46,13 +45,17 @@ class SignupOptionView extends StatelessWidget {
                   text: 'Sign up for your personal account',
                   fontSize: 22.sp,
                   fontWeight: FontWeight.w600,
-                  color:isDark?AppColors.primaryBorderColor: AppColors.darkColor,
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.darkColor,
                 )
               : CustomPrimaryText(
                   text: 'Sign up for your business account',
                   fontSize: 22.sp,
                   fontWeight: FontWeight.w600,
-                  color:isDark?AppColors.primaryBorderColor: AppColors.darkColor,
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.darkColor,
                 ),
           SizedBox(height: 32.h),
           LoginButton(
@@ -66,12 +69,20 @@ class SignupOptionView extends StatelessWidget {
             onTap: () {},
             icon: IconsPath.apple,
             title: 'Continue With Apple',
-            iconColor: isDark?AppColors.whiteColor:null,
+            iconColor: isDark ? AppColors.whiteColor : null,
             radius: 12.r,
           ),
           SizedBox(height: 16.h),
           LoginButton(
-            onTap: () {},
+            onTap: () {
+              if (controller.isChecked.value) {
+                  Get.toNamed(AppRoutes.signUpView);
+                } else {
+                  ErrorSnackbar.show(
+                    description: 'Please Agree to the Terms & Privacy Policy',
+                  );
+                }
+            },
             icon: IconsPath.authEmail,
             title: 'Continue With email',
             radius: 12.r,
@@ -79,9 +90,9 @@ class SignupOptionView extends StatelessWidget {
           SizedBox(height: 16.h),
           Obx(
             () => AuthCheckBox(
-              isChecked: signupOptionController.isChecked.value,
+              isChecked: controller.isChecked.value,
               onChange: (value) {
-                signupOptionController.isChecked.value = value;
+                controller.isChecked.value = value;
               },
             ),
           ),
@@ -91,15 +102,11 @@ class SignupOptionView extends StatelessWidget {
               height: 48.h,
               fontSize: 16.sp,
               text: 'Continue',
-              backgroundColor: !signupOptionController.isChecked.value
+              backgroundColor: !controller.isChecked.value
                   ? AppColors.buttonTextColor
                   : null,
               onPressed: () {
-                if (signupOptionController.isChecked.value) {
-                  Get.toNamed(AppRoutes.signUpView);
-                } else {
-                  ErrorSnackbar.show(description: 'Please Agree to the Terms & Privacy Policy');
-                }
+                
               },
             ),
           ),

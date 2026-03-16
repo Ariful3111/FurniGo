@@ -7,12 +7,11 @@ import 'package:zb_dezign/features/rental/widgets/rentals_view_widgets/rental_ex
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_action_button.dart';
 
-class RentalTable extends StatelessWidget {
+class RentalTable extends GetWidget<RentalController> {
   const RentalTable({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final RentalController controller = Get.put(RentalController());
     return Obx(() {
       final tableRows = controller.filteredRentals
           .map(
@@ -41,7 +40,7 @@ class RentalTable extends StatelessWidget {
         headerList: controller.rentalTableColumn,
         action: SizedBox.shrink(),
         actionBuilder: (index, row) {
-        return  CustomTableActionButton(
+          return CustomTableActionButton(
             onTap: () {
               final RentalModel rentalModel = row['model'] as RentalModel;
               Get.toNamed(AppRoutes.rentalPendingView, arguments: rentalModel);

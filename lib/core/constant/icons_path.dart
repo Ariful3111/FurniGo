@@ -108,6 +108,7 @@ class IconsPath {
   static const String credit = 'assets/icons/credit.png';
   static const String creditCoin = 'assets/icons/credit_coin.png';
   static const String call = 'assets/icons/call.png';
+  static const String masterCard = 'assets/icons/master_card.png';
   
 
 }

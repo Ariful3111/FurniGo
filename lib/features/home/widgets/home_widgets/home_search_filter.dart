@@ -7,12 +7,11 @@ import 'package:zb_dezign/features/home/controller/home_controller.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 
-class HomeSearchFilter extends StatelessWidget {
+class HomeSearchFilter extends GetWidget<HomeController> {
   const HomeSearchFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
-    HomeController homeController = Get.find();
     return Row(
       children: [
         HomeHelper().blurContainer(
@@ -20,7 +19,7 @@ class HomeSearchFilter extends StatelessWidget {
           width: 341.w,
           radius: 12.r,
           child: CustomTextFormField(
-            controller: homeController.searchController,
+            controller: controller.searchController,
             border: BorderSide.none,
             isFilled: false,
             borderRadius: 12.r,
@@ -38,6 +37,7 @@ class HomeSearchFilter extends StatelessWidget {
             ),
             labelText: 'Search Product...',
             labelColor: AppColors.whiteColor,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
           ),
         ),
         SizedBox(width: 12.w),
