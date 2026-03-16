@@ -9,7 +9,7 @@ class DeleteAddressController extends GetxController {
   RxBool isLoading = false.obs;
 
   Future<void> deleteAddress({required int addressID}) async {
-    RxBool isLoading = true.obs;
+    isLoading.value = true;
     final response = await deleteAddressRepository.execute(
       addressID: addressID,
     );

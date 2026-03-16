@@ -12,7 +12,7 @@ class UpdateAddressController extends GetxController {
     required int addressID,
     required bool isDefault,
   }) async {
-    RxBool isLoading = true.obs;
+    isLoading.value = true;
     final response = await updateAddressRepository.execute(
       addressID: addressID,
       isDefault: isDefault,
