@@ -8,19 +8,18 @@ import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class FloorPlanWidgets extends StatelessWidget {
+class FloorPlanWidgets extends GetWidget<RentFloorPlanController> {
   const FloorPlanWidgets({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentFloorPlanController rentFloorPlanController = Get.find();
     return Obx(
       () => Column(
-        children: List.generate(rentFloorPlanController.widgets.length, (
+        children: List.generate(controller.widgets.length, (
           index,
         ) {
-          final item = rentFloorPlanController.widgets[index];
-          final isSelected = rentFloorPlanController.isOpenList[index];
+          final item = controller.widgets[index];
+          final isSelected = controller.isOpenList[index];
           return Column(
             key: ValueKey(index),
             children: [
@@ -40,8 +39,8 @@ class FloorPlanWidgets extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            rentFloorPlanController.isOpenList[index] =
-                                !rentFloorPlanController.isOpenList[index];
+                            controller.isOpenList[index] =
+                                !controller.isOpenList[index];
                           },
                           child: AnimatedRotation(
                             turns: isSelected ? 1 : 0,

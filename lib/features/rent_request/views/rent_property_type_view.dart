@@ -3,23 +3,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
-import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
+import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentPropertyTypeView extends StatelessWidget {
+class RentPropertyTypeView extends GetView<RentPropertyTypeController> {
   const RentPropertyTypeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentPropertyTypeController propertyTypeController = Get.find();
+    RentRequestController rentRequestController = Get.find();
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(child: PageCount(text: 'Property Type')),
+          Center(child: FlowPageCount(text: 'Property Type', pageCount: rentRequestController.currentIndex.value.toString(),)),
           SizedBox(height: 20.h),
           CustomDivider(),
           SizedBox(height: 24.h),
@@ -38,10 +39,10 @@ class RentPropertyTypeView extends StatelessWidget {
           SizedBox(height: 8.h),
           CustomDropdownMenu(
             onSelect: (value) {
-              propertyTypeController.selectedPropertyType.value = value!;
+              controller.selectedPropertyType.value = value!;
             },
-            option: propertyTypeController.properType,
-            isSelect: propertyTypeController.selectedPropertyType,
+            option: controller.properType,
+            isSelect: controller.selectedPropertyType,
             label: 'Select Property Type',
           ),
           SizedBox(height: 32.h),
@@ -54,10 +55,10 @@ class RentPropertyTypeView extends StatelessWidget {
           SizedBox(height: 8.h),
           CustomDropdownMenu(
             onSelect: (value) {
-              propertyTypeController.selectedPropertyUse.value = value!;
+              controller.selectedPropertyUse.value = value!;
             },
-            option: propertyTypeController.properUse,
-            isSelect: propertyTypeController.selectedPropertyUse,
+            option: controller.properUse,
+            isSelect: controller.selectedPropertyUse,
             label: 'Select Property Use',
           ),
         ],

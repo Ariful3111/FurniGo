@@ -8,24 +8,23 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_error_container.dar
 import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/property_details_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class OfficeFloor extends StatelessWidget {
+class OfficeFloor extends GetWidget<RentFloorPlanController> {
   const OfficeFloor({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentFloorPlanController rentFloorPlanController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         myField(
           text: 'Length',
-          controller: rentFloorPlanController.lengthController,
+          controller: controller.lengthController,
           labelText: 'Enter Length',
         ),
         SizedBox(height: 10.h),
         myField(
           text: 'Width',
-          controller: rentFloorPlanController.widthController,
+          controller: controller.widthController,
           labelText: 'Enter Length',
         ),
         SizedBox(height: 26.h),

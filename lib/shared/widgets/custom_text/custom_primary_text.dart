@@ -14,6 +14,7 @@ class CustomPrimaryText extends StatelessWidget {
   final TextOverflow? textOverflow;
   final List<Shadow> ?shadow;
   final TextDecoration? decoration;
+  final int ? maxLine;
   const CustomPrimaryText({
     super.key,
     required this.text,
@@ -21,7 +22,7 @@ class CustomPrimaryText extends StatelessWidget {
     this.fontWeight, 
     this.color,
     this.textAlign,
-    this.textOverflow, this.shadow, this.decoration,
+    this.textOverflow, this.shadow, this.decoration, this.maxLine,
   });
 
   @override
@@ -31,6 +32,7 @@ class CustomPrimaryText extends StatelessWidget {
       text,
       textAlign: textAlign,
       overflow: textOverflow,
+      maxLines: maxLine,
       style: GoogleFonts.montserrat(
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.w500,

@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_brand_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_additional_note_view.dart';
-import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
+import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_brand_widgets/rent_brand_details.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -13,22 +14,23 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_switch_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentBrand extends StatelessWidget {
+class RentBrand extends GetView<RentBrandController> {
   const RentBrand({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentBrandController rentBrandController = Get.find();
     RentPropertyTypeController rentPropertyTypeController = Get.find();
+    RentRequestController rentRequestController = Get.find();
     return SharedContainer(
       child: Column(
         children: [
-          PageCount(
+          FlowPageCount(
             text:
                 rentPropertyTypeController.selectedPropertyType.value ==
                     'Residential'
                 ? 'Additional Notes'
                 : 'Brand Placement',
+            pageCount: rentRequestController.currentIndex.value.toString(),
           ),
           SizedBox(height: 20.h),
           CustomDivider(),
@@ -36,7 +38,7 @@ class RentBrand extends StatelessWidget {
               ? RentAdditionalNoteView()
               : Column(
                   children: [
-                    optionContainer(
+                    RentHelper().optionContainer(
                       context: context,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,9 +66,9 @@ class RentBrand extends StatelessWidget {
                           ),
                           Obx(() {
                             return CustomSwitchButton(
-                              isOn: rentBrandController.isBrand.value,
+                              isOn: controller.isBrand.value,
                               onChanged: (value) {
-                                rentBrandController.isBrand.value = value;
+                                controller.isBrand.value = value;
                               },
                             );
                           }),

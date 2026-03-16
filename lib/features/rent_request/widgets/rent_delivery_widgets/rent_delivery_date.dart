@@ -9,12 +9,11 @@ import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart'
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_date_fields.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentDeliveryDate extends StatelessWidget {
+class RentDeliveryDate extends GetWidget<RentDeliveryController> {
   const RentDeliveryDate({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final RentDeliveryController controller = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

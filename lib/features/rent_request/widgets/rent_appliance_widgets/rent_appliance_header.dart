@@ -8,13 +8,11 @@ import 'package:zb_dezign/shared/widgets/custom_button/custom_switch_button.dart
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class RentApplianceHeader extends StatelessWidget {
+class RentApplianceHeader extends GetWidget<RentApplianceController> {
   const RentApplianceHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentApplianceController rentApplianceController = Get.find();
-
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +23,7 @@ class RentApplianceHeader extends StatelessWidget {
             color: AppColors.darkColor,
           ),
           SizedBox(height: 20.h),
-          optionContainer(
+          RentHelper().optionContainer(
             context: context,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,9 +48,9 @@ class RentApplianceHeader extends StatelessWidget {
                 ),
                 Obx(() {
                   return CustomSwitchButton(
-                    isOn: rentApplianceController.isAppliance.value,
+                    isOn: controller.isAppliance.value,
                     onChanged: (value) {
-                      rentApplianceController.isAppliance.value = value;
+                      controller.isAppliance.value = value;
                     },
                   );
                 }),

@@ -9,9 +9,9 @@ import 'package:zb_dezign/features/rent_request/views/rent_period.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_property_details_view.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_property_type_view.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_review.dart';
-import 'package:zb_dezign/features/rent_request/widgets/rent_business_widgets/rent_business_identification_form.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart';
 
-class RentBusinessIdentificationController extends GetxController {
+class RentRequestController extends GetxController {
   TextEditingController businessNameController = TextEditingController();
   TextEditingController personNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -22,9 +22,9 @@ class RentBusinessIdentificationController extends GetxController {
   RxInt currentIndex = 0.obs;
   final formKey = GlobalKey<FormState>();
   late final List<Widget> rentWidgets = [
-    RentBusinessIdentificationForm(formKey: formKey),
+    RentRequestViewForm(formKey: formKey),
     RentPropertyTypeView(),
-    RentPropertyDetailsView(formKey: formKey,),
+    RentPropertyDetailsView(formKey: formKey),
     RentFloorPlanView(),
     RentFurniture(),
     RentAppliance(),

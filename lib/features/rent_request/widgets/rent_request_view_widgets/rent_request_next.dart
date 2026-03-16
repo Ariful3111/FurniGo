@@ -2,25 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_business_identification_controller.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_submit_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
-class RentBusinessNext extends StatelessWidget {
-  const RentBusinessNext({super.key});
+class RentRequestNext extends GetWidget<RentRequestController> {
+  const RentRequestNext({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentBusinessIdentificationController controller = Get.find();
     RentPropertyTypeController propertyTypeController = Get.find();
     return Obx(() {
       final isLast =
           controller.currentIndex.value < controller.rentWidgets.length - 1;
       return controller.currentIndex.value == controller.rentWidgets.length - 1
-          ? myButton(
+          ?RentHelper().myButton(
               color: AppColors.acceptButtonColor,
               onTap: () {
                 showDialog(
@@ -34,7 +33,7 @@ class RentBusinessNext extends StatelessWidget {
                 color: AppColors.whiteColor,
               ),
             )
-          : myButton(
+          : RentHelper().myButton(
               color: AppColors.primaryColor,
               onTap: () {
                 if (controller.currentIndex.value == 0) {
@@ -59,7 +58,7 @@ class RentBusinessNext extends StatelessWidget {
                   } else {
                     controller.currentIndex.value++;
                   }
-                }else if(controller.currentIndex.value==2){
+                } else if (controller.currentIndex.value == 2) {
                   if (controller.formKey.currentState!.validate()) {
                     controller.currentIndex.value++;
                   }
@@ -71,7 +70,6 @@ class RentBusinessNext extends StatelessWidget {
                   );
                   controller.currentIndex.value++;
                 }
-                //controller.currentIndex.value++;
               },
               child: Row(
                 children: [

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_business_identification_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class PageCount extends StatelessWidget {
+class FlowPageCount extends StatelessWidget {
   final String text;
-  const PageCount({super.key, required this.text,});
+  final String pageCount;
+  const FlowPageCount({super.key, required this.text, required this.pageCount});
 
   @override
   Widget build(BuildContext context) {
-    RentBusinessIdentificationController controller = Get.find();
     return Column(
       children: [
         Container(
@@ -24,7 +22,7 @@ class PageCount extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              controller.currentIndex.value.toString(),
+              pageCount,
               style: GoogleFonts.arimo(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
@@ -33,8 +31,12 @@ class PageCount extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 8.h,),
-        CustomPrimaryText(text: text,fontSize: 12.sp,fontWeight: FontWeight.w600,)
+        SizedBox(height: 8.h),
+        CustomPrimaryText(
+          text: text,
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w600,
+        ),
       ],
     );
   }

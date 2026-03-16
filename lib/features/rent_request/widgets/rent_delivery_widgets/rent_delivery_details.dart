@@ -8,16 +8,15 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_switch_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentDeliveryDetails extends StatelessWidget {
+class RentDeliveryDetails extends GetWidget<RentDeliveryController> {
   const RentDeliveryDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentDeliveryController rentDeliveryController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        optionContainer(
+        RentHelper().optionContainer(
           context: context,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,9 +43,9 @@ class RentDeliveryDetails extends StatelessWidget {
               ),
               Obx(() {
                 return CustomSwitchButton(
-                  isOn: rentDeliveryController.isSetup.value,
+                  isOn: controller.isSetup.value,
                   onChanged: (value) {
-                    rentDeliveryController.isSetup.value = value;
+                    controller.isSetup.value = value;
                   },
                 );
               }),
