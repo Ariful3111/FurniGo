@@ -63,7 +63,7 @@ class ProfileUserInfo extends GetWidget<ProfileController> {
         SizedBox(height: 4.h),
         CustomSpanText(
           title: 'Credit Balance: ',
-          spantext: '1250',
+          spanText: '1250',
           fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           color: isDark

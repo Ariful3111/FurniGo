@@ -41,7 +41,7 @@ class CreditBalance extends StatelessWidget {
             title: "1250",
             fontSize: 24.sp,
             fontWeight: FontWeight.w600,
-            spantext: "  Credits Available",
+            spanText: "  Credits Available",
             spanFontSize: 14.sp,
             spanFontWeight: FontWeight.w400,
             color: isDark ? AppColors.whiteColor : AppColors.labelColor,

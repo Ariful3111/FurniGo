@@ -15,7 +15,6 @@ class CustomPhoneField extends StatelessWidget {
   final String initialCountryCode;
   final Color? fillColor;
   final bool? isFilled;
-
   const CustomPhoneField({
     super.key,
     required this.controller,

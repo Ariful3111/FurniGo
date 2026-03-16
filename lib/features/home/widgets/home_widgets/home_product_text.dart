@@ -8,7 +8,12 @@ class HomeProductText extends StatelessWidget {
   final List color;
   final String title;
   final String price;
-  const HomeProductText({super.key, required this.color, required this.title, required this.price});
+  const HomeProductText({
+    super.key,
+    required this.color,
+    required this.title,
+    required this.price,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +23,20 @@ class HomeProductText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomPrimaryText(
-                text: title,
-                fontSize: 12.sp,
-                color: isDark
-                    ? AppColors.darkPrimaryTextColor
-                    : Color(0xFF585858),
+              SizedBox(
+                width: 160.w,
+                child: CustomPrimaryText(
+                  text: title,
+                  fontSize: 12.sp,
+                  color: isDark
+                      ? AppColors.darkPrimaryTextColor
+                      : Color(0xFF585858),
+
+                  textOverflow: TextOverflow.ellipsis,
+                ),
               ),
-              SizedBox(width: 40.w),
               SizedBox(
                 width: 55.w,
                 height: 12.h,
