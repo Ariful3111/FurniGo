@@ -8,12 +8,11 @@ import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentPeriodOptional extends StatelessWidget {
+class RentPeriodOptional extends GetWidget<RentPeriodController> {
   const RentPeriodOptional({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentPeriodController rentPeriodController = Get.find();
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +32,7 @@ class RentPeriodOptional extends StatelessWidget {
           SizedBox(height: 12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(rentPeriodController.option.length, (index) {
+            children: List.generate(controller.option.length, (index) {
             return SizedBox(
               width: 171.w,
               child: Row(
@@ -41,14 +40,14 @@ class RentPeriodOptional extends StatelessWidget {
                   Obx(
                     () => CustomRadioButton(
                       value: index,
-                      groupValue: rentPeriodController.selectedOption.value,
+                      groupValue: controller.selectedOption.value,
                       onChange: (value) {
-                        rentPeriodController.selectedOption.value = value!;
+                        controller.selectedOption.value = value!;
                       },
                     ),
                   ),
                   CustomPrimaryText(
-                    text: rentPeriodController.option[index],
+                    text: controller.option[index],
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                     color: AppColors.darkColor,
@@ -65,7 +64,7 @@ class RentPeriodOptional extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           OtherField(
-            controller: rentPeriodController.weightController,
+            controller: controller.weightController,
             width: 158.w,
             labelText: 'Enter Weight/Load',
             keyboardType: TextInputType.numberWithOptions(),
@@ -78,7 +77,7 @@ class RentPeriodOptional extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           OtherField(
-            controller: rentPeriodController.requirementController,
+            controller: controller.requirementController,
             width: 192.w,
             labelText: 'Write here',
           ),

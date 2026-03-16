@@ -8,42 +8,41 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/pr
 import 'package:zb_dezign/features/rent_request/widgets/rent_furniture_widgets/rent_furniture_preference.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentFurnitureDetails extends StatelessWidget {
+class RentFurnitureDetails extends GetWidget<RentFurnitureController> {
   const RentFurnitureDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentFurnitureController rentFurnitureController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...List.generate(rentFurnitureController.furniture.length, (index) {
+        ...List.generate(controller.furniture.length, (index) {
           return Obx(() {
             return Padding(
               padding: EdgeInsets.only(
-                bottom: rentFurnitureController.furniture.length - 1 == index
+                bottom: controller.furniture.length - 1 == index
                     ? 0.h
                     : 13.h,
               ),
               child: PropertyDetailsContainer(
                 subTitle: 'Quantity',
-                isChecked: rentFurnitureController.isChecked[index],
+                isChecked: controller.isChecked[index],
                 onChange: (value) {
-                  rentFurnitureController.isChecked[index] = value!;
+                  controller.isChecked[index] = value!;
                 },
-                title: rentFurnitureController.furniture[index],
+                title: controller.furniture[index],
                 onAdd: () {
-                  rentFurnitureController.counts[index]++;
+                  controller.counts[index]++;
                 },
                 onRemoved: () {
-                  if (rentFurnitureController.counts[index] > 0) {
-                    rentFurnitureController.counts[index]--;
+                  if (controller.counts[index] > 0) {
+                    controller.counts[index]--;
                   }
                 },
-                count: rentFurnitureController.counts[index].toString(),
-                isOther: rentFurnitureController.furniture[index] == 'other',
-                otherController: rentFurnitureController.otherFieldController,
-                readOnly: rentFurnitureController.isChecked[index],
+                count: controller.counts[index].toString(),
+                isOther: controller.furniture[index] == 'other',
+                otherController: controller.otherFieldController,
+                readOnly: controller.isChecked[index],
               ),
             );
           });

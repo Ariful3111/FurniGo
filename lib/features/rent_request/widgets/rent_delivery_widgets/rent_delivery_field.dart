@@ -9,33 +9,32 @@ import 'package:zb_dezign/shared/widgets/custom_form_field/custom_phone_field.da
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentDeliveryField extends StatelessWidget {
+class RentDeliveryField extends GetWidget<RentDeliveryController> {
   const RentDeliveryField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentDeliveryController rentDeliveryController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         text(text: 'First name *'),
         SizedBox(height: 16.h),
         CustomTextFormField(
-          controller: rentDeliveryController.firstNameController,
+          controller: controller.firstNameController,
           labelText: 'Enter first name',
         ),
         SizedBox(height: 26.h),
         text(text: 'Last name *'),
         SizedBox(height: 16.h),
         CustomTextFormField(
-          controller: rentDeliveryController.lastNameController,
+          controller: controller.lastNameController,
           labelText: 'Enter last name',
         ),
         SizedBox(height: 26.h),
         text(text: 'Address'),
         SizedBox(height: 16.h),
         CustomTextFormField(
-          controller: rentDeliveryController.deliveryAddressController,
+          controller: controller.deliveryAddressController,
           labelText: 'Enter delivery address',
         ),
         SizedBox(height: 26.h),
@@ -43,11 +42,11 @@ class RentDeliveryField extends StatelessWidget {
         SizedBox(height: 8.h),
         CustomDropdownMenu(
           onSelect: (value) {
-            rentDeliveryController.selectedCity.value = value!;
+            controller.selectedCity.value = value!;
           },
-          option: rentDeliveryController.city,
-          isSelect: rentDeliveryController.selectedCity,
-          label: rentDeliveryController.selectedCity.value,
+          option: controller.city,
+          isSelect: controller.selectedCity,
+          label: controller.selectedCity.value,
           labelColor: AppColors.fieldTextColor,
           selectedTrailingIconColor: AppColors.fieldTextColor,
           trailingIconColor: AppColors.fieldTextColor,
@@ -57,11 +56,11 @@ class RentDeliveryField extends StatelessWidget {
         SizedBox(height: 8.h),
         CustomDropdownMenu(
           onSelect: (value) {
-            rentDeliveryController.selectedState.value = value!;
+            controller.selectedState.value = value!;
           },
-          option: rentDeliveryController.state,
-          isSelect: rentDeliveryController.selectedState,
-          label: rentDeliveryController.selectedState.value,
+          option: controller.state,
+          isSelect: controller.selectedState,
+          label: controller.selectedState.value,
           labelColor: AppColors.fieldTextColor,
           selectedTrailingIconColor: AppColors.fieldTextColor,
           trailingIconColor: AppColors.fieldTextColor,
@@ -70,14 +69,14 @@ class RentDeliveryField extends StatelessWidget {
         text(text: 'Zip code'),
         SizedBox(height: 8.h),
         CustomTextFormField(
-          controller: rentDeliveryController.zipController,
+          controller: controller.zipController,
           labelText: 'Enter Zip code',
         ),
         SizedBox(height: 26.h),
         text(text: 'Phone'),
         SizedBox(height: 8.h),
         CustomPhoneField(
-          controller: rentDeliveryController.numberDateController,
+          controller: controller.numberDateController,
           labelText: 'Enter Your Phone Number',
         ),
         SizedBox(height: 16.h),
@@ -85,9 +84,9 @@ class RentDeliveryField extends StatelessWidget {
           children: [
             Obx(
               () => CustomCheckBox(
-                isChecked: rentDeliveryController.isChecked.value,
+                isChecked: controller.isChecked.value,
                 onChange: (value) {
-                  rentDeliveryController.isChecked.value = value;
+                  controller.isChecked.value = value;
                 },
               ),
             ),

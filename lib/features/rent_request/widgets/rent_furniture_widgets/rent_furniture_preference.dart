@@ -7,17 +7,16 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentFurniturePreference extends StatelessWidget {
+class RentFurniturePreference extends GetWidget<RentFurnitureController> {
   const RentFurniturePreference({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentFurnitureController rentFurnitureController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GridView.builder(
-          itemCount: rentFurnitureController.preference.length,
+          itemCount: controller.preference.length,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -31,15 +30,15 @@ class RentFurniturePreference extends StatelessWidget {
                   () => CustomRadioButton(
                     value: index,
                     groupValue:
-                        rentFurnitureController.selectedPreference.value,
+                        controller.selectedPreference.value,
                     onChange: (value) {
-                      rentFurnitureController.selectedPreference.value = value!;
+                      controller.selectedPreference.value = value!;
                     },
                   ),
                 ),
                 Expanded(
                   child: CustomPrimaryText(
-                    text: rentFurnitureController.preference[index],
+                    text: controller.preference[index],
                     fontSize: 14.sp,
                     color: AppColors.darkColor,
                     fontWeight: FontWeight.w400,
@@ -58,7 +57,7 @@ class RentFurniturePreference extends StatelessWidget {
         ),
         SizedBox(height: 12.h),
         GridView.builder(
-          itemCount: rentFurnitureController.stylePreference.length,
+          itemCount: controller.stylePreference.length,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -69,15 +68,15 @@ class RentFurniturePreference extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             return Obx(
-              () => propertyCheckBox(
+              () => RentHelper().propertyCheckBox(
                 context: context,
                 isLastIndex:
-                    rentFurnitureController.stylePreference.length - 1 == index,
-                isChecked: rentFurnitureController.checkedPreference[index],
+                    controller.stylePreference.length - 1 == index,
+                isChecked: controller.checkedPreference[index],
                 onChange: (value) {
-                  rentFurnitureController.checkedPreference[index] = value!;
+                  controller.checkedPreference[index] = value!;
                 },
-                title: rentFurnitureController.stylePreference[index],
+                title: controller.stylePreference[index],
               ),
             );
           },

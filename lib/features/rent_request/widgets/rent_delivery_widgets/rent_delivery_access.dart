@@ -6,12 +6,11 @@ import 'package:zb_dezign/features/rent_request/controller/rent_delivery_control
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentDeliveryAccess extends StatelessWidget {
+class RentDeliveryAccess extends GetWidget<RentDeliveryController> {
   const RentDeliveryAccess({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentDeliveryController controller = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(controller.access.length, (index) {

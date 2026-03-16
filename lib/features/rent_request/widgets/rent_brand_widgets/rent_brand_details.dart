@@ -7,12 +7,11 @@ import 'package:zb_dezign/features/rent_request/widgets/property_image.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentBrandDetails extends StatelessWidget {
+class RentBrandDetails extends GetWidget<RentBrandController> {
   const RentBrandDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentBrandController rentBrandController = Get.find();
     return Column(
       children: [
         CustomPrimaryText(
@@ -21,16 +20,16 @@ class RentBrandDetails extends StatelessWidget {
           color: AppColors.darkColor,
         ),
         SizedBox(height: 12.h),
-        ...List.generate(rentBrandController.brand.length, (index) {
+        ...List.generate(controller.brand.length, (index) {
           return Obx(
-            () => propertyCheckBox(
+            () => RentHelper().propertyCheckBox(
               context: context,
-              isLastIndex: rentBrandController.brand.length - 1 == index,
-              isChecked: rentBrandController.isSelect[index],
+              isLastIndex: controller.brand.length - 1 == index,
+              isChecked: controller.isSelect[index],
               onChange: (value) {
-                rentBrandController.isSelect[index] = value!;
+                controller.isSelect[index] = value!;
               },
-              title: rentBrandController.brand[index],
+              title: controller.brand[index],
             ),
           );
         }),

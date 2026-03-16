@@ -7,12 +7,11 @@ import 'package:zb_dezign/shared/widgets/custom_form_field/other_field.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_error_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentPeriodTypeBudget extends StatelessWidget {
+class RentPeriodTypeBudget extends GetWidget<RentPeriodController> {
   const RentPeriodTypeBudget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentPeriodController rentPeriodController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,7 +22,7 @@ class RentPeriodTypeBudget extends StatelessWidget {
         ),
         SizedBox(height: 12.h),
         OtherField(
-          controller: rentPeriodController.otherController,
+          controller: controller.otherController,
           width: 179.w,
           labelText: 'Enter Budget',
           keyboardType: TextInputType.numberWithOptions(),

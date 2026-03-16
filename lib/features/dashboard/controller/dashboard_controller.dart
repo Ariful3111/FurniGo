@@ -17,7 +17,7 @@ class DashboardController extends GetxController {
         'icon': IconsPath.sellFurniture,
         'title': 'Sell Furniture',
         'sub': 'Get a fair offer fast pickup included.',
-        'page':'',
+        'page':AppRoutes.sellFlowView,
       },
       {
         'icon': IconsPath.rentProduct,

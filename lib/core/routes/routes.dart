@@ -40,6 +40,8 @@ import 'package:zb_dezign/features/rental/views/rental_view.dart';
 import 'package:zb_dezign/features/sell/bindings/sell_bindings.dart';
 import 'package:zb_dezign/features/sell/views/sell_details.dart';
 import 'package:zb_dezign/features/sell/views/sell_view.dart';
+import 'package:zb_dezign/features/sell_flow/bindings/sell_flow_bindings.dart';
+import 'package:zb_dezign/features/sell_flow/views/sell_flow_views.dart';
 import 'package:zb_dezign/features/support/bindings/support_bindings.dart';
 import 'package:zb_dezign/features/support/views/support_view.dart';
 import 'package:zb_dezign/features/transaction/bindings/transaction_bindings.dart';
@@ -191,5 +193,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.paymentView,
     page: () => PaymentView(),
     binding: PaymentBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.sellFlowView,
+    page: () => SellFlowViews(),
+    binding: SellFlowBindings(),
   ),
 ];

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/images_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_sell_rent_decoration.dart';
 
 class HomeSell extends StatelessWidget {
@@ -13,7 +15,9 @@ class HomeSell extends StatelessWidget {
       title: 'Sell. Quote. Get Paid.',
       sub: 'Sell quality pieces with smart pricing and hassle-free pickup.',
       buttonTitle: 'Sell Now',
-      onTap: () {},
+      onTap: () {
+        Get.toNamed(AppRoutes.sellFlowView);
+      },
       buttonWidth: 122.w,
       image: ImagesPath.sell,
     );

@@ -6,12 +6,11 @@ import 'package:zb_dezign/features/rent_request/controller/rent_additional_note_
 import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/property_details_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentAdditionalNoteView extends StatelessWidget {
+class RentAdditionalNoteView extends GetView<RentAdditionalNoteController> {
   const RentAdditionalNoteView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentAdditionalNoteController rentAdditionalNoteController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,13 +22,13 @@ class RentAdditionalNoteView extends StatelessWidget {
         SizedBox(height: 26.h),
         myField(
           text: 'Custom notes or special requests',
-          controller: rentAdditionalNoteController.noteController,
+          controller: controller.noteController,
           labelText: 'Enter Your Note',
         ),
         SizedBox(height: 26.h),
         myField(
           text: 'Brand or material preferences',
-          controller: rentAdditionalNoteController.brandController,
+          controller: controller.brandController,
           labelText: 'Enter Your Preferences',
         ),
       ],

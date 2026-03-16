@@ -4,8 +4,10 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentBusinessIdentificationHeader extends StatelessWidget {
-  const RentBusinessIdentificationHeader({super.key});
+class FlowHeader extends StatelessWidget {
+  final String title;
+  final String sub;
+  const FlowHeader({super.key, required this.title, required this.sub});
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +33,10 @@ class RentBusinessIdentificationHeader extends StatelessWidget {
           Center(
             child: Column(
               children: [
-                CustomPrimaryText(text: 'Rent'),
+                CustomPrimaryText(text: title),
                 SizedBox(height: 8.h),
                 CustomPrimaryText(
-                  text: 'Flexible living starts with flexible furniture.',
+                  text: sub,
                   color: AppColors.secondaryTextColor,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,

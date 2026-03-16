@@ -8,21 +8,20 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_appliance_widgets/r
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentApplianceWidgets extends StatelessWidget {
+class RentApplianceWidgets extends GetWidget<RentApplianceController> {
   const RentApplianceWidgets({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentApplianceController rentApplianceController = Get.find();
     return Obx(
       () => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RentApplianceHeader(),
           SizedBox(height: 16.h,),
-          ...List.generate(rentApplianceController.widgets.length, (index) {
-            final item = rentApplianceController.widgets[index];
-            final isSelected = rentApplianceController.isOpenList[index];
+          ...List.generate(controller.widgets.length, (index) {
+            final item = controller.widgets[index];
+            final isSelected = controller.isOpenList[index];
             return Column(
               key: ValueKey(index),
               children: [
@@ -45,8 +44,8 @@ class RentApplianceWidgets extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () {
-                              rentApplianceController.isOpenList[index] =
-                                  !rentApplianceController.isOpenList[index];
+                              controller.isOpenList[index] =
+                                  !controller.isOpenList[index];
                             },
                             child: AnimatedRotation(
                               turns: isSelected ? 1 : 0,

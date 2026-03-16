@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
-
-Widget optionContainer({required BuildContext context, required Widget child}) {
+class  RentHelper {
+  Widget optionContainer({required BuildContext context, required Widget child}) {
   return Container(
     padding: EdgeInsets.all(16.r),
     width: MediaQuery.widthOf(context),
@@ -73,4 +73,6 @@ Widget rentTitle({required String title}){
     fontWeight: FontWeight.w700,
     color: AppColors.darkTextColor,
   );
+}
+
 }
