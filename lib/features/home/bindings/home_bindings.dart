@@ -1,11 +1,21 @@
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/home/controller/bottom_nav_controller.dart';
+import 'package:zb_dezign/features/home/controller/get_new_arrivals_controller.dart';
+import 'package:zb_dezign/features/home/controller/get_rooms_controller.dart';
 import 'package:zb_dezign/features/home/controller/home_controller.dart';
+import 'package:zb_dezign/features/home/repositories/get_new_arrivals_repo.dart';
+import 'package:zb_dezign/features/home/repositories/get_rooms_repo.dart';
 
 class HomeBindings implements Bindings {
   @override
   void dependencies() {
+    Get.lazyPut(() => GetRoomsRepository(getNetwork: Get.find()));
+    Get.lazyPut(() => GetNewArrivalsRepository(getNetwork: Get.find()));
     Get.lazyPut(() => BottomNavController());
     Get.lazyPut(() => HomeController());
+    Get.lazyPut(() => GetRoomsController(getRoomsRepository: Get.find()));
+    Get.lazyPut(
+      () => GetNewArrivalsController(getNewArrivalsRepository: Get.find()),
+    );
   }
 }

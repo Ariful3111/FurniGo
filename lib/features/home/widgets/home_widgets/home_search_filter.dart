@@ -14,7 +14,7 @@ class HomeSearchFilter extends GetWidget<HomeController> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        HomeHelper().blurContainer(
+        HomeHelper.blurContainer(
           height: 44.h,
           width: 341.w,
           radius: 12.r,
@@ -41,7 +41,7 @@ class HomeSearchFilter extends GetWidget<HomeController> {
           ),
         ),
         SizedBox(width: 12.w),
-        HomeHelper().blurContainer(
+        HomeHelper.blurContainer(
           height: 44.h,
           width: 44.w,
           child: Center(

@@ -39,7 +39,7 @@ class HomeAppbar extends StatelessWidget {
               text: 'Sadman Sakib',
               fontSize: 16.sp,
               color: isDark ? AppColors.darkColor : AppColors.whiteColor,
-              shadow: [HomeHelper().boxShadow()],
+              shadow: [HomeHelper.boxShadow()],
             ),
             SizedBox(height: 4.h),
             CustomPrimaryText(
@@ -47,14 +47,14 @@ class HomeAppbar extends StatelessWidget {
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,
               color: isDark ? AppColors.darkColor : AppColors.whiteColor,
-              shadow: [HomeHelper().boxShadow()],
+              shadow: [HomeHelper.boxShadow()],
             ),
           ],
         ),
         Spacer(),
         GestureDetector(
           onTap: () {},
-          child: HomeHelper().blurContainer(
+          child: HomeHelper.blurContainer(
             height: 32.h,
             width: 32.w,
             child: Center(
@@ -82,7 +82,7 @@ class HomeAppbar extends StatelessWidget {
             onTap: () {
               Get.toNamed(AppRoutes.notificationView);
             },
-            child: HomeHelper().blurContainer(
+            child: HomeHelper.blurContainer(
               height: 32.h,
               width: 32.w,
               child: Center(

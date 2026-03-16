@@ -23,7 +23,7 @@ class HomeOurProducts extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         children: [
-          HomeHelper().categoryTitle(
+          HomeHelper.categoryTitle(
             title: 'Our Products',
             onTap: () {},
             isDark: isDark,
