@@ -6,7 +6,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 
 class CustomSpanText extends StatelessWidget {
   final String title;
-  final String? spantext;
+  final String? spanText;
   final Color? color;
   final Color? spanColor;
   final double? fontSize;
@@ -29,7 +29,7 @@ class CustomSpanText extends StatelessWidget {
   const CustomSpanText({
     super.key,
     required this.title,
-    this.spantext,
+    this.spanText,
     this.color,
     this.spanColor,
     this.fontSize,
@@ -47,7 +47,8 @@ class CustomSpanText extends StatelessWidget {
     this.textAlign,
     this.maxLines,
     this.overflow,
-    this.decoration, this.inlineSpan,
+    this.decoration,
+    this.inlineSpan,
   });
 
   @override
@@ -68,23 +69,25 @@ class CustomSpanText extends StatelessWidget {
           fontWeight: fontWeight ?? FontWeight.w500,
           decoration: textDecoration,
         ),
-        children:inlineSpan?? [
-          TextSpan(
-            text: spantext,
-            recognizer: TapGestureRecognizer()..onTap = onTap,
-            style:
-                textStyle ??
-                GoogleFonts.montserrat(
-                  color: isDark
-                      ? spanColor ?? AppColors.boxColor
-                      : spanColor ?? AppColors.primaryColor,
-                  fontSize: spanFontSize ?? 14.sp,
-                  fontWeight: spanFontWeight ?? FontWeight.w600,
-                  decoration: spanDecoration,
-                  textStyle: TextStyle(decoration: decoration),
-                ),
-          ),
-        ],
+        children:
+            inlineSpan ??
+            [
+              TextSpan(
+                text: spanText,
+                recognizer: TapGestureRecognizer()..onTap = onTap,
+                style:
+                    textStyle ??
+                    GoogleFonts.montserrat(
+                      color: isDark
+                          ? spanColor ?? AppColors.boxColor
+                          : spanColor ?? AppColors.primaryColor,
+                      fontSize: spanFontSize ?? 14.sp,
+                      fontWeight: spanFontWeight ?? FontWeight.w600,
+                      decoration: spanDecoration,
+                      textStyle: TextStyle(decoration: decoration),
+                    ),
+              ),
+            ],
       ),
     );
   }

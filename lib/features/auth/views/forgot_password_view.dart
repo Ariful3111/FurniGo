@@ -37,7 +37,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
             SizedBox(height: 12.h),
             CustomSpanText(
               title: 'Don\'t have an account? ',
-              spantext: 'Create New Account',
+              spanText: 'Create New Account',
               onTap: () {
                 Get.toNamed(AppRoutes.signUpView);
                 controller.emailController.clear();

@@ -1,19 +1,26 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 
 class HomeProductDesign extends StatelessWidget {
   final VoidCallback onFavorite;
   final VoidCallback onCart;
   final String image;
-  const HomeProductDesign({super.key, required this.onFavorite, required this.onCart, required this.image});
+  const HomeProductDesign({
+    super.key,
+    required this.onFavorite,
+    required this.onCart,
+    required this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      height: 190.h,
+      height: 200.h,
       width: 196.w,
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
@@ -40,10 +47,15 @@ class HomeProductDesign extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.center,
-            child: Image.asset(
-              image,
-              height: 124.h,
-              width: 136.w,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.r),
+              child: CachedNetworkImage(
+                imageUrl: image,
+                height: 120.h,
+                width: 136.w,
+                fit: BoxFit.fill,
+                placeholder: (context, url) => ButtonLoading(),
+              ),
             ),
           ),
         ],

@@ -37,7 +37,7 @@ class HomeHeader extends StatelessWidget {
             fontSize: 28.sp,
             fontWeight: FontWeight.w700,
             color: AppColors.whiteColor,
-            shadow: [HomeHelper().boxShadow()],
+            shadow: [HomeHelper.boxShadow()],
           ),
           SizedBox(height: 4.h),
           CustomPrimaryText(
@@ -46,7 +46,7 @@ class HomeHeader extends StatelessWidget {
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,
             color: AppColors.primaryBorderColor,
-            shadow: [HomeHelper().boxShadow()],
+            shadow: [HomeHelper.boxShadow()],
           ),
           SizedBox(height: 28.h),
           HomeSearchFilter(),

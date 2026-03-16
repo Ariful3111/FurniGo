@@ -24,7 +24,7 @@ class OrderItem extends StatelessWidget {
         SizedBox(height: 2.h),
         CustomSpanText(
           title: 'Tracking Number:',
-          spantext: 'TRK-9928-XA',
+          spanText: 'TRK-9928-XA',
           color: isDark
               ? AppColors.primaryBorderColor
               : AppColors.secondaryTextColor,
