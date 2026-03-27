@@ -54,7 +54,7 @@ class DashboardSellQuote extends StatelessWidget {
                       SizedBox(height: 4.h),
                       CustomSpanText(
                         title: 'Offer:',
-                        spantext: '\$450',
+                        spanText: '\$450',
                         fontWeight: FontWeight.w400,
                         spanFontWeight: FontWeight.w400,
                         color: isDark

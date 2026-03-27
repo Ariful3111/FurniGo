@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:zb_dezign/core/data/local/storage_service.dart';
 import 'package:zb_dezign/core/data/local/theme_service.dart';
+import 'package:zb_dezign/core/data/networks/delete_network.dart';
 import 'package:zb_dezign/core/data/networks/get_network.dart';
 import 'package:zb_dezign/core/data/networks/post_with_response.dart';
 import 'package:zb_dezign/core/data/networks/post_without_response.dart';
@@ -16,6 +17,7 @@ class DependencyInjection {
     Get.put(GetNetwork(), permanent: true);
     Get.put<PostWithResponse>(PostWithResponse(), permanent: true);
     Get.put<PostWithoutResponse>(PostWithoutResponse(), permanent: true);
+    Get.put<DeleteNetwork>(DeleteNetwork(), permanent: true);
     return Get.find<StorageService>().read(
           key: Get.find<StorageService>().tokenKey,
         ) ??

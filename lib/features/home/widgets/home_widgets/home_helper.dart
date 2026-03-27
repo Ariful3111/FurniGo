@@ -5,7 +5,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class HomeHelper {
-  BoxShadow boxShadow() {
+  static BoxShadow boxShadow() {
     return BoxShadow(
       offset: Offset(0, 4),
       blurRadius: 4,
@@ -13,7 +13,7 @@ class HomeHelper {
     );
   }
 
-  Widget blurContainer({
+  static Widget blurContainer({
     required double height,
     required double width,
     required Widget child,
@@ -39,7 +39,7 @@ class HomeHelper {
     );
   }
 
-  Widget categoryTitle({
+  static Widget categoryTitle({
     required String title,
     required VoidCallback onTap,
     required bool isDark,

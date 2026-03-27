@@ -39,7 +39,7 @@ class HomeView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  HomeHelper().categoryTitle(
+                  HomeHelper.categoryTitle(
                     title: 'Shop by Room',
                     onTap: () {},
                     isDark: isDark,
@@ -47,7 +47,7 @@ class HomeView extends StatelessWidget {
                   SizedBox(height: 16.h),
                   HomeShop(),
                   SizedBox(height: 40.h),
-                  HomeHelper().categoryTitle(
+                  HomeHelper.categoryTitle(
                     title: 'New Arrival',
                     onTap: () {},
                     isDark: isDark,

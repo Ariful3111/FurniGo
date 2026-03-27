@@ -38,7 +38,7 @@ class SigninView extends GetView<SigninController> {
             SizedBox(height: 12.h),
             CustomSpanText(
               title: 'Don\'t have an account? ',
-              spantext: 'Create New Account',
+              spanText: 'Create New Account',
               onTap: () {
                 controller.signup(formKey: fromKey);
               },
