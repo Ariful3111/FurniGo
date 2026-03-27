@@ -97,9 +97,8 @@ class SellFlowViews extends GetView<SellFlowController> {
                 controller.currentIndex.value > 0
                     ? FlowStepCount(
                         currentPage: controller.currentIndex.value.toString(),
-                        totalPage: {
-                          controller.sellWidgets.length - 1,
-                        }.toString(),
+                        totalPage: (controller.sellWidgets.length - 1)
+                            .toString(),
                       )
                     : SizedBox.shrink(),
                 SellFlowNext(),

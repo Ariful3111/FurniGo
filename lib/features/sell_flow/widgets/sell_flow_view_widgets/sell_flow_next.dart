@@ -11,49 +11,39 @@ class SellFlowNext extends GetWidget<SellFlowController> {
 
   @override
   Widget build(BuildContext context) {
-   
+    return Obx(() {
       final isLast =
-          controller.currentIndex.value < controller.sellWidgets.length - 1;
-      return
-      // controller.currentIndex.value == controller.sellWidgets.length - 1
-      //     ? RentHelper().myButton(
-      //         color: AppColors.acceptButtonColor,
-      //         onTap: () {
-      //           showDialog(
-      //             context: context,
-      //             builder: (context) => RentSubmitDialog(),
-      //           );
-      //         },
-      //         child: CustomPrimaryText(
-      //           text: 'Submit Request',
-      //           fontSize: 14.sp,
-      //           color: AppColors.whiteColor,
-      //         ),
-      //       )
-      //     :
-      RentHelper().myButton(
+          controller.currentIndex.value >= controller.sellWidgets.length - 1;
+      return RentHelper().myButton(
         color: AppColors.primaryColor,
         onTap: () {
-          if (isLast) {
+          if (!isLast) {
             controller.sellFlowController.animateTo(
               duration: Duration(milliseconds: 300),
               curve: Curves.linear,
               controller.sellFlowController.position.minScrollExtent,
             );
             controller.currentIndex.value++;
+          } else {
+            print('Submit form');
           }
         },
         child: Row(
           children: [
             CustomPrimaryText(
-              text: 'Next',
+              text: isLast ? 'Submit' : 'Next',
               fontSize: 14.sp,
               color: AppColors.whiteColor,
             ),
             SizedBox(width: 6.w),
-            Icon(Icons.arrow_forward, size: 12.r, color: AppColors.whiteColor),
+            Icon(
+              isLast ? Icons.check : Icons.arrow_forward,
+              size: 12.r,
+              color: AppColors.whiteColor,
+            ),
           ],
         ),
       );
+    });
   }
 }
