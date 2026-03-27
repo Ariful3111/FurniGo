@@ -106,7 +106,13 @@ class SignupOptionView extends GetView<SignupOptionController> {
                   ? AppColors.buttonTextColor
                   : null,
               onPressed: () {
-                
+                if (controller.isChecked.value) {
+                  Get.toNamed(AppRoutes.signUpView);
+                } else {
+                  ErrorSnackbar.show(
+                    description: 'Please Agree to the Terms & Privacy Policy',
+                  );
+                }
               },
             ),
           ),
