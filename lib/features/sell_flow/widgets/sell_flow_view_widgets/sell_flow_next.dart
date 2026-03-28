@@ -25,7 +25,7 @@ class SellFlowNext extends GetWidget<SellFlowController> {
             );
             controller.currentIndex.value++;
           } else {
-            print('Submit form');
+            debugPrint('Submit form');
           }
         },
         child: Row(
