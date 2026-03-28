@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/order/controller/order_controller.dart';
+import 'package:zb_dezign/features/order/controllers/order_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -39,7 +39,7 @@ class OrderHeader extends GetWidget<OrderController> {
                   labelText: 'Search Your Order',
                   maxLines: 1,
                   borderRadius: 12.r,
-                  controller: controller.orderController,
+                  controller: controller.searchController,
                   suffixIcon: Padding(
                     padding: EdgeInsets.only(right: 8.w),
                     child: InkWell(

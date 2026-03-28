@@ -4,6 +4,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
+import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_rating/custom_rating_builder.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -12,12 +13,14 @@ class CustomRatingDialog extends StatelessWidget {
   final double rating;
   final TextEditingController textEditingController;
   final ValueChanged<double> onRatingUpdate;
+  final bool isLoading;
   const CustomRatingDialog({
     super.key,
     required this.onSubmitTap,
     required this.rating,
     required this.textEditingController,
     required this.onRatingUpdate,
+    required this.isLoading,
   });
 
   @override
@@ -61,7 +64,7 @@ class CustomRatingDialog extends StatelessWidget {
                           : AppColors.fieldBorderColor,
                     ),
                   ),
-                  SizedBox(height: 24.h,),
+                  SizedBox(height: 24.h),
                   CustomRatingBuilder(
                     rating: rating,
                     onRatingUpdate: onRatingUpdate,
@@ -92,10 +95,12 @@ class CustomRatingDialog extends StatelessWidget {
                     borderRadius: 8.r,
                   ),
                   SizedBox(height: 16.h),
-                  CustomPrimaryButton(
-                    text: 'Submit Review',
-                    onPressed: onSubmitTap,
-                  ),
+                  isLoading
+                      ? ButtonLoading()
+                      : CustomPrimaryButton(
+                          text: 'Submit Review',
+                          onPressed: () => onSubmitTap(),
+                        ),
                 ],
               ),
             ),

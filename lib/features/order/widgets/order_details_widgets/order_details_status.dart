@@ -3,14 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/order/controller/order_details_controller.dart';
+import 'package:zb_dezign/features/order/controllers/order_review_controller.dart';
+import 'package:zb_dezign/features/order/models/orders_model.dart';
+import 'package:zb_dezign/shared/extensions/extractors/estimate_delivery_extractor.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_rating_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class OrderDetailsStatus extends GetWidget<OrderDetailsController> {
-  const OrderDetailsStatus({super.key});
+class OrderDetailsStatus extends GetWidget<OrderReviewController> {
+  final OrderData order;
+  const OrderDetailsStatus({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +22,7 @@ class OrderDetailsStatus extends GetWidget<OrderDetailsController> {
       padding: EdgeInsets.all(20.r),
 
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomPrimaryText(
@@ -45,18 +49,33 @@ class OrderDetailsStatus extends GetWidget<OrderDetailsController> {
                 color: isDark ? null : AppColors.labelColor,
               ),
               SizedBox(width: 8.w),
-              title(text: 'Shipped', isDark: isDark),
+              Container(
+                constraints: BoxConstraints(maxWidth: 120.w),
+                child: title(text: order.status ?? '', isDark: isDark),
+              ),
               Spacer(),
-              title(text: 'TRK-9928-XA', isDark: isDark),
+              Container(
+                constraints: BoxConstraints(maxWidth: 120.w),
+                child: title(text: order.id ?? '', isDark: isDark),
+              ),
             ],
           ),
           SizedBox(height: 8.h),
-          sub(text: 'Estimated Delivery:', isDark: isDark),
+          Flexible(
+            child: sub(text: 'Estimated Delivery:', isDark: isDark),
+          ),
           SizedBox(height: 4.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              title(text: 'Nov 15 - Nov 17, 2025', isDark: isDark),
+              Flexible(
+                fit: FlexFit.loose,
+                child: title(
+                  text: order.calculateEstimatedDelivery(),
+                  isDark: isDark,
+                ),
+              ),
+              SizedBox(width: 8.w),
               CustomPrimaryButton(
                 text: 'Add Review',
                 onPressed: () {
@@ -68,13 +87,17 @@ class OrderDetailsStatus extends GetWidget<OrderDetailsController> {
                     builder: (context) {
                       return Obx(
                         () => CustomRatingDialog(
-                          onSubmitTap: () {},
+                          onSubmitTap: () async {
+                            await controller.submitReview(
+                              orderID: order.id ?? '',
+                            );
+                          },
                           rating: controller.rating.value,
-                          textEditingController:
-                              controller.ratingController,
+                          textEditingController: controller.ratingController,
                           onRatingUpdate: (double value) {
                             controller.rating.value = value;
                           },
+                          isLoading: controller.isLoading.value,
                         ),
                       );
                     },
@@ -94,6 +117,8 @@ class OrderDetailsStatus extends GetWidget<OrderDetailsController> {
       fontSize: 14.sp,
       fontWeight: FontWeight.w400,
       color: isDark ? AppColors.darkPrimaryTextColor : AppColors.greyColor,
+      maxLine: 1,
+      textOverflow: TextOverflow.ellipsis,
     );
   }
 
@@ -103,6 +128,8 @@ class OrderDetailsStatus extends GetWidget<OrderDetailsController> {
       fontSize: 16.sp,
       fontWeight: FontWeight.w600,
       color: isDark ? AppColors.whiteColor : AppColors.labelColor,
+      maxLine: 1,
+      textOverflow: TextOverflow.ellipsis,
     );
   }
 }
