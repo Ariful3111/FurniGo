@@ -10,6 +10,7 @@ class CustomContainer extends StatelessWidget {
   final EdgeInsets? margin;
   final Widget? drawer;
   final Widget? bottomNav;
+  final bool transparentScaffold;
   const CustomContainer({
     super.key,
     required this.child,
@@ -19,29 +20,38 @@ class CustomContainer extends StatelessWidget {
     this.margin,
     this.drawer,
     this.bottomNav,
+    this.transparentScaffold = false,
   });
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final container = Container(
+      margin: margin,
+      padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
+      height: MediaQuery.heightOf(context),
+      width: MediaQuery.widthOf(context),
+      decoration: BoxDecoration(
+        gradient: isDark
+            ? gradient ??
+                  LinearGradient(
+                    colors: [AppColors.darkColor, AppColors.darkTextColor],
+                  )
+            : gradient ?? AppColors.primaryBG,
+      ),
+      child: SafeArea(child: child),
+    );
+
+    if (transparentScaffold) {
+      return container;
+    }
+
     return Scaffold(
       appBar: appbar,
       drawer: drawer,
       bottomNavigationBar: bottomNav,
-      body: Container(
-        margin: margin,
-        padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
-        height: MediaQuery.heightOf(context),
-        width: MediaQuery.widthOf(context),
-        decoration: BoxDecoration(
-          gradient: isDark
-              ?gradient?? LinearGradient(
-                  colors: [AppColors.darkColor, AppColors.darkTextColor],
-                )
-              : gradient ?? AppColors.primaryBG,
-        ),
-        child: SafeArea(child: child),
-      ),
+      backgroundColor: Colors.transparent,
+      body: container,
     );
   }
 }

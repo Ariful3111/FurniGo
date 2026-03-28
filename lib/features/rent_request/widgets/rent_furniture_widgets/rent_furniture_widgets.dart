@@ -7,19 +7,18 @@ import 'package:zb_dezign/features/rent_request/controller/rent_furniture_contro
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentFurnitureWidgets extends StatelessWidget {
+class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
   const RentFurnitureWidgets({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentFurnitureController rentFurnitureController = Get.find();
     return Obx(
       () => Column(
-        children: List.generate(rentFurnitureController.widgets.length, (
+        children: List.generate(controller.widgets.length, (
           index,
         ) {
-          final item = rentFurnitureController.widgets[index];
-          final isSelected = rentFurnitureController.isOpenList[index];
+          final item = controller.widgets[index];
+          final isSelected = controller.isOpenList[index];
           return Column(
             key: ValueKey(index),
             children: [
@@ -39,8 +38,8 @@ class RentFurnitureWidgets extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            rentFurnitureController.isOpenList[index] =
-                                !rentFurnitureController.isOpenList[index];
+                            controller.isOpenList[index] =
+                                !controller.isOpenList[index];
                           },
                           child: AnimatedRotation(
                             turns: isSelected ? 1 : 0,

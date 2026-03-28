@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_additional_note_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_appliance_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_brand_controller.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_business_identification_controller.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_delivery_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_floor_plan_controller.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_furniture_controller.dart';
@@ -14,7 +14,7 @@ import 'package:zb_dezign/features/rent_request/controller/rent_review_controlle
 class RentBindings implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => RentBusinessIdentificationController());
+    Get.lazyPut(() => RentRequestController());
     Get.lazyPut(() => RentPropertyTypeController());
     Get.lazyPut(() => RentPropertyDetailsController());
     Get.lazyPut(() => RentFloorPlanController());

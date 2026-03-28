@@ -64,6 +64,7 @@ class CustomSecondaryButton extends StatelessWidget {
             ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
               icon,

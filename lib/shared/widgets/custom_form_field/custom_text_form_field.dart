@@ -86,7 +86,8 @@ class CustomTextFormField extends StatelessWidget {
     this.labelColor,
     this.borderColor,
     this.labelFontSize,
-    this.labelFontWeight, this.cursorColor,
+    this.labelFontWeight,
+    this.cursorColor,
   });
 
   @override
@@ -113,7 +114,9 @@ class CustomTextFormField extends StatelessWidget {
         fontWeight: fontWeight ?? FontWeight.w500,
         height: fontHeight,
       ),
-      cursorColor: isDark ?cursorColor?? AppColors.whiteColor : cursorColor?? AppColors.darkColor,
+      cursorColor: isDark
+          ? cursorColor ?? AppColors.whiteColor
+          : cursorColor ?? AppColors.darkColor,
       decoration: InputDecoration(
         floatingLabelBehavior: floatingLabelBehavior,
         hintTextDirection: hintDirection,
@@ -134,7 +137,9 @@ class CustomTextFormField extends StatelessWidget {
             hintTextWidget ??
             CustomPrimaryText(
               text: hintText ?? "",
-              color: AppColors.fieldTextColor,
+              color: isDark
+                  ? AppColors.primaryBorderColor
+                  : AppColors.fieldTextColor,
               fontSize: 16.sp,
             ),
         errorText: errorText,

@@ -3,27 +3,28 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controller/rent_floor_plan_controller.dart';
+import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_floor_plan_widgets/floor_plan_widgets.dart';
-import 'package:zb_dezign/features/rent_request/widgets/page_count.dart';
+import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_switch_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentFloorPlanView extends StatelessWidget {
+class RentFloorPlanView extends GetView<RentFloorPlanController> {
   const RentFloorPlanView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentFloorPlanController floorPlanController = Get.find();
+    RentRequestController rentRequestController = Get.find();
     return Column(
       children: [
         SharedContainer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: PageCount(text: 'Floor Plan')),
+              Center(child: FlowPageCount(text: 'Floor Plan', pageCount: rentRequestController.currentIndex.value.toString(),)),
               SizedBox(height: 20.h),
               CustomDivider(),
               SizedBox(height: 24.h),
@@ -33,7 +34,7 @@ class RentFloorPlanView extends StatelessWidget {
                 color: AppColors.darkColor,
               ),
               SizedBox(height: 26.h),
-              optionContainer(
+              RentHelper().optionContainer(
                 context: context,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,9 +50,9 @@ class RentFloorPlanView extends StatelessWidget {
                     ),
                     Obx(
                       () => CustomSwitchButton(
-                        isOn: floorPlanController.isShare.value,
+                        isOn: controller.isShare.value,
                         onChanged: (value) {
-                          floorPlanController.isShare.value = value;
+                          controller.isShare.value = value;
                         },
                       ),
                     ),

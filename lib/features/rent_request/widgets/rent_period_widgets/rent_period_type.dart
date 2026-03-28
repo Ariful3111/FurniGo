@@ -8,12 +8,11 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_period_widgets/rent
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentPeriodType extends StatelessWidget {
+class RentPeriodType extends GetWidget<RentPeriodController> {
   const RentPeriodType({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentPeriodController rentPeriodController = Get.find();
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,20 +32,20 @@ class RentPeriodType extends StatelessWidget {
           SizedBox(height: 12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(rentPeriodController.type.length, (index) {
+            children: List.generate(controller.type.length, (index) {
               return Row(
                 children: [
                   Obx(
                     () => CustomRadioButton(
                       value: index,
-                      groupValue: rentPeriodController.selectedType.value,
+                      groupValue: controller.selectedType.value,
                       onChange: (value) {
-                        rentPeriodController.selectedType.value = value!;
+                        controller.selectedType.value = value!;
                       },
                     ),
                   ),
                   CustomPrimaryText(
-                    text: rentPeriodController.type[index],
+                    text: controller.type[index],
                     fontSize: 14.sp,
                     color: AppColors.darkColor,
                   ),

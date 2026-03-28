@@ -14,7 +14,7 @@ class PropertyAddButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height:55.h,
+        height: 55.h,
         width: MediaQuery.widthOf(context),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
@@ -24,9 +24,14 @@ class PropertyAddButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(IconsPath.propertyAdd,height: 20.h,width: 20.w,),
-            SizedBox(width: 8.w,),
-            CustomPrimaryText(text: text,fontSize: 14.sp,fontWeight: FontWeight.w400,color: AppColors.labelColor,)
+            Image.asset(IconsPath.propertyAdd, height: 20.h, width: 20.w),
+            SizedBox(width: 8.w),
+            CustomPrimaryText(
+              text: text,
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+              color: AppColors.labelColor,
+            ),
           ],
         ),
       ),

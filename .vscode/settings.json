@@ -9,5 +9,6 @@
         "LTWH",
         "Recive"
     ],
-    "cmake.ignoreCMakeListsMissing": true
+    "cmake.ignoreCMakeListsMissing": true,
+    "files.autoSave": "afterDelay"
 }

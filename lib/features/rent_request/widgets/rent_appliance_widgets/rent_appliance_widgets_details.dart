@@ -7,12 +7,11 @@ import 'package:zb_dezign/features/rent_request/widgets/property_add_button.dart
 import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/property_details_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentApplianceWidgetsDetails extends StatelessWidget {
+class RentApplianceWidgetsDetails extends GetWidget<RentApplianceController> {
   const RentApplianceWidgetsDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentApplianceController rentApplianceController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,32 +22,32 @@ class RentApplianceWidgetsDetails extends StatelessWidget {
           color: AppColors.darkColor,
         ),
         SizedBox(height: 12.h),
-        ...List.generate(rentApplianceController.appliance.length, (index) {
+        ...List.generate(controller.appliance.length, (index) {
           return Obx(()=> Padding(
            padding: EdgeInsets.only(
-                bottom: rentApplianceController.appliance.length - 1 == index
+                bottom: controller.appliance.length - 1 == index
                     ? 0.h
                     : 13.h,
               ),
             child: PropertyDetailsContainer(
               subTitle: 'Quantity',
-              isChecked: rentApplianceController.isSelect[index],
+              isChecked: controller.isSelect[index],
               onChange: (value) {
-                rentApplianceController.isSelect[index] = value!;
+                controller.isSelect[index] = value!;
               },
-              title: rentApplianceController.appliance[index],
+              title: controller.appliance[index],
               onAdd: () {
-                rentApplianceController.count[index]++;
+                controller.count[index]++;
               },
               onRemoved: () {
-                if (rentApplianceController.count[index] > 0) {
-                  rentApplianceController.count[index]--;
+                if (controller.count[index] > 0) {
+                  controller.count[index]--;
                 }
               },
-              count: rentApplianceController.count[index].toString(),
-              isOther: rentApplianceController.appliance[index] == 'other',
-              otherController: rentApplianceController.otherFieldController,
-              readOnly: rentApplianceController.isSelect[index],
+              count: controller.count[index].toString(),
+              isOther: controller.appliance[index] == 'other',
+              otherController: controller.otherFieldController,
+              readOnly: controller.isSelect[index],
             ),
           ),);
         }),

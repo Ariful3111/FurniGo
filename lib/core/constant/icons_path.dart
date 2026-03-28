@@ -77,7 +77,8 @@ class IconsPath {
   static const String profileBalance = 'assets/icons/profile_balance.png';
   static const String profileContact = 'assets/icons/profile_contact.png';
   static const String profileMode = 'assets/icons/profile_mode.png';
-  static const String profileNotification = 'assets/icons/profile_notification.png';
+  static const String profileNotification =
+      'assets/icons/profile_notification.png';
   static const String profileOrder = 'assets/icons/profile_order.png';
   static const String profilePrivacy = 'assets/icons/profile_privacy.png';
   static const String profileSubs = 'assets/icons/profile_subs.png';
@@ -109,6 +110,8 @@ class IconsPath {
   static const String creditCoin = 'assets/icons/credit_coin.png';
   static const String call = 'assets/icons/call.png';
   static const String masterCard = 'assets/icons/master_card.png';
-  
-
+  static const String paymentDelete = 'assets/icons/payment_delete.png';
+  static const String bank = 'assets/icons/bank.png';
+  static const String image = 'assets/icons/image.png';
+  static const String plus = 'assets/icons/plus.png';
 }

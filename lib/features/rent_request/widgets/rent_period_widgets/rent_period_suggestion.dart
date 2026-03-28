@@ -9,20 +9,19 @@ import 'package:zb_dezign/features/rent_request/widgets/rent_period_widgets/rent
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentPeriodSuggestion extends StatelessWidget {
+class RentPeriodSuggestion extends GetWidget<RentPeriodController> {
   const RentPeriodSuggestion({super.key});
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    RentPeriodController rentPeriodController = Get.find();
     return TypeAheadField<Map<String, String>>(
       hideOnUnfocus: true,
-      focusNode: rentPeriodController.rentDurationFocusNode,
+      focusNode: controller.rentDurationFocusNode,
       itemBuilder: (BuildContext context, Map<String, String> suggestion) {
         return Obx(() {
           final selected =
               suggestion['title'] ==
-              rentPeriodController.selectedRentPeriodTitle.value;
+              controller.selectedRentPeriodTitle.value;
           final discount = suggestion['subTitle'] == 'Minimum Duration';
           return suggestion['title'] == 'custom'
               ? RentPeriodSuggestionField(selected: selected)
@@ -78,21 +77,21 @@ class RentPeriodSuggestion extends StatelessWidget {
       },
       onSelected: (value) {
         final String title = (value['title'] ?? '');
-        rentPeriodController.searchController.text = title;
+        controller.searchController.text = title;
       },
-      controller: rentPeriodController.searchController,
+      controller: controller.searchController,
       suggestionsCallback: (String search) {
-        return rentPeriodController.rentPeriodList.where((e) {
+        return controller.rentPeriodList.where((e) {
           return e['title']?.toLowerCase().contains(search.toLowerCase()) ??
               false;
         }).toList();
       },
-      builder: (context, controller, focusNode) {
+      builder: (context, textController, focusNode) {
         focusNode.addListener(() {
-          rentPeriodController.isSearchFocus.value = focusNode.hasFocus;
+          controller.isSearchFocus.value = focusNode.hasFocus;
         });
         return CustomTextFormField(
-          controller: controller,
+          controller: textController,
           focusNode: focusNode,
           labelText: 'Rent Duration',
         );
@@ -100,7 +99,7 @@ class RentPeriodSuggestion extends StatelessWidget {
       decorationBuilder: (context, child) {
         return Obx(
           () => RentPeriodSuggestionDecoration(
-            isFocus: rentPeriodController.isSearchFocus.value,
+            isFocus: controller.isSearchFocus.value,
             child: child,
           ),
         );

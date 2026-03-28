@@ -8,13 +8,12 @@ import 'package:zb_dezign/shared/extensions/validators/name_validator.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class PropertyDetailsField extends StatelessWidget {
+class PropertyDetailsField extends GetWidget<RentPropertyDetailsController> {
   final GlobalKey<FormState> formKey;
   const PropertyDetailsField({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
-    RentPropertyDetailsController rentPropertyDetailsController = Get.find();
     RentPropertyTypeController rentPropertyTypeController = Get.find();
     return Form(
       key: formKey,
@@ -23,7 +22,7 @@ class PropertyDetailsField extends StatelessWidget {
         children: [
           myField(
             text: 'Property Address *',
-            controller: rentPropertyDetailsController.propertyAddressController,
+            controller: controller.propertyAddressController,
             labelText: 'Enter Property Address',
             validation: AutovalidateMode.onUserInteraction,
             validator: nameValidation,
@@ -35,7 +34,7 @@ class PropertyDetailsField extends StatelessWidget {
                     'Residential'
                 ? 'Property Size *'
                 : 'Property Size (Optional)',
-            controller: rentPropertyDetailsController.propertySizeController,
+            controller: controller.propertySizeController,
             labelText: 'Enter Property Size',
             validation: AutovalidateMode.onUserInteraction,
             validator:rentPropertyTypeController.selectedPropertyType.value=='Residential'? nameValidation: (value) {

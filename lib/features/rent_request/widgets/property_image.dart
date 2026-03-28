@@ -8,7 +8,12 @@ class PropertyImage extends StatelessWidget {
   final String title;
   final VoidCallback onGallery;
   final VoidCallback onCamera;
-  const PropertyImage({super.key, required this.title, required this.onGallery, required this.onCamera});
+  const PropertyImage({
+    super.key,
+    required this.title,
+    required this.onGallery,
+    required this.onCamera,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +42,32 @@ class PropertyImage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: imageUpload(onTap: onGallery, icon: IconsPath.gallery, title: 'Chose from Gallery')),
-              Expanded(child: imageUpload(onTap: onCamera, icon: IconsPath.camera, title: 'Capture Image')),
-          ],),
+              Expanded(
+                child: imageUpload(
+                  onTap: onGallery,
+                  icon: IconsPath.gallery,
+                  title: 'Chose from Gallery',
+                ),
+              ),
+              Expanded(
+                child: imageUpload(
+                  onTap: onCamera,
+                  icon: IconsPath.camera,
+                  title: 'Capture Image',
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  Widget imageUpload({required VoidCallback onTap,required String icon,required String title}) {
+  Widget imageUpload({
+    required VoidCallback onTap,
+    required String icon,
+    required String title,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -66,8 +88,8 @@ class PropertyImage extends StatelessWidget {
                 textOverflow: TextOverflow.ellipsis,
               ),
             ),
-            SizedBox(width: 4.w,),
-            Image.asset(icon,height: 16.h,width: 16.w,),
+            SizedBox(width: 4.w),
+            Image.asset(icon, height: 16.h, width: 16.w),
           ],
         ),
       ),

@@ -6,12 +6,11 @@ import 'package:zb_dezign/features/rent_request/controller/rent_period_controlle
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentPeriodDiscountPayment extends StatelessWidget {
+class RentPeriodDiscountPayment extends GetWidget<RentPeriodController> {
   const RentPeriodDiscountPayment({super.key});
 
   @override
   Widget build(BuildContext context) {
-    RentPeriodController rentPeriodController = Get.find();
     return Column(
       children: [
         CustomPrimaryText(
@@ -21,20 +20,20 @@ class RentPeriodDiscountPayment extends StatelessWidget {
           color: AppColors.darkTextColor,
         ),
         SizedBox(height: 28.h),
-        ...List.generate(rentPeriodController.payment.length, (index) {
+        ...List.generate(controller.payment.length, (index) {
           return Row(
             children: [
               Obx(
                 () => CustomRadioButton(
                   value: index,
-                  groupValue: rentPeriodController.selectedPayment.value,
+                  groupValue: controller.selectedPayment.value,
                   onChange: (value) {
-                    rentPeriodController.selectedPayment.value = value!;
+                    controller.selectedPayment.value = value!;
                   },
                 ),
               ),
               CustomPrimaryText(
-                text: rentPeriodController.payment[index],
+                text: controller.payment[index],
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.titleTextColor,
@@ -60,10 +59,8 @@ class RentPeriodDiscountPayment extends StatelessWidget {
                 color: AppColors.labelColor,
               ),
               SizedBox(height: 15.h),
-              ...List.generate(rentPeriodController.installment.length, (
-                index,
-              ) {
-                final item = rentPeriodController.installment[index];
+              ...List.generate(controller.installment.length, (index) {
+                final item = controller.installment[index];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -80,8 +77,7 @@ class RentPeriodDiscountPayment extends StatelessWidget {
                       color: AppColors.greyTextColor,
                     ),
                     SizedBox(
-                      height:
-                          rentPeriodController.installment.length - 1 == index
+                      height: controller.installment.length - 1 == index
                           ? 0
                           : 15.h,
                     ),
