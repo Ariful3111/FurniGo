@@ -1,49 +1,176 @@
 {
-  "data": [
-    {
-      "id": 3,
-      "uuid": "RNT-2026-16799",
-      "property_type": "Residential",
-      "start_date": "2024-12-01",
-      "end_date": "2025-03-01",
-      "status": "submitted",
-      "shipment_status": null,
-      "payment_status": null,
-      "quotation_id": null,
-      "quotation_status": null,
-      "installments": []
-    }
-  ],
-  "links": {
-    "first": "https://jbdesign.sepiabd.com/api/rental-requests?page=1",
-    "last": "https://jbdesign.sepiabd.com/api/rental-requests?page=1",
-    "prev": null,
-    "next": null
-  },
-  "meta": {
-    "current_page": 1,
-    "from": 1,
-    "last_page": 1,
-    "links": [
+  "data": {
+    "uuid": "RNT-2026-16799",
+    "user_id": 6,
+    "current_step": 9,
+    "status": "submitted",
+    "business_info": {
+      "business_name": "Acme Corp",
+      "contact_person": "John Doe",
+      "email": "john@acme.com",
+      "phone": "+61 400 000 000",
+      "abn": "12345678901",
+      "website": "https://acme.com"
+    },
+    "property_type": "Residential",
+    "property_use": "Personal",
+    "address": "123 Test St",
+    "size_sqm": 150,
+    "space_breakdown": {
+      "rooms": [
+        {
+          "type": "bedroom",
+          "name": "Master Bedroom",
+          "count": 1
+        },
+        {
+          "type": "bedroom",
+          "name": "Bedroom 2",
+          "count": 1
+        },
+        {
+          "type": "bedroom",
+          "name": "Bedroom 3",
+          "count": 1
+        },
+        {
+          "type": "bathroom",
+          "name": "Bathroom 1",
+          "count": 1
+        },
+        {
+          "type": "bathroom",
+          "name": "Bathroom 2",
+          "count": 1
+        },
+        {
+          "type": "living",
+          "name": "Living Room",
+          "count": 1
+        },
+        {
+          "type": "dining",
+          "name": "Dining Area",
+          "count": 1
+        }
+      ]
+    },
+    "room_dimensions": [
       {
-        "url": null,
-        "label": "&laquo; Previous",
-        "active": false
-      },
-      {
-        "url": "https://jbdesign.sepiabd.com/api/rental-requests?page=1",
-        "label": "1",
-        "active": true
-      },
-      {
-        "url": null,
-        "label": "Next &raquo;",
-        "active": false
+        "room_name": "Bedroom 01",
+        "length": "4.5",
+        "width": "5"
       }
     ],
-    "path": "https://jbdesign.sepiabd.com/api/rental-requests",
-    "per_page": 15,
-    "to": 1,
-    "total": 1
+    "furniture_selection": [
+      {
+        "room": "Master Bedroom",
+        "items": [
+          {
+            "name": "Bed",
+            "count": 1
+          },
+          {
+            "name": "Mattress",
+            "count": 1
+          },
+          {
+            "name": "Side Table",
+            "count": 2
+          }
+        ],
+        "condition": "New",
+        "style": "Modern"
+      },
+      {
+        "room": "Living Room",
+        "items": [
+          {
+            "name": "Sofa",
+            "count": 2
+          },
+          {
+            "name": "TV Unit",
+            "count": 1
+          }
+        ],
+        "condition": "Mix",
+        "style": "Neutral"
+      }
+    ],
+    "appliance_selection": [
+      {
+        "room": "Master Bedroom",
+        "items": [
+          {
+            "name": "Refrigerator",
+            "count": 1
+          },
+          {
+            "name": "Microwave",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "room": "Living Room",
+        "items": [
+          {
+            "name": "Television",
+            "count": 2
+          }
+        ]
+      }
+    ],
+    "rental_terms": {
+      "rental_term_id": 3,
+      "rental_term_days": 90,
+      "term_type": "fixed",
+      "duration_months": 3,
+      "payment_frequency": "monthly",
+      "rental_term_discount": 7,
+      "pricing_preference": "installments",
+      "start_date": "2024-12-01",
+      "installment_schedule": {
+        "upfront": "40%",
+        "second_payment": "30%",
+        "final_payment": "30%"
+      },
+      "timeline_urgency": "urgent",
+      "budget_preference": "500000-600000",
+      "fire_safety_required": true,
+      "weight_restrictions": "500kg per lift",
+      "ohs_requirements": "Additional OH&S requirements here"
+    },
+    "rental_term_id": 3,
+    "rental_term": {
+      "id": 3,
+      "name": "90 Days",
+      "days": 90,
+      "discount_percent": 7
+    },
+    "delivery_setup": {
+      "delivery_address": "123 Test St, Suburb, State, Postcode",
+      "contact_person": "John Doe",
+      "preferred_delivery_date": "2024-12-01",
+      "access_details": {
+        "lift_access": true,
+        "loading_dock_available": true,
+        "working_hours_restrictions": false
+      },
+      "installation_required": true
+    },
+    "additional_notes": {
+      "custom_requests": "Please call before arrival.",
+      "branding_required": true,
+      "branding_elements": ["logo_placement", "brand_color_matching"]
+    },
+    "start_date": "2024-12-01",
+    "end_date": "2025-03-01",
+    "quotation_uuid": null,
+    "quotation_status": null,
+    "quotation": null,
+    "created_at": "2026-03-28T09:52:14.000000Z",
+    "updated_at": "2026-03-28T09:54:07.000000Z"
   }
 }

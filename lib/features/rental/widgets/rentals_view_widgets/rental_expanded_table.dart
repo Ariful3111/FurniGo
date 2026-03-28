@@ -67,7 +67,10 @@ class RentalExpandedTable extends StatelessWidget {
         SizedBox(height: 8.h),
         CustomTableActionButton(
           onTap: () {
-            Get.toNamed(AppRoutes.rentalDetailsView);
+            Get.toNamed(
+              AppRoutes.rentalDetailsView,
+              arguments: rental.uuid?.toString() ?? '',
+            );
           },
         ),
       ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/rental/controllers/rental_details_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
@@ -13,6 +15,13 @@ class RentalsActiveDeliveryStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final controller = Get.find<RentalDetailsController>();
+    final rentalDetails = controller.rentalDetails.value;
+
+    final deliveryStatus = rentalDetails?.status?.capitalizeFirst ?? 'Pending';
+    final deliverySetup = rentalDetails?.deliverySetup;
+    final preferredDate = deliverySetup?.preferredDeliveryDate ?? '12/8/26';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,22 +37,22 @@ class RentalsActiveDeliveryStatus extends StatelessWidget {
                 color: isDark ? AppColors.whiteColor : AppColors.darkColor,
               ),
               SizedBox(height: 8.h),
-              CustomTableStatus(status: 'Pending'),
+              CustomTableStatus(status: deliveryStatus),
               SizedBox(height: 12.h),
               CustomDivider(),
               SizedBox(height: 12.h),
-              row(title: 'Availability1', sub: '12/8/26', isDark: isDark),
+              row(title: 'Preferred Date', sub: preferredDate, isDark: isDark),
               SizedBox(height: 20.h),
               row(
-                title: 'Time',
-                sub: 'Between 8 a.m. - 12 p.m.',
+                title: 'Contact Person',
+                sub: deliverySetup?.contactPerson ?? 'John Doe',
                 isDark: isDark,
                 fontWeight: FontWeight.w400,
               ),
             ],
           ),
         ),
-        SizedBox(height: 12.h,),
+        SizedBox(height: 12.h),
         RentalsActiveButton(),
       ],
     );

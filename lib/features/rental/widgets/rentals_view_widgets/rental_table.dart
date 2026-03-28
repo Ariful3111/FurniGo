@@ -50,7 +50,7 @@ class RentalTable extends GetWidget<RentalController> {
         actionBuilder: (index, row) {
           return CustomTableActionButton(
             onTap: () {
-              Get.toNamed(AppRoutes.rentalDetailsView);
+              Get.toNamed(AppRoutes.rentalDetailsView, arguments: row['id']);
             },
           );
         },

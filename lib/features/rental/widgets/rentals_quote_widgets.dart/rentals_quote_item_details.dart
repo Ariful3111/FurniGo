@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/controllers/rental_quotes_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rentals_quote_item_details_info.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rentals_quote_item_details_preview.dart';
@@ -11,10 +10,13 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 class RentalsQuoteItemDetails extends GetWidget<RentalQuotesController> {
   final int index;
   final Map<String, dynamic> item;
+  final bool isAppliance;
+
   const RentalsQuoteItemDetails({
     super.key,
     required this.item,
     required this.index,
+    required this.isAppliance,
   });
 
   @override
@@ -34,63 +36,76 @@ class RentalsQuoteItemDetails extends GetWidget<RentalQuotesController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              Container(
-                height: 264.h,
-                width: MediaQuery.widthOf(context),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  image: DecorationImage(
-                    image: AssetImage(item['image']),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 12.h,
-                left: 0,
-                right: 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildNavButton(Icons.chevron_left, isDark),
-                    SizedBox(width: 7.66.w),
-                    _buildNavButton(Icons.chevron_right, isDark),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 22.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomPrimaryText(text: item['name'], fontSize: 22.sp),
-              Obx(
-                () => InkWell(
-                  onTap: () {
-                    controller.isShowInfo.value = !controller.isShowInfo.value;
-                  },
-                  child: AnimatedRotation(
-                    turns: controller.isShowInfo.value ? 1 : 0,
-                    duration: Duration(milliseconds: 300),
-                    child: Image.asset(
-                      controller.isShowInfo.value
-                          ? IconsPath.upArrow
-                          : IconsPath.downArrow,
-                      height: 20.h,
-                      width: 20.w,
-                      color: isDark
-                          ? AppColors.whiteColor
-                          : AppColors.darkColor,
+              CustomPrimaryText(
+                text: item['room'] ?? 'Unknown Room',
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
+              ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => controller.toggleShowInfo(),
+                    child: Obx(
+                      () => _buildNavButton(
+                        controller.isShowInfo.value
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        isDark,
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(width: 8.w),
+                  GestureDetector(
+                    onTap: () =>
+                        controller.toggleItemExpanded(index, isAppliance),
+                    child: _buildNavButton(Icons.close, isDark),
+                  ),
+                ],
               ),
             ],
           ),
-          SizedBox(height: 22.h),
+          SizedBox(height: 12.h),
+          CustomPrimaryText(
+            text: '${item['items']?.length ?? 0} items',
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w400,
+            color: isDark ? AppColors.greyColor : AppColors.greyTextColor,
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              CustomPrimaryText(
+                text: 'Condition: ',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                color: isDark ? AppColors.greyColor : AppColors.greyTextColor,
+              ),
+              CustomPrimaryText(
+                text: item['condition'] ?? 'Good',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
+              ),
+              SizedBox(width: 16.w),
+              CustomPrimaryText(
+                text: 'Style: ',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                color: isDark ? AppColors.greyColor : AppColors.greyTextColor,
+              ),
+              CustomPrimaryText(
+                text: item['style'] ?? 'Modern',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
           Obx(
             () => AnimatedSize(
               duration: const Duration(milliseconds: 300),
@@ -100,7 +115,10 @@ class RentalsQuoteItemDetails extends GetWidget<RentalQuotesController> {
                   : SizedBox(key: ValueKey('empty')),
             ),
           ),
-          RentalsQuoteItemDetailsPreview(index: index),
+          RentalsQuoteItemDetailsPreview(
+            index: index,
+            isAppliance: isAppliance,
+          ),
         ],
       ),
     );
