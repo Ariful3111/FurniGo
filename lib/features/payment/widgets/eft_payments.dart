@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/payment/controller/payment_controller.dart';
+import 'package:zb_dezign/features/payment/widgets/eft_payment_save_button.dart';
 import 'package:zb_dezign/features/payment/widgets/payment_header.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
@@ -18,44 +19,47 @@ class EftPayments extends GetWidget<PaymentController> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
-      child:Obx(()=> Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          PaymentHeader(
-            icon1: IconsPath.bank,
-            title: 'EFT Payments',
-            sub: 'Used for sell payouts or certain payments.',
-            icon2: IconsPath.edit,
-            buttonText: 'Edit',
-            onTap: () {
-              controller.isEdit.value = !controller.isEdit.value;
-            },
-          ),
-          SizedBox(height: 6.h),
-          CustomDivider(),
-          SizedBox(height: 20.h),
-          field(
-            text: 'Account name',
-            controller: controller.nameController,
-            isDark: isDark,
-            readOnly: !controller.isEdit.value,
-          ),
-          SizedBox(height: 12.h),
-          field(
-            text: 'BSB',
-            controller: controller.bsbController,
-            isDark: isDark,
-            readOnly: !controller.isEdit.value,
-          ),
-          SizedBox(height: 12.h),
-          field(
-            text: 'Account number',
-            controller: controller.accountController,
-            isDark: isDark,
-            readOnly: !controller.isEdit.value,
-          ),
-        ],
-      )),
+      child: Obx(
+        () => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            PaymentHeader(
+              icon1: IconsPath.bank,
+              title: 'EFT Payments',
+              sub: 'Used for sell payouts or certain payments.',
+              icon2: IconsPath.edit,
+              buttonText: 'Edit',
+              onTap: () {
+                controller.isEdit.value = !controller.isEdit.value;
+              },
+            ),
+            SizedBox(height: 6.h),
+            CustomDivider(),
+            SizedBox(height: 20.h),
+            field(
+              text: 'Account name',
+              controller: controller.nameController,
+              isDark: isDark,
+              readOnly: !controller.isEdit.value,
+            ),
+            SizedBox(height: 12.h),
+            field(
+              text: 'BSB',
+              controller: controller.bsbController,
+              isDark: isDark,
+              readOnly: !controller.isEdit.value,
+            ),
+            SizedBox(height: 12.h),
+            field(
+              text: 'Account number',
+              controller: controller.accountController,
+              isDark: isDark,
+              readOnly: !controller.isEdit.value,
+            ),
+            EftPaymentSaveButton()
+          ],
+        ),
+      ),
     );
   }
 

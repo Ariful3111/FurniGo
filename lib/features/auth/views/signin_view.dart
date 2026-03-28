@@ -9,6 +9,7 @@ import 'package:zb_dezign/features/auth/widgets/login_button.dart';
 import 'package:zb_dezign/features/auth/widgets/signin_form.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
@@ -63,9 +64,9 @@ class SigninView extends GetView<SigninController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                divider(context: context),
+                CustomDivider(),
                 CustomPrimaryText(text: 'Or', color: AppColors.buttonTextColor),
-                divider(context: context),
+                CustomDivider(),
               ],
             ),
             SizedBox(height: 20.h),
@@ -89,22 +90,4 @@ class SigninView extends GetView<SigninController> {
     );
   }
 
-  Widget divider({required BuildContext context}) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Container(
-      height: 2.h,
-      width: 170.w,
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkBorderColor : AppColors.fieldBorderColor,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(
-          width: 1.r,
-          color: isDark
-              ? AppColors.darkBorderColor
-              : AppColors.fieldBorderColor,
-        ),
-      ),
-    );
-  }
 }

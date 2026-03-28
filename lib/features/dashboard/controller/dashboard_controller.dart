@@ -7,31 +7,31 @@ class DashboardController extends GetxController {
   List<String> dashboardTableColumn = ['Order', 'Status', 'Action'];
   RxList<bool> expandedList = <bool>[].obs;
   List quickAction = [
-      {
-        'icon': IconsPath.shopProduction,
-        'title': 'Shop Products',
-        'sub': 'Brand-new pieces with fast delivery and easy setup.',
-        'page':'',
-      },
-      {
-        'icon': IconsPath.sellFurniture,
-        'title': 'Sell Furniture',
-        'sub': 'Get a fair offer fast pickup included.',
-        'page':AppRoutes.sellFlowView,
-      },
-      {
-        'icon': IconsPath.rentProduct,
-        'title': 'Rent Products',
-        'sub': 'Brand-new pieces with fast delivery and easy setup.',
-        'page':AppRoutes.rentRequestView,
-      },
-      {
-        'icon': IconsPath.design,
-        'title': 'Design My Room',
-        'sub': 'Brand-new pieces with fast delivery and easy setup.',
-        'page':'',
-      },
-    ];
+    {
+      'icon': IconsPath.shopProduction,
+      'title': 'Shop Products',
+      'sub': 'Brand-new pieces with fast delivery and easy setup.',
+      'page': AppRoutes.productDetailsView,
+    },
+    {
+      'icon': IconsPath.sellFurniture,
+      'title': 'Sell Furniture',
+      'sub': 'Get a fair offer fast pickup included.',
+      'page': AppRoutes.sellFlowView,
+    },
+    {
+      'icon': IconsPath.rentProduct,
+      'title': 'Rent Products',
+      'sub': 'Brand-new pieces with fast delivery and easy setup.',
+      'page': AppRoutes.rentRequestView,
+    },
+    {
+      'icon': IconsPath.design,
+      'title': 'Design My Room',
+      'sub': 'Brand-new pieces with fast delivery and easy setup.',
+      'page': '',
+    },
+  ];
   final List<RecentOrderModel> recentOrderModel = [
     RecentOrderModel(
       id: 'ORD-2024-001',
