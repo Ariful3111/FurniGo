@@ -36,7 +36,6 @@ import 'package:zb_dezign/features/profile/views/profile_views.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_request_view.dart';
 import 'package:zb_dezign/features/rental/bindings/rental_bindings.dart';
-import 'package:zb_dezign/features/rental/views/rental_pending_view.dart';
 import 'package:zb_dezign/features/rental/views/rental_view.dart';
 import 'package:zb_dezign/features/sell/bindings/sell_bindings.dart';
 import 'package:zb_dezign/features/sell/views/sell_details.dart';
@@ -105,11 +104,11 @@ final List<GetPage> appRoutes = [
     page: () => EmailVerificationView(),
     binding: AuthBindings(),
   ),
-  GetPage(
-    name: AppRoutes.rentalPendingView,
-    page: () => RentalPendingView(),
-    binding: RentalBindings(),
-  ),
+  // GetPage(
+  //   name: AppRoutes.rentalDetailsView,
+  //   page: () => RentalDetailsView(),
+  //   binding: RentalDetailsBindings(),
+  // ),
   GetPage(
     name: AppRoutes.dashboardView,
     page: () => DashboardView(),

@@ -1,24 +1,49 @@
 {
   "data": [
     {
-      "id": 1,
-      "name": "Sofa"
-    },
-    {
-      "id": 2,
-      "name": "Chair"
-    },
-    {
       "id": 3,
-      "name": "Bed"
-    },
-    {
-      "id": 4,
-      "name": "Coffee Table"
-    },
-    {
-      "id": 5,
-      "name": "Lamp"
+      "uuid": "RNT-2026-16799",
+      "property_type": "Residential",
+      "start_date": "2024-12-01",
+      "end_date": "2025-03-01",
+      "status": "submitted",
+      "shipment_status": null,
+      "payment_status": null,
+      "quotation_id": null,
+      "quotation_status": null,
+      "installments": []
     }
-  ]
+  ],
+  "links": {
+    "first": "https://jbdesign.sepiabd.com/api/rental-requests?page=1",
+    "last": "https://jbdesign.sepiabd.com/api/rental-requests?page=1",
+    "prev": null,
+    "next": null
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "active": false
+      },
+      {
+        "url": "https://jbdesign.sepiabd.com/api/rental-requests?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "active": false
+      }
+    ],
+    "path": "https://jbdesign.sepiabd.com/api/rental-requests",
+    "per_page": 15,
+    "to": 1,
+    "total": 1
+  }
 }

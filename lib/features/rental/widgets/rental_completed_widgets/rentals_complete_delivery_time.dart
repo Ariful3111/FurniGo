@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/other_field.dart';
-import 'package:zb_dezign/features/rental/controller/rentals_complete_controller.dart';
+import 'package:zb_dezign/features/rental/controllers/rentals_complete_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
