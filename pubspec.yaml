@@ -56,6 +56,7 @@ dependencies:
   fl_chart: ^1.2.0
   image_picker: ^1.2.1
   cached_network_image: ^3.4.1
+  carousel_slider: ^5.1.2
   
 dev_dependencies:
   flutter_test:

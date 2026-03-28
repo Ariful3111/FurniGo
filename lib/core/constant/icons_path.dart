@@ -1,6 +1,7 @@
 class IconsPath {
   static const String header = 'assets/icons/header.png';
   static const String onboardingBack = 'assets/icons/onboarding_back.png';
+  static const String onboardingForward = 'assets/icons/onboarding_forward.png';
   static const String google = 'assets/icons/google.png';
   static const String apple = 'assets/icons/apple.png';
   static const String gmail = 'assets/icons/gmail.png';
@@ -114,4 +115,6 @@ class IconsPath {
   static const String bank = 'assets/icons/bank.png';
   static const String image = 'assets/icons/image.png';
   static const String plus = 'assets/icons/plus.png';
+  static const String location = 'assets/icons/location.png';
+  static const String navigation = 'assets/icons/navigation.png';
 }

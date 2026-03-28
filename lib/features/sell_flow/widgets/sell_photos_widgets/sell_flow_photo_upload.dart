@@ -50,7 +50,7 @@ class SellFlowPhotoUpload extends GetWidget<SellFlowPhotosController> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 10.w,
                       mainAxisSpacing: 10.h,
-                      childAspectRatio: 1.2,
+                      childAspectRatio: 1.0,
                     ),
                     itemBuilder: (context, index) {
                       return Obx(

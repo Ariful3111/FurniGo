@@ -29,6 +29,8 @@ import 'package:zb_dezign/features/notification/bindings/notification_bindings.d
 import 'package:zb_dezign/features/notification/views/notification_view.dart';
 import 'package:zb_dezign/features/payment/bindings/payment_bindings.dart';
 import 'package:zb_dezign/features/payment/views/payment_view.dart';
+import 'package:zb_dezign/features/product_details.dart/bindings/product_details_bindings.dart';
+import 'package:zb_dezign/features/product_details.dart/views/product_details_view.dart';
 import 'package:zb_dezign/features/profile/bindings/profile_bindings.dart';
 import 'package:zb_dezign/features/profile/bindings/profile_settings_bindings.dart';
 import 'package:zb_dezign/features/profile/views/profile_setting_view.dart';
@@ -199,5 +201,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.sellFlowView,
     page: () => SellFlowViews(),
     binding: SellFlowBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.productDetailsView,
+    page: () => ProductDetailsView(),
+    binding: ProductDetailsBindings(),
   ),
 ];

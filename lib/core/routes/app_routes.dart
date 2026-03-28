@@ -29,4 +29,5 @@ class AppRoutes {
   static const String supportView = '/supportView';
   static const String paymentView = '/paymentView';
   static const String sellFlowView = '/sellFlowView';
+  static const String productDetailsView = '/productDetailsView';
 }
