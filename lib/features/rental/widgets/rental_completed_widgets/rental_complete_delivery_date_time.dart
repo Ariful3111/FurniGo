@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/utils/date_picker.dart';
-import 'package:zb_dezign/features/rental/controller/rentals_complete_controller.dart';
+import 'package:zb_dezign/features/rental/controllers/rentals_complete_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_completed_widgets/rentals_complete_delivery_time.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_date_fields.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';

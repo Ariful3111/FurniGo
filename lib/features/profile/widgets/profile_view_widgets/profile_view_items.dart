@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/home/controller/bottom_nav_controller.dart';
 import 'package:zb_dezign/features/profile/controllers/profile_options_controller.dart';
 import 'package:zb_dezign/features/profile/widgets/profile_view_widgets/theme_mode_switch_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
@@ -18,9 +20,25 @@ class ProfileViewItems extends GetWidget<ProfileOptionsController> {
         final item = controller.profileList[index];
         return GestureDetector(
           onTap: () {
+            
             if (item['route'] != null) {
               Get.toNamed(item['route']);
             }
+            if (item['title'] == 'Dashboard') {
+              Get.find<BottomNavController>().selectedIndex.value = 2;
+              Get.find<CustomDrawerController>().selectedItem.value = 0;
+            }
+            if (item['title'] == 'Credit Balance') {
+              Get.find<CustomDrawerController>().selectedItem.value = 5;
+            }
+            
+            if (item['title'] == 'My Orders') {
+              Get.find<CustomDrawerController>().selectedItem.value = 1;
+            }
+            if (item['title'] == 'Support') {
+              Get.find<CustomDrawerController>().selectedItem.value = 8;
+            }
+
           },
           child: SharedContainer(
             margin: EdgeInsets.only(

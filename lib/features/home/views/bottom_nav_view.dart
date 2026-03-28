@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/home/controller/bottom_nav_controller.dart';
+import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class BottomNavView extends GetView<BottomNavController> {
@@ -16,10 +17,7 @@ class BottomNavView extends GetView<BottomNavController> {
     return Obx(
       () => Scaffold(
         body: Stack(
-          children: [
-            // Page content
-            controller.pages[controller.selectedIndex.value],
-          ],
+          children: [controller.pages[controller.selectedIndex.value]],
         ),
         bottomNavigationBar: Stack(
           alignment: Alignment.bottomCenter,
@@ -76,7 +74,10 @@ class BottomNavView extends GetView<BottomNavController> {
             Positioned(
               bottom: 50.h,
               child: GestureDetector(
-                onTap: () => controller.selectedIndex.value = 2,
+                onTap: () {
+                  controller.selectedIndex.value = 2;
+                  Get.find<CustomDrawerController>().selectedItem.value = 0;
+                },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

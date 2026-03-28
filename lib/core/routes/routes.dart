@@ -20,6 +20,7 @@ import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_payment_view.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_view.dart';
 import 'package:zb_dezign/features/order/bindings/order_bindings.dart';
+import 'package:zb_dezign/features/order/bindings/order_details_bindings.dart';
 import 'package:zb_dezign/features/order/views/order_details_view.dart';
 import 'package:zb_dezign/features/order/views/order_view.dart';
 import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
@@ -28,6 +29,8 @@ import 'package:zb_dezign/features/notification/bindings/notification_bindings.d
 import 'package:zb_dezign/features/notification/views/notification_view.dart';
 import 'package:zb_dezign/features/payment/bindings/payment_bindings.dart';
 import 'package:zb_dezign/features/payment/views/payment_view.dart';
+import 'package:zb_dezign/features/product_details.dart/bindings/product_details_bindings.dart';
+import 'package:zb_dezign/features/product_details.dart/views/product_details_view.dart';
 import 'package:zb_dezign/features/profile/bindings/profile_bindings.dart';
 import 'package:zb_dezign/features/profile/bindings/profile_settings_bindings.dart';
 import 'package:zb_dezign/features/profile/views/profile_setting_view.dart';
@@ -35,7 +38,8 @@ import 'package:zb_dezign/features/profile/views/profile_views.dart';
 import 'package:zb_dezign/features/rent_request/bindings/rent_bindings.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_request_view.dart';
 import 'package:zb_dezign/features/rental/bindings/rental_bindings.dart';
-import 'package:zb_dezign/features/rental/views/rental_pending_view.dart';
+import 'package:zb_dezign/features/rental/bindings/rental_details_bindings.dart';
+import 'package:zb_dezign/features/rental/views/rental_details_view.dart';
 import 'package:zb_dezign/features/rental/views/rental_view.dart';
 import 'package:zb_dezign/features/sell/bindings/sell_bindings.dart';
 import 'package:zb_dezign/features/sell/views/sell_details.dart';
@@ -105,9 +109,9 @@ final List<GetPage> appRoutes = [
     binding: AuthBindings(),
   ),
   GetPage(
-    name: AppRoutes.rentalPendingView,
-    page: () => RentalPendingView(),
-    binding: RentalBindings(),
+    name: AppRoutes.rentalDetailsView,
+    page: () => RentalDetailsView(),
+    binding: RentalDetailsBindings(),
   ),
   GetPage(
     name: AppRoutes.dashboardView,
@@ -132,7 +136,7 @@ final List<GetPage> appRoutes = [
   GetPage(
     name: AppRoutes.orderDetailsView,
     page: () => OrderDetailsView(),
-    binding: DashboardBindings(),
+    binding: OrderDetailsBindings(),
   ),
   GetPage(
     name: AppRoutes.notificationView,
@@ -198,5 +202,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.sellFlowView,
     page: () => SellFlowViews(),
     binding: SellFlowBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.productDetailsView,
+    page: () => ProductDetailsView(),
+    binding: ProductDetailsBindings(),
   ),
 ];

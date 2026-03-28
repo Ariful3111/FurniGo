@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/order/models/orders_model.dart';
+import 'package:zb_dezign/shared/extensions/formatters/date_formatter.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_timeline/custom_payment_timeline.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class OrderStatus extends StatelessWidget {
-  const OrderStatus({super.key});
+  final OrderData order;
+  const OrderStatus({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> items = [
-      {'title': 'Order Shipped', 'date': 'Today, 9:41 AM', 'active': true},
-      {'title': 'Order Confirm', 'date': 'Nov 10, 2023', 'active': false},
-    ];
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       radius: 20.r,
@@ -29,51 +28,64 @@ class OrderStatus extends StatelessWidget {
             color: isDark ? AppColors.whiteColor : AppColors.greyColor,
           ),
           SizedBox(height: 8.h),
-          ...List.generate(items.length, (index) {
-            final firstIndex = index == 0;
-            return SizedBox(
-              height: 80.h,
-              child: CustomPaymentTimeline(
-                isFirst: firstIndex ? true :false,
-                indicatorXY: 0.1,
-                endChild: Padding(
-                  padding: EdgeInsets.only(left: 12.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomPrimaryText(
-                        text: items[index]['title'],
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: items[index]["active"] == true
-                            ? isDark
-                                  ? AppColors.whiteColor
-                                  : AppColors.darkTextColor
-                            : isDark
-                            ? AppColors.darkPrimaryTextColor
-                            : Color(0xFF6A6A6A),
-                      ),
-                      SizedBox(height: 4.h),
-                      CustomPrimaryText(
-                        text: items[index]['date'],
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: items[index]['active'] == true
-                            ? isDark
-                                  ? AppColors.primaryBorderColor
-                                  : AppColors.greyColor
-                            : isDark
-                            ? Color(0xFF989898)
-                            : AppColors.greyColor,
-                      ),
-                    ],
+          if (order.statusHistories?.isEmpty ?? true)
+            CustomPrimaryText(
+              text: 'No status updates available',
+              fontSize: 12.sp,
+              color: isDark
+                  ? AppColors.darkPrimaryTextColor
+                  : AppColors.greyColor,
+            )
+          else
+            ...List.generate(order.statusHistories?.length ?? 0, (index) {
+              final firstIndex = index == 0;
+              final history = order.statusHistories![index];
+
+              return SizedBox(
+                height: 80.h,
+                child: CustomPaymentTimeline(
+                  isFirst: firstIndex ? true : false,
+                  indicatorXY: 0.1,
+                  endChild: Padding(
+                    padding: EdgeInsets.only(left: 12.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomPrimaryText(
+                          text: history.statusName ?? 'Unknown Status',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: firstIndex
+                              ? isDark
+                                    ? AppColors.whiteColor
+                                    : AppColors.darkTextColor
+                              : isDark
+                              ? AppColors.darkPrimaryTextColor
+                              : Color(0xFF6A6A6A),
+                        ),
+                        SizedBox(height: 4.h),
+                        CustomPrimaryText(
+                          text:
+                              history.updatedAt?.toFormattedDateTime() ??
+                              'Unknown date',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.sp,
+                          color: firstIndex
+                              ? isDark
+                                    ? AppColors.primaryBorderColor
+                                    : AppColors.greyColor
+                              : isDark
+                              ? Color(0xFF989898)
+                              : AppColors.greyColor,
+                        ),
+                      ],
+                    ),
                   ),
+                  isCurrentStatus: firstIndex,
+                  isLast: (order.statusHistories?.length ?? 0) - 1 == index,
                 ),
-                isCurrentStatus: items[index]["active"] == true,
-                isLast: items.length-1==index? true: false,
-              ),
-            );
-          }),
+              );
+            }),
         ],
       ),
     );

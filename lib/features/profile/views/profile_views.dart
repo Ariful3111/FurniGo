@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/auth/controller/logout_controller.dart';
 import 'package:zb_dezign/features/profile/controllers/profile_controller.dart';
 import 'package:zb_dezign/features/profile/widgets/profile_view_widgets/profile_user_image.dart';
 import 'package:zb_dezign/features/profile/widgets/profile_view_widgets/profile_user_info.dart';
@@ -35,14 +36,19 @@ class ProfileViews extends GetView<ProfileController> {
                   SizedBox(height: 20.h),
                   ProfileViewItems(),
                   SizedBox(height: 20.h),
-                  CustomPrimaryButton(
-                    backgroundColor: AppColors.secondaryColor,
-                    text: 'Logout',
-                    onPressed: () {},
-                    height: 52.h,
-                    fontSize: 16.sp,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
+                  Get.find<LogoutController>().isLoading.value
+                      ? ButtonLoading()
+                      : CustomPrimaryButton(
+                          backgroundColor: AppColors.secondaryColor,
+                          text: 'Logout',
+                          onPressed: () async {
+                            await Get.find<LogoutController>().logout();
+                          },
+                          height: 52.h,
+                          fontSize: 16.sp,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                  SizedBox(height: 20.h),
                 ],
               );
       }),

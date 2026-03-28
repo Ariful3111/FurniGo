@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rental/controller/rentals_complete_controller.dart';
+import 'package:zb_dezign/features/rental/controllers/rentals_complete_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_completed_widgets/rental_complete_delivery_date_time.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_completed_widgets/rentals_complete_delivery_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';

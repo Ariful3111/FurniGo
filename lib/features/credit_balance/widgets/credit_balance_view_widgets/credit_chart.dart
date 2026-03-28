@@ -112,7 +112,7 @@ class CreditChart extends StatelessWidget {
                         width: 1.2,
                         color: entry.key == data.length - 1
                             ? const Color(0xFF2DADE2)
-                            : const Color(0xFFBABABA),
+                            : AppColors.darkPrimaryTextColor,
                       ),
                     ),
                   ],

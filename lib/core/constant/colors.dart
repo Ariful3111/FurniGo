@@ -71,9 +71,7 @@ class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0xFF6E3FF3).withValues(alpha: 0.2),
       whiteColor.withValues(alpha: 0.2),
-      whiteColor,
       whiteColor,
       whiteColor,
       whiteColor,
@@ -83,7 +81,6 @@ class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0xFF3500CC).withValues(alpha: 0.2),
       darkColor.withValues(alpha: 0.2),
       darkColor,
       darkColor,

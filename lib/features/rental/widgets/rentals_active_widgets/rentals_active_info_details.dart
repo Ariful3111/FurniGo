@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rental/controller/rental_active_controller.dart';
-import 'package:zb_dezign/features/rental/model/rental_model.dart';
+import 'package:zb_dezign/features/rental/controllers/rental_details_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_info_payment.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
@@ -11,13 +10,17 @@ import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class RentalsActiveInfoDetails extends GetWidget<RentalActiveController> {
+class RentalsActiveInfoDetails extends GetWidget<RentalDetailsController> {
   const RentalsActiveInfoDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final RentalModel rentalModel = Get.arguments as RentalModel;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final rentalDetails = controller.rentalDetails.value;
+
+    final rentalTerm = rentalDetails?.rentalTerm;
+    final discountPercent = rentalTerm?.discountPercent ?? 0;
+
     return SharedContainer(
       radius: 12.r,
       padding: EdgeInsets.all(20.r),
@@ -39,7 +42,7 @@ class RentalsActiveInfoDetails extends GetWidget<RentalActiveController> {
                   text(text: 'Term', isDark: isDark),
                   SizedBox(height: 4.h),
                   CustomPrimaryText(
-                    text: '180 days',
+                    text: '${rentalTerm?.days ?? 0} days',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     color: isDark ? AppColors.whiteColor : AppColors.labelColor,
@@ -52,10 +55,12 @@ class RentalsActiveInfoDetails extends GetWidget<RentalActiveController> {
                   text(text: 'Discount applied', isDark: isDark),
                   SizedBox(height: 4.h),
                   CustomPrimaryText(
-                    text: '16%',
+                    text: '$discountPercent%',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
-                    color: isDark ? AppColors.whiteColor : Color(0xFF00A63E),
+                    color: isDark
+                        ? AppColors.whiteColor
+                        : const Color(0xFF00A63E),
                   ),
                 ],
               ),
@@ -84,18 +89,16 @@ class RentalsActiveInfoDetails extends GetWidget<RentalActiveController> {
                   text(text: 'Status', isDark: isDark),
                   SizedBox(height: 4.h),
                   CustomTableStatus(
-                    status: controller.isInstallment
-                        ? rentalModel.status
-                        : '2nd installment: Due',
+                    status: rentalDetails?.status?.capitalizeFirst ?? 'Pending',
                   ),
                 ],
               ),
             ],
           ),
           SizedBox(height: 20.h),
-          CustomDivider(),
+          const CustomDivider(),
           SizedBox(height: 20.h),
-          RentalsActiveInfoPayment(),
+          const RentalsActiveInfoPayment(),
         ],
       ),
     );

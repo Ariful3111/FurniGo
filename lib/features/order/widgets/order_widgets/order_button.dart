@@ -4,16 +4,18 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
+import 'package:zb_dezign/features/order/models/orders_model.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
 
 class OrderButton extends StatelessWidget {
-  const OrderButton({super.key});
+  final OrderData order;
+  const OrderButton({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal:  16.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -23,15 +25,20 @@ class OrderButton extends StatelessWidget {
             onPressed: () {},
             isDark: isDark,
           ),
-          SizedBox(width: 12.w),
-          button(
-            text: 'View Details',
-            icon: IconsPath.view,
-            onPressed: () {
-              Get.toNamed(AppRoutes.orderDetailsView);
-            },
-            isDark: isDark,
-          ),
+          if (Get.currentRoute != AppRoutes.orderDetailsView) ...[
+            SizedBox(width: 12.w),
+            button(
+              text: 'View Details',
+              icon: IconsPath.view,
+              onPressed: () {
+                Get.toNamed(
+                  AppRoutes.orderDetailsView,
+                  arguments: order.id.toString(),
+                );
+              },
+              isDark: isDark,
+            ),
+          ],
         ],
       ),
     );
@@ -49,9 +56,7 @@ class OrderButton extends StatelessWidget {
       onPressed: onPressed,
       border: Border.all(
         width: 1.r,
-        color: isDark
-            ? AppColors.darkBorderColor
-            : AppColors.buttonBorderColor,
+        color: isDark ? AppColors.darkBorderColor : AppColors.buttonBorderColor,
       ),
       backgroundColor: isDark ? AppColors.darkColor : AppColors.whiteColor,
       textColor: isDark ? AppColors.whiteColor : AppColors.labelColor,
