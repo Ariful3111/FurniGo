@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/rental/controller/rental_pending_controller.dart';
+import 'package:zb_dezign/features/rental/controllers/rental_pending_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
@@ -23,7 +23,7 @@ class PendingWidgets extends GetWidget<RentalPendingController> {
             children: [
               GestureDetector(
                 onTap: () {
-                  controller.isOpenList[index] = !controller.isOpenList[index];
+                  controller.toggleOpen(index);
                 },
                 child: SharedContainer(
                   padding: EdgeInsets.all(20.r),
@@ -37,19 +37,17 @@ class PendingWidgets extends GetWidget<RentalPendingController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomPrimaryText(
-                                text: item['title'],
+                                text: item['title'] ?? '',
                                 fontWeight: FontWeight.w600,
                                 color: isDark
                                     ? AppColors.whiteColor
                                     : AppColors.darkColor,
                               ),
-                              if (item['title'] == 'Appliances' ||
-                                  item['title'] == 'Furniture')
+                              if (item['subTitle'] != null)
                                 SizedBox(height: 12.h),
-                              if (item['title'] == 'Appliances' ||
-                                  item['title'] == 'Furniture')
+                              if (item['subTitle'] != null)
                                 CustomPrimaryText(
-                                  text: item['subTitle'],
+                                  text: item['subTitle'] ?? '',
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.greyTextColor,

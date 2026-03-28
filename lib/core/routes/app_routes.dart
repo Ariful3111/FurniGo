@@ -10,7 +10,7 @@ class AppRoutes {
   static const String otpView = '/otpView';
   static const String newPasswordView = '/newPasswordView';
   static const String emailVerificationView = '/emailVerificationView';
-  static const String rentalPendingView = '/rentalPendingView';
+  static const String rentalDetailsView = '/rentalDetailsView';
   static const String dashboardView = '/dashboardView';
   static const String bottomNav = '/bottomNav';
   static const String dashboardPaymentView = '/dashboardPaymentView';

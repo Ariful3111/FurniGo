@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rental/controller/rental_active_controller.dart';
-import 'package:zb_dezign/features/rental/model/rental_model.dart';
+import 'package:zb_dezign/features/rental/controllers/rental_details_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_completed_widgets/rental_complete_download_button.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_installment.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentalsActiveInfoPayment extends GetWidget<RentalActiveController> {
+class RentalsActiveInfoPayment extends GetWidget<RentalDetailsController> {
   const RentalsActiveInfoPayment({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final RentalModel rentalModel = Get.arguments as RentalModel;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final rentalDetails = controller.rentalDetails.value;
+
+    final rentalTerms = rentalDetails?.rentalTerms;
+    final paymentFrequency = rentalTerms?.paymentFrequency ?? 'monthly';
+    final isInstallment = paymentFrequency.toLowerCase() == 'installments';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -26,7 +29,7 @@ class RentalsActiveInfoPayment extends GetWidget<RentalActiveController> {
           color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
         ),
         SizedBox(height: 16.h),
-        controller.isInstallment
+        isInstallment
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -64,8 +67,8 @@ class RentalsActiveInfoPayment extends GetWidget<RentalActiveController> {
               )
             : RentalsActiveInstallment(),
         SizedBox(height: 16.h),
-        rentalModel.status == 'Active'
-            ? controller.isInstallment
+        rentalDetails?.status?.capitalizeFirst == 'Active'
+            ? isInstallment
                   ? updatePayment()
                   : Row(
                       children: [
@@ -76,14 +79,23 @@ class RentalsActiveInfoPayment extends GetWidget<RentalActiveController> {
                     )
             : RentalCompleteDownloadButton(),
         SizedBox(height: 20.h),
-        if (rentalModel.status == 'Active')
+        if (rentalDetails?.status?.capitalizeFirst == 'Active')
           CustomPrimaryButton(
             height: 40.h,
-            text: controller.isInstallment ? 'Pay Now' : 'Pay Early',
+            text: isInstallment ? 'Pay Now' : 'Pay Early',
             onPressed: () {},
             fontSize: 14.sp,
           ),
       ],
+    );
+  }
+
+  Widget text({required String text, required bool isDark}) {
+    return CustomPrimaryText(
+      text: text,
+      fontSize: 12.sp,
+      color: isDark ? AppColors.primaryBorderColor : AppColors.greyTextColor,
+      fontWeight: FontWeight.w400,
     );
   }
 
