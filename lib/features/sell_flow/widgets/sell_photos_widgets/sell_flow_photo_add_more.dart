@@ -67,7 +67,7 @@ class SellFlowPhotoAddMore extends GetWidget<SellFlowPhotosController> {
             CustomSecondaryButton(
               height: 82.h,
               text: "Add More Photo",
-              onPressed: () => controller.pickAdditionalPhoto(context),
+              onPressed: () => controller.pickAdditionalPhoto(context: context),
               icon: IconsPath.plus,
               radius: 12.r,
             ),

@@ -47,7 +47,7 @@ class SellFlowPhotosController extends GetxController {
     }
   }
 
-  void pickAdditionalPhoto(context) async {
+  void pickAdditionalPhoto({required BuildContext context}) async {
     final Rxn<XFile> temp = Rxn<XFile>();
     final image = await ImageManager.sendImage(
       picker: picker,
@@ -64,7 +64,7 @@ class SellFlowPhotosController extends GetxController {
     additionalPhotos.removeAt(index);
   }
 
-  Future<void> pickReceiptImage(context) async {
+  Future<void> pickReceiptImage({required BuildContext context}) async {
     final Rxn<XFile> temp = Rxn<XFile>();
     final image = await ImageManager.sendImage(
       picker: picker,

@@ -76,7 +76,7 @@ class PurchaseReceiptMoreImage extends GetWidget<SellFlowPhotosController> {
               text: "Add More Receipt",
               icon: IconsPath.plus,
               radius: 12.r,
-              onPressed: () => controller.pickReceiptImage(context),
+              onPressed: () => controller.pickReceiptImage(context: context),
             ),
           ),
         ],
