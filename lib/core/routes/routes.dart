@@ -20,6 +20,7 @@ import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_payment_view.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_view.dart';
 import 'package:zb_dezign/features/order/bindings/order_bindings.dart';
+import 'package:zb_dezign/features/order/bindings/order_details_bindings.dart';
 import 'package:zb_dezign/features/order/views/order_details_view.dart';
 import 'package:zb_dezign/features/order/views/order_view.dart';
 import 'package:zb_dezign/features/home/bindings/home_bindings.dart';
@@ -132,7 +133,7 @@ final List<GetPage> appRoutes = [
   GetPage(
     name: AppRoutes.orderDetailsView,
     page: () => OrderDetailsView(),
-    binding: DashboardBindings(),
+    binding: OrderDetailsBindings(),
   ),
   GetPage(
     name: AppRoutes.notificationView,
