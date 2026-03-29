@@ -35,11 +35,16 @@ class FirebaseGoogleAuthService {
       final User? user = userCredential.user;
 
       if (user != null) {
+        // Get the Firebase ID token (not the Google OAuth token)
+        final idToken = await user.getIdToken();
+
         final userInfo = GoogleUserInfoModel(
           name: user.displayName ?? googleUser.displayName ?? '',
           email: user.email ?? googleUser.email,
           avatarUrl: user.photoURL ?? googleUser.photoUrl ?? '',
-          idToken: googleAuth.idToken ?? '',
+          idToken:
+              idToken ??
+              '', // Use Firebase ID token instead of Google OAuth token
           uid: user.uid,
         );
 
@@ -65,5 +70,14 @@ class FirebaseGoogleAuthService {
     } catch (e) {
       debugPrint('Error signing out: ${e.toString()}');
     }
+  }
+
+  // Helper method to get current user's Firebase ID token
+  static Future<String?> getCurrentUserIdToken() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      return await user.getIdToken();
+    }
+    return null;
   }
 }

@@ -38,7 +38,6 @@ class OnboardLogin extends StatelessWidget {
                     await Get.find<GoogleLoginController>().googleLogin(
                       user: user!,
                     );
-                    debugPrint("Token: ${user.idToken}");
                   },
                   icon: IconsPath.google,
                   title: 'Continue With Goggle',
