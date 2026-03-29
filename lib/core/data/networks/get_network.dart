@@ -18,10 +18,8 @@ class GetNetwork {
           response.statusCode == 201 ||
           response.statusCode == 202) {
         return Right(fromJson(jsonDecode(response.body)));
-        
       }
-      // ignore: avoid_print
-      print(response.body);
+
       try {
         return left(
           ErrorModel.fromHttp(

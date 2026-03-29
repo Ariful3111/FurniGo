@@ -44,7 +44,9 @@ class SellFlowNext extends GetWidget<SellFlowController> {
                             text: 'Estimated review time:24-48 hours',
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
-                            color:isDark? AppColors.whiteColor:AppColors.labelColor,
+                            color: isDark
+                                ? AppColors.whiteColor
+                                : AppColors.labelColor,
                           ),
                         ],
                       ),
@@ -64,7 +66,7 @@ class SellFlowNext extends GetWidget<SellFlowController> {
                   );
                   controller.currentIndex.value++;
                 } else {
-                  print('Submit form');
+                  debugPrint('Submit form');
                 }
               },
               child: Row(

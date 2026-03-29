@@ -23,7 +23,7 @@ class PendingWidgets extends GetWidget<RentalPendingController> {
             children: [
               GestureDetector(
                 onTap: () {
-                  controller.toggleOpen(index);
+                  controller.isOpenList[index] = !controller.isOpenList[index];
                 },
                 child: SharedContainer(
                   padding: EdgeInsets.all(20.r),
@@ -37,17 +37,19 @@ class PendingWidgets extends GetWidget<RentalPendingController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomPrimaryText(
-                                text: item['title'] ?? '',
+                                text: item['title'],
                                 fontWeight: FontWeight.w600,
                                 color: isDark
                                     ? AppColors.whiteColor
                                     : AppColors.darkColor,
                               ),
-                              if (item['subTitle'] != null)
+                              if (item['title'] == 'Appliances' ||
+                                  item['title'] == 'Furniture')
                                 SizedBox(height: 12.h),
-                              if (item['subTitle'] != null)
+                              if (item['title'] == 'Appliances' ||
+                                  item['title'] == 'Furniture')
                                 CustomPrimaryText(
-                                  text: item['subTitle'] ?? '',
+                                  text: item['subTitle'],
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.greyTextColor,

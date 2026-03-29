@@ -5,6 +5,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rental/controllers/rental_details_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rental_completed_widgets/rental_complete_download_button.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_installment.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -14,12 +15,6 @@ class RentalsActiveInfoPayment extends GetWidget<RentalDetailsController> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final rentalDetails = controller.rentalDetails.value;
-
-    final rentalTerms = rentalDetails?.rentalTerms;
-    final paymentFrequency = rentalTerms?.paymentFrequency ?? 'monthly';
-    final isInstallment = paymentFrequency.toLowerCase() == 'installments';
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,7 +24,8 @@ class RentalsActiveInfoPayment extends GetWidget<RentalDetailsController> {
           color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
         ),
         SizedBox(height: 16.h),
-        isInstallment
+        controller.rentalDetails.value?.deliverySetup?.isInstallationRequired ==
+                true
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -39,7 +35,13 @@ class RentalsActiveInfoPayment extends GetWidget<RentalDetailsController> {
                       text(text: 'Plan Type', isDark: isDark),
                       SizedBox(height: 4.h),
                       CustomPrimaryText(
-                        text: 'Full payment',
+                        text:
+                            controller
+                                .rentalDetails
+                                .value
+                                ?.rentalTerms
+                                ?.termType ??
+                            '',
                         fontWeight: FontWeight.w600,
                         fontSize: 16.sp,
                         color: isDark
@@ -54,7 +56,7 @@ class RentalsActiveInfoPayment extends GetWidget<RentalDetailsController> {
                       text(text: 'Paid to date', isDark: isDark),
                       SizedBox(height: 4.h),
                       CustomPrimaryText(
-                        text: '\$145.00',
+                        text: '\$ Dummy',
                         fontWeight: FontWeight.w600,
                         fontSize: 16.sp,
                         color: isDark
@@ -67,8 +69,13 @@ class RentalsActiveInfoPayment extends GetWidget<RentalDetailsController> {
               )
             : RentalsActiveInstallment(),
         SizedBox(height: 16.h),
-        rentalDetails?.status?.capitalizeFirst == 'Active'
-            ? isInstallment
+        controller.rentalDetails.value?.status?.capitalizeFirst == 'Active'
+            ? controller
+                          .rentalDetails
+                          .value
+                          ?.deliverySetup
+                          ?.isInstallationRequired ==
+                      true
                   ? updatePayment()
                   : Row(
                       children: [
@@ -79,23 +86,22 @@ class RentalsActiveInfoPayment extends GetWidget<RentalDetailsController> {
                     )
             : RentalCompleteDownloadButton(),
         SizedBox(height: 20.h),
-        if (rentalDetails?.status?.capitalizeFirst == 'Active')
+        if (controller.rentalDetails.value?.status?.capitalizeFirst == 'Active')
           CustomPrimaryButton(
             height: 40.h,
-            text: isInstallment ? 'Pay Now' : 'Pay Early',
+            text:
+                controller
+                        .rentalDetails
+                        .value
+                        ?.deliverySetup
+                        ?.isInstallationRequired ==
+                    true
+                ? 'Pay Now'
+                : 'Pay Early',
             onPressed: () {},
             fontSize: 14.sp,
           ),
       ],
-    );
-  }
-
-  Widget text({required String text, required bool isDark}) {
-    return CustomPrimaryText(
-      text: text,
-      fontSize: 12.sp,
-      color: isDark ? AppColors.primaryBorderColor : AppColors.greyTextColor,
-      fontWeight: FontWeight.w400,
     );
   }
 

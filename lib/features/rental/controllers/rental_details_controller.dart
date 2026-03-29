@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/rental/models/rental_details_model.dart';
 import 'package:zb_dezign/features/rental/repositories/rental_details_repo.dart';
@@ -17,6 +18,7 @@ class RentalDetailsController extends GetxController {
     isLoading.value = false;
     response.fold(
       (error) {
+        debugPrint('Error fetching rental details: ${error.message}');
         ErrorSnackbar.show(description: error.message);
       },
       (data) {
@@ -28,6 +30,6 @@ class RentalDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getRentalDetails(rentalRequestUuid: Get.arguments.toString());
+    getRentalDetails(rentalRequestUuid: Get.arguments);
   }
 }

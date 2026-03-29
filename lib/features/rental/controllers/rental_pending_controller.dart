@@ -1,35 +1,30 @@
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/rental/controllers/rental_details_controller.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_appliance.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_delivery.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_furniture.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_period.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_property.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_furniture.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_appliance.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_notes.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_period.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/pending_delivery.dart';
+import 'package:zb_dezign/features/rental/widgets/rentals_pending_widgets/commercial_pending/commercial_pending_branding.dart';
 
 class RentalPendingController extends GetxController {
-  final pendingWidgets = <Map<String, dynamic>>[].obs;
-  final isOpenList = <bool>[].obs;
+  final RentalDetailsController rentalDetailsController = Get.find();
+
+  late List pendingWidgets;
+  RxList<bool> isOpenList = <bool>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    _initializePendingWidgets();
-  }
 
-  void _initializePendingWidgets() {
-    final controller = Get.find<RentalDetailsController>();
-    final rentalDetails = controller.rentalDetails.value;
+    // Determine if it's residential or commercial based on property use
+    bool isResident =
+        rentalDetailsController.rentalDetails.value?.propertyUse
+            ?.toLowerCase() ==
+        'personal';
 
-    if (rentalDetails == null) {
-      pendingWidgets.value = [];
-      isOpenList.value = [];
-      return;
-    }
-
-    final isResidential =
-        rentalDetails.propertyUse?.toLowerCase() == 'personal';
-
-    pendingWidgets.value = [
+    pendingWidgets = [
       {'title': 'Property details', 'widgets': const PendingProperty()},
       {
         'title': 'Furniture',
@@ -41,26 +36,18 @@ class RentalPendingController extends GetxController {
         'widgets': const PendingAppliance(),
         'subTitle': 'Please review your request before submitting.',
       },
-      if (isResidential)
-        {'title': 'Additional Notes', 'widgets': const PendingProperty()}
-      else
-        {
-          'title': 'Branding & Customization',
-          'widgets': const PendingProperty(),
-        },
+      isResident
+          ? {'title': 'Additional Notes', 'widgets': const PendingNotes()}
+          : {
+              'title': 'Branding & Customization',
+              'widgets': const CommercialPendingBranding(),
+            },
       {'title': 'Rental Period & Budget', 'widgets': const PendingPeriod()},
       {
-        'title': isResidential ? 'Delivery & Setup' : 'Delivery Details',
+        'title': isResident ? 'Delivery & Setup' : 'Delivery Details',
         'widgets': const PendingDelivery(),
       },
     ];
-
     isOpenList.value = List.generate(pendingWidgets.length, (_) => false);
-  }
-
-  void toggleOpen(int index) {
-    if (index >= 0 && index < isOpenList.length) {
-      isOpenList[index] = !isOpenList[index];
-    }
   }
 }
