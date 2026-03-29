@@ -9,6 +9,7 @@ import 'package:zb_dezign/features/home/repositories/get_new_arrivals_repo.dart'
 import 'package:zb_dezign/features/home/repositories/get_product_type_repo.dart';
 import 'package:zb_dezign/features/home/repositories/get_products_by_type_repo.dart';
 import 'package:zb_dezign/features/home/repositories/get_rooms_repo.dart';
+import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer_controller.dart';
 
 class HomeBindings implements Bindings {
   @override
@@ -30,5 +31,6 @@ class HomeBindings implements Bindings {
       () =>
           GetProductsByTypeController(getProductsByTypeRepository: Get.find()),
     );
+    Get.lazyPut(() => CustomDrawerController());
   }
 }

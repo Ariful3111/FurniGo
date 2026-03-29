@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:zb_dezign/core/constant/networks_path.dart';
 import 'package:zb_dezign/core/data/global_models/error_model.dart';
@@ -32,6 +33,7 @@ class GetNetwork {
         return left(ErrorModel.fromUnknown());
       }
     } catch (error) {
+      debugPrint(error.toString());
       return left(error as ErrorModel);
     }
   }
