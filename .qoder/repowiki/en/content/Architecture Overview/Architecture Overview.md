@@ -2,19 +2,17 @@
 
 <cite>
 **Referenced Files in This Document**
-- [pubspec.yaml](file://pubspec.yaml)
 - [main.dart](file://lib/main.dart)
+- [pubspec.yaml](file://pubspec.yaml)
 - [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
 - [app_routes.dart](file://lib/core/routes/app_routes.dart)
 - [routes.dart](file://lib/core/routes/routes.dart)
 - [app_theme.dart](file://lib/core/theme/app_theme.dart)
 - [theme_controller.dart](file://lib/core/theme/theme_controller.dart)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-- [get_network.dart](file://lib/core/data/networks/get_network.dart)
-- [login_repo.dart](file://lib/features/auth/repositories/login_repo.dart)
-- [signin_controller.dart](file://lib/features/auth/controller/signin_controller.dart)
-- [error_model.dart](file://lib/core/data/global_models/error_model.dart)
-- [colors.dart](file://lib/core/constant/colors.dart)
+- [onboard_bindings.dart](file://lib/features/auth/bindings/onboard_bindings.dart)
+- [onboarding_controller.dart](file://lib/features/auth/controller/onboarding_controller.dart)
+- [onboarding_view.dart](file://lib/features/auth/views/onboarding_view.dart)
+- [home_bindings.dart](file://lib/features/home/bindings/home_bindings.dart)
 </cite>
 
 ## Table of Contents
@@ -27,13 +25,18 @@
 7. [Performance Considerations](#performance-considerations)
 8. [Troubleshooting Guide](#troubleshooting-guide)
 9. [Conclusion](#conclusion)
-10. [Appendices](#appendices)
 
 ## Introduction
-This document presents the architecture of ZB-DEZINE’s Flutter application. The system follows a modular MVVM architecture with GetX for reactive state management, dependency injection via GetX, and a repository pattern for data access. It includes a centralized dependency injection setup, a theme controller with persistent storage, a typed network layer returning Either-based results, and a routing system that adapts based on authentication state. Cross-cutting concerns such as error handling, caching strategies, and performance are addressed alongside technology stack and compatibility details.
+This document describes the ZB-DEZINE system architecture with a focus on MVVM pattern, GetX state management, modular feature organization, and dependency injection. The application follows layered architecture:
+- Presentation Layer: Views and controllers (MVVM)
+- Business Logic Layer: Controllers and Services
+- Data Access Layer: Repositories and Network clients
+- Shared Utilities: Constants, extensions, and reusable widgets
+
+Cross-cutting concerns include state management via GetX, routing via GetPageRoute, theming, and data persistence through GetStorage.
 
 ## Project Structure
-The project is organized into feature-centric modules under features/, shared widgets under shared/, and core infrastructure under core/. The application bootstraps through main.dart, initializes dependency injection, and configures routing and theming.
+The project is organized into feature-centric modules under features/, shared utilities under shared/, and core infrastructure under core/. The main entry point initializes dependency injection, sets up routing, and configures theming.
 
 ```mermaid
 graph TB
@@ -41,344 +44,307 @@ subgraph "Entry Point"
 M["lib/main.dart"]
 end
 subgraph "Core"
-DI["lib/core/di/dependency_injection.dart"]
-RT["lib/core/routes/app_routes.dart"]
-TH["lib/core/theme/app_theme.dart"]
-TC["lib/core/theme/theme_controller.dart"]
-LS["lib/core/data/local/storage_service.dart"]
-GN["lib/core/data/networks/get_network.dart"]
-EM["lib/core/data/global_models/error_model.dart"]
-CL["lib/core/constant/colors.dart"]
+DI["core/di/dependency_injection.dart"]
+RT["core/routes/routes.dart"]
+AR["core/routes/app_routes.dart"]
+TH["core/theme/app_theme.dart"]
+TC["core/theme/theme_controller.dart"]
 end
 subgraph "Features"
-AC["lib/features/auth/controller/signin_controller.dart"]
-AR["lib/features/auth/repositories/login_repo.dart"]
+AUTH["features/auth/*"]
+HOME["features/home/*"]
+OTHERS["features/*/..."]
+end
+subgraph "Shared"
+SHARED["shared/*"]
 end
 M --> DI
 M --> RT
 M --> TH
 M --> TC
-M --> AC
-AC --> AR
-AC --> LS
-AR --> GN
-TC --> LS
-TH --> CL
+M --> AUTH
+M --> HOME
+M --> OTHERS
+M --> SHARED
 ```
 
 **Diagram sources**
-- [main.dart:12-46](file://lib/main.dart#L12-L46)
-- [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
-- [app_theme.dart:4-23](file://lib/core/theme/app_theme.dart#L4-L23)
-- [theme_controller.dart:5-22](file://lib/core/theme/theme_controller.dart#L5-L22)
-- [storage_service.dart:3-23](file://lib/core/data/local/storage_service.dart#L3-L23)
-- [get_network.dart:8-41](file://lib/core/data/networks/get_network.dart#L8-L41)
-- [login_repo.dart:9-29](file://lib/features/auth/repositories/login_repo.dart#L9-L29)
-- [signin_controller.dart:9-52](file://lib/features/auth/controller/signin_controller.dart#L9-L52)
-- [error_model.dart:1-15](file://lib/core/data/global_models/error_model.dart#L1-L15)
-- [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
+- [main.dart](file://lib/main.dart)
+- [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+- [routes.dart](file://lib/core/routes/routes.dart)
+- [app_routes.dart](file://lib/core/routes/app_routes.dart)
+- [app_theme.dart](file://lib/core/theme/app_theme.dart)
+- [theme_controller.dart](file://lib/core/theme/theme_controller.dart)
 
 **Section sources**
-- [main.dart:12-46](file://lib/main.dart#L12-L46)
-- [pubspec.yaml:30-60](file://pubspec.yaml#L30-L60)
+- [main.dart](file://lib/main.dart)
+- [pubspec.yaml](file://pubspec.yaml)
 
 ## Core Components
-- Dependency Injection: Centralized initialization of storage, theme service, theme controller, and network clients using GetX.
-- Routing: Named routes defined centrally and resolved at runtime based on authentication state.
-- Theming: Material 3 themes with a reactive ThemeController managing light/dark mode persisted in storage.
-- Data Access: Network layer abstracts HTTP GET requests and returns typed results using Either for error handling.
-- Authentication Flow: Login controller orchestrates form validation, repository execution, storage persistence, and navigation.
+- Dependency Injection: Centralized initialization of storage, theme services, and network clients using Get.put and lazy loading via Get.lazyPut.
+- Routing: Named routes defined centrally and mapped to pages with bindings for feature-specific controllers.
+- Theming: Static theme definitions with a reactive ThemeController managing theme mode and persistence.
+- MVVM Pattern: Views extend GetView<T>, controllers extend GetxController, enabling reactive UI updates.
 
 **Section sources**
-- [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
-- [app_theme.dart:4-23](file://lib/core/theme/app_theme.dart#L4-L23)
-- [theme_controller.dart:5-22](file://lib/core/theme/theme_controller.dart#L5-L22)
-- [get_network.dart:8-41](file://lib/core/data/networks/get_network.dart#L8-L41)
-- [signin_controller.dart:9-52](file://lib/features/auth/controller/signin_controller.dart#L9-L52)
+- [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+- [app_routes.dart](file://lib/core/routes/app_routes.dart)
+- [routes.dart](file://lib/core/routes/routes.dart)
+- [app_theme.dart](file://lib/core/theme/app_theme.dart)
+- [theme_controller.dart](file://lib/core/theme/theme_controller.dart)
 
 ## Architecture Overview
-The system employs a layered architecture:
-- Presentation Layer: Views bind to GetX controllers exposing observable state.
-- Domain Layer: Controllers encapsulate UI logic and orchestrate repositories.
-- Repository Layer: Encapsulates data operations and network calls.
-- Data Layer: Provides typed models and network utilities with robust error modeling.
+The system adheres to Clean Architecture principles with clear separation of concerns:
+- Presentation Layer: Views and controllers handle UI and user interactions.
+- Business Logic Layer: Controllers orchestrate use cases and coordinate repositories.
+- Data Access Layer: Repositories encapsulate data sources (network) and expose domain-facing APIs.
+- Shared Utilities: Constants, validators, and reusable widgets.
 
 ```mermaid
 graph TB
-subgraph "Presentation"
-V1["Auth Views<br/>features/auth/views/*"]
-V2["Feature Views<br/>features/*/views/*"]
+subgraph "Presentation Layer"
+V1["OnboardingView (GetX View)"]
+C1["OnboardingController (GetX Controller)"]
+V2["BottomNavView (GetX View)"]
+C2["HomeController (GetX Controller)"]
 end
-subgraph "Domain"
-C1["Auth Controllers<br/>features/auth/controller/*"]
-C2["Feature Controllers<br/>features/*/controller/*"]
+subgraph "Business Logic Layer"
+SVC1["Controllers (Feature Controllers)"]
 end
-subgraph "Repository"
-R1["Auth Repositories<br/>features/auth/repositories/*"]
+subgraph "Data Access Layer"
+R1["Repositories (Feature Repos)"]
+N1["Network Clients (GetNetwork, Post*)"]
 end
-subgraph "Data"
-N1["HTTP GET Utility<br/>core/data/networks/get_network.dart"]
-S1["Storage Service<br/>core/data/local/storage_service.dart"]
-E1["Error Model<br/>core/data/global_models/error_model.dart"]
+subgraph "Shared"
+T1["ThemeController (Reactive)"]
+S1["StorageService (GetStorage)"]
+U1["Constants, Validators, Widgets"]
 end
 V1 --> C1
 V2 --> C2
-C1 --> R1
+C1 --> SVC1
+C2 --> SVC1
+SVC1 --> R1
 R1 --> N1
-C1 --> S1
-C1 --> E1
+V1 -. uses .-> T1
+V2 -. uses .-> T1
+C1 -. persists .-> S1
+C2 -. persists .-> S1
+U1 -. shared .-> V1
+U1 -. shared .-> V2
 ```
 
 **Diagram sources**
-- [signin_controller.dart:9-52](file://lib/features/auth/controller/signin_controller.dart#L9-L52)
-- [login_repo.dart:9-29](file://lib/features/auth/repositories/login_repo.dart#L9-L29)
-- [get_network.dart:8-41](file://lib/core/data/networks/get_network.dart#L8-L41)
-- [storage_service.dart:3-23](file://lib/core/data/local/storage_service.dart#L3-L23)
-- [error_model.dart:1-15](file://lib/core/data/global_models/error_model.dart#L1-L15)
+- [onboarding_view.dart](file://lib/features/auth/views/onboarding_view.dart)
+- [onboarding_controller.dart](file://lib/features/auth/controller/onboarding_controller.dart)
+- [home_bindings.dart](file://lib/features/home/bindings/home_bindings.dart)
+- [theme_controller.dart](file://lib/core/theme/theme_controller.dart)
+- [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
 
 ## Detailed Component Analysis
 
-### Dependency Injection and Bootstrapping
-- Initialization: The app initializes GetStorage, registers services and controllers as singletons, and reads the stored token to decide initial route and binding.
-- Composition: Controllers receive dependencies via constructor injection, enabling testability and modularity.
+### Dependency Injection and Initialization
+- Purpose: Initialize persistent services (storage, theme, network) and resolve the initial authentication token to decide the initial route.
+- Mechanism: Get.put for singletons, GetStorage.init for secure storage, and Get.find to retrieve instances across the app lifecycle.
+- Outcome: Centralized control over service lifetime and availability.
+
+```mermaid
+sequenceDiagram
+participant Main as "main.dart"
+participant DI as "DependencyInjection"
+participant GS as "GetStorage"
+participant ST as "StorageService"
+participant TH as "ThemeService"
+participant TC as "ThemeController"
+Main->>DI : init()
+DI->>GS : init()
+DI->>Main : return token
+DI->>ST : Get.put(persistent)
+DI->>TH : Get.put(persistent)
+DI->>TC : Get.put(persistent)
+Main->>Main : runApp(MyApp(token))
+```
+
+**Diagram sources**
+- [main.dart](file://lib/main.dart)
+- [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+
+**Section sources**
+- [main.dart](file://lib/main.dart)
+- [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+
+### Routing and Navigation
+- Routes: Centralized constants define named routes; routes.dart maps each route to a page and its binding.
+- Initial Route: Decided by token presence; onboarding vs bottom navigation.
+- Bindings: Each route binds a dedicated Binding class that lazy-instantiates controllers and repositories.
 
 ```mermaid
 sequenceDiagram
 participant App as "MyApp"
 participant DI as "DependencyInjection"
-participant GS as "GetStorage"
-participant SS as "StorageService"
-participant TS as "ThemeService"
-participant TC as "ThemeController"
+participant RT as "routes.dart"
+participant AR as "app_routes.dart"
+participant OB as "OnboardBindings"
+participant HB as "HomeBindings"
 App->>DI : init()
-DI->>GS : init()
-DI->>SS : put(permanent)
-DI->>TS : put(permanent)
-DI->>TC : put(permanent)
 DI-->>App : token
-App->>App : decide initialRoute/initialBinding
+App->>OB : initialBinding (if empty token)
+App->>HB : initialBinding (else)
+App->>RT : getPages
+RT-->>App : List<GetPage>
+App->>AR : initialRoute
+AR-->>App : onboardingView or bottomNav
 ```
 
 **Diagram sources**
-- [main.dart:12-19](file://lib/main.dart#L12-L19)
-- [dependency_injection.dart:12-25](file://lib/core/di/dependency_injection.dart#L12-L25)
+- [main.dart](file://lib/main.dart)
+- [routes.dart](file://lib/core/routes/routes.dart)
+- [app_routes.dart](file://lib/core/routes/app_routes.dart)
+- [onboard_bindings.dart](file://lib/features/auth/bindings/onboard_bindings.dart)
+- [home_bindings.dart](file://lib/features/home/bindings/home_bindings.dart)
 
 **Section sources**
-- [main.dart:12-19](file://lib/main.dart#L12-L19)
-- [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
+- [app_routes.dart](file://lib/core/routes/app_routes.dart)
+- [routes.dart](file://lib/core/routes/routes.dart)
+- [onboard_bindings.dart](file://lib/features/auth/bindings/onboard_bindings.dart)
+- [home_bindings.dart](file://lib/features/home/bindings/home_bindings.dart)
 
-### Routing System
-- Routes: Centralized constants define named routes for onboarding, authentication, feature screens, and bottom navigation.
-- Navigation: Initial route and binding selection depends on whether a token exists.
-
-```mermaid
-flowchart TD
-Start(["App Start"]) --> CheckToken["Read Token From Storage"]
-CheckToken --> HasToken{"Token Present?"}
-HasToken --> |Yes| SetHome["Set HomeBindings + bottomNav"]
-HasToken --> |No| SetOnboard["Set OnboardBindings + onboardingView"]
-SetHome --> RunApp["Run GetMaterialApp"]
-SetOnboard --> RunApp
-```
-
-**Diagram sources**
-- [main.dart:36-40](file://lib/main.dart#L36-L40)
-- [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
-
-**Section sources**
-- [main.dart:36-40](file://lib/main.dart#L36-L40)
-- [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
-
-### Theme Management
-- Reactive ThemeController: Observes dark/light preference and persists it via ThemeService.
-- AppTheme: Defines Material 3 light and dark themes using shared color constants.
+### Theming and State Management
+- ThemeController: Reactive controller holding isDarkMode and delegating persistence to ThemeService.
+- AppTheme: Static theme definitions for light/dark modes.
+- Integration: MyApp reads ThemeController.currentTheme to switch themes reactively.
 
 ```mermaid
 classDiagram
 class ThemeController {
 +RxBool isDarkMode
 +changeTheme(value)
-+currentTheme() ThemeMode
++currentTheme ThemeMode
 }
 class ThemeService {
-+getIsDark() bool
 +saveThemeToStorage(value)
++getIsDark() bool
 }
 class AppTheme {
 +lightTheme ThemeData
 +darkTheme ThemeData
 }
 ThemeController --> ThemeService : "uses"
-MyApp --> ThemeController : "observes"
-AppTheme --> AppColors : "uses"
 ```
 
 **Diagram sources**
-- [theme_controller.dart:5-22](file://lib/core/theme/theme_controller.dart#L5-L22)
-- [app_theme.dart:4-23](file://lib/core/theme/app_theme.dart#L4-L23)
-- [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
+- [theme_controller.dart](file://lib/core/theme/theme_controller.dart)
+- [app_theme.dart](file://lib/core/theme/app_theme.dart)
 
 **Section sources**
-- [theme_controller.dart:5-22](file://lib/core/theme/theme_controller.dart#L5-L22)
-- [app_theme.dart:4-23](file://lib/core/theme/app_theme.dart#L4-L23)
-- [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
+- [theme_controller.dart](file://lib/core/theme/theme_controller.dart)
+- [app_theme.dart](file://lib/core/theme/app_theme.dart)
 
-### Authentication Flow (MVVM with GetX)
-- Controller: Validates form, triggers repository execution, updates loading state, handles Either result, stores token, navigates.
-- Repository: Builds request payload, invokes network client, maps JSON to model.
-- Network: Performs HTTP GET and returns typed Either with error model.
+### MVVM Pattern in Authentication Feature
+- View: OnboardingView extends GetView<OnboardingController>.
+- Controller: OnboardingController extends GetxController, manages UI state and animations.
+- Binding: OnboardBindings lazy-loads OnboardingController for the onboarding route.
 
 ```mermaid
-sequenceDiagram
-participant View as "Signin View"
-participant Ctrl as "SigninController"
-participant Repo as "LoginRepository"
-participant Net as "PostWithResponse"
-participant Store as "StorageService"
-View->>Ctrl : userLogin(formKey)
-Ctrl->>Repo : execute(email,password)
-Repo->>Net : postData(url,headers,body,fromJson)
-Net-->>Repo : Either<ErrorModel, LoginModel>
-Repo-->>Ctrl : Either
-Ctrl->>Store : write(token)
-Ctrl-->>View : navigate to bottomNav
+classDiagram
+class OnboardingView {
++build(context) Widget
+}
+class OnboardingController {
++PageController pageController
++RxInt currentIndex
++RxDouble dragOffset
++startArrowAnimation()
++updateDrag(dx)
++endDrag(isLast)
+}
+class OnboardBindings {
++dependencies()
+}
+OnboardingView --> OnboardingController : "observes"
+OnboardBindings --> OnboardingController : "lazy-put"
 ```
 
 **Diagram sources**
-- [signin_controller.dart:17-36](file://lib/features/auth/controller/signin_controller.dart#L17-L36)
-- [login_repo.dart:14-27](file://lib/features/auth/repositories/login_repo.dart#L14-L27)
-- [get_network.dart:10-20](file://lib/core/data/networks/get_network.dart#L10-L20)
-- [storage_service.dart:11-13](file://lib/core/data/local/storage_service.dart#L11-L13)
+- [onboarding_view.dart](file://lib/features/auth/views/onboarding_view.dart)
+- [onboarding_controller.dart](file://lib/features/auth/controller/onboarding_controller.dart)
+- [onboard_bindings.dart](file://lib/features/auth/bindings/onboard_bindings.dart)
 
 **Section sources**
-- [signin_controller.dart:9-52](file://lib/features/auth/controller/signin_controller.dart#L9-L52)
-- [login_repo.dart:9-29](file://lib/features/auth/repositories/login_repo.dart#L9-L29)
-- [get_network.dart:8-41](file://lib/core/data/networks/get_network.dart#L8-L41)
-- [storage_service.dart:3-23](file://lib/core/data/local/storage_service.dart#L3-L23)
+- [onboarding_view.dart](file://lib/features/auth/views/onboarding_view.dart)
+- [onboarding_controller.dart](file://lib/features/auth/controller/onboarding_controller.dart)
+- [onboard_bindings.dart](file://lib/features/auth/bindings/onboard_bindings.dart)
 
-### Error Handling and Data Models
-- ErrorModel: Standardized error representation with HTTP-derived and unknown-error factories.
-- Network Utilities: Return Either<ErrorModel, T> to propagate failures and typed successes.
+### Modular Feature Organization and Repository Pattern
+- Feature Modules: Each feature organizes its own bindings, controllers, views, models, and repositories.
+- Repository Pattern: Controllers depend on repositories, which depend on network clients. This decouples UI from data sources.
+- Example: HomeBindings demonstrates lazy injection of repositories and controllers, each resolving dependencies via Get.find.
 
 ```mermaid
 flowchart TD
-A["Network Call"] --> B{"HTTP 2xx?"}
-B --> |Yes| C["Decode JSON -> T"]
-B --> |No| D["Build ErrorModel"]
-C --> E["Right(T)"]
-D --> F["Left(ErrorModel)"]
+Start(["Feature Route Accessed"]) --> Bind["Binding.dependencies()"]
+Bind --> Repo["Get.lazyPut(Repositories)"]
+Repo --> Ctrl["Get.lazyPut(Controllers)"]
+Ctrl --> View["GetX View renders"]
+View --> Ctrl : "UI events"
+Ctrl --> Repo : "fetch/update data"
+Repo --> Net["Network Client"]
+Net --> Repo : "response"
+Repo --> Ctrl : "domain model"
+Ctrl --> View : "reactive update"
 ```
 
 **Diagram sources**
-- [get_network.dart:10-39](file://lib/core/data/networks/get_network.dart#L10-L39)
-- [error_model.dart:5-13](file://lib/core/data/global_models/error_model.dart#L5-L13)
+- [home_bindings.dart](file://lib/features/home/bindings/home_bindings.dart)
 
 **Section sources**
-- [get_network.dart:8-41](file://lib/core/data/networks/get_network.dart#L8-L41)
-- [error_model.dart:1-15](file://lib/core/data/global_models/error_model.dart#L1-L15)
+- [home_bindings.dart](file://lib/features/home/bindings/home_bindings.dart)
 
 ## Dependency Analysis
-The system relies on a focused set of Flutter and Dart packages. GetX powers state management, routing, and dependency injection. Network operations leverage http with typed JSON decoding and fpdart for functional error modeling. Storage is handled via get_storage.
+- External Libraries: The project relies on GetX for routing/state, GetStorage for persistence, and various UI packages. These are declared in pubspec.yaml.
+- Internal Coupling: Features are loosely coupled via bindings and controllers; core services (DI, routes, theme) are consumed by features but remain centralized.
+- Circular Dependencies: None observed in the analyzed files; bindings isolate controller creation and dependency resolution.
 
 ```mermaid
-graph TB
-P["pubspec.yaml"]
-G["get (^4.7.3)"]
-HS["http (^1.6.0)"]
-FS["fpdart (^1.2.0)"]
-GS["get_storage (^2.1.1)"]
-SF["flutter_screenutil (^5.9.3)"]
-GF["google_fonts (^8.0.0)"]
-P --> G
-P --> HS
-P --> FS
-P --> GS
-P --> SF
-P --> GF
+graph LR
+P["pubspec.yaml"] --> G["get"]
+P --> GS["get_storage"]
+P --> FS["firebase_*"]
+P --> UI["material, screenutil, etc."]
+M["lib/main.dart"] --> DI["core/di/dependency_injection.dart"]
+M --> RT["core/routes/routes.dart"]
+M --> TH["core/theme/app_theme.dart"]
+M --> TC["core/theme/theme_controller.dart"]
 ```
 
 **Diagram sources**
-- [pubspec.yaml:30-60](file://pubspec.yaml#L30-L60)
+- [pubspec.yaml](file://pubspec.yaml)
+- [main.dart](file://lib/main.dart)
+- [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+- [routes.dart](file://lib/core/routes/routes.dart)
+- [app_theme.dart](file://lib/core/theme/app_theme.dart)
+- [theme_controller.dart](file://lib/core/theme/theme_controller.dart)
 
 **Section sources**
-- [pubspec.yaml:21-60](file://pubspec.yaml#L21-L60)
+- [pubspec.yaml](file://pubspec.yaml)
 
 ## Performance Considerations
-- Reactive UI Updates: GetX observables minimize rebuild scope and improve responsiveness.
-- Singletons: GetX containers reduce instantiation overhead for services and controllers.
-- Network Efficiency: Centralized headers and base URL management reduce duplication and potential errors.
-- Asset and Font Loading: Material icons and custom fonts configured at the root reduce per-widget overhead.
-- Theming: Predefined ThemeData with Material 3 reduces runtime theme computation.
-
-[No sources needed since this section provides general guidance]
+- Reactive Updates: GetX’s reactive variables minimize rebuild scopes; prefer Rx fields for granular updates.
+- Lazy Loading: Use Get.lazyPut in bindings to instantiate controllers and repositories only when needed.
+- Network Efficiency: Centralize network clients and reuse instances via DI to avoid redundant allocations.
+- Persistence: Persist small flags (theme, token) via GetStorage to reduce startup overhead.
 
 ## Troubleshooting Guide
-- Authentication Failures: Inspect Either handling in the controller and repository to ensure proper error propagation and user feedback.
-- Network Errors: Verify status codes and body parsing; ensure ErrorModel construction from HTTP responses.
-- Theme Persistence: Confirm ThemeService reads/writes are invoked and ThemeController observes changes.
-- Storage Issues: Validate keys and lifecycle of StorageService singleton registration.
+- Theme Not Switching: Verify ThemeController.changeTheme is invoked and ThemeService persistence is initialized.
+- Route Not Found: Confirm the route name exists in AppRoutes and a GetPage mapping exists in routes.dart.
+- Token-Based Routing Issues: Ensure DependencyInjection.init completes and returns a non-empty token for authenticated flow.
+- Missing Dependencies: If a controller cannot resolve a dependency, check the corresponding Binding.lazyPut registration.
 
 **Section sources**
-- [signin_controller.dart:25-34](file://lib/features/auth/controller/signin_controller.dart#L25-L34)
-- [login_repo.dart:18-26](file://lib/features/auth/repositories/login_repo.dart#L18-L26)
-- [get_network.dart:25-38](file://lib/core/data/networks/get_network.dart#L25-L38)
-- [theme_controller.dart:15-18](file://lib/core/theme/theme_controller.dart#L15-L18)
-- [storage_service.dart:7-21](file://lib/core/data/local/storage_service.dart#L7-L21)
+- [theme_controller.dart](file://lib/core/theme/theme_controller.dart)
+- [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+- [app_routes.dart](file://lib/core/routes/app_routes.dart)
+- [routes.dart](file://lib/core/routes/routes.dart)
 
 ## Conclusion
-ZB-DEZINE’s architecture leverages a clean separation of concerns with GetX for reactive state management and dependency injection. The modular MVVM pattern, combined with a repository-driven data layer and centralized theming and routing, yields a scalable and maintainable foundation. Robust error modeling and persistent storage further enhance reliability. The technology stack emphasizes stability and developer productivity.
-
-[No sources needed since this section summarizes without analyzing specific files]
-
-## Appendices
-
-### System Context Diagram
-```mermaid
-graph TB
-U["User"]
-MA["MyApp (main.dart)"]
-DI["DependencyInjection"]
-RC["Routing (app_routes.dart)"]
-TH["ThemeController"]
-AT["AppTheme"]
-ST["StorageService"]
-GN["GetNetwork"]
-ER["ErrorModel"]
-AC["AuthController (example)"]
-LR["LoginRepository"]
-U --> MA
-MA --> DI
-MA --> RC
-MA --> TH
-TH --> AT
-MA --> AC
-AC --> LR
-LR --> GN
-AC --> ST
-GN --> ER
-```
-
-**Diagram sources**
-- [main.dart:12-46](file://lib/main.dart#L12-L46)
-- [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
-- [theme_controller.dart:5-22](file://lib/core/theme/theme_controller.dart#L5-L22)
-- [app_theme.dart:4-23](file://lib/core/theme/app_theme.dart#L4-L23)
-- [storage_service.dart:3-23](file://lib/core/data/local/storage_service.dart#L3-L23)
-- [get_network.dart:8-41](file://lib/core/data/networks/get_network.dart#L8-L41)
-- [error_model.dart:1-15](file://lib/core/data/global_models/error_model.dart#L1-L15)
-- [signin_controller.dart:9-52](file://lib/features/auth/controller/signin_controller.dart#L9-L52)
-- [login_repo.dart:9-29](file://lib/features/auth/repositories/login_repo.dart#L9-L29)
-
-### Technology Stack and Compatibility
-- Flutter SDK: ^3.9.0
-- GetX: ^4.7.3 (state, routing, DI)
-- HTTP: ^1.6.0 (network)
-- fpdart: ^1.2.0 (functional error modeling)
-- get_storage: ^2.1.1 (persistent storage)
-- Additional UI and utility packages present in pubspec for theming, animations, and UI components.
-
-**Section sources**
-- [pubspec.yaml:21-60](file://pubspec.yaml#L21-L60)
+ZB-DEZINE employs a clean, modular architecture with MVVM and GetX to achieve scalable UI state management, centralized dependency injection, and robust routing. The layered design separates concerns effectively, while feature-based organization promotes maintainability and team autonomy. Cross-cutting concerns like theming and persistence are handled through dedicated services and controllers, ensuring consistent behavior across the app.

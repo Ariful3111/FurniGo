@@ -5,16 +5,13 @@
 - [pubspec.yaml](file://pubspec.yaml)
 - [README.md](file://README.md)
 - [lib/main.dart](file://lib/main.dart)
-- [android/app/src/main/kotlin/com/example/zb_dezign/MainActivity.kt](file://android/app/src/main/kotlin/com/example/zb_dezign/MainActivity.kt)
+- [lib/core/di/dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+- [android/app/src/main/kotlin/zbdezign/com/au/MainActivity.kt](file://android/app/src/main/kotlin/zbdezign/com/au/MainActivity.kt)
 - [ios/Runner/AppDelegate.swift](file://ios/Runner/AppDelegate.swift)
-- [android/local.properties](file://android/local.properties)
-- [ios/Podfile](file://ios/Podfile)
-- [analysis_options.yaml](file://analysis_options.yaml)
-- [test/widget_test.dart](file://test/widget_test.dart)
-- [android/app/build.gradle.kts](file://android/app/build.gradle.kts)
-- [android/build.gradle.kts](file://android/build.gradle.kts)
-- [android/gradle.properties](file://android/gradle.properties)
-- [android/gradlew.bat](file://android/gradlew.bat)
+- [macos/Runner/AppDelegate.swift](file://macos/Runner/AppDelegate.swift)
+- [windows/flutter/generated_plugin_registrant.cc](file://windows/flutter/generated_plugin_registrant.cc)
+- [linux/CMakeLists.txt](file://linux/CMakeLists.txt)
+- [web/index.html](file://web/index.html)
 </cite>
 
 ## Table of Contents
@@ -30,260 +27,240 @@
 10. [Appendices](#appendices)
 
 ## Introduction
-This guide helps you set up and run the ZB-DEZINE Flutter project locally. It covers prerequisites, environment setup for Android Studio and VS Code, installing dependencies, running the app on emulators and physical devices, debugging and testing, and resolving common setup issues.
+This guide helps you set up the ZB-DEZINE Flutter project locally, configure development tools, and run the app across Android, iOS, Web, Windows, macOS, and Linux. It covers prerequisites, cloning, dependency installation, platform-specific setup, environment configuration, and first-run steps. The project uses Flutter SDK 3.9.0 and integrates Firebase for authentication and core services.
 
 ## Project Structure
-ZB-DEZINE is a Flutter application with platform integration for Android and iOS, plus support for desktop platforms (Linux, macOS, Windows). The project follows a modular structure under lib/, organized by features and shared/core modules. Platform-specific code resides under android/, ios/, linux/, macos/, and windows/.
+ZB-DEZINE follows a standard Flutter layout with platform-specific folders and a modular Dart codebase. Key areas:
+- lib: Dart application code, organized into core, features, and shared modules
+- android, ios, macos, windows, linux: Platform-specific native integrations
+- web: Web assets and HTML bootstrap
+- pubspec.yaml: Dependencies, assets, and Flutter metadata
 
 ```mermaid
 graph TB
-Root["Project Root"]
-Lib["lib/"]
-Features["lib/features/"]
-Core["lib/core/"]
-Shared["lib/shared/"]
-Android["android/"]
-IOS["ios/"]
-Linux["linux/"]
-MacOS["macos/"]
-Windows["windows/"]
-Root --> Lib
-Lib --> Features
-Lib --> Core
-Lib --> Shared
-Root --> Android
-Root --> IOS
-Root --> Linux
-Root --> MacOS
-Root --> Windows
+A["Root Project"] --> B["lib/"]
+A --> C["android/"]
+A --> D["ios/"]
+A --> E["web/"]
+A --> F["windows/"]
+A --> G["macos/"]
+A --> H["linux/"]
+B --> B1["core/"]
+B --> B2["features/"]
+B --> B3["shared/"]
 ```
 
 **Section sources**
-- [lib/main.dart:12-47](file://lib/main.dart#L12-L47)
+- [README.md:1-17](file://README.md#L1-L17)
+- [pubspec.yaml:1-118](file://pubspec.yaml#L1-L118)
 
 ## Core Components
-- Entry point: The app initializes Flutter binding, sets up dependency injection, and runs the app with routing and theming.
-- Routing and DI: The app uses a dependency injection module and route definitions to manage navigation and state.
-- Theming: Light and dark themes are configured and controlled via a theme controller.
+- Entry point: The app starts in lib/main.dart, initializes dependency injection, and boots the app shell.
+- Dependency Injection: Initializes storage, theme services, network clients, and reads a token from persistent storage to decide initial routes.
+- Platform Entrypoints:
+  - Android: MainActivity.kt
+  - iOS/macOS: AppDelegate.swift
+  - Windows/Linux: Generated plugin registration indicates native plugin wiring
 
-Key entry points and initialization:
-- Application bootstrap and DI initialization occur in the main entry point.
-- Theme and routing are wired through the app’s theme controller and route definitions.
+What to expect on first run:
+- Dependency injection initializes services and reads a token from storage.
+- The app conditionally sets the initial route based on whether a token exists.
 
 **Section sources**
 - [lib/main.dart:12-47](file://lib/main.dart#L12-L47)
+- [lib/core/di/dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
 
 ## Architecture Overview
-The app initializes the Flutter engine, sets up dependency injection, and boots the UI with theme-aware routing. The UI uses a screen utility for responsive layouts and a reactive state management library for UI updates.
+High-level runtime flow:
+- main.dart initializes Flutter binding, runs dependency injection, and launches MyApp.
+- MyApp configures screen utilities, theme controller, and routing based on token presence.
+- DependencyInjection wires storage, theme, and network services.
 
 ```mermaid
 sequenceDiagram
 participant OS as "Operating System"
-participant Flutter as "Flutter Engine"
-participant DI as "Dependency Injection"
+participant Main as "lib/main.dart"
+participant DI as "DependencyInjection"
 participant App as "MyApp"
-participant Routes as "App Routes"
-OS->>Flutter : "Launch app"
-Flutter->>DI : "Initialize DI"
-DI-->>Flutter : "Services registered"
-Flutter->>App : "runApp(MyApp)"
-App->>Routes : "Resolve initial route and bindings"
-Routes-->>App : "Render UI"
+OS->>Main : "Process start"
+Main->>DI : "init()"
+DI-->>Main : "token (string)"
+Main->>App : "runApp(MyApp(token))"
+App->>App : "configure theme, routes, bindings"
+App-->>OS : "UI rendered"
 ```
 
 **Diagram sources**
 - [lib/main.dart:12-47](file://lib/main.dart#L12-L47)
+- [lib/core/di/dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
 
 **Section sources**
 - [lib/main.dart:12-47](file://lib/main.dart#L12-L47)
+- [lib/core/di/dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
 
 ## Detailed Component Analysis
 
-### Prerequisites and Environment Setup
-- Flutter SDK: The project requires a specific Dart SDK version declared in pubspec.yaml.
-- Android Studio/VS Code: Install Android Studio or VS Code with Flutter/Dart extensions.
-- Android: JDK 17 compatibility is configured in Gradle; Android SDK paths are defined in local.properties.
-- iOS: Xcode and CocoaPods are required; the Podfile coordinates Flutter pods.
+### Prerequisites
+- Flutter SDK: Version constraint requires Flutter SDK 3.9.0.
+- Dart SDK: Matches Flutter’s Dart SDK requirement.
+- IDE: Recommended to use Android Studio or VS Code with Flutter/Dart plugins.
+- Platform SDKs:
+  - Android: Android SDK, Gradle wrapper configured
+  - iOS: Xcode and CocoaPods
+  - Web: No extra tooling required beyond Flutter
+  - Windows/macOS/Linux: Desktop support enabled via platform folders
 
-Verification steps:
-- Confirm Flutter SDK version alignment with the environment constraint.
-- Ensure Android Studio recognizes the Android SDK path and JDK 17.
-- Ensure Xcode and CocoaPods are installed for iOS builds.
+Install Flutter and set up your environment per official instructions, then verify with:
+- flutter doctor
 
 **Section sources**
 - [pubspec.yaml:21-23](file://pubspec.yaml#L21-L23)
-- [android/gradle.properties:1-3](file://android/gradle.properties#L1-L3)
-- [android/local.properties:1-5](file://android/local.properties#L1-L5)
-- [ios/Podfile:1-44](file://ios/Podfile#L1-L44)
 
-### Installing Dependencies
-- Install dependencies via pubspec.yaml:
-  - Run the standard Flutter dependency installation command.
-  - For iOS, run CocoaPods setup after fetching dependencies.
-- Verify:
-  - No dependency conflicts.
-  - Pods installed successfully for iOS.
+### Step-by-Step Setup
 
-**Section sources**
-- [pubspec.yaml:30-71](file://pubspec.yaml#L30-L71)
-- [ios/Podfile:26-37](file://ios/Podfile#L26-L37)
+1) Clone the repository
+- Use git clone <repository-url> and navigate into the project directory.
 
-### Running the App Locally
-- Android:
-  - Connect an Android device or start an emulator.
-  - Run the Flutter application in debug mode.
-- iOS:
-  - Connect an iOS device or start an iOS simulator.
-  - Ensure CocoaPods are installed and run the app from Xcode or Flutter CLI.
-- Desktop:
-  - Linux/macOS/Windows are supported; run with the respective Flutter desktop commands.
+2) Install dependencies
+- Run flutter pub get to fetch Dart dependencies defined in pubspec.yaml.
 
-Quick commands:
-- Flutter run (default platform)
-- flutter run -d <device-id> (select device/emulator)
-- flutter run --release (release mode)
+3) Configure platform targets
+- Android: Open android/ in Android Studio or run flutter devices to detect AVD/physical device.
+- iOS: Open ios/Runner.xcworkspace in Xcode; ensure pods are installed (flutter pub get then pod install if needed).
+- Web: Run flutter run -d chrome to launch in a browser.
+- Windows/macOS/Linux: Ensure desktop toolchain is active; run flutter devices to confirm.
+
+4) First run
+- Run flutter run from the project root to launch on the selected device/emulator.
+
+Notes:
+- The project declares Firebase dependencies and uses generated plugin registration on Windows, indicating Firebase plugins are wired during build.
 
 **Section sources**
-- [lib/main.dart:12-19](file://lib/main.dart#L12-L19)
-- [android/app/build.gradle.kts:8-44](file://android/app/build.gradle.kts#L8-L44)
-- [ios/Podfile:30-37](file://ios/Podfile#L30-L37)
+- [pubspec.yaml:61-66](file://pubspec.yaml#L61-L66)
+- [windows/flutter/generated_plugin_registrant.cc:13-20](file://windows/flutter/generated_plugin_registrant.cc#L13-L20)
 
-### Platform-Specific Configuration
+### Platform-Specific Setup
 
-#### Android
-- Application ID and SDK versions are defined in Gradle.
-- Java 17 compatibility is enforced for compilation and Kotlin options.
-- Signing config defaults to debug for quick local runs.
+- Android
+  - MainActivity.kt is the primary activity entrypoint.
+  - Ensure Android SDK and emulator/device are available.
+  - Build variants are supported via Gradle; flutter build apk or flutter build appbundle for release.
 
-Recommended checks:
-- Ensure the Android SDK path in local.properties is correct.
-- Confirm Gradle sync succeeds and no missing dependencies.
+- iOS
+  - AppDelegate.swift registers plugins and handles app lifecycle.
+  - Use Xcode workspace under ios/Runner.xcworkspace.
+  - Install pods if prompted after flutter pub get.
+
+- Web
+  - web/index.html bootstraps the Flutter web app.
+  - Run flutter run -d chrome or flutter build web for production.
+
+- Windows
+  - Generated plugin registration includes Firebase plugins.
+  - Use flutter build windows or flutter run -d windows.
+
+- macOS
+  - AppDelegate.swift manages macOS lifecycle.
+  - Use flutter build macos or flutter run -d macos.
+
+- Linux
+  - CMakeLists.txt configures the Linux desktop build.
+  - Use flutter build linux or flutter run -d linux.
 
 **Section sources**
-- [android/app/build.gradle.kts:8-44](file://android/app/build.gradle.kts#L8-L44)
-- [android/gradle.properties:1-3](file://android/gradle.properties#L1-L3)
-- [android/local.properties:1-5](file://android/local.properties#L1-L5)
-
-#### iOS
-- The Podfile integrates Flutter pods and sets up iOS targets.
-- Ensure CocoaPods is installed and run pod install from the ios/ directory.
-- The AppDelegate registers plugins during app launch.
-
-**Section sources**
-- [ios/Podfile:13-37](file://ios/Podfile#L13-L37)
+- [android/app/src/main/kotlin/zbdezign/com/au/MainActivity.kt:1-6](file://android/app/src/main/kotlin/zbdezign/com/au/MainActivity.kt#L1-L6)
 - [ios/Runner/AppDelegate.swift:1-14](file://ios/Runner/AppDelegate.swift#L1-L14)
+- [macos/Runner/AppDelegate.swift:1-14](file://macos/Runner/AppDelegate.swift#L1-L14)
+- [windows/flutter/generated_plugin_registrant.cc:13-20](file://windows/flutter/generated_plugin_registrant.cc#L13-L20)
+- [linux/CMakeLists.txt:1-129](file://linux/CMakeLists.txt#L1-L129)
+- [web/index.html:1-39](file://web/index.html#L1-L39)
 
-### Development Workflow
-- Hot reload: Use the Flutter dev tooling to apply code changes instantly during development.
-- Debugging:
-  - Android Studio: Attach a debugger to the running process.
-  - VS Code: Use the Flutter extension to start and debug.
-- Testing:
-  - Unit and widget tests are supported by the test package.
-  - The existing widget test demonstrates a basic smoke test pattern.
+### Initial Configuration and Environment Variables
+- Assets: Images and icons are declared in pubspec.yaml under flutter.assets.
+- Theme and routing: MyApp configures theme, dark/light modes, and initial route based on token availability.
+- Token-driven routing: DependencyInjection reads a token from storage to choose onboarding or home routes.
 
-**Section sources**
-- [test/widget_test.dart:13-31](file://test/widget_test.dart#L13-L31)
-- [analysis_options.yaml:8-29](file://analysis_options.yaml#L8-L29)
-
-### Quick Start Examples
-- Run on Android emulator or device:
-  - flutter run
-- Run on iOS simulator or device:
-  - flutter run (after CocoaPods setup)
-- Run on desktop:
-  - flutter run -d linux (or macos/windows)
+Environment variables:
+- The project does not define explicit environment variables in the provided files. If you require environment-specific configuration, consider adding a .env file and loading it via a configuration package, then initializing it early in main.dart before runApp.
 
 **Section sources**
-- [lib/main.dart:12-19](file://lib/main.dart#L12-L19)
+- [pubspec.yaml:88-92](file://pubspec.yaml#L88-L92)
+- [lib/main.dart:21-47](file://lib/main.dart#L21-L47)
+- [lib/core/di/dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
+
+### Essential Commands
+- flutter pub get: Install dependencies
+- flutter run: Launch on default device/emulator
+- flutter run -d chrome: Launch Web
+- flutter build apk / flutter build appbundle: Android release
+- flutter build ios --release: iOS release
+- flutter build web: Web release
+- flutter build windows / flutter build macos / flutter build linux: Desktop releases
+
+[No sources needed since this section lists general commands]
 
 ## Dependency Analysis
-The project declares Flutter SDK and a wide range of third-party packages for UI, networking, state management, and utilities. The dependency graph focuses on the core runtime and plugin integrations.
+The project relies on Flutter SDK 3.9.0 and a curated set of Dart packages. Notable categories:
+- UI and UX: get, flutter_screenutil, google_fonts, glassmorphism, animate_do
+- Networking: http, cached_network_image, image_picker
+- State and navigation: get, get_storage
+- Charts and UI helpers: fl_chart, badges, timeline_tile, convex_bottom_bar
+- Internationalization: intl, table_calendar
+- Authentication and Firebase: firebase_core, firebase_auth, google_sign_in
+- Utilities: fpdart, flutter_typeahead, flutter_otp_text_field, intl_phone_field
 
 ```mermaid
-graph TB
-App["ZB-DEZINE App"]
-FlutterSDK["Flutter SDK"]
-Packages["Third-party Packages<br/>UI, State, Networking, Utilities"]
-DI["Dependency Injection"]
-Routes["Routing & Navigation"]
-Theme["Theme & UI Utilities"]
-App --> FlutterSDK
-App --> Packages
-App --> DI
-App --> Routes
-App --> Theme
+graph LR
+A["pubspec.yaml"] --> B["Flutter SDK 3.9.0"]
+A --> C["Firebase Core/Auth/Google Sign-In"]
+A --> D["UI/UX Packages"]
+A --> E["Networking/Storage"]
+A --> F["Utilities"]
 ```
 
 **Diagram sources**
-- [pubspec.yaml:30-71](file://pubspec.yaml#L30-L71)
-- [lib/main.dart:12-47](file://lib/main.dart#L12-L47)
+- [pubspec.yaml:30-66](file://pubspec.yaml#L30-L66)
 
 **Section sources**
-- [pubspec.yaml:30-71](file://pubspec.yaml#L30-L71)
-- [lib/main.dart:12-47](file://lib/main.dart#L12-L47)
+- [pubspec.yaml:30-66](file://pubspec.yaml#L30-L66)
 
 ## Performance Considerations
-- Keep dependencies updated and aligned with Flutter releases.
-- Use release builds for performance profiling and benchmarking.
-- Minimize heavy computations on the UI thread; leverage asynchronous operations and caching where appropriate.
+- Keep dependencies updated regularly using flutter pub upgrade.
+- Use flutter build modes appropriately (Profile/Release) for performance testing.
+- Optimize asset sizes and leverage caching for network images.
+- Minimize heavy computations on the UI thread; delegate to background isolates when needed.
 
 [No sources needed since this section provides general guidance]
 
 ## Troubleshooting Guide
-Common setup issues and resolutions:
-
-- Dart SDK version mismatch
-  - Symptom: Flutter doctor reports incompatible Dart SDK.
-  - Resolution: Align your Flutter SDK with the version constraint in pubspec.yaml.
-
-- Android SDK path not found
-  - Symptom: Gradle cannot locate the Android SDK.
-  - Resolution: Update the sdk.dir path in android/local.properties to your Android SDK location.
-
-- CocoaPods not installed (iOS)
-  - Symptom: iOS build fails due to missing pods.
-  - Resolution: Install CocoaPods and run pod install from the ios/ directory.
-
-- Java/Kotlin compatibility
-  - Symptom: Compilation errors related to Java version.
-  - Resolution: Ensure JDK 17 is installed and selected; confirm Gradle and Kotlin options align.
-
-- Flutter doctor warnings
-  - Symptom: Doctor shows unmet requirements.
-  - Resolution: Install missing tools (Android Studio/Xcode, emulators/simulators) and accept licenses.
+Common issues and resolutions:
+- Flutter doctor reports missing platform tooling
+  - Install Android Studio/Xcode, Android SDK/NDK, CocoaPods, and desktop toolchains as needed.
+- Firebase-related errors on desktop
+  - Ensure Firebase initialization is handled gracefully; desktop Firebase plugins are registered via generated plugin registration.
+- iOS pods failures
+  - Run flutter pub get followed by pod install in ios/ and reopen ios/Runner.xcworkspace.
+- Android build failures
+  - Verify Gradle and Android SDK paths; sync Gradle wrapper and accept licenses.
+- Web build issues
+  - Confirm web is enabled and index.html is present; rebuild with flutter build web.
 
 **Section sources**
-- [pubspec.yaml:21-23](file://pubspec.yaml#L21-L23)
-- [android/local.properties:1-5](file://android/local.properties#L1-L5)
-- [ios/Podfile:13-26](file://ios/Podfile#L13-L26)
-- [android/gradle.properties:1-3](file://android/gradle.properties#L1-L3)
-- [android/gradlew.bat:27-46](file://android/gradlew.bat#L27-L46)
+- [windows/flutter/generated_plugin_registrant.cc:13-20](file://windows/flutter/generated_plugin_registrant.cc#L13-L20)
+- [web/index.html:1-39](file://web/index.html#L1-L39)
 
 ## Conclusion
-You now have the essentials to install dependencies, configure Android and iOS environments, run the app locally, and develop with hot reload and debugging. Use the troubleshooting section to resolve common setup issues quickly.
+You now have the essentials to clone, configure, and run ZB-DEZINE across multiple platforms. Start with flutter pub get and flutter run, then expand into platform-specific workflows. For advanced setups, integrate environment variables and tailor routing and theme logic as needed.
 
 [No sources needed since this section summarizes without analyzing specific files]
 
 ## Appendices
 
-### Appendix A: Flutter and Dart Versions
-- Dart SDK requirement is defined in the project configuration.
+### Appendix A: Quick Start Checklist
+- Install Flutter SDK 3.9.0
+- Install platform toolchains (Android/iOS/Web/Desktop)
+- flutter pub get
+- flutter run
 
-**Section sources**
-- [pubspec.yaml:21-23](file://pubspec.yaml#L21-L23)
-
-### Appendix B: Android Build Configuration Highlights
-- Java 17 compatibility and Flutter integration via Gradle.
-- Default debug signing configuration for local development.
-
-**Section sources**
-- [android/app/build.gradle.kts:13-20](file://android/app/build.gradle.kts#L13-L20)
-- [android/app/build.gradle.kts:33-39](file://android/app/build.gradle.kts#L33-L39)
-
-### Appendix C: iOS Podfile Highlights
-- Flutter pod setup and iOS target configuration.
-- Post-install build settings application.
-
-**Section sources**
-- [ios/Podfile:26-43](file://ios/Podfile#L26-L43)
+[No sources needed since this section provides general guidance]

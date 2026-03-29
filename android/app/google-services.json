@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "375214531894",
+    "project_id": "shopping-cart-b246f",
+    "storage_bucket": "shopping-cart-b246f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375214531894:android:0809bb69eeb53858d93f97",
+        "android_client_info": {
+          "package_name": "zbdezign.com.au"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375214531894-fki8g1s7vrciefa8iusb3f8jlsk6t9jf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZipNuaf7fAACtSWPBEIcMDEyiVxVWa8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375214531894-fki8g1s7vrciefa8iusb3f8jlsk6t9jf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "375214531894-pp42hko5bnmuo3092aurfeqp4j5bp1ga.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.zbDezign"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
