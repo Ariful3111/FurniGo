@@ -59,13 +59,15 @@ class RentPropertyTypeView extends GetView<RentPropertyTypeController> {
             color: AppColors.darkTextColor,
           ),
           SizedBox(height: 8.h),
-          CustomDropdownMenu(
-            onSelect: (value) {
-              controller.selectedPropertyUse.value = value!;
-            },
-            option: controller.properUse,
-            isSelect: controller.selectedPropertyUse,
-            label: 'Select Property Use',
+          Obx(
+            () => CustomDropdownMenu(
+              onSelect: (value) {
+                controller.selectedPropertyUse.value = value!;
+              },
+              option: controller.properUse,
+              isSelect: controller.selectedPropertyUse,
+              label: 'Select Property Use',
+            ),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_appliance.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_brand.dart';
@@ -16,7 +17,7 @@ class RentStepController extends GetxController {
   static RentStepController get instance => Get.find();
 
   // Step management
-  RxInt currentIndex = 0.obs;
+  RxInt currentIndex = 2.obs;
   int get totalSteps => rentWidgets.length;
   RxBool isLoading = false.obs;
   // Widgets
@@ -44,9 +45,10 @@ class RentStepController extends GetxController {
 
     switch (currentIndex.value) {
       case 0:
-        await Get.find<RentRequestController>().submitRentRequest();
+        await Get.find<RentRequestController>().submitRentRequestZero();
         break;
       case 1:
+        await Get.find<RentPropertyTypeController>().submitRentRequestOne();
         break;
       case 2:
         break;

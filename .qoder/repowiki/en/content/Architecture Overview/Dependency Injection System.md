@@ -30,14 +30,23 @@
 - [onboarding_controller.dart](file://lib/features/auth/controller/onboarding_controller.dart)
 - [routes.dart](file://lib/core/routes/routes.dart)
 - [app_routes.dart](file://lib/core/routes/app_routes.dart)
+- [rent_bindings.dart](file://lib/features/rent_request/bindings/rent_bindings.dart)
+- [step_zero_repo.dart](file://lib/features/rent_request/repositories/step_zero_repo.dart)
+- [step_zero_model.dart](file://lib/features/rent_request/models/step_zero_model.dart)
+- [rent_request_controller.dart](file://lib/features/rent_request/controllers/rent_request_controller.dart)
+- [rental_bindings.dart](file://lib/features/rental/bindings/rental_bindings.dart)
+- [rental_details_bindings.dart](file://lib/features/rental/bindings/rental_details_bindings.dart)
+- [get_rentals_repo.dart](file://lib/features/rental/repositories/get_rentals_repo.dart)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Added CustomDrawerController instances in HomeBindings and ProfileBindings for enhanced navigation management and drawer functionality
-- Updated dependency injection architecture to include custom drawer navigation system
-- Documented CustomDrawerController lifecycle management and integration patterns
-- Enhanced navigation management with reactive drawer item selection and page routing
+- Added comprehensive rental request system with StepZeroRepository registration in RentBindings
+- Enhanced dependency injection patterns for the rental request workflow with multi-step form handling
+- Integrated rental management system with GetRentalsRepository and rental details controllers
+- Documented new rental request controllers and their dependency injection patterns
+- Added rental details view controllers and their lazy loading integration
+- Enhanced navigation system with rental request and rental management routes
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -52,15 +61,15 @@
 10. [Appendices](#appendices)
 
 ## Introduction
-This document explains the ZB-DEZINE dependency injection (DI) system built on GetX, now enhanced with comprehensive Google authentication capabilities and a custom drawer navigation system. It covers the initialization process, service registration patterns, singleton lifecycle management, and how services are resolved and used across the application. The focus is on:
+This document explains the ZB-DEZINE dependency injection (DI) system built on GetX, now enhanced with comprehensive Google authentication capabilities, a custom drawer navigation system, and a complete rental request management system. It covers the initialization process, service registration patterns, singleton lifecycle management, and how services are resolved and used across the application. The focus is on:
 - How GetStorage is initialized and how services are bound as singletons
-- The role of each registered service: StorageService, ThemeService, ThemeController, network services, Google authentication components, and CustomDrawerController
+- The role of each registered service: StorageService, ThemeService, ThemeController, network services, Google authentication components, CustomDrawerController, and the new rental request system
 - Dependency resolution via GetX's container and how consumers access services
-- Practical patterns for injecting and using services, including Google authentication flows and custom drawer navigation
-- Best practices for extending the DI container with new authentication services and navigation components
+- Practical patterns for injecting and using services, including Google authentication flows, custom drawer navigation, and rental request management
+- Best practices for extending the DI container with new authentication services, navigation components, and rental management features
 
 ## Project Structure
-The DI system is centralized in a dedicated module under lib/core/di and integrates with core services located under lib/core/data, lib/core/theme, new authentication components under lib/features/auth, and custom navigation components under lib/shared/widgets/custom_drawer. The application bootstraps by initializing the DI container before runApp, with enhanced support for Google authentication flows and custom drawer navigation.
+The DI system is centralized in a dedicated module under lib/core/di and integrates with core services located under lib/core/data, lib/core/theme, new authentication components under lib/features/auth, custom navigation components under lib/shared/widgets/custom_drawer, rental request components under lib/features/rent_request, and rental management components under lib/features/rental. The application bootstraps by initializing the DI container before runApp, with enhanced support for Google authentication flows, custom drawer navigation, and comprehensive rental management.
 
 ```mermaid
 graph TB
@@ -85,6 +94,11 @@ T["lib/features/profile/bindings/profile_bindings.dart<br/>ProfileBindings"] -->
 U["lib/features/dashboard/bindings/dashboard_bindings.dart<br/>DashboardBindings"] --> Q
 V["lib/features/home/views/bottom_nav_view.dart<br/>BottomNavView"] --> Q
 W["lib/features/profile/widgets/profile_view_widgets/profile_view_items.dart<br/>ProfileViewItems"] --> Q
+X["lib/features/rent_request/bindings/rent_bindings.dart<br/>RentBindings"] --> Y["lib/features/rent_request/repositories/step_zero_repo.dart<br/>StepZeroRepository"]
+X --> Z["lib/features/rent_request/controllers/rent_request_controller.dart<br/>RentRequestController"]
+AA["lib/features/rental/bindings/rental_bindings.dart<br/>RentalBindings"] --> AB["lib/features/rental/repositories/get_rentals_repo.dart<br/>GetRentalsRepository"]
+AA --> AC["lib/features/rental/controllers/rental_controller.dart<br/>RentalController"]
+AD["lib/features/rental/bindings/rental_details_bindings.dart<br/>RentalDetailsBindings"] --> AE["lib/features/rental/controllers/rental_details_controller.dart<br/>RentalDetailsController"]
 ```
 
 **Diagram sources**
@@ -95,6 +109,12 @@ W["lib/features/profile/widgets/profile_view_widgets/profile_view_items.dart<br/
 - [profile_bindings.dart:17](file://lib/features/profile/bindings/profile_bindings.dart#L17)
 - [dashboard_bindings.dart:11](file://lib/features/dashboard/bindings/dashboard_bindings.dart#L11)
 - [custom_drawer_controller.dart:5-59](file://lib/shared/widgets/custom_drawer/custom_drawer_controller.dart#L5-L59)
+- [rent_bindings.dart:16-36](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L36)
+- [step_zero_repo.dart:9-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L35)
+- [rent_request_controller.dart:9-68](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L68)
+- [rental_bindings.dart:5-10](file://lib/features/rental/bindings/rental_bindings.dart#L5-L10)
+- [get_rentals_repo.dart:7-37](file://lib/features/rental/repositories/get_rentals_repo.dart#L7-L37)
+- [rental_details_bindings.dart:9-22](file://lib/features/rental/bindings/rental_details_bindings.dart#L9-L22)
 
 **Section sources**
 - [main.dart:12-19](file://lib/main.dart#L12-L19)
@@ -105,7 +125,7 @@ W["lib/features/profile/widgets/profile_view_widgets/profile_view_items.dart<br/
 - [dashboard_bindings.dart:11](file://lib/features/dashboard/bindings/dashboard_bindings.dart#L11)
 
 ## Core Components
-This section documents each service registered in the DI container, including responsibilities, lifecycle, and usage patterns, with enhanced coverage of Google authentication components and the new CustomDrawerController for navigation management.
+This section documents each service registered in the DI container, including responsibilities, lifecycle, and usage patterns, with enhanced coverage of Google authentication components, the new CustomDrawerController for navigation management, and the comprehensive rental request and rental management systems.
 
 ### Core Services
 - **StorageService**
@@ -182,6 +202,47 @@ This section documents each service registered in the DI container, including re
   - Features: Dynamic item rendering, gradient highlighting for selected items, responsive design with ScreenUtil.
   - Integration: Used in bottom navigation and profile views for unified navigation experience.
 
+### Rental Request System
+- **RentBindings**
+  - Purpose: Provides lazy loading for comprehensive rental request services using Get.lazyPut pattern.
+  - Services: RentRequestController, RentStepController, RentPropertyTypeController, RentPropertyDetailsController, RentFloorPlanController, RentFurnitureController, RentApplianceController, RentBrandController, RentPeriodController, RentDeliveryController, RentReviewController, RentAdditionalNoteController.
+  - Integration: Uses Get.find() to resolve dependencies from the main DI container, with StepZeroRepository injected into RentRequestController.
+  - Enhanced with StepZeroRepository registration for initial rental request submission.
+
+- **StepZeroRepository**
+  - Purpose: Handles initial rental request submission with business information and contact details.
+  - Dependencies: PostWithResponse network service, HeadersManager for authentication.
+  - Access pattern: Execute method performs HTTP POST to "/api/rental-requests" with business information.
+  - Returns: Either<ErrorModel, StepZeroModel> for error handling and response processing.
+
+- **RentRequestController**
+  - Purpose: Manages the initial rental request form, collects business information, and handles submission.
+  - Dependencies: StepZeroRepository, ProfileController, StorageService, RentStepController.
+  - Features: Form validation, automatic profile data population, UUID storage for subsequent steps.
+  - Access pattern: Called from UI widgets to submit rental requests and navigate to next step.
+
+- **StepZeroModel**
+  - Purpose: Data model representing the initial rental request response with business information and status.
+  - Structure: Contains uuid, userId, businessInfo, currentStep, rentalStatusId, timestamps.
+  - Nested model: BusinessInfo with businessName, contactPerson, email, phone, abn, website.
+
+### Rental Management System
+- **RentalBindings**
+  - Purpose: Provides lazy loading for rental management services using Get.lazyPut pattern.
+  - Services: GetRentalsRepository, RentalController.
+  - Integration: Uses Get.find() to resolve dependencies from the main DI container for rental listing and management.
+
+- **GetRentalsRepository**
+  - Purpose: Handles rental requests retrieval with optional search and status filtering.
+  - Dependencies: GetNetwork for HTTP GET requests, HeadersManager for authentication.
+  - Features: Conditional query parameter building, URL construction with filters.
+  - Access pattern: Execute method performs HTTP GET to "/api/rental-requests" with optional search and status parameters.
+
+- **RentalDetailsBindings**
+  - Purpose: Provides lazy loading for rental details services using Get.lazyPut pattern.
+  - Services: RentalDetailsRepository, RentalDetailsController, RentalPendingController, RentalQuotesController, RentalsCompleteController, RentalActiveController.
+  - Integration: Specific controllers needed for rental details view with comprehensive rental status management.
+
 **Section sources**
 - [dependency_injection.dart:19-25](file://lib/core/di/dependency_injection.dart#L19-L25)
 - [storage_service.dart:3-22](file://lib/core/data/local/storage_service.dart#L3-L22)
@@ -198,12 +259,20 @@ This section documents each service registered in the DI container, including re
 - [onboarding_controller.dart:1-200](file://lib/features/auth/controller/onboarding_controller.dart#L1-L200)
 - [custom_drawer_controller.dart:5-59](file://lib/shared/widgets/custom_drawer/custom_drawer_controller.dart#L5-L59)
 - [custom_drawer.dart:8-129](file://lib/shared/widgets/custom_drawer/custom_drawer.dart#L8-L129)
+- [rent_bindings.dart:16-36](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L36)
+- [step_zero_repo.dart:9-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L35)
+- [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
+- [rent_request_controller.dart:9-68](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L68)
+- [rental_bindings.dart:5-10](file://lib/features/rental/bindings/rental_bindings.dart#L5-L10)
+- [get_rentals_repo.dart:7-37](file://lib/features/rental/repositories/get_rentals_repo.dart#L7-L37)
+- [rental_details_bindings.dart:9-22](file://lib/features/rental/bindings/rental_details_bindings.dart#L9-L22)
 
 ## Architecture Overview
-The DI architecture follows a comprehensive pattern that now includes Google authentication services and a custom drawer navigation system:
+The DI architecture follows a comprehensive pattern that now includes Google authentication services, a custom drawer navigation system, and a complete rental request management system:
 - **Initialization**: Firebase is initialized, GetStorage is configured, then all core services are bound as singletons with permanent=true.
 - **Authentication Flow**: Google authentication services are integrated through dedicated controllers and repositories.
 - **Navigation System**: Custom drawer navigation is managed through CustomDrawerController instances bound in feature-specific bindings.
+- **Rental Management**: Comprehensive rental request system with multi-step form handling and rental management capabilities.
 - **Resolution**: Consumers retrieve services using Get.find<ServiceType>() with lazy loading support for feature-specific bindings.
 - **Routing**: The app chooses initial route and bindings based on whether a token exists (resolved from StorageService).
 
@@ -220,6 +289,9 @@ participant GN as "GetNetwork"
 participant GLC as "GoogleLoginController"
 participant GLR as "GoogleLoginRepository"
 participant CDC as "CustomDrawerController"
+participant RBC as "RentBindings"
+participant SZR as "StepZeroRepository"
+participant RRC as "RentRequestController"
 Main->>DI : init()
 DI->>FB : initializeApp()
 DI->>GS : init()
@@ -229,12 +301,19 @@ DI->>TC : new ThemeController() permanent : true
 DI->>GN : new GetNetwork() permanent : true
 DI-->>Main : return token from StorageService
 Main->>Main : runApp(MyApp(token))
-Note over GLC,GLR,CDC : Lazy loaded on demand
+Note over GLC,GLR,CDC,RBC,SZR,RRC : Lazy loaded on demand
 GLC->>GLR : execute(user)
 GLR->>GN : postData()
 GN-->>GLR : response
 GLR-->>GLC : Either<ErrorModel, GoogleLoginModel>
 CDC->>CDC : Manage drawer navigation state
+RBC->>SZR : Inject into RentRequestController
+RRC->>SZR : execute(businessInfo)
+SZR->>GN : postData("/api/rental-requests")
+GN-->>SZR : response
+SZR-->>RRC : Either<ErrorModel, StepZeroModel>
+RRC->>SS : write(rentRequestUUID)
+RRC->>RRC : increment RentStepController currentIndex
 ```
 
 **Diagram sources**
@@ -244,6 +323,9 @@ CDC->>CDC : Manage drawer navigation state
 - [google_login_controller.dart:15-37](file://lib/features/auth/controller/google_login_controller.dart#L15-L37)
 - [google_login_repo.dart:12-29](file://lib/features/auth/repositories/google_login_repo.dart#L12-L29)
 - [custom_drawer_controller.dart:5-59](file://lib/shared/widgets/custom_drawer/custom_drawer_controller.dart#L5-L59)
+- [rent_bindings.dart:19-23](file://lib/features/rent_request/bindings/rent_bindings.dart#L19-L23)
+- [step_zero_repo.dart:21-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L21-L35)
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
 
 **Section sources**
 - [main.dart:12-19](file://lib/main.dart#L12-L19)
@@ -456,6 +538,123 @@ CustomDrawerController --> "AppRoutes" : "uses navigation routes"
 - [home_bindings.dart:34](file://lib/features/home/bindings/home_bindings.dart#L34)
 - [profile_bindings.dart:17](file://lib/features/profile/bindings/profile_bindings.dart#L17)
 - [dashboard_bindings.dart:11](file://lib/features/dashboard/bindings/dashboard_bindings.dart#L11)
+- [bottom_nav_view.dart:78-79](file://lib/features/home/views/bottom_nav_view.dart#L78-L79)
+- [profile_view_items.dart:28-40](file://lib/features/profile/widgets/profile_view_widgets/profile_view_items.dart#L28-L40)
+
+### Enhanced Rental Request System
+- **RentBindings**: Comprehensive binding class that provides lazy loading for all rental request controllers and repositories using Get.lazyPut pattern.
+- **StepZeroRepository**: Specialized repository for initial rental request submission with business information collection and validation.
+- **RentRequestController**: Central controller that manages the initial rental request form, validates input, and coordinates with StepZeroRepository.
+- **StepZeroModel**: Data model representing the initial rental request response with comprehensive business information structure.
+
+```mermaid
+classDiagram
+class RentBindings {
++dependencies() void
++lazyPut(RentRequestController)
++lazyPut(RentStepController)
++lazyPut(RentPropertyTypeController)
++lazyPut(RentPropertyDetailsController)
++lazyPut(RentFloorPlanController)
++lazyPut(RentFurnitureController)
++lazyPut(RentApplianceController)
++lazyPut(RentBrandController)
++lazyPut(RentPeriodController)
++lazyPut(RentDeliveryController)
++lazyPut(RentReviewController)
++lazyPut(RentAdditionalNoteController)
+}
+class StepZeroRepository {
++PostWithResponse postWithResponse
++execute(businessName, contactPerson, email, phone, abn, website) Future~Either~
+}
+class RentRequestController {
++StepZeroRepository stepZeroRepository
++TextEditingController businessNameController
++TextEditingController personNameController
++TextEditingController emailController
++TextEditingController phoneController
++TextEditingController abnController
++TextEditingController businessSiteController
++submitRentRequest() Future~void~
+}
+class StepZeroModel {
++String? uuid
++int? userId
++BusinessInfo? businessInfo
++int? currentStep
++int? rentalStatusId
++String? updatedAt
++String? createdAt
++int? id
+}
+class BusinessInfo {
++String? businessName
++String? contactPerson
++String? email
++String? phone
++String? abn
++String? website
+}
+RentBindings --> StepZeroRepository : "injects into RentRequestController"
+RentRequestController --> StepZeroRepository : "depends on"
+StepZeroRepository --> StepZeroModel : "returns"
+```
+
+**Diagram sources**
+- [rent_bindings.dart:16-36](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L36)
+- [step_zero_repo.dart:9-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L35)
+- [rent_request_controller.dart:9-68](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L68)
+- [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
+
+**Section sources**
+- [rent_bindings.dart:16-36](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L36)
+- [step_zero_repo.dart:9-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L35)
+- [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
+- [rent_request_controller.dart:9-68](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L68)
+
+### Rental Management System
+- **RentalBindings**: Binding class for rental management services with GetRentalsRepository and RentalController.
+- **GetRentalsRepository**: Handles rental requests retrieval with optional search and status filtering capabilities.
+- **RentalDetailsBindings**: Specialized binding for rental details view with comprehensive rental status controllers.
+
+```mermaid
+classDiagram
+class RentalBindings {
++dependencies() void
++lazyPut(GetRentalsRepository)
++lazyPut(RentalController)
+}
+class GetRentalsRepository {
++GetNetwork getNetwork
++execute(search, status) Future~Either~
+}
+class RentalDetailsBindings {
++dependencies() void
++lazyPut(RentalDetailsRepository)
++lazyPut(RentalDetailsController)
++lazyPut(RentalPendingController)
++lazyPut(RentalQuotesController)
++lazyPut(RentalsCompleteController)
++lazyPut(RentalActiveController)
+}
+class RentalController {
++GetRentalsRepository getRentalsRepository
++execute(search, status) Future~Either~
+}
+RentalBindings --> GetRentalsRepository : "provides"
+RentalDetailsBindings --> RentalDetailsController : "provides"
+```
+
+**Diagram sources**
+- [rental_bindings.dart:5-10](file://lib/features/rental/bindings/rental_bindings.dart#L5-L10)
+- [get_rentals_repo.dart:7-37](file://lib/features/rental/repositories/get_rentals_repo.dart#L7-L37)
+- [rental_details_bindings.dart:9-22](file://lib/features/rental/bindings/rental_details_bindings.dart#L9-L22)
+
+**Section sources**
+- [rental_bindings.dart:5-10](file://lib/features/rental/bindings/rental_bindings.dart#L5-L10)
+- [get_rentals_repo.dart:7-37](file://lib/features/rental/repositories/get_rentals_repo.dart#L7-L37)
+- [rental_details_bindings.dart:9-22](file://lib/features/rental/bindings/rental_details_bindings.dart#L9-L22)
 
 ### OnboardBindings
 - Purpose: Provides lazy loading for authentication-related services using Get.lazyPut pattern.
@@ -492,7 +691,7 @@ GLC --> GLR
 - [profile_view_items.dart:28-40](file://lib/features/profile/widgets/profile_view_widgets/profile_view_items.dart#L28-L40)
 
 ## Dependency Analysis
-This section maps how services depend on each other and how they are resolved at runtime, including the new authentication dependencies and custom drawer navigation system.
+This section maps how services depend on each other and how they are resolved at runtime, including the new authentication dependencies, custom drawer navigation system, and comprehensive rental management system.
 
 ```mermaid
 graph TB
@@ -522,6 +721,16 @@ PB["ProfileBindings"] --> CDC
 DB["DashboardBindings"] --> CDC
 BNV["BottomNavView"] --> CDC
 PVW["ProfileViewItems"] --> CDC
+RBC["RentBindings"] --> SZR["StepZeroRepository"]
+RBC --> RRC["RentRequestController"]
+SZR --> PWR
+RRC --> SZR
+RRC --> SS
+RRC --> RSC["RentStepController"]
+AB["RentalBindings"] --> ABR["GetRentalsRepository"]
+AB --> AC["RentalController"]
+ABR --> GN
+ADB["RentalDetailsBindings"] --> ADC["RentalDetailsController"]
 ```
 
 **Diagram sources**
@@ -537,6 +746,12 @@ PVW["ProfileViewItems"] --> CDC
 - [dashboard_bindings.dart:11](file://lib/features/dashboard/bindings/dashboard_bindings.dart#L11)
 - [bottom_nav_view.dart:78-79](file://lib/features/home/views/bottom_nav_view.dart#L78-L79)
 - [profile_view_items.dart:28-40](file://lib/features/profile/widgets/profile_view_widgets/profile_view_items.dart#L28-L40)
+- [rent_bindings.dart:19-23](file://lib/features/rent_request/bindings/rent_bindings.dart#L19-L23)
+- [step_zero_repo.dart:21-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L21-L35)
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
+- [rental_bindings.dart:8-9](file://lib/features/rental/bindings/rental_bindings.dart#L8-L9)
+- [get_rentals_repo.dart:30-36](file://lib/features/rental/repositories/get_rentals_repo.dart#L30-L36)
+- [rental_details_bindings.dart:14-20](file://lib/features/rental/bindings/rental_details_bindings.dart#L14-L20)
 
 **Section sources**
 - [dependency_injection.dart:19-25](file://lib/core/di/dependency_injection.dart#L19-L25)
@@ -551,16 +766,25 @@ PVW["ProfileViewItems"] --> CDC
 - [dashboard_bindings.dart:11](file://lib/features/dashboard/bindings/dashboard_bindings.dart#L11)
 - [bottom_nav_view.dart:78-79](file://lib/features/home/views/bottom_nav_view.dart#L78-L79)
 - [profile_view_items.dart:28-40](file://lib/features/profile/widgets/profile_view_widgets/profile_view_items.dart#L28-L40)
+- [rent_bindings.dart:19-23](file://lib/features/rent_request/bindings/rent_bindings.dart#L19-L23)
+- [step_zero_repo.dart:21-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L21-L35)
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
+- [rental_bindings.dart:8-9](file://lib/features/rental/bindings/rental_bindings.dart#L8-L9)
+- [get_rentals_repo.dart:30-36](file://lib/features/rental/repositories/get_rentals_repo.dart#L30-L36)
+- [rental_details_bindings.dart:14-20](file://lib/features/rental/bindings/rental_details_bindings.dart#L14-L20)
 
 ## Performance Considerations
 - **Singleton lifetime**: All core services are bound as permanent singletons, minimizing allocation overhead and ensuring consistent state across the app.
-- **Lazy loading**: Authentication services and CustomDrawerController use Get.lazyPut for on-demand initialization, reducing startup time.
+- **Lazy loading**: Authentication services, CustomDrawerController, and rental request services use Get.lazyPut for on-demand initialization, reducing startup time.
 - **Network error handling**: Using Either<ErrorModel, T> avoids throwing exceptions and centralizes error modeling, reducing try/catch proliferation.
 - **Reactive theme**: ThemeController uses reactive state, avoiding unnecessary rebuilds by observing only isDarkMode.
 - **Header construction**: HeadersManager lazily resolves StorageService per request, which is efficient given infrequent header generation.
 - **Authentication caching**: Google authentication results are cached in StorageService for session persistence.
 - **Custom drawer optimization**: CustomDrawerController uses reactive observables for minimal rebuilds when navigation state changes.
 - **Navigation state management**: Drawer selection state is maintained reactively, preventing unnecessary widget rebuilds.
+- **Rental request optimization**: StepZeroRepository uses lazy loading and efficient form validation to minimize memory usage.
+- **Multi-step form handling**: Rental request controllers use reactive state management to optimize UI updates during form progression.
+- **Rental management efficiency**: GetRentalsRepository builds conditional query parameters to minimize unnecessary data transfer.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -604,6 +828,26 @@ Common issues and resolutions:
   - Cause: selectedItem observable not reset when navigating to different screens.
   - Resolution: Use Get.find<CustomDrawerController>().selectedItem.value = [index] to reset selection state appropriately.
 
+- **Rental request submission failures**
+  - Symptom: Initial rental request fails with error response.
+  - Cause: Invalid form data, network connectivity issues, or server-side validation errors.
+  - Resolution: Check form validation, verify network connectivity, inspect ErrorModel.message for specific error details.
+
+- **Rental request UUID not persisting**
+  - Symptom: Rental request UUID not saved to storage after successful submission.
+  - Cause: Storage write operation failure or incorrect key usage.
+  - Resolution: Verify StorageService.write operation succeeds and use correct key (rentRequestUUID) for UUID storage.
+
+- **Rental listing issues**
+  - Symptom: Rental requests not loading or showing empty results.
+  - Cause: Incorrect query parameters, network connectivity issues, or server-side filtering.
+  - Resolution: Check GetRentalsRepository.execute parameters, verify network connectivity, inspect ErrorModel for specific error details.
+
+- **Rental details view crashes**
+  - Symptom: Rental details view fails to load or crashes.
+  - Cause: Missing rental ID, incorrect data structure, or repository configuration issues.
+  - Resolution: Verify rental ID parameter, check data model structure, ensure GetRentalsRepository is properly bound.
+
 **Section sources**
 - [dependency_injection.dart:26-29](file://lib/core/di/dependency_injection.dart#L26-L29)
 - [theme_service.dart:11-14](file://lib/core/data/local/theme_service.dart#L11-L14)
@@ -611,24 +855,30 @@ Common issues and resolutions:
 - [headers_manager.dart:17-19](file://lib/core/data/networks/headers_manager.dart#L17-L19)
 - [google_login_controller.dart:24-36](file://lib/features/auth/controller/google_login_controller.dart#L24-L36)
 - [custom_drawer_controller.dart:5-59](file://lib/shared/widgets/custom_drawer/custom_drawer_controller.dart#L5-L59)
+- [step_zero_repo.dart:21-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L21-L35)
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
+- [get_rentals_repo.dart:30-36](file://lib/features/rental/repositories/get_rentals_repo.dart#L30-L36)
 
 ## Conclusion
-The ZB-DEZINE DI system leverages GetX to provide a clean, testable, and maintainable architecture with comprehensive Google authentication support and enhanced navigation management:
+The ZB-DEZINE DI system leverages GetX to provide a clean, testable, and maintainable architecture with comprehensive Google authentication support, enhanced navigation management, and a complete rental request and rental management system:
 - **Centralized initialization** ensures all core services are ready before the app runs.
 - **Enhanced authentication flow** provides seamless Google sign-in integration with proper error handling.
 - **Custom drawer navigation system** offers unified navigation experience across all feature screens with reactive state management.
+- **Comprehensive rental management** provides end-to-end rental request handling with multi-step form processing and rental tracking.
 - **Singleton lifetime management** simplifies state management and reduces memory churn.
-- **Clear separation of concerns** across storage, theme, networking, authentication, and navigation services improves modularity.
-- **Lazy loading support** optimizes performance by loading authentication and navigation services only when needed.
+- **Clear separation of concerns** across storage, theme, networking, authentication, navigation, rental request, and rental management services improves modularity.
+- **Lazy loading support** optimizes performance by loading authentication, navigation, and rental services only when needed.
 - **Consumers resolve services** via Get.find<ServiceType>() with lazyPut support for feature-specific bindings, enabling loose coupling and easy testing.
 - **Enhanced navigation management** through CustomDrawerController provides consistent drawer functionality across Home, Profile, and Dashboard screens.
+- **Robust error handling** throughout the system ensures reliable operation and clear error reporting.
+- **Scalable architecture** supports future expansion with additional rental features and enhanced functionality.
 
 ## Appendices
 
 ### Initialization and Boot Process
 - main.dart initializes the DI container and passes the resolved token to MyApp.
 - MyApp configures GetMaterialApp and selects initial route and bindings based on token presence.
-- Authentication services and CustomDrawerController are lazily loaded when first accessed through their respective Bindings classes.
+- Authentication services, CustomDrawerController, and rental services are lazily loaded when first accessed through their respective Bindings classes.
 
 ```mermaid
 sequenceDiagram
@@ -643,7 +893,7 @@ D->>S : read(tokenKey)
 D-->>M : token
 M->>M : runApp(MyApp(token))
 M->>R : Set initialRoute and initialBinding based on token
-Note over R : On demand authentication and navigation bindings
+Note over R : On demand authentication, navigation, and rental bindings
 ```
 
 **Diagram sources**
@@ -663,18 +913,20 @@ Steps:
 5. Inject dependencies via Get.find<ServiceType>() inside the service or controller.
 6. Access the service from anywhere using Get.find<ServiceType>() or lazy loading through bindings.
 
-**Updated** Enhanced with Google authentication patterns, lazy loading support, and custom drawer navigation integration.
+**Updated** Enhanced with Google authentication patterns, lazy loading support, custom drawer navigation integration, and comprehensive rental management system.
 
 Example references:
 - Core service binding pattern: [dependency_injection.dart:19-25](file://lib/core/di/dependency_injection.dart#L19-L25)
 - Feature service lazy loading: [onboard_bindings.dart:9-11](file://lib/features/auth/bindings/onboard_bindings.dart#L9-L11)
 - Custom drawer controller binding: [home_bindings.dart:34](file://lib/features/home/bindings/home_bindings.dart#L34)
+- Rental request binding pattern: [rent_bindings.dart:19-23](file://lib/features/rent_request/bindings/rent_bindings.dart#L19-L23)
 - Consumer resolution pattern: [google_login_controller.dart:13](file://lib/features/auth/controller/google_login_controller.dart#L13)
 
 **Section sources**
 - [dependency_injection.dart:19-25](file://lib/core/di/dependency_injection.dart#L19-L25)
 - [onboard_bindings.dart:9-11](file://lib/features/auth/bindings/onboard_bindings.dart#L9-L11)
 - [home_bindings.dart:34](file://lib/features/home/bindings/home_bindings.dart#L34)
+- [rent_bindings.dart:19-23](file://lib/features/rent_request/bindings/rent_bindings.dart#L19-L23)
 - [google_login_controller.dart:13](file://lib/features/auth/controller/google_login_controller.dart#L13)
 
 ### Google Authentication Flow
@@ -725,3 +977,53 @@ Navigate --> UpdateUI["Update UI state"]
 - [custom_drawer.dart:40-49](file://lib/shared/widgets/custom_drawer/custom_drawer.dart#L40-L49)
 - [bottom_nav_view.dart:78-79](file://lib/features/home/views/bottom_nav_view.dart#L78-L79)
 - [profile_view_items.dart:28-40](file://lib/features/profile/widgets/profile_view_widgets/profile_view_items.dart#L28-L40)
+
+### Rental Request Workflow Integration
+Complete rental request flow from form submission to multi-step processing:
+
+```mermaid
+flowchart TD
+Form["User fills rental request form"] --> RRC["RentRequestController"]
+RRC --> Validate["Validate form data"]
+Validate --> Submit["Submit to StepZeroRepository"]
+Submit --> API["POST /api/rental-requests"]
+API --> Response["Receive StepZeroModel response"]
+Response --> StoreUUID["Store UUID in StorageService"]
+StoreUUID --> NextStep["Increment RentStepController currentIndex"]
+NextStep --> MultiStep["Proceed to multi-step rental process"]
+```
+
+**Diagram sources**
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
+- [step_zero_repo.dart:21-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L21-L35)
+- [step_zero_model.dart:22-33](file://lib/features/rent_request/models/step_zero_model.dart#L22-L33)
+
+**Section sources**
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
+- [step_zero_repo.dart:21-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L21-L35)
+- [step_zero_model.dart:22-33](file://lib/features/rent_request/models/step_zero_model.dart#L22-L33)
+
+### Rental Management Integration
+Rental listing and details management system:
+
+```mermaid
+flowchart TD
+UI["User accesses rental management"] --> RC["RentalController"]
+RC --> Query["Build query parameters"]
+Query --> API["GET /api/rental-requests"]
+API --> Response["Receive RentalsModel response"]
+Response --> Display["Display rental list"]
+Display --> Details["View rental details"]
+Details --> RDC["RentalDetailsController"]
+RDC --> Status["Manage rental status"]
+```
+
+**Diagram sources**
+- [get_rentals_repo.dart:11-36](file://lib/features/rental/repositories/get_rentals_repo.dart#L11-L36)
+- [rental_bindings.dart:8-9](file://lib/features/rental/bindings/rental_bindings.dart#L8-L9)
+- [rental_details_bindings.dart:14-20](file://lib/features/rental/bindings/rental_details_bindings.dart#L14-L20)
+
+**Section sources**
+- [get_rentals_repo.dart:11-36](file://lib/features/rental/repositories/get_rentals_repo.dart#L11-L36)
+- [rental_bindings.dart:8-9](file://lib/features/rental/bindings/rental_bindings.dart#L8-L9)
+- [rental_details_bindings.dart:14-20](file://lib/features/rental/bindings/rental_details_bindings.dart#L14-L20)

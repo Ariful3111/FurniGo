@@ -14,7 +14,22 @@
 - [date_formatter.dart](file://lib/shared/extensions/formatters/date_formatter.dart)
 - [estimate_delivery_extractor.dart](file://lib/shared/extensions/extractors/estimate_delivery_extractor.dart)
 - [custom_payment_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart)
+- [rent_request_next.dart](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart)
+- [rent_step_controller.dart](file://lib/features/rent_request/controllers/rent_step_controller.dart)
+- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
+- [rent_request_controller.dart](file://lib/features/rent_request/controllers/rent_request_controller.dart)
+- [step_zero_repo.dart](file://lib/features/rent_request/repositories/step_zero_repo.dart)
+- [rent_helper.dart](file://lib/features/rent_request/widgets/rent_helper.dart)
+- [rent_submit_dialog.dart](file://lib/features/rent_request/widgets/rent_submit_dialog.dart)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Added documentation for RentRequestNext widget with enhanced loading state support
+- Updated RentStepController documentation to reflect async step navigation integration
+- Added StorageService documentation with rentRequestUUID constant for persistent rental request identifier storage
+- Updated RentRequestController documentation to show async request submission flow
+- Enhanced component architecture overview with new rental request flow components
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -31,6 +46,8 @@
 ## Introduction
 This document describes the shared components and utility systems in ZB-DEZINE. It focuses on reusable UI components such as custom buttons, form fields, dialogs, loading indicators, and pagination. It also covers validation and formatting utilities, helper extensions, and extension methods. The guide explains component architecture, prop interfaces, event handling, customization options, composition patterns, accessibility considerations, responsive design, and guidelines for extending existing components and building new shared utilities.
 
+**Updated** Enhanced with documentation for the new rental request flow components including RentRequestNext widget with loading state support and StorageService with persistent rental request identifier storage.
+
 ## Project Structure
 The shared components live under the shared directory, organized by feature families:
 - widgets/custom_button: Primary and secondary buttons with theming and typography.
@@ -41,6 +58,7 @@ The shared components live under the shared directory, organized by feature fami
 - extensions/validators: Validation helpers for common inputs.
 - extensions/formatters: Formatting helpers for dates and relative time.
 - extensions/extractors: Domain-specific extractors for order-related data.
+- features/rent_request: Complete rental request flow with step navigation and async operations.
 
 ```mermaid
 graph TB
@@ -60,6 +78,14 @@ end
 subgraph "Theme & Constants"
 AC["AppColors"]
 end
+subgraph "Rental Request Flow"
+RNN["RentRequestNext"]
+RSC["RentStepController"]
+SS["StorageService"]
+RC["RentRequestController"]
+RH["RentHelper"]
+RSD["RentSubmitDialog"]
+end
 CB1 --> AC
 CB2 --> AC
 CFF --> AC
@@ -67,6 +93,12 @@ BL --> AC
 CPD --> AC
 CFF --> EV
 CPD --> EDE
+RNN --> RSC
+RNN --> BL
+RNN --> RH
+RC --> SS
+RSC --> RC
+RSC --> RSD
 ```
 
 **Diagram sources**
@@ -80,6 +112,12 @@ CPD --> EDE
 - [date_formatter.dart:1-54](file://lib/shared/extensions/formatters/date_formatter.dart#L1-L54)
 - [estimate_delivery_extractor.dart:1-39](file://lib/shared/extensions/extractors/estimate_delivery_extractor.dart#L1-L39)
 - [colors.dart:1-117](file://lib/core/constant/colors.dart#L1-L117)
+- [rent_request_next.dart:1-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L1-L61)
+- [rent_step_controller.dart:1-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L1-L96)
+- [storage_service.dart:1-24](file://lib/core/data/local/storage_service.dart#L1-L24)
+- [rent_request_controller.dart:1-68](file://lib/features/rent_request/controllers/rent_request_controller.dart#L1-L68)
+- [rent_helper.dart:1-41](file://lib/features/rent_request/widgets/rent_helper.dart#L1-L41)
+- [rent_submit_dialog.dart:1-66](file://lib/features/rent_request/widgets/rent_submit_dialog.dart#L1-L66)
 
 **Section sources**
 - [main.dart:1-47](file://lib/main.dart#L1-L47)
@@ -118,6 +156,13 @@ This section summarizes the reusable UI components and their primary responsibil
   - Key props: icon, title, subtitle, button text, card list, selected card (Rx), selection callback.
   - Behavior: Dialog with shadow and theme-aware background; composes payment method component.
 
+**Updated** Added RentRequestNext widget for enhanced step navigation with loading state support and async operation integration.
+
+- RentRequestNext
+  - Purpose: Navigation button for rental request flow with conditional rendering based on step position and loading state.
+  - Key props: None (uses controller state internally).
+  - Behavior: Shows Submit Request button on last step, ButtonLoading during async operations, or Next button with arrow icon otherwise.
+
 **Section sources**
 - [custom_primary_button.dart:6-74](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L6-L74)
 - [custom_secondary_button.dart:6-88](file://lib/shared/widgets/custom_button/custom_secondary_button.dart#L6-L88)
@@ -125,6 +170,7 @@ This section summarizes the reusable UI components and their primary responsibil
 - [button_loading.dart:6-36](file://lib/shared/widgets/custom_loadings/button_loading.dart#L6-L36)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 - [custom_payment_dialog.dart:9-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L9-L94)
+- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
 
 ## Architecture Overview
 The shared components follow a consistent pattern:
@@ -132,6 +178,9 @@ The shared components follow a consistent pattern:
 - Theme-aware rendering: Components check brightness and apply appropriate colors from AppColors.
 - Composition: Components often wrap smaller shared text widgets or reuse common styling logic.
 - Reactive updates: Pagination uses GetX reactive integers for current page.
+- Async operation support: Enhanced with loading states and error handling for network operations.
+
+**Updated** The architecture now includes a comprehensive rental request flow with step-based navigation, async validation, and persistent storage integration.
 
 ```mermaid
 classDiagram
@@ -225,11 +274,40 @@ class CustomPaymentDialog {
 +RxString selectedCard
 +void Function(String?) onSelect
 }
+class RentRequestNext {
++controller RentStepController
++build() Widget
+}
+class RentStepController {
++RxInt currentIndex
++RxBool isLoading
++Widget[] rentWidgets
++handleNextStep() Future~void~
++goToPreviousStep() void
++_handleFinalStep() void
+}
+class StorageService {
++String tokenKey
++String rentRequestUUID
++read() T?
++write() Future~void~
++remove() Future~void~
++clear() Future~void~
+}
+class RentRequestController {
++submitRentRequest() Future~void~
++initializeData() void
+}
 CustomPrimaryButton --> AppColors : "uses"
 CustomSecondaryButton --> AppColors : "uses"
 CustomTextFormField --> AppColors : "uses"
 ButtonLoading --> AppColors : "uses"
 CustomPaymentDialog --> AppColors : "uses"
+RentRequestNext --> RentStepController : "uses"
+RentRequestNext --> ButtonLoading : "uses"
+RentRequestNext --> RentHelper : "uses"
+RentStepController --> RentRequestController : "uses"
+RentRequestController --> StorageService : "uses"
 ```
 
 **Diagram sources**
@@ -240,6 +318,10 @@ CustomPaymentDialog --> AppColors : "uses"
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 - [custom_payment_dialog.dart:9-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L9-L94)
 - [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
+- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
+- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
+- [storage_service.dart:3-24](file://lib/core/data/local/storage_service.dart#L3-L24)
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
 
 ## Detailed Component Analysis
 
@@ -259,7 +341,7 @@ CustomPaymentDialog --> AppColors : "uses"
   - Respects theme brightness for color selection.
 
 Usage example pattern
-- Integrate with a controller’s onPressed handler and pass theme-aware colors.
+- Integrate with a controller's onPressed handler and pass theme-aware colors.
 
 **Section sources**
 - [custom_primary_button.dart:6-74](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L6-L74)
@@ -276,7 +358,7 @@ Usage example pattern
   - Uses screen-aware units for sizing and spacing.
 
 Usage example pattern
-- Use for secondary actions like “Sign in with provider” with an associated icon asset.
+- Use for secondary actions like "Sign in with provider" with an associated icon asset.
 
 **Section sources**
 - [custom_secondary_button.dart:6-88](file://lib/shared/widgets/custom_button/custom_secondary_button.dart#L6-L88)
@@ -365,6 +447,114 @@ Usage example pattern
 - [custom_payment_dialog.dart:9-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L9-L94)
 - [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
 
+### RentRequestNext Widget
+**Updated** Enhanced with loading state support and async step navigation integration.
+
+- Props interface
+  - None (uses controller state internally via GetWidget).
+- Behavior
+  - Conditional rendering based on step position and loading state.
+  - Shows Submit Request button on the last step with RentSubmitDialog.
+  - Displays ButtonLoading during async operations.
+  - Renders Next button with arrow icon for intermediate steps.
+- Integration
+  - Uses RentStepController for step management and loading state.
+  - Integrates with RentHelper.myButton for consistent button styling.
+  - Utilizes ButtonLoading for async operation feedback.
+
+```mermaid
+flowchart TD
+A[RentRequestNext] --> B{Is Last Step?}
+B --> |Yes| C[Show Submit Button]
+B --> |No| D{Is Loading?}
+D --> |Yes| E[Show ButtonLoading]
+D --> |No| F[Show Next Button]
+C --> G[RentSubmitDialog]
+E --> H[Async Operation]
+F --> I[handleNextStep]
+```
+
+**Diagram sources**
+- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
+
+**Section sources**
+- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
+
+### RentStepController
+**Updated** Enhanced with async step navigation and loading state management.
+
+- State Management
+  - currentIndex: RxInt for current step position.
+  - isLoading: RxBool for async operation status.
+  - totalSteps: Computed property based on rentWidgets length.
+- Step Navigation
+  - handleNextStep(): Async method with loading state management.
+  - goToPreviousStep(): Simple step decrement.
+  - resetFlow(): Resets to initial step.
+- Async Operations
+  - Manages loading state during async operations.
+  - Integrates with RentRequestController for form submission.
+  - Handles step-specific async operations in switch statement.
+
+**Section sources**
+- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
+
+### StorageService
+**Updated** Added rentRequestUUID constant for persistent rental request identifier storage.
+
+- Storage Keys
+  - tokenKey: "token" for authentication tokens.
+  - rentRequestUUID: "rent_request_uuid" for persistent rental request identifiers.
+- Operations
+  - read<T>(): Type-safe key-value retrieval.
+  - write(): Asynchronous key-value storage.
+  - remove(): Key removal from storage.
+  - clear(): Complete storage clearing.
+- Usage Pattern
+  - Used by RentRequestController to persist rental request UUID.
+  - Enables offline access and session persistence.
+
+**Section sources**
+- [storage_service.dart:3-24](file://lib/core/data/local/storage_service.dart#L3-L24)
+
+### RentRequestController
+**Updated** Enhanced with async request submission and storage integration.
+
+- Form Management
+  - Form key for validation coordination.
+  - Initialize user data from authenticated user.
+- Async Submission
+  - submitRentRequest(): Validates form and submits to backend.
+  - Uses StepZeroRepository for network communication.
+  - Persists rental request UUID via StorageService.
+  - Navigates to next step upon successful submission.
+- Error Handling
+  - Uses ErrorSnackbar for error display.
+  - Proper error propagation through Either type.
+
+**Section sources**
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
+
+### RentHelper
+- Utility Functions
+  - optionContainer(): Creates styled container with rounded corners and padding.
+  - myButton(): Generic button component with consistent styling and tap handling.
+- Integration
+  - Used by RentRequestNext for consistent button appearance.
+  - Provides reusable button styling across rental request flow.
+
+**Section sources**
+- [rent_helper.dart:7-41](file://lib/features/rent_request/widgets/rent_helper.dart#L7-L41)
+
+### RentSubmitDialog
+- Purpose: Confirmation dialog for rental request submission.
+- Content: Success icon, confirmation message, estimated review time.
+- Integration: Triggered by RentRequestNext on last step.
+- Styling: Uses AppColors for consistent theming.
+
+**Section sources**
+- [rent_submit_dialog.dart:7-66](file://lib/features/rent_request/widgets/rent_submit_dialog.dart#L7-L66)
+
 ### Validation Utilities
 - EmailValidator
   - Function: Validates email presence and format.
@@ -379,9 +569,9 @@ Usage example pattern
 ### Formatting Utilities
 - DateFormatter
   - Methods:
-    - toFormattedDate: ISO 8601 to “MMM dd, yyyy”.
-    - toFormattedDateTime: ISO 8601 to “MMM dd, yyyy hh:mm a”.
-    - toRelativeTime: Relative time like “2 days ago”, “Just now”.
+    - toFormattedDate: ISO 8601 to "MMM dd, yyyy".
+    - toFormattedDateTime: ISO 8601 to "MMM dd, yyyy hh:mm a".
+    - toRelativeTime: Relative time like "2 days ago", "Just now".
 
 Usage example pattern
 - Apply to model strings before displaying.
@@ -393,7 +583,7 @@ Usage example pattern
 - EstimatedDeliveryExtractor
   - Method: calculateEstimatedDelivery
     - Parses order creation date and delivery window.
-    - Computes min/max delivery dates and formats as “Month D – Month D, YYYY”.
+    - Computes min/max delivery dates and formats as "Month D – Month D, YYYY".
 
 Usage example pattern
 - Call on order data to present estimated delivery range.
@@ -405,8 +595,11 @@ Usage example pattern
 Shared components depend on:
 - AppColors for theme-aware colors.
 - Flutter SDK and third-party packages for UI and utilities.
-- GetX for reactive state in pagination.
+- GetX for reactive state in pagination and rental request flow.
 - ScreenUtil for responsive sizing.
+- GetStorage for persistent storage in rental request flow.
+
+**Updated** Enhanced dependency graph with rental request flow components and storage integration.
 
 ```mermaid
 graph LR
@@ -415,14 +608,23 @@ AC --> CSB["CustomSecondaryButton"]
 AC --> CTFF["CustomTextFormField"]
 AC --> BL["ButtonLoading"]
 AC --> CPD["CustomPaymentDialog"]
+AC --> RNN["RentRequestNext"]
 G["GetX (RxInt/RxString)"] --> CP["CustomPagination"]
+G --> RSC["RentStepController"]
 SU["flutter_screenutil"] --> CPB
 SU --> CSB
 SU --> CTFF
 SU --> BL
 SU --> CPD
+SU --> RNN
 SP["flutter_spinkit"] --> BL
 GF["google_fonts"] --> CTFF
+GS["get_storage"] --> SS["StorageService"]
+SS --> RC["RentRequestController"]
+RNN --> RSC
+RNN --> RH["RentHelper"]
+RSC --> RC
+RC --> SS
 ```
 
 **Diagram sources**
@@ -433,6 +635,11 @@ GF["google_fonts"] --> CTFF
 - [button_loading.dart:1-36](file://lib/shared/widgets/custom_loadings/button_loading.dart#L1-L36)
 - [custom_pagination.dart:1-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L1-L87)
 - [custom_payment_dialog.dart:1-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L1-L94)
+- [rent_request_next.dart:1-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L1-L61)
+- [rent_step_controller.dart:1-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L1-L96)
+- [storage_service.dart:1-24](file://lib/core/data/local/storage_service.dart#L1-L24)
+- [rent_request_controller.dart:1-68](file://lib/features/rent_request/controllers/rent_request_controller.dart#L1-L68)
+- [rent_helper.dart:1-41](file://lib/features/rent_request/widgets/rent_helper.dart#L1-L41)
 - [pubspec.yaml:37-59](file://pubspec.yaml#L37-L59)
 
 **Section sources**
@@ -443,6 +650,10 @@ GF["google_fonts"] --> CTFF
 - Use reactive props (RxInt/RxString) judiciously; avoid unnecessary global state updates.
 - Keep custom decoration and shadows minimal to reduce overdraw.
 - Use screen-aware units consistently to avoid layout thrashing on different screen densities.
+- Implement proper loading states during async operations to prevent UI blocking.
+- Use GetStorage for efficient key-value operations in rental request flow.
+
+**Updated** Added performance considerations for async operations and storage management.
 
 ## Troubleshooting Guide
 - Buttons appear inverted in dark mode
@@ -459,14 +670,33 @@ GF["google_fonts"] --> CTFF
 - Loading indicator not visible
   - Check theme brightness and loadingColor; ensure the widget is rendered during async operations.
 
+**Updated** Added troubleshooting guidance for rental request flow components.
+
+- RentRequestNext not showing loading state
+  - Verify RentStepController.isLoading is properly toggled during async operations.
+  - Ensure Obx wrapper is correctly accessing controller state.
+
+- Storage not persisting rental request UUID
+  - Check StorageService initialization and key naming.
+  - Verify async write operations complete successfully.
+
+- Step navigation not working
+  - Confirm RentStepController currentIndex is properly managed.
+  - Ensure handleNextStep() is awaited in RentRequestNext.
+
 **Section sources**
 - [custom_primary_button.dart:39-72](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L39-L72)
 - [custom_text_form_field.dart:103-187](file://lib/shared/widgets/custom_form_field/custom_text_form_field.dart#L103-L187)
 - [custom_pagination.dart:14-78](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L14-L78)
 - [button_loading.dart:20-35](file://lib/shared/widgets/custom_loadings/button_loading.dart#L20-L35)
+- [rent_request_next.dart:16-58](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L16-L58)
+- [storage_service.dart:8-22](file://lib/core/data/local/storage_service.dart#L8-L22)
+- [rent_step_controller.dart:41-73](file://lib/features/rent_request/controllers/rent_step_controller.dart#L41-L73)
 
 ## Conclusion
-The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware foundation for UI development. They emphasize composability, customization, and responsiveness. Validators and formatters enable consistent data handling across the app. Following the patterns described here will help maintain consistency and scalability as new features are added.
+The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware foundation for UI development. They emphasize composability, customization, and responsiveness. Validators and formatters enable consistent data handling across the app. The enhanced rental request flow demonstrates advanced patterns for async operations, loading states, and persistent storage integration. Following the patterns described here will help maintain consistency and scalability as new features are added.
+
+**Updated** The addition of RentRequestNext widget and enhanced RentStepController showcases modern Flutter development practices with proper async handling, reactive state management, and user experience optimization.
 
 ## Appendices
 
@@ -474,22 +704,37 @@ The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware
 - Prefer small, single-responsibility widgets and compose them into larger components.
 - Use props to externalize behavior and appearance; avoid hardcoding values.
 - Centralize theme colors in AppColors and derive all component colors from it.
+- Implement proper loading states for async operations to maintain UI responsiveness.
+
+**Updated** Added composition patterns for async operations and state management.
 
 ### Accessibility Considerations
 - Ensure sufficient color contrast in theme-aware modes.
 - Provide meaningful labels and hints for form fields.
 - Respect text scaling and use responsive units for paddings and sizes.
+- Implement proper loading states for screen readers and accessibility tools.
+
+**Updated** Added accessibility considerations for loading states and async operations.
 
 ### Responsive Design Implementation
 - Use screen-aware units for sizing and spacing.
 - Avoid fixed widths; prefer flexible layouts with Spacers and centering.
+- Ensure loading indicators are appropriately sized across different screen densities.
+
+**Updated** Added responsive design considerations for loading states.
 
 ### Extending Existing Components
 - Add new props to constructors with sensible defaults.
 - Keep backward compatibility by making new parameters optional.
 - Update AppColors if introducing new brand colors.
+- Implement proper error handling and loading states for async operations.
+
+**Updated** Added guidelines for extending components with async capabilities.
 
 ### Creating New Shared Utilities
 - Place validators and formatters under extensions with clear method names.
 - Encapsulate domain-specific extractors as extensions on model types.
 - Export utilities from a central library file if needed for broader access.
+- Implement proper error handling and logging for async operations.
+
+**Updated** Added guidelines for creating utilities with async and storage capabilities.
