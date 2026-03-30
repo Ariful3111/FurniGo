@@ -14,7 +14,24 @@
 - [credit_transaction_model.dart](file://lib/features/credit_balance/models/credit_transaction_model.dart)
 - [order_controller.dart](file://lib/features/order/controllers/order_controller.dart)
 - [transaction_controller.dart](file://lib/features/transaction/controller/transaction_controller.dart)
+- [products_model.dart](file://lib/features/home/models/products_model.dart)
+- [product_types_model.dart](file://lib/features/home/models/product_types_model.dart)
+- [rooms_model.dart](file://lib/features/home/models/rooms_model.dart)
+- [get_products_by_type_repo.dart](file://lib/features/home/repositories/get_products_by_type_repo.dart)
+- [get_product_type_repo.dart](file://lib/features/home/repositories/get_product_type_repo.dart)
+- [get_products_by_type_controller.dart](file://lib/features/home/controller/get_products_by_type_controller.dart)
+- [get_product_types_controller.dart](file://lib/features/home/controller/get_product_types_controller.dart)
+- [response.json](file://response.json)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Updated Product Model section to reflect major restructuring from integer-based to num-based types
+- Added comprehensive documentation for pagination support with Links and Meta classes
+- Enhanced Product data documentation with dimension fields and measurement units
+- Updated response schema documentation to reflect comprehensive data structure changes
+- Added new section covering pagination patterns and API integration for product catalogs
+- Updated controller documentation to include pagination-aware implementations
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -22,17 +39,19 @@
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Dependency Analysis](#dependency-analysis)
-7. [Performance Considerations](#performance-considerations)
-8. [Troubleshooting Guide](#troubleshooting-guide)
-9. [Conclusion](#conclusion)
-10. [Appendices](#appendices)
+6. [Product Catalog Data Models](#product-catalog-data-models)
+7. [Pagination Support](#pagination-support)
+8. [Dependency Analysis](#dependency-analysis)
+9. [Performance Considerations](#performance-considerations)
+10. [Troubleshooting Guide](#troubleshooting-guide)
+11. [Conclusion](#conclusion)
+12. [Appendices](#appendices)
 
 ## Introduction
-This document describes the data models and schemas used by the ZB-DEZINE application. It focuses on the core data structures for user profiles, AI design configurations, credit transactions, and transaction records, along with the network layer that serializes and deserializes data, handles errors, and integrates with remote APIs. It also outlines API integration patterns, request/response schemas, and practical usage examples in controllers and services.
+This document describes the data models and schemas used by the ZB-DEZINE application. It focuses on the core data structures for user profiles, AI design configurations, credit transactions, transaction records, and the comprehensive product catalog system with enhanced pagination support. The documentation covers the major restructuring from integer-based to num-based types, addition of dimension fields, and comprehensive pagination capabilities with Links and Meta classes.
 
 ## Project Structure
-The project follows a layered architecture:
+The project follows a layered architecture with enhanced product catalog support:
 - Core layer: constants, global models, network utilities, and DI
 - Features layer: feature-specific models, controllers, repositories, and views
 - Shared layer: reusable UI widgets and utilities
@@ -49,13 +68,23 @@ ORD["Order Controller<br/>(lib/features/order/controllers/order_controller.dart)
 TRX["Transaction Controller<br/>(lib/features/transaction/controller/transaction_controller.dart)"]
 AIM["AI Design Model<br/>(lib/features/ai_design/models/ai_design_model.dart)"]
 CTM["Credit Transaction Model<br/>(lib/features/credit_balance/models/credit_transaction_model.dart)"]
+PROD["Products Model<br/>(lib/features/home/models/products_model.dart)"]
+PTYPE["Product Types Model<br/>(lib/features/home/models/product_types_model.dart)"]
+PCONT["Products Controller<br/>(lib/features/home/controller/get_products_by_type_controller.dart)"]
+PTCONT["Product Types Controller<br/>(lib/features/home/controller/get_product_types_controller.dart)"]
 end
 NP --> NET
 GM --> NET
 NET --> ORD
 NET --> TRX
+NET --> PTYPE
+NET --> PROD
 AIM --> ORD
 CTM --> TRX
+PROD --> PCONT
+PTYPE --> PTCONT
+PCONT --> PTYPE
+PTCONT --> PCONT
 ```
 
 **Diagram sources**
@@ -69,6 +98,10 @@ CTM --> TRX
 - [transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
 - [ai_design_model.dart:1-12](file://lib/features/ai_design/models/ai_design_model.dart#L1-L12)
 - [credit_transaction_model.dart:1-12](file://lib/features/credit_balance/models/credit_transaction_model.dart#L1-L12)
+- [products_model.dart:1-363](file://lib/features/home/models/products_model.dart#L1-L363)
+- [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
+- [get_products_by_type_controller.dart:1-27](file://lib/features/home/controller/get_products_by_type_controller.dart#L1-L27)
+- [get_product_types_controller.dart:1-38](file://lib/features/home/controller/get_product_types_controller.dart#L1-L38)
 
 **Section sources**
 - [README.md:1-17](file://README.md#L1-L17)
@@ -156,7 +189,7 @@ This section documents the primary data models and their roles in the system.
 - [order_controller.dart:1-41](file://lib/features/order/controllers/order_controller.dart#L1-L41)
 
 ## Architecture Overview
-The data flow relies on a network abstraction that performs HTTP requests and returns typed results using Either semantics (Right for success, Left for error). Controllers orchestrate data fetching and UI state updates.
+The data flow relies on a network abstraction that performs HTTP requests and returns typed results using Either semantics (Right for success, Left for error). Controllers orchestrate data fetching and UI state updates with enhanced product catalog support including pagination.
 
 ```mermaid
 sequenceDiagram
@@ -167,7 +200,7 @@ participant API as "Remote API"
 UI->>Repo : "execute()"
 Repo->>Net : "getData()/postData(...)"
 Net->>API : "HTTP GET/POST"
-API-->>Net : "JSON Response"
+API-->>Net : "JSON Response with Pagination"
 Net->>Net : "fromJson() -> T"
 Net-->>Repo : "Right(T)"
 Repo-->>UI : "Success"
@@ -320,6 +353,151 @@ OC->>OC : "Set isLoading=false"
 - [order_controller.dart:1-41](file://lib/features/order/controllers/order_controller.dart#L1-L41)
 - [transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
 
+## Product Catalog Data Models
+
+### Products Model with Num-Based Types
+The product catalog system has undergone a major restructuring from integer-based to num-based types for enhanced precision in pricing and measurements.
+
+- **ProductsModel Structure**:
+  - data: List<Product> - Array of product items
+  - links: Links? - Pagination links for navigation
+  - meta: Meta? - Pagination metadata
+
+- **Product Entity Enhancements**:
+  - id: num (was int) - Unique product identifier
+  - categoryId: num (was int) - Category association
+  - price: num (was int/num) - Original product price
+  - sellingPrice: num (was int/num) - Current selling price
+  - discountAmount: num (was int) - Discount value
+  - finalPrice: num (was int/num) - Final calculated price
+  - dimensions: dynamic - Enhanced dimensional data
+
+- **Category Entity**:
+  - id: num (was int) - Category identifier
+  - parentId: dynamic - Parent category reference
+  - order: dynamic - Display ordering
+
+- **FurnitureType Entity**:
+  - id: num (was int) - Furniture type identifier
+
+- **Room Entity**:
+  - id: num (was int) - Room identifier
+
+- **Media Entity**:
+  - id: num (was int) - Media identifier
+  - productId: num (was int) - Associated product
+  - createdAt/updatedAt: DateTime - Timestamps
+
+**Section sources**
+- [products_model.dart:1-363](file://lib/features/home/models/products_model.dart#L1-L363)
+- [response.json:1-1344](file://response.json#L1-L1344)
+
+### Enhanced Dimension Fields
+The product model now includes comprehensive dimension data with multiple measurement units:
+
+- **Weight Measurements**:
+  - weight: num - Raw weight value
+  - weight_kg: num - Weight in kilograms
+
+- **Dimension Measurements**:
+  - length_cm: num - Length in centimeters
+  - width_cm: num - Width in centimeters
+  - height_cm: num - Height in centimeters
+
+**Section sources**
+- [products_model.dart:45:45](file://lib/features/home/models/products_model.dart#L45-L45)
+- [response.json:19:25](file://response.json#L19-L25)
+
+### Product Types Model
+- **ProductTypesModel**:
+  - data: List<ProductType> - Array of furniture types
+  - Each ProductType contains id: num and name: string
+
+**Section sources**
+- [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
+
+### Rooms Model
+- **RoomsModel**:
+  - data: List<Rooms>? - Optional array of room entities
+  - Each Rooms entity contains id: num?, name: string?, imageUrl: string?
+
+**Section sources**
+- [rooms_model.dart:1-45](file://lib/features/home/models/rooms_model.dart#L1-L45)
+
+## Pagination Support
+
+### Links Class
+The Links class provides navigation URLs for paginated responses:
+
+- **Properties**:
+  - first: String? - URL for first page
+  - last: String? - URL for last page
+  - prev: String? - URL for previous page
+  - next: String? - URL for next page
+
+**Section sources**
+- [products_model.dart:276-297](file://lib/features/home/models/products_model.dart#L276-L297)
+
+### Meta Class
+The Meta class contains pagination metadata:
+
+- **Properties**:
+  - currentPage: int - Current page number
+  - from: int - First item index
+  - lastPage: int - Total number of pages
+  - links: List<Link>? - Page navigation links
+  - path: String - Base API path
+  - perPage: int - Items per page
+  - to: int - Last item index
+  - total: int - Total items count
+
+**Section sources**
+- [products_model.dart:299-345](file://lib/features/home/models/products_model.dart#L299-L345)
+
+### Link Class
+Individual page navigation elements:
+
+- **Properties**:
+  - url: String? - Page URL
+  - label: String - Display label
+  - active: bool - Whether page is current
+
+**Section sources**
+- [products_model.dart:347-362](file://lib/features/home/models/products_model.dart#L347-L362)
+
+### Repository Implementation
+The product catalog uses enhanced repository pattern with pagination support:
+
+- **GetProductsByTypeRepository**:
+  - Executes GET requests with pagination parameters
+  - Returns ProductsModel with Links and Meta
+  - Supports furniture type filtering
+
+- **GetProductTypeRepository**:
+  - Fetches available furniture types
+  - Returns ProductTypesModel
+
+**Section sources**
+- [get_products_by_type_repo.dart:1-22](file://lib/features/home/repositories/get_products_by_type_repo.dart#L1-L22)
+- [get_product_type_repo.dart:1-20](file://lib/features/home/repositories/get_product_type_repo.dart#L1-L20)
+
+### Controller Implementation
+Controllers manage pagination state and data loading:
+
+- **GetProductsByTypeController**:
+  - Manages ProductsModel reactive state
+  - Handles loading states
+  - Processes pagination responses
+
+- **GetProductTypesController**:
+  - Manages ProductTypesModel reactive state
+  - Auto-selects first product type
+  - Triggers product loading
+
+**Section sources**
+- [get_products_by_type_controller.dart:1-27](file://lib/features/home/controller/get_products_by_type_controller.dart#L1-L27)
+- [get_product_types_controller.dart:1-38](file://lib/features/home/controller/get_product_types_controller.dart#L1-L38)
+
 ## Dependency Analysis
 - External libraries:
   - http: for HTTP requests
@@ -330,6 +508,7 @@ OC->>OC : "Set isLoading=false"
   - Network layer depends on NetworkLinks for base URL.
   - Controllers depend on repositories and models.
   - Models are decoupled and used across features.
+  - Product models depend on enhanced pagination classes.
 
 ```mermaid
 graph LR
@@ -343,16 +522,20 @@ NETG --> EL["ErrorModel"]
 NETP["PostWithResponse"] --> H
 NETP --> F
 NETP --> EL
-OC["OrderController"] --> ORD["OrdersModel (via repo)"]
-TC["TransactionController"] --> TRX["TransactionModel"]
+PC["GetProductsByTypeController"] --> PM["ProductsModel"]
+PTC["GetProductTypesController"] --> PTM["ProductTypesModel"]
+PM --> L["Links"]
+PM --> M["Meta"]
+M --> L2["Link"]
 ```
 
 **Diagram sources**
 - [pubspec.yaml:30-66](file://pubspec.yaml#L30-L66)
 - [get_network.dart:1-39](file://lib/core/data/networks/get_network.dart#L1-L39)
 - [post_with_response.dart:1-45](file://lib/core/data/networks/post_with_response.dart#L1-L45)
-- [order_controller.dart:1-41](file://lib/features/order/controllers/order_controller.dart#L1-L41)
-- [transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
+- [get_products_by_type_controller.dart:1-27](file://lib/features/home/controller/get_products_by_type_controller.dart#L1-L27)
+- [get_product_types_controller.dart:1-38](file://lib/features/home/controller/get_product_types_controller.dart#L1-L38)
+- [products_model.dart:276-362](file://lib/features/home/models/products_model.dart#L276-L362)
 
 **Section sources**
 - [pubspec.yaml:30-66](file://pubspec.yaml#L30-L66)
@@ -364,13 +547,21 @@ TC["TransactionController"] --> TRX["TransactionModel"]
 - Serialization:
   - Keep fromJson lightweight; avoid unnecessary transformations.
   - Use typed fields to prevent runtime parsing errors.
+  - Enhanced num-based types provide better precision for pricing calculations.
 - Reactive state:
   - Prefer Rx fields for minimal UI rebuilds; avoid frequent deep copies.
+  - Pagination-aware controllers should implement proper loading state management.
 - Caching:
   - Consider in-memory caching for frequently accessed lists (e.g., transactions).
   - Persist critical user data locally using get_storage for offline resilience.
+  - Implement intelligent caching strategies for product catalogs with pagination.
 - Pagination:
   - Use currentPage and totalPages to limit list rendering and improve scroll performance.
+  - Implement lazy loading for large product catalogs.
+  - Cache pagination metadata to reduce network requests.
+- Data Precision:
+  - Num-based types ensure accurate financial calculations.
+  - Dimension fields with decimal precision support precise measurements.
 
 ## Troubleshooting Guide
 - Error handling:
@@ -380,6 +571,12 @@ TC["TransactionController"] --> TRX["TransactionModel"]
   - JSON parsing errors: Ensure fromJson aligns with server response shape.
   - Authentication failures: Verify headers and tokens; check idToken and uid fields in GoogleUserInfoModel.
   - UI state inconsistencies: Confirm reactive updates occur after Either.fold completion.
+  - Pagination errors: Verify Links and Meta classes match server response structure.
+  - Type conversion errors: Ensure num-based fields handle both integer and decimal values correctly.
+- Product catalog issues:
+  - Dimension parsing: Verify dimensional data matches expected format.
+  - Pagination navigation: Check that Links URLs are properly formatted.
+  - Price calculations: Validate num-based pricing maintains accuracy across operations.
 
 **Section sources**
 - [error_model.dart:1-15](file://lib/core/data/global_models/error_model.dart#L1-L15)
@@ -389,20 +586,31 @@ TC["TransactionController"] --> TRX["TransactionModel"]
 - [transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
 
 ## Conclusion
-The ZB-DEZINE application employs a clean separation of concerns with well-defined data models, a robust network layer using Either semantics, and reactive controllers. The models are straightforward and suitable for JSON serialization/deserialization, with clear extension points for validation and transformation. The architecture supports scalable growth across features like AI design, orders, and transactions.
+The ZB-DEZINE application employs a clean separation of concerns with well-defined data models, a robust network layer using Either semantics, and reactive controllers. The major restructuring to num-based types enhances precision for pricing and measurements, while the addition of comprehensive pagination support with Links and Meta classes provides robust navigation for large product catalogs. The enhanced dimension fields support precise product specifications, and the improved data models are suitable for JSON serialization/deserialization with clear extension points for validation and transformation. The architecture supports scalable growth across features like AI design, orders, transactions, and the comprehensive product catalog system.
 
 ## Appendices
 - API Integration Patterns:
   - GET: Use GetNetwork.getData with a fromJson function to parse responses.
   - POST: Use PostWithResponse.postData with headers and body; parse response via fromJson.
+  - Pagination: ProductsModel automatically includes Links and Meta for seamless navigation.
 - Request/Response Schemas:
   - User Profile: Wrapper with nested data object; fields include identifiers, contact info, and timestamps.
   - AI Design: Minimal DTO with id, type, and generation date.
   - Credit Transaction: Title, date, and numeric amount.
+  - Product Catalog: Enhanced ProductsModel with num-based types, dimension fields, and pagination support.
 - Data Lifecycle:
   - Fetch → Parse → Hydrate UI → Persist if needed → Invalidate cache on refresh.
+  - Pagination: Load initial page → Handle navigation → Update reactive state.
 - Security:
   - Transport sensitive fields securely; avoid logging raw payloads.
   - Validate inputs using shared validators before sending to APIs.
+  - Enhanced type safety reduces risk of data corruption.
 - Migration Approaches:
   - Introduce breaking changes behind feature flags; maintain backward-compatible fromJson for graceful degradation.
+  - Num-based type migration requires careful testing of financial calculations.
+  - Pagination implementation should maintain compatibility with existing UI components.
+- Performance Optimization:
+  - Implement pagination-aware loading strategies.
+  - Use num-based types for precise financial calculations.
+  - Leverage Links and Meta classes for efficient navigation.
+  - Cache pagination metadata to reduce network overhead.

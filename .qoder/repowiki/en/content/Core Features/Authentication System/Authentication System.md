@@ -45,12 +45,10 @@
 
 ## Update Summary
 **Changes Made**
-- Added comprehensive Google Login Authentication System with new GoogleLoginController, GoogleLoginModel, and GoogleLoginRepository components
-- Enhanced Firebase integration with platform-specific configurations for Android and iOS
-- Integrated Google Sign-In functionality with Firebase Authentication
-- Added Google user info model for standardized user data handling
-- Implemented Google login button widget with loading states and error handling
-- Added logout functionality with repository pattern
+- Enhanced Firebase Google Login security by implementing Firebase ID token authentication instead of Google OAuth tokens
+- Added new `getCurrentUserIdToken()` helper method for retrieving current user Firebase ID tokens
+- Improved security by removing debug token printing from authentication flows
+- Updated Google authentication flow to use Firebase ID tokens for enhanced security and reliability
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -64,7 +62,7 @@
 9. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the Authentication System feature of the application. It covers the complete user authentication workflow from onboarding, registration, login, email verification, OTP verification, password reset, and user mode selection (client/provider). The system now includes a comprehensive Google Login Authentication System with enhanced Firebase integration supporting platform-specific configurations for Android and iOS. It also explains the MVVM architecture implemented with GetX controllers, view bindings, and state management patterns, along with integration points for Firebase Authentication and Google Sign-In.
+This document describes the Authentication System feature of the application. It covers the complete user authentication workflow from onboarding, registration, login, email verification, OTP verification, password reset, and user mode selection (client/provider). The system now includes a comprehensive Google Login Authentication System with enhanced Firebase integration supporting platform-specific configurations for Android and iOS. The authentication system has been significantly enhanced with improved security measures, including the use of Firebase ID tokens instead of Google OAuth tokens, and includes a new helper method for retrieving current user Firebase ID tokens.
 
 ## Project Structure
 The authentication feature is organized under the features/auth package with clear separation of concerns:
@@ -189,7 +187,7 @@ FGAS --> SV
 - Email Verification: dedicated view and controller for verifying email after registration.
 - OTP Verification: OTP entry screen and controller coordinating verification steps.
 - Password Reset: forgot password view/controller and repository for initiating reset; new password view/controller for setting a new password.
-- Google Sign-In: comprehensive service wrapper integrating Firebase Auth with Google Sign-In, including user info model and repository pattern.
+- Google Sign-In: comprehensive service wrapper integrating Firebase Auth with Google Sign-In, including user info model and repository pattern with enhanced security using Firebase ID tokens.
 - Logout: repository-driven logout functionality with token cleanup and navigation.
 
 **Section sources**
@@ -209,7 +207,7 @@ FGAS --> SV
 - [lib/features/auth/controller/forgot_password_controller.dart](file://lib/features/auth/controller/forgot_password_controller.dart)
 - [lib/features/auth/views/new_password_view.dart](file://lib/features/auth/views/new_password_view.dart)
 - [lib/features/auth/controller/new_password_controller.dart](file://lib/features/auth/controller/new_password_controller.dart)
-- [lib/core/services/firebase_google_auth.dart:6-69](file://lib/core/services/firebase_google_auth.dart#L6-L69)
+- [lib/core/services/firebase_google_auth.dart:6-83](file://lib/core/services/firebase_google_auth.dart#L6-L83)
 - [lib/features/auth/controller/google_login_controller.dart:1-38](file://lib/features/auth/controller/google_login_controller.dart#L1-L38)
 - [lib/features/auth/models/google_login_model.dart:1-263](file://lib/features/auth/models/google_login_model.dart#L1-L263)
 - [lib/features/auth/repositories/google_login_repo.dart:1-30](file://lib/features/auth/repositories/google_login_repo.dart#L1-L30)
@@ -457,12 +455,16 @@ Ctrl->>Nav : navigate to BottomNav
 - [lib/features/auth/views/signin_view.dart:17-93](file://lib/features/auth/views/signin_view.dart#L17-L93)
 - [lib/features/auth/repositories/login_repo.dart](file://lib/features/auth/repositories/login_repo.dart)
 
-### Google Login Authentication System
-- **New Component**: GoogleLoginController manages Google authentication flow with reactive loading states.
-- **New Component**: GoogleLoginRepository handles HTTP requests for Google authentication with proper headers and token handling.
-- **New Component**: GoogleLoginModel provides comprehensive user data structures including nested User, TokenResponse, and ProviderData models.
-- **Enhanced Service**: FirebaseGoogleAuthService now returns standardized GoogleUserInfoModel for consistent data handling.
-- **Integration**: Google login button in OnboardLogin widget integrates with both Firebase service and custom GoogleLoginController.
+### Enhanced Google Login Authentication System
+**Updated** The Google Login Authentication System has been significantly enhanced with improved security measures and better token management.
+
+- **Enhanced Security**: GoogleLoginController now manages Google authentication flow with reactive loading states and uses Firebase ID tokens instead of Google OAuth tokens for improved security.
+- **Improved Token Management**: GoogleLoginRepository handles HTTP requests for Google authentication with proper headers and token handling using Firebase ID tokens.
+- **Comprehensive Data Models**: GoogleLoginModel provides comprehensive user data structures including nested User, TokenResponse, and ProviderData models with enhanced security.
+- **Standardized User Info**: FirebaseGoogleAuthService now returns standardized GoogleUserInfoModel with Firebase ID tokens for consistent data handling.
+- **Security Enhancement**: All debug token printing has been removed for improved security in production environments.
+- **Helper Method**: Added `getCurrentUserIdToken()` method for retrieving current user Firebase ID tokens when needed.
+- **Integration**: Google login button in OnboardLogin widget integrates with both Firebase service and custom GoogleLoginController using enhanced security.
 
 ```mermaid
 sequenceDiagram
@@ -475,9 +477,9 @@ participant Storage as "StorageService"
 participant Nav as "Navigator"
 User->>OLW : Tap Continue With Google
 OLW->>FGAS : signInWithGoogle()
-FGAS-->>OLW : GoogleUserInfoModel
+FGAS-->>OLW : GoogleUserInfoModel (Firebase ID Token)
 OLW->>GLC : googleLogin(user)
-GLC->>GLR : execute(name, email, avatar, token)
+GLC->>GLR : execute(name, email, avatar, idToken)
 GLR-->>GLC : GoogleLoginModel with User and TokenResponse
 GLC->>Storage : write(tokenKey, accessToken)
 GLC->>Nav : navigate to BottomNav
@@ -496,7 +498,7 @@ GLC->>Nav : navigate to BottomNav
 - [lib/features/auth/repositories/google_login_repo.dart:1-30](file://lib/features/auth/repositories/google_login_repo.dart#L1-L30)
 - [lib/core/data/global_models/google_user_info_model.dart:1-21](file://lib/core/data/global_models/google_user_info_model.dart#L1-L21)
 - [lib/features/auth/widgets/onboard_login.dart:1-85](file://lib/features/auth/widgets/onboard_login.dart#L1-L85)
-- [lib/core/services/firebase_google_auth.dart:6-69](file://lib/core/services/firebase_google_auth.dart#L6-L69)
+- [lib/core/services/firebase_google_auth.dart:6-83](file://lib/core/services/firebase_google_auth.dart#L6-L83)
 
 ### OTP Verification
 - OTP view/controller coordinates user input and verification submission.
@@ -583,10 +585,14 @@ LGC->>Nav : navigate to SignInView
 - [lib/features/auth/controller/logout_controller.dart:1-30](file://lib/features/auth/controller/logout_controller.dart#L1-L30)
 - [lib/features/auth/repositories/logout_repo.dart:1-21](file://lib/features/auth/repositories/logout_repo.dart#L1-L21)
 
-### Google Sign-In Integration
-- Service wrapper integrates Google Sign-In with Firebase Auth.
-- Provides sign-in and sign-out operations returning user info or null on failure.
-- Enhanced with platform-specific configurations for Android and iOS.
+### Enhanced Google Sign-In Integration
+**Updated** The Google Sign-In integration has been enhanced with improved security measures and better token management.
+
+- **Enhanced Security**: Service wrapper integrates Google Sign-In with Firebase Auth using Firebase ID tokens instead of Google OAuth tokens for improved security.
+- **Improved Token Handling**: Provides sign-in and sign-out operations returning user info with Firebase ID tokens or null on failure.
+- **Security Enhancement**: All debug token printing has been removed for improved security in production environments.
+- **Helper Method**: Added `getCurrentUserIdToken()` method for retrieving current user Firebase ID tokens when needed.
+- **Platform-specific Optimizations**: Enhanced with platform-specific configurations for Android and iOS using Firebase ID tokens.
 
 ```mermaid
 sequenceDiagram
@@ -599,9 +605,9 @@ User->>View : Tap Continue With Google
 View->>FGAS : signInWithGoogle()
 FGAS->>GSI : signIn()
 GSI-->>FGAS : GoogleSignInAccount
-FGAS->>FA : signInWithCredential(idToken, accessToken)
-FA-->>FGAS : UserCredential
-FGAS-->>View : GoogleUserInfoModel or null
+FGAS->>FA : signInWithCredential(idToken)
+FA-->>FGAS : UserCredential (Firebase ID Token)
+FGAS-->>View : GoogleUserInfoModel with Firebase ID Token or null
 ```
 
 **Diagram sources**
@@ -609,16 +615,16 @@ FGAS-->>View : GoogleUserInfoModel or null
 - [lib/features/auth/views/signin_view.dart:73-86](file://lib/features/auth/views/signin_view.dart#L73-L86)
 
 **Section sources**
-- [lib/core/services/firebase_google_auth.dart:6-69](file://lib/core/services/firebase_google_auth.dart#L6-L69)
+- [lib/core/services/firebase_google_auth.dart:6-83](file://lib/core/services/firebase_google_auth.dart#L6-L83)
 - [lib/features/auth/views/signin_view.dart:73-86](file://lib/features/auth/views/signin_view.dart#L73-L86)
 
 ## Dependency Analysis
 - Bindings: AuthBindings wires controllers and repositories for lazy loading.
-- OnboardBindings: New binding specifically for Google authentication components.
+- OnboardBindings: New binding specifically for Google authentication components with enhanced security.
 - Controllers depend on repositories and shared services (storage, routes).
 - Views depend on controllers and reactive state via Obx.
 - Models are consumed by repositories and passed to APIs.
-- Google authentication components integrate with Firebase configuration.
+- Google authentication components integrate with Firebase configuration using Firebase ID tokens.
 
 ```mermaid
 graph TB
@@ -662,8 +668,9 @@ GLR --> GLM["GoogleLoginModel"]
 - Gesture handling: Clamp drag offsets and throttle animations to prevent excessive recomposition.
 - Token persistence: Persist tokens efficiently to avoid repeated login attempts.
 - Network calls: Debounce form submissions and show loading indicators to improve UX and reduce redundant requests.
-- **New**: Google authentication caching: Store user tokens locally to minimize repeated authentication flows.
-- **New**: Platform-specific optimizations: Leverage native Google Sign-In SDKs for better performance on Android/iOS.
+- **Enhanced Security**: Google authentication caching: Store user tokens locally to minimize repeated authentication flows using Firebase ID tokens.
+- **Platform-specific Optimizations**: Leverage native Google Sign-In SDKs for better performance on Android/iOS with enhanced security.
+- **Security Optimization**: Removed debug token printing to improve security and reduce potential information leakage.
 
 ## Troubleshooting Guide
 - Authentication errors: Catch and surface user-friendly messages via snackbars; log underlying exceptions for diagnostics.
@@ -671,9 +678,11 @@ GLR --> GLM["GoogleLoginModel"]
 - Navigation issues: Verify route names and binding registrations to prevent runtime navigation errors.
 - Google sign-in failures: Handle cancellation and error cases gracefully; confirm Google Play services availability on Android devices.
 - Token persistence: Confirm storage keys and secure token handling to prevent unauthorized access.
-- **New**: Google authentication issues: Verify Firebase configuration for both Android and iOS platforms; check Google Services JSON and Plist files.
-- **New**: Platform-specific problems: Ensure proper Firebase initialization for each platform with correct configuration values.
-- **New**: Google login errors: Check network connectivity, verify OAuth client IDs, and ensure proper Firebase Auth configuration.
+- **Enhanced Security Issues**: Verify Firebase configuration for both Android and iOS platforms; check Google Services JSON and Plist files.
+- **Platform-specific Problems**: Ensure proper Firebase initialization for each platform with correct configuration values.
+- **Google Login Errors**: Check network connectivity, verify OAuth client IDs, and ensure proper Firebase Auth configuration.
+- **Firebase ID Token Issues**: Verify that Firebase ID tokens are being properly retrieved and used instead of Google OAuth tokens.
+- **Security Concerns**: Ensure no debug token printing is occurring in production builds.
 
 **Section sources**
 - [lib/features/auth/controller/signin_controller.dart:25-34](file://lib/features/auth/controller/signin_controller.dart#L25-L34)
@@ -683,4 +692,8 @@ GLR --> GLM["GoogleLoginModel"]
 - [lib/firebase_options.dart:18-69](file://lib/firebase_options.dart#L18-L69)
 
 ## Conclusion
-The Authentication System leverages a clean MVVM architecture with GetX for state management and DI. It supports a complete user journey from onboarding to verified login, with robust integration for Google Sign-In and extensible repositories for backend interactions. The newly added Google Login Authentication System provides comprehensive support for social authentication with proper error handling, token management, and platform-specific configurations for Android and iOS. The modular design ensures maintainability and scalability across authentication flows, with enhanced security considerations and performance optimizations for modern mobile applications.
+The Authentication System leverages a clean MVVM architecture with GetX for state management and DI. It supports a complete user journey from onboarding to verified login, with robust integration for Google Sign-In and extensible repositories for backend interactions. The newly added Google Login Authentication System provides comprehensive support for social authentication with proper error handling, token management, and platform-specific configurations for Android and iOS. 
+
+**Key Enhancements**: The system has been significantly enhanced with improved security measures, including the use of Firebase ID tokens instead of Google OAuth tokens, removal of debug token printing for better security, and addition of the `getCurrentUserIdToken()` helper method for retrieving current user Firebase ID tokens. These improvements ensure more secure authentication flows while maintaining the modular design that ensures maintainability and scalability across authentication flows.
+
+The enhanced security measures, combined with the existing comprehensive feature set, provide a robust foundation for modern mobile applications requiring secure and reliable authentication systems.

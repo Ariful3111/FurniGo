@@ -26,10 +26,7 @@ class GoogleLoginController extends GetxController {
         ErrorSnackbar.show(description: error.message.toString());
       },
       (data) async {
-        await storage.write(
-          key: storage.tokenKey,
-          value: data.user?.stsTokenManager?.accessToken,
-        );
+        await storage.write(key: storage.tokenKey, value: user.idToken);
         SuccessSnackbar.show(description: 'Login Successful');
         Get.toNamed(AppRoutes.bottomNav);
       },

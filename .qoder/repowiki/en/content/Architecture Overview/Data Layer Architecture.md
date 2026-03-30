@@ -18,7 +18,16 @@
 - [home_bindings.dart](file://features/home/bindings/home_bindings.dart)
 - [order_bindings.dart](file://features/order/bindings/order_bindings.dart)
 - [rental_bindings.dart](file://features/rental/bindings/rental_bindings.dart)
+- [products_model.dart](file://features/home/models/products_model.dart)
+- [product_types_model.dart](file://features/home/models/product_types_model.dart)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Enhanced error handling documentation with debugPrint statements in network layer
+- Updated type safety documentation to reflect consistent num types usage
+- Added pagination support documentation for products API response handling
+- Updated model type definitions to show improved type safety patterns
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -34,6 +43,8 @@
 
 ## Introduction
 This document describes the ZB-DEZINE data layer architecture with a focus on network services, local storage, and integration patterns. It explains HTTP client configuration, request/response handling, error management, and how repositories and controllers consume these services. It also covers data serialization/deserialization, offline handling via persistent storage, and practical patterns for caching and synchronization.
+
+**Updated** Enhanced error handling with debugPrint statements and improved type safety through consistent num types usage across the application.
 
 ## Project Structure
 The data layer is organized under core/data with subfolders for networks and local storage, and global models for domain entities. Dependency injection registers services globally for use across features.
@@ -55,6 +66,8 @@ end
 EM["error_model.dart"]
 UPM["user_profile_model.dart"]
 GUI["google_user_info_model.dart"]
+PM["products_model.dart"]
+PTM["product_types_model.dart"]
 end
 subgraph "DI"
 DI["dependency_injection.dart"]
@@ -77,6 +90,8 @@ G --> EM
 PW --> EM
 PWO --> EM
 D --> EM
+PM --> EM
+PTM --> EM
 ```
 
 **Diagram sources**
@@ -92,6 +107,8 @@ D --> EM
 - [error_model.dart:1-15](file://core/data/global_models/error_model.dart#L1-L15)
 - [user_profile_model.dart:1-72](file://core/data/global_models/user_profile_model.dart#L1-L72)
 - [google_user_info_model.dart:1-21](file://core/data/global_models/google_user_info_model.dart#L1-L21)
+- [products_model.dart:1-274](file://features/home/models/products_model.dart#L1-L274)
+- [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
 
 **Section sources**
 - [pubspec.yaml:44-46](file://pubspec.yaml#L44-L46)
@@ -104,13 +121,15 @@ D --> EM
 - Local storage: wrapper around GetStorage for token and arbitrary key-value persistence.
 - Headers manager: composes Content-Type, Accept, and Authorization headers using stored tokens.
 - Error model: unified error representation for HTTP and unknown failures.
-- Domain models: typed models for user profile and Google user info.
+- Domain models: typed models for user profile and Google user info with enhanced type safety.
+- Pagination models: Products model includes Links and Meta for pagination support.
 
 Key responsibilities:
-- Network classes encapsulate HTTP calls, status checks, JSON parsing, and error wrapping.
+- Network classes encapsulate HTTP calls, status checks, JSON parsing, and error wrapping with enhanced debugging.
 - Storage service persists tokens and other small data.
 - Headers manager injects authentication and content-type headers.
 - Error model standardizes error handling across services.
+- Models use consistent num types for better type safety and numeric precision.
 
 **Section sources**
 - [networks_path.dart:1-3](file://core/constant/networks_path.dart#L1-L3)
@@ -123,6 +142,8 @@ Key responsibilities:
 - [error_model.dart:1-15](file://core/data/global_models/error_model.dart#L1-L15)
 - [user_profile_model.dart:1-72](file://core/data/global_models/user_profile_model.dart#L1-L72)
 - [google_user_info_model.dart:1-21](file://core/data/global_models/google_user_info_model.dart#L1-L21)
+- [products_model.dart:1-274](file://features/home/models/products_model.dart#L1-L274)
+- [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
 
 ## Architecture Overview
 The data layer follows a layered pattern:
@@ -156,6 +177,8 @@ subgraph "Support"
 HM["HeadersManager"]
 EM["ErrorModel"]
 NP["NetworkLinks.baseUrl"]
+PM["ProductsModel"]
+PTM["ProductTypesModel"]
 end
 HC --> HR
 OC --> OR
@@ -184,6 +207,8 @@ GN --> HM
 PWR --> HM
 PWO --> HM
 DN --> HM
+PM --> EM
+PTM --> EM
 ```
 
 **Diagram sources**
@@ -198,14 +223,16 @@ DN --> HM
 - [storage_service.dart:3-22](file://core/data/local/storage_service.dart#L3-L22)
 - [networks_path.dart:1-3](file://core/constant/networks_path.dart#L1-L3)
 - [error_model.dart:1-15](file://core/data/global_models/error_model.dart#L1-L15)
+- [products_model.dart:1-274](file://features/home/models/products_model.dart#L1-L274)
+- [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
 
 ## Detailed Component Analysis
 
 ### Network Service Classes
-- GetNetwork: performs HTTP GET requests, decodes JSON, and returns typed data or an error.
-- PostWithResponse: performs HTTP POST with a typed response decoder.
-- PostWithoutResponse: performs HTTP POST without expecting a response body.
-- DeleteNetwork: performs HTTP DELETE and returns success or an error.
+- GetNetwork: performs HTTP GET requests, decodes JSON, and returns typed data or an error with enhanced debugging.
+- PostWithResponse: performs HTTP POST with a typed response decoder and improved error logging.
+- PostWithoutResponse: performs HTTP POST without expecting a response body with debug output.
+- DeleteNetwork: performs HTTP DELETE and returns success or an error with comprehensive error handling.
 
 Each class:
 - Uses the base URL constant.
@@ -213,20 +240,24 @@ Each class:
 - Validates status codes (200, 201, 202) as success.
 - Parses JSON bodies and constructs typed models via fromJson.
 - Wraps errors using ErrorModel for both HTTP and unknown exceptions.
+- Includes debugPrint statements for better error tracking and debugging.
 
 ```mermaid
 classDiagram
 class GetNetwork {
 +String baseUrl
 +getData<T>(url, fromJson, headers) Future~Either<ErrorModel, T>~
++debugPrint(error) void
 }
 class PostWithResponse {
 +String baseUrl
 +postData<T>(url, headers, body, fromJson) Future~Either<ErrorModel, T>~
++print(responseBody) void
 }
 class PostWithoutResponse {
 +String baseUrl
 +postData(url, body, headers) Future~Either<ErrorModel, bool>~
++debugPrint(responseBody) void
 }
 class DeleteNetwork {
 +String baseUrl
@@ -263,6 +294,7 @@ DeleteNetwork --> ErrorModel : "returns"
 - Requests: constructed using http.client with Uri.parse(baseUrl + url).
 - Responses: validated by status codes; successful responses are parsed and mapped to typed models.
 - Errors: captured via try/catch blocks and converted to ErrorModel instances.
+- Debugging: enhanced with debugPrint statements for better error tracking and development experience.
 
 ```mermaid
 sequenceDiagram
@@ -278,8 +310,10 @@ S-->>H : "token"
 H-->>N : "headers"
 N->>N : "HTTP request with Uri.parse(baseUrl + url)"
 alt "success (200/201/202)"
+N->>N : "debugPrint('Success response')"
 N-->>C : "Right(typed result)"
 else "non-success"
+N->>N : "debugPrint('Error response : ${response.body}')"
 N->>E : "construct fromHttp or fromUnknown"
 N-->>C : "Left(ErrorModel)"
 end
@@ -326,9 +360,13 @@ ComposeNoAuth --> End
 ### Data Serialization/Deserialization Patterns
 - Typed models: models expose fromJson and toJson for encoding/decoding.
 - Network services pass a fromJson function to decode responses into typed models.
+- Enhanced type safety: models now use num type instead of int for better numeric precision.
+- Pagination support: Products model includes Links and Meta classes for pagination handling.
 - Example models:
   - UserProfileModel with nested Data.
   - GoogleUserInfoModel for Google sign-in data.
+  - ProductTypesModel for furniture type listings.
+  - ProductsModel with pagination support for product listings.
 
 ```mermaid
 classDiagram
@@ -359,16 +397,62 @@ class GoogleUserInfoModel {
 +String uid
 +toString() String
 }
+class ProductTypesModel {
++ProductType[] data
++fromJson(json)
++toJson() Map
+}
+class ProductType {
++num id
++String name
++fromJson(json)
++toJson() Map
+}
+class ProductsModel {
++Product[] data
++Links? links
++Meta? meta
++fromJson(json)
++toJson() Map
+}
+class Links {
++String? first
++String? last
++String? prev
++String? next
++fromJson(json)
++toJson() Map
+}
+class Meta {
++int currentPage
++int from
++int lastPage
++Link[]? links
++String path
++int perPage
++int to
++int total
++fromJson(json)
++toJson() Map
+}
 UserProfileModel --> Data : "contains"
+ProductTypesModel --> ProductType : "contains"
+ProductsModel --> Product : "contains"
+ProductsModel --> Links : "contains"
+ProductsModel --> Meta : "contains"
 ```
 
 **Diagram sources**
 - [user_profile_model.dart:1-72](file://core/data/global_models/user_profile_model.dart#L1-L72)
 - [google_user_info_model.dart:1-21](file://core/data/global_models/google_user_info_model.dart#L1-L21)
+- [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
+- [products_model.dart:1-363](file://features/home/models/products_model.dart#L1-L363)
 
 **Section sources**
 - [user_profile_model.dart:1-72](file://core/data/global_models/user_profile_model.dart#L1-L72)
 - [google_user_info_model.dart:1-21](file://core/data/global_models/google_user_info_model.dart#L1-L21)
+- [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
+- [products_model.dart:1-363](file://features/home/models/products_model.dart#L1-L363)
 
 ### Offline Data Handling
 - Persistent token storage enables offline re-authentication when the app restarts.
@@ -403,6 +487,7 @@ App->>Net : "use services after init"
 - Repositories use network services to fetch or mutate data.
 - Repositories may use StorageService for caching or offline behavior.
 - Network services return Either<ErrorModel, T>, allowing repositories to handle success and failure uniformly.
+- Enhanced error handling with debugPrint statements for better debugging experience.
 
 ```mermaid
 sequenceDiagram
@@ -413,10 +498,12 @@ participant Store as "StorageService"
 VC->>Repo : "request data"
 Repo->>Net : "perform HTTP call"
 alt "success"
+Net->>Net : "debugPrint('Request successful')"
 Net-->>Repo : "Right(typed data)"
 Repo->>Store : "optional cache"
 Repo-->>VC : "data"
 else "failure"
+Net->>Net : "debugPrint('Request failed : ${error.toString()}')"
 Net-->>Repo : "Left(ErrorModel)"
 Repo-->>VC : "error"
 end
@@ -439,8 +526,68 @@ end
 - Persistence: use StorageService for small, critical data like tokens.
 - Synchronization: upon successful network updates, update in-memory state and persist changes as needed.
 - Conflict handling: implement optimistic updates with rollback on error; or use server timestamps to reconcile.
+- Pagination support: use Links and Meta classes to handle paginated data efficiently.
 
-[No sources needed since this section provides general guidance]
+### Enhanced Type Safety and Numeric Precision
+**Updated** The application now uses consistent num types across models for better numeric precision and type safety:
+
+- Product models use num for IDs, prices, and quantities instead of int
+- Meta information includes integer pagination fields (currentPage, lastPage, total)
+- DefaultOptionId uses num for numeric identifiers
+- Category and FurnitureType models use num for ID fields
+
+This change improves type safety and prevents potential overflow issues with large numeric values.
+
+**Section sources**
+- [products_model.dart:251-274](file://features/home/models/products_model.dart#L251-L274)
+- [product_types_model.dart:23-37](file://features/home/models/product_types_model.dart#L23-L37)
+
+### Pagination Support for Products API
+**Updated** Products model now includes comprehensive pagination support:
+
+- Links class: handles pagination navigation (first, last, prev, next)
+- Meta class: contains pagination metadata (current_page, last_page, total, per_page, etc.)
+- Response structure: ProductsModel now includes links and meta alongside data
+- Integration: Repositories can leverage pagination for efficient data loading
+
+```mermaid
+classDiagram
+class ProductsModel {
++Product[] data
++Links? links
++Meta? meta
+}
+class Links {
++String? first
++String? last
++String? prev
++String? next
+}
+class Meta {
++int currentPage
++int from
++int lastPage
++Link[]? links
++String path
++int perPage
++int to
++int total
+}
+class Link {
++String? url
++String label
++bool active
+}
+ProductsModel --> Links : "contains"
+ProductsModel --> Meta : "contains"
+Meta --> Link : "contains"
+```
+
+**Diagram sources**
+- [products_model.dart:276-363](file://features/home/models/products_model.dart#L276-L363)
+
+**Section sources**
+- [products_model.dart:276-363](file://features/home/models/products_model.dart#L276-L363)
 
 ## Dependency Analysis
 - External libraries:
@@ -452,6 +599,7 @@ end
   - Network services depend on NetworkLinks and ErrorModel.
   - HeadersManager depends on StorageService.
   - Controllers depend on Repositories, which depend on Network services.
+  - Models depend on ErrorModel for serialization/deserialization.
 
 ```mermaid
 graph LR
@@ -469,6 +617,8 @@ PWO["post_without_response.dart"]
 DN["delete_network.dart"]
 EM["error_model.dart"]
 NP["networks_path.dart"]
+PM["products_model.dart"]
+PTM["product_types_model.dart"]
 end
 DI --> SS
 DI --> GN
@@ -484,6 +634,8 @@ GN --> EM
 PW --> EM
 PWO --> EM
 DN --> EM
+PM --> EM
+PTM --> EM
 ```
 
 **Diagram sources**
@@ -497,6 +649,8 @@ DN --> EM
 - [delete_network.dart:8-40](file://core/data/networks/delete_network.dart#L8-L40)
 - [error_model.dart:1-15](file://core/data/global_models/error_model.dart#L1-L15)
 - [networks_path.dart:1-3](file://core/constant/networks_path.dart#L1-L3)
+- [products_model.dart:1-363](file://features/home/models/products_model.dart#L1-L363)
+- [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
 
 **Section sources**
 - [pubspec.yaml:44-46](file://pubspec.yaml#L44-L46)
@@ -508,8 +662,7 @@ DN --> EM
 - Cache frequently accessed data in memory to reduce network latency.
 - Use pagination and selective field fetching to minimize payload sizes.
 - Avoid unnecessary UI rebuilds by structuring state updates efficiently.
-
-[No sources needed since this section provides general guidance]
+- Enhanced error logging helps identify performance bottlenecks during development.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -518,10 +671,15 @@ Common issues and resolutions:
   - Ensure HeadersManager flags align with endpoint requirements.
 - Unknown errors:
   - ErrorModel.fromUnknown() indicates exceptions outside HTTP parsing; inspect logs and network conditions.
+  - Enhanced debugPrint statements provide better error visibility.
 - Status code mismatches:
   - Confirm that 200/201/202 are considered success; adjust expectations per endpoint contract.
 - JSON parsing errors:
   - Ensure fromJson handles missing keys gracefully and matches server response shape.
+  - Enhanced type safety with num types reduces parsing errors for numeric values.
+- Pagination issues:
+  - Verify Links and Meta classes are properly populated from API responses.
+  - Check pagination parameters (page, per_page) in API requests.
 
 **Section sources**
 - [headers_manager.dart:9-21](file://core/data/networks/headers_manager.dart#L9-L21)
@@ -531,17 +689,22 @@ Common issues and resolutions:
 - [post_with_response.dart:14-43](file://core/data/networks/post_with_response.dart#L14-L43)
 - [post_without_response.dart:16-45](file://core/data/networks/post_without_response.dart#L16-L45)
 - [delete_network.dart:13-39](file://core/data/networks/delete_network.dart#L13-L39)
+- [products_model.dart:276-363](file://features/home/models/products_model.dart#L276-L363)
 
 ## Conclusion
-The ZB-DEZINE data layer cleanly separates concerns across network services, local storage, and headers management. It leverages Either for robust error handling, typed models for safe serialization/deserialization, and a DI system for easy integration across features. By combining in-memory caching, persistent storage, and clear request/response patterns, the architecture supports scalable offline-capable experiences.
+The ZB-DEZINE data layer cleanly separates concerns across network services, local storage, and headers management. It leverages Either for robust error handling, typed models for safe serialization/deserialization, and a DI system for easy integration across features. The enhanced error handling with debugPrint statements, improved type safety through consistent num types usage, and comprehensive pagination support make the architecture more robust, maintainable, and developer-friendly. By combining in-memory caching, persistent storage, and clear request/response patterns, the architecture supports scalable offline-capable experiences with better debugging capabilities.
 
 ## Appendices
 - API integration patterns:
   - Use HeadersManager.getHeaders with isAuth flag to compose Authorization headers.
   - Call network services with a fromJson function that maps server responses to typed models.
   - Wrap all calls with Either handling to propagate errors consistently.
+  - Leverage enhanced error logging for better debugging experience.
 - Offline handling:
   - Initialize StorageService during app startup and read tokens for seamless re-authentication.
   - Persist small, critical data (e.g., tokens) using StorageService; cache larger datasets in memory.
-
-[No sources needed since this section provides general guidance]
+  - Use pagination models for efficient data loading and caching strategies.
+- Type safety best practices:
+  - Use num types for numeric values to prevent overflow and improve precision.
+  - Implement proper error handling with debugPrint statements for better development experience.
+  - Ensure models handle nullable fields gracefully during deserialization.
