@@ -11,11 +11,17 @@ import 'package:zb_dezign/features/rent_request/controllers/rent_property_detail
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_review_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
+import 'package:zb_dezign/features/rent_request/repositories/step_zero_repo.dart';
 
 class RentBindings implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => RentRequestController());
+    Get.lazyPut(
+      () => RentRequestController(
+        stepZeroRepository: StepZeroRepository(postWithResponse: Get.find()),
+      ),
+    );
+    Get.lazyPut(() => RentRequestController(stepZeroRepository: Get.find()));
     Get.lazyPut(() => RentStepController());
     Get.lazyPut(() => RentPropertyTypeController());
     Get.lazyPut(() => RentPropertyDetailsController());

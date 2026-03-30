@@ -5,18 +5,17 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_submit_dialog.dart';
+import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentRequestNext extends StatelessWidget {
+class RentRequestNext extends GetWidget<RentStepController> {
   const RentRequestNext({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final stepController = Get.find<RentStepController>();
-
     return Obx(() {
       final isLastStep =
-          stepController.currentIndex.value == stepController.totalSteps - 1;
+          controller.currentIndex.value == controller.totalSteps - 1;
 
       return isLastStep
           ? RentHelper.myButton(
@@ -33,9 +32,13 @@ class RentRequestNext extends StatelessWidget {
                 color: AppColors.whiteColor,
               ),
             )
+          : controller.isLoading.value
+          ? ButtonLoading()
           : RentHelper.myButton(
               color: AppColors.primaryColor,
-              onTap: () => stepController.handleNextStep(),
+              onTap: () async {
+                await controller.handleNextStep();
+              },
               child: Row(
                 children: [
                   CustomPrimaryText(

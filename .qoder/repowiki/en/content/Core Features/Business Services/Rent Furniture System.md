@@ -5,6 +5,7 @@
 - [main.dart](file://lib/main.dart)
 - [app_routes.dart](file://lib/core/routes/app_routes.dart)
 - [rent_bindings.dart](file://lib/features/rent_request/bindings/rent_bindings.dart)
+- [rent_step_controller.dart](file://lib/features/rent_request/controllers/rent_step_controller.dart)
 - [rent_request_controller.dart](file://lib/features/rent_request/controllers/rent_request_controller.dart)
 - [rent_request_view.dart](file://lib/features/rent_request/views/rent_request_view.dart)
 - [rent_request_view_form.dart](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart)
@@ -15,14 +16,16 @@
 - [phone_validator.dart](file://lib/shared/extensions/validators/phone_validator.dart)
 - [rent_property_type_controller.dart](file://lib/features/rent_request/controllers/rent_property_type_controller.dart)
 - [rent_property_details_controller.dart](file://lib/features/rent_request/controllers/rent_property_details_controller.dart)
+- [rent_request_next.dart](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Updated controller directory structure reference from 'controller/' to 'controllers/' to reflect the reorganized plural form
-- Updated all import paths throughout Rent Request feature components to reflect new lib/features/rent_request/controllers/ directory
-- Enhanced view components with improved visual feedback and step navigation indicators
-- Added comprehensive coverage of the expanded controller architecture with specialized controllers for each form step
+- Updated controller architecture from monolithic RentRequestController to unified RentStepController with 10-step flow system
+- Replaced specialized controllers approach with centralized step management and validation logic
+- Enhanced navigation flow with improved step validation and loading states
+- Updated all import paths to reflect new RentStepController implementation
+- Streamlined controller dependencies with RentStepController as the primary orchestrator
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -38,10 +41,10 @@
 11. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the Rent Furniture System, focusing on the end-to-end rent request workflow from property listing creation to tenant approval. It explains the multi-step form process, controller architecture, view components, navigation flow, widget libraries, and business logic for pricing and agreements. The system is built with Flutter and uses GetX for state management and routing. The architecture now features a comprehensive controller system with specialized controllers for each form step, providing enhanced modularity and maintainability.
+This document describes the Rent Furniture System, focusing on the end-to-end rent request workflow from property listing creation to tenant approval. The system has undergone a major architectural transformation from a monolithic controller approach to a unified RentStepController with comprehensive 10-step flow management. The system implements a modular, reactive, and extensible workflow for collecting tenant and property information with enhanced validation logic and step-by-step navigation.
 
 ## Project Structure
-The Rent Furniture System resides under the features/rent_request module with a reorganized controller structure under the controllers/ directory. The system now includes specialized controllers for each form step, providing better separation of concerns and improved maintainability. The main application initializes theme, routing, and bindings, and delegates to feature-specific bindings for lazy loading controllers.
+The Rent Furniture System features a streamlined architecture with RentStepController as the central orchestrator managing the complete 10-step workflow. The system maintains specialized controllers for domain-specific logic while centralizing navigation and validation through the RentStepController.
 
 ```mermaid
 graph TB
@@ -49,8 +52,11 @@ subgraph "App Initialization"
 MAIN["main.dart<br/>Initialize DI, theme, routes"]
 ROUTES["app_routes.dart<br/>Define named routes"]
 END
-subgraph "Rent Request Feature Controllers"
-REQUEST_CONTROLLER["RentRequestController<br/>Main orchestrator & navigation"]
+subgraph "Centralized Step Management"
+STEP_CONTROLLER["RentStepController<br/>10-step flow orchestration"]
+END
+subgraph "Specialized Domain Controllers"
+REQUEST_CONTROLLER["RentRequestController<br/>Business form & validation"]
 PROPERTY_TYPE_CONTROLLER["RentPropertyTypeController<br/>Property type & use selection"]
 PROPERTY_DETAILS_CONTROLLER["RentPropertyDetailsController<br/>Space breakdown & counts"]
 FLOOR_PLAN_CONTROLLER["RentFloorPlanController<br/>Layout configuration"]
@@ -62,394 +68,369 @@ DELIVERY_CONTROLLER["RentDeliveryController<br/>Delivery arrangements"]
 REVIEW_CONTROLLER["RentReviewController<br/>Final review & submission"]
 ADDITIONAL_NOTE_CONTROLLER["RentAdditionalNoteController<br/>Additional notes"]
 END
-subgraph "Rent Request Feature Views"
-BINDINGS["rent_bindings.dart<br/>Lazy-load all controllers"]
+subgraph "View Components"
+BINDINGS["rent_bindings.dart<br/>Lazy-load controllers"]
 VIEW["RentRequestView<br/>UI container & navigation"]
 FORM["RentRequestViewForm<br/>Business info form"]
 PROPERTY_TYPE["RentPropertyTypeView<br/>Property type & use"]
 PROPERTY_DETAILS["RentPropertyDetailsView<br/>Space breakdown & fields"]
+NEXT_BUTTON["RentRequestNext<br/>Enhanced navigation"]
 END
 MAIN --> ROUTES
-ROUTER --> BINDINGS
-BINDINGS --> REQUEST_CONTROLLER
-REQUEST_CONTROLLER --> VIEW
+ROUTES --> BINDINGS
+BINDINGS --> STEP_CONTROLLER
+STEP_CONTROLLER --> REQUEST_CONTROLLER
+STEP_CONTROLLER --> PROPERTY_TYPE_CONTROLLER
+STEP_CONTROLLER --> PROPERTY_DETAILS_CONTROLLER
+VIEW --> STEP_CONTROLLER
+VIEW --> NEXT_BUTTON
 VIEW --> FORM
 VIEW --> PROPERTY_TYPE
 VIEW --> PROPERTY_DETAILS
-REQUEST_CONTROLLER --> PROPERTY_TYPE_CONTROLLER
-REQUEST_CONTROLLER --> PROPERTY_DETAILS_CONTROLLER
 ```
 
 **Diagram sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
 - [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
-- [rent_bindings.dart:14-29](file://lib/features/rent_request/bindings/rent_bindings.dart#L14-L29)
-- [rent_request_controller.dart:14-46](file://lib/features/rent_request/controllers/rent_request_controller.dart#L14-L46)
-- [rent_property_type_controller.dart:1-16](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L1-L16)
-- [rent_property_details_controller.dart:1-32](file://lib/features/rent_request/controllers/rent_property_details_controller.dart#L1-L32)
+- [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
+- [rent_step_controller.dart:15-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L34)
+- [rent_request_controller.dart:9-21](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L21)
 
 **Section sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
 - [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
-- [rent_bindings.dart:14-29](file://lib/features/rent_request/bindings/rent_bindings.dart#L14-L29)
+- [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
 
 ## Core Components
-- **RentRequestController**: Main orchestrator that manages current step index, form keys, and the ordered list of form widgets. Coordinates navigation between specialized controllers and holds text editing controllers for business and contact details.
-- **RentRequestView**: Enhanced UI container that renders the current step widget, handles previous/next navigation, displays step counters, and provides visual feedback through improved navigation indicators.
-- **RentRequestViewForm**: Collects business identification details with validation using shared validators for name, email, and phone fields.
-- **RentPropertyTypeController**: Specialized controller managing property type and use selections with dropdown options.
-- **RentPropertyDetailsController**: Manages property address fields, space breakdown configuration, and dynamic container counts.
-- **Enhanced Navigation Components**: Improved step navigation indicators and visual feedback systems.
+- **RentStepController**: Central orchestrator managing 10-step workflow with comprehensive validation logic, loading states, and step navigation. Handles step-specific validation and transitions between form widgets.
+- **RentRequestController**: Specialized controller managing business form data, validation, and initial submission to Step Zero Repository. Coordinates with RentStepController for step advancement.
+- **Enhanced Navigation Components**: RentRequestNext widget provides intelligent navigation with loading states and conditional rendering based on step position.
+- **Streamlined View Architecture**: RentRequestView delegates step rendering to RentStepController, providing a clean separation of concerns.
 
 **Section sources**
-- [rent_request_controller.dart:14-46](file://lib/features/rent_request/controllers/rent_request_controller.dart#L14-L46)
-- [rent_request_view.dart:15-78](file://lib/features/rent_request/views/rent_request_view.dart#L15-L78)
-- [rent_request_view_form.dart:13-112](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart#L13-L112)
-- [rent_property_type_controller.dart:1-16](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L1-L16)
-- [rent_property_details_controller.dart:1-32](file://lib/features/rent_request/controllers/rent_property_details_controller.dart#L1-L32)
+- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
+- [rent_request_controller.dart:9-69](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L69)
+- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
 
 ## Architecture Overview
-The system follows a layered architecture with enhanced controller specialization:
-- **Presentation Layer**: Views render UI and delegate navigation to the main controller, with specialized controllers handling domain-specific logic.
-- **State Management**: GetX controllers manage reactive state and navigation indices, with the main controller coordinating between specialized controllers.
-- **Validation Layer**: Shared validators enforce field rules for business details.
-- **Routing**: Named routes define navigation targets; bindings lazy-inject all specialized controllers.
+The system now follows a centralized step management architecture with RentStepController as the primary orchestrator:
+- **Centralized Flow Control**: RentStepController manages all 10 steps with dedicated validation logic for each step
+- **Specialized Domain Logic**: Individual controllers handle domain-specific data and validation
+- **Enhanced State Management**: Reactive variables for current step, loading states, and navigation control
+- **Streamlined Dependencies**: RentRequestController focuses solely on form validation and initial submission
 
 ```mermaid
 sequenceDiagram
 participant User as "User"
 participant View as "RentRequestView"
-participant MainController as "RentRequestController"
-participant FormController as "RentRequestViewForm"
-participant TypeController as "RentPropertyTypeController"
-participant DetailsController as "RentPropertyDetailsController"
+participant StepController as "RentStepController"
+participant RequestController as "RentRequestController"
 User->>View : Open Rent Request
-View->>MainController : Initialize currentIndex = 0
-View->>MainController : Render current widget
-MainController-->>View : RentRequestViewForm
-User->>FormController : Fill business details
-FormController->>MainController : Store values in TextEditingControllers
-User->>View : Tap Next
-View->>MainController : Increment currentIndex
-MainController-->>View : RentPropertyTypeView
-User->>TypeController : Select property type/use
-TypeController->>MainController : Update selectedPropertyType/use
-User->>View : Tap Next
-View->>MainController : Increment currentIndex
-MainController-->>View : RentPropertyDetailsView
-User->>DetailsController : Configure spaces & counts
-DetailsController->>MainController : Update space breakdown data
-User->>View : Final Review & Submit
+View->>StepController : Initialize currentIndex = 0
+View->>StepController : getCurrentWidget()
+StepController-->>View : RentRequestViewForm
+User->>RequestController : Fill business details
+RequestController->>RequestController : Validate form
+RequestController->>StepController : Advance to next step
+StepController-->>View : RentPropertyTypeView
+User->>StepController : Navigate next
+StepController->>StepController : Validate current step
+StepController-->>View : RentPropertyDetailsView
+User->>StepController : Final Review & Submit
+StepController->>StepController : Handle final step
 ```
 
 **Diagram sources**
-- [rent_request_view.dart:19-78](file://lib/features/rent_request/views/rent_request_view.dart#L19-L78)
-- [rent_request_controller.dart:24-35](file://lib/features/rent_request/controllers/rent_request_controller.dart#L24-L35)
-- [rent_property_type_controller.dart:3-16](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L3-L16)
-- [rent_property_details_controller.dart:4-32](file://lib/features/rent_request/controllers/rent_property_details_controller.dart#L4-L32)
+- [rent_request_view.dart:20-41](file://lib/features/rent_request/views/rent_request_view.dart#L20-L41)
+- [rent_step_controller.dart:36-73](file://lib/features/rent_request/controllers/rent_step_controller.dart#L36-L73)
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
 
 ## Detailed Component Analysis
 
-### RentRequestController
-**Updated** Enhanced with improved import paths reflecting the new controllers/ directory structure and expanded role as the main orchestrator.
+### RentStepController
+**Updated** Complete architectural transformation from monolithic approach to centralized step management with comprehensive validation logic.
 
 Responsibilities:
-- Manages current step index, form keys, and the ordered list of form widgets.
-- Holds text editing controllers for business and contact details.
-- Coordinates navigation between specialized controllers.
-- Initializes user profile data from ProfileController.
+- Manages 10-step workflow with centralized validation and navigation logic
+- Controls current step index with reactive state management
+- Handles step-specific validation through switch statement
+- Provides loading states and error handling for step transitions
+- Coordinates with specialized controllers for domain-specific data
 
-Navigation and state:
-- currentIndex drives which step is rendered from the comprehensive rentWidgets list.
-- Disposes all text editing controllers on teardown.
+Navigation and state management:
+- currentIndex drives step rendering from rentWidgets list
+- isLoading reactive variable controls loading states during transitions
+- totalSteps computed property provides step count for UI indicators
+- Enhanced debugging with step transition logging
 
 ```mermaid
 classDiagram
-class RentRequestController {
-+TextEditingController businessNameController
-+TextEditingController personNameController
-+TextEditingController emailController
-+TextEditingController phoneController
-+TextEditingController abnController
-+TextEditingController businessSiteController
-+ScrollController rentController
+class RentStepController {
 +RxInt currentIndex
-+GlobalKey formKey
++RxBool isLoading
 +Widget[] rentWidgets
-+initializeData()
-+dispose()
++getCurrentWidget() Widget
++handleNextStep() Future~void~
++goToPreviousStep() void
++resetFlow() void
++_handleFinalStep() void
 }
 ```
 
 **Diagram sources**
-- [rent_request_controller.dart:14-46](file://lib/features/rent_request/controllers/rent_request_controller.dart#L14-L46)
+- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
 
 **Section sources**
-- [rent_request_controller.dart:14-46](file://lib/features/rent_request/controllers/rent_request_controller.dart#L14-L46)
+- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
 
-### RentRequestView
-**Updated** Enhanced with improved visual feedback and step navigation indicators.
+### RentRequestController
+**Updated** Streamlined role focused on business form validation and initial submission coordination.
 
 Responsibilities:
-- Provides a scrollable container for the form steps with enhanced visual design.
-- Displays the current step via Obx reactivity with improved styling.
-- Implements Previous/Next controls with step counter and visual indicators.
-- Integrates with FlowStepCount widget for better user experience.
+- Manages business identification form data with text editing controllers
+- Validates form inputs using shared validators before submission
+- Submits data to Step Zero Repository and handles response
+- Coordinates step advancement after successful validation
+- Initializes user profile data from ProfileController
 
-Navigation logic:
-- Previous button decrements index and scrolls to top with animation.
-- Next button advances to the next step with visual feedback.
-- Step counter shows current and total pages using FlowStepCount widget.
-
-```mermaid
-flowchart TD
-Start(["Open Rent Request"]) --> RenderCurrent["Render current step widget"]
-RenderCurrent --> CheckIndex{"currentIndex > 0?"}
-CheckIndex --> |No| ShowPrev["Hide Previous button"]
-CheckIndex --> |Yes| ShowCounter["Show FlowStepCount indicator"]
-ShowPrev --> NextAction["User taps Next"]
-ShowCounter --> NextAction
-NextAction --> IncIndex["Increment currentIndex"]
-IncIndex --> ScrollTop["Animate scroll to top"]
-ScrollTop --> RenderCurrent
-```
-
-**Diagram sources**
-- [rent_request_view.dart:38-72](file://lib/features/rent_request/views/rent_request_view.dart#L38-L72)
-
-**Section sources**
-- [rent_request_view.dart:15-78](file://lib/features/rent_request/views/rent_request_view.dart#L15-L78)
-
-### RentRequestViewForm
-Responsibilities:
-- Collects business identification details: business name, contact person, email, phone, ABN, and website/profile link.
-- Applies validators for name, email, and phone fields using shared validator extensions.
-- Uses a shared text form field widget with consistent styling and responsive design.
-
-Validation:
-- Uses shared validators for name, email, and phone fields.
-- Auto-validation on user interaction with proper error handling.
-- Responsive design using Flutter_ScreenUtil for consistent sizing across devices.
+Submission flow:
+- Form validation using GlobalKey<FormState>
+- Repository pattern for data submission
+- Storage service integration for UUID persistence
+- Seamless integration with RentStepController for navigation
 
 ```mermaid
 sequenceDiagram
-participant User as "User"
 participant Form as "RentRequestViewForm"
-participant Validator as "Validators"
 participant Controller as "RentRequestController"
-User->>Form : Enter business name
-Form->>Validator : Validate name
-Validator-->>Form : Valid/Invalid
-User->>Form : Enter email
-Form->>Validator : Validate email
-Validator-->>Form : Valid/Invalid
-User->>Form : Enter phone
-Form->>Validator : Validate phone
-Validator-->>Form : Valid/Invalid
-Form->>Controller : Update TextEditingControllers
+participant Repo as "StepZeroRepository"
+participant StepController as "RentStepController"
+Form->>Controller : submitRentRequest()
+Controller->>Controller : Validate form
+Controller->>Repo : Execute with business data
+Repo-->>Controller : Response with UUID
+Controller->>Controller : Store UUID in storage
+Controller->>StepController : Increment currentIndex
 ```
 
 **Diagram sources**
-- [rent_request_view_form.dart:31-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart#L31-L61)
-- [email_validator.dart](file://lib/shared/extensions/validators/email_validator.dart)
-- [name_validator.dart](file://lib/shared/extensions/validators/name_validator.dart)
-- [phone_validator.dart](file://lib/shared/extensions/validators/phone_validator.dart)
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
+
+**Section sources**
+- [rent_request_controller.dart:9-69](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L69)
+
+### Enhanced Navigation Components
+**Updated** RentRequestNext widget provides intelligent navigation with loading states and conditional rendering.
+
+Features:
+- Dynamic button rendering based on current step position
+- Loading state management during step transitions
+- Conditional submit button for final step
+- Enhanced user feedback through visual indicators
+
+Navigation logic:
+- Last step shows submit button with dialog confirmation
+- Loading state prevents double submissions
+- Step-specific validation before navigation
+- Smooth transitions between form widgets
+
+**Section sources**
+- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
+
+### RentRequestView
+**Updated** Simplified view architecture delegating step management to RentStepController.
+
+Responsibilities:
+- Provides scrollable container for step-based navigation
+- Delegates current step rendering to RentStepController
+- Manages previous/next button visibility and styling
+- Integrates with flow widgets for step indicators
+
+View delegation:
+- RentStepController manages step rendering and navigation
+- Obx widgets for reactive step state updates
+- Clean separation between presentation and logic
+- Enhanced visual feedback through flow widgets
+
+**Section sources**
+- [rent_request_view.dart:16-79](file://lib/features/rent_request/views/rent_request_view.dart#L16-L79)
+
+### RentRequestViewForm
+**Updated** Enhanced form validation with improved error handling and user feedback.
+
+Features:
+- Comprehensive business identification form with validation
+- Shared validators for name, email, and phone fields
+- Responsive design with Flutter_ScreenUtil integration
+- Custom form field widgets with consistent styling
+
+Validation improvements:
+- Auto-validation on user interaction
+- Proper error message handling
+- Form state management with GlobalKey
+- Enhanced user experience through immediate feedback
 
 **Section sources**
 - [rent_request_view_form.dart:13-112](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart#L13-L112)
 
-### RentPropertyTypeView
-**Updated** Enhanced with improved visual feedback and integration with specialized controller.
+### Specialized Controllers
+**Updated** Maintained for domain-specific logic while being coordinated by RentStepController.
 
-Responsibilities:
-- Captures property type and property use via dropdown menus with enhanced styling.
-- Uses FlowPageCount widget for visual step indication.
-- Integrates with RentPropertyTypeController for reactive state management.
+Controllers maintain their specialized roles:
+- **RentPropertyTypeController**: Manages property type and use selections
+- **RentPropertyDetailsController**: Handles space breakdown and property details
+- Other specialized controllers continue to manage their respective domains
 
-Integration:
-- Reads selected values via controller observables.
-- Updates selectedPropertyType and selectedPropertyUse on selection.
-- Provides visual feedback through custom dropdown components.
-
-**Section sources**
-- [rent_property_type_view.dart:13-68](file://lib/features/rent_request/views/rent_property_type_view.dart#L13-L68)
-
-### RentPropertyDetailsView
-**Updated** Enhanced with improved visual feedback and dynamic space breakdown management.
-
-Responsibilities:
-- Renders property details fields and a dynamic space breakdown section with enhanced UI.
-- Manages per-space counts and an "other" field controlled by a checkbox.
-- Provides an add-space action with improved visual feedback.
-- Integrates with RentPropertyDetailsController for state management.
-
-Behavior:
-- Uses PropertyDetailsContainer widgets to render each space with increment/decrement controls.
-- Toggles enable/disable state of the "other" field based on checkbox with visual feedback.
-- Enhanced responsive design with proper spacing and typography.
+Coordination mechanism:
+- RentStepController references specialized controllers for data access
+- Specialized controllers focus on domain-specific validation
+- Centralized step management ensures proper workflow progression
 
 **Section sources**
-- [rent_property_details_view.dart:15-81](file://lib/features/rent_request/views/rent_property_details_view.dart#L15-L81)
-
-### Navigation and Routing
-**Updated** Enhanced with improved visual feedback and step indicators.
-
-- The Rent Request route is defined in AppRoutes with proper naming convention.
-- The RentBindings lazy-instantiates all specialized controllers for optimal performance.
-- The main app initializes DI and sets the initial route based on token presence.
-- Enhanced step navigation indicators provide better user experience.
-
-**Section sources**
-- [app_routes.dart:7](file://lib/core/routes/app_routes.dart#L7)
-- [rent_bindings.dart:14-29](file://lib/features/rent_request/bindings/rent_bindings.dart#L14-L29)
-- [main.dart:12-46](file://lib/main.dart#L12-L46)
+- [rent_property_type_controller.dart:3-16](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L3-L16)
+- [rent_property_details_controller.dart:4-32](file://lib/features/rent_request/controllers/rent_property_details_controller.dart#L4-L32)
 
 ## Enhanced Navigation and Visual Feedback
-**New Section** The Rent Furniture System now features enhanced navigation and visual feedback mechanisms designed to improve user experience and provide clear progress indication throughout the multi-step form process.
+**New Section** The Rent Furniture System now features sophisticated navigation and visual feedback mechanisms through the centralized RentStepController architecture.
 
-### Step Navigation Indicators
-- **FlowStepCount Widget**: Provides real-time step counter showing current page and total pages
-- **FlowPageCount Widget**: Displays step-specific headers with visual page indicators
-- **Enhanced Previous/Next Buttons**: Improved styling with better visual feedback and accessibility
+### Intelligent Step Navigation
+- **Dynamic Step Rendering**: RentStepController manages 10 distinct step widgets with proper lifecycle management
+- **Conditional Navigation**: RentRequestNext widget adapts button appearance based on step position
+- **Loading State Management**: Reactive loading indicators prevent concurrent step transitions
+- **Enhanced Progress Tracking**: FlowStepCount and FlowPageCount provide real-time step information
 
 ### Visual Design Improvements
-- **Responsive Layout**: Uses Flutter_ScreenUtil for consistent sizing across different screen sizes
-- **Custom Containers**: SharedContainer widgets provide consistent styling and spacing
-- **Improved Typography**: CustomPrimaryText widgets ensure consistent font styling and hierarchy
-- **Visual Dividers**: CustomDivider widgets separate sections with proper spacing
+- **Consistent Styling**: SharedContainer widgets ensure uniform appearance across steps
+- **Responsive Layout**: Flutter_ScreenUtil provides consistent sizing across devices
+- **Custom Components**: Specialized widgets for property management, furniture selection, and period calculation
+- **Accessibility Features**: Proper contrast ratios and touch target optimization
 
 ### User Experience Enhancements
-- **Smooth Animations**: Animated scrolling between steps with proper timing
-- **Progress Indication**: Clear visual indication of form completion status
-- **Error Handling**: Enhanced error display with proper visual feedback
-- **Accessibility**: Improved contrast ratios and touch target sizes
+- **Step Validation**: Each step validates input before allowing navigation forward
+- **Error Handling**: Comprehensive error display with actionable feedback
+- **Progress Indication**: Clear visual representation of form completion status
+- **Smooth Transitions**: Animated step changes with proper timing and easing
 
 ## Controller Architecture
-**Updated** Comprehensive controller architecture with specialized controllers for each form step, providing better separation of concerns and improved maintainability.
+**Updated** Complete architectural transformation to centralized step management with RentStepController as the primary orchestrator.
 
-### Main Controller Responsibilities
-- **RentRequestController**: Orchestrates the entire workflow and coordinates between specialized controllers
-- **State Management**: Manages currentIndex and coordinates navigation between form steps
-- **Data Coordination**: Aggregates data from specialized controllers for final submission
+### Centralized Step Management
+- **RentStepController**: Primary orchestrator managing all 10 steps with dedicated validation logic
+- **Specialized Controllers**: Secondary role handling domain-specific data and validation
+- **Streamlined Dependencies**: Reduced complexity through centralized coordination
+- **Enhanced Maintainability**: Single point of control for step transitions and validation
 
-### Specialized Controller Categories
-- **Property Controllers**: Manage property-related data (type, details, floor plans)
-- **Furniture Controllers**: Handle furniture preferences and selections
-- **Appliance Controllers**: Manage appliance requirements and configurations
-- **Period Controllers**: Control rental period selection and pricing calculations
-- **Delivery Controllers**: Handle delivery arrangements and logistics
-- **Review Controllers**: Manage final review and submission processes
+### Step-Based Architecture
+- **Step 0**: Business form validation and initial submission
+- **Step 1-9**: Progressive form completion with domain-specific controllers
+- **Validation Logic**: Step-specific validation through switch statement
+- **Loading States**: Reactive loading management for smooth transitions
 
 ### Controller Implementation Patterns
-- **GetxController Base Class**: All controllers extend GetxController for reactive state management
+- **GetxController Base**: All controllers extend GetxController for reactive state management
 - **Rx Observables**: Reactive variables for automatic UI updates
-- **Proper Lifecycle Management**: Implement onInit() and dispose() methods for resource cleanup
-- **Data Encapsulation**: Each controller manages its specific domain data and logic
+- **Central Coordination**: RentStepController coordinates between specialized controllers
+- **Proper Lifecycle**: Enhanced lifecycle management with initialization and disposal
 
 ```mermaid
 graph LR
-subgraph "Controller Hierarchy"
-MainController["RentRequestController<br/>Main Orchestrator"]
-subgraph "Property Controllers"
-PropertyType["RentPropertyTypeController"]
-PropertyDetails["RentPropertyDetailsController"]
-FloorPlan["RentFloorPlanController"]
-end
-subgraph "Selection Controllers"
-Furniture["RentFurnitureController"]
-Appliance["RentApplianceController"]
-Brand["RentBrandController"]
-end
-subgraph "Period & Logistics Controllers"
-Period["RentPeriodController"]
-Delivery["RentDeliveryController"]
-Review["RentReviewController"]
-AdditionalNote["RentAdditionalNoteController"]
+subgraph "Centralized Architecture"
+RentStepController["RentStepController<br/>10-step orchestration"]
+subgraph "Domain Controllers"
+RentRequestController["RentRequestController<br/>Business form validation"]
+RentPropertyTypeController["RentPropertyTypeController<br/>Property type selection"]
+RentPropertyDetailsController["RentPropertyDetailsController<br/>Space breakdown"]
+RentFloorPlanController["RentFloorPlanController<br/>Layout configuration"]
+RentFurnitureController["RentFurnitureController<br/>Furniture preferences"]
+RentApplianceController["RentApplianceController<br/>Appliance requirements"]
+RentBrandController["RentBrandController<br/>Brand specifications"]
+RentPeriodController["RentPeriodController<br/>Rental period selection"]
+RentDeliveryController["RentDeliveryController<br/>Delivery arrangements"]
+RentReviewController["RentReviewController<br/>Final review & submission"]
+RentAdditionalNoteController["RentAdditionalNoteController<br/>Additional notes"]
 end
 end
-MainController --> PropertyType
-MainController --> PropertyDetails
-MainController --> FloorPlan
-MainController --> Furniture
-MainController --> Appliance
-MainController --> Brand
-MainController --> Period
-MainController --> Delivery
-MainController --> Review
-MainController --> AdditionalNote
+RentStepController --> RentRequestController
+RentStepController --> RentPropertyTypeController
+RentStepController --> RentPropertyDetailsController
+RentStepController --> RentFloorPlanController
+RentStepController --> RentFurnitureController
+RentStepController --> RentApplianceController
+RentStepController --> RentBrandController
+RentStepController --> RentPeriodController
+RentStepController --> RentDeliveryController
+RentStepController --> RentReviewController
+RentStepController --> RentAdditionalNoteController
 ```
 
 **Diagram sources**
-- [rent_request_controller.dart:26-37](file://lib/features/rent_request/controllers/rent_request_controller.dart#L26-L37)
-- [rent_property_type_controller.dart:1-16](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L1-L16)
-- [rent_property_details_controller.dart:1-32](file://lib/features/rent_request/controllers/rent_property_details_controller.dart#L1-L32)
+- [rent_step_controller.dart:15-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L34)
+- [rent_request_controller.dart:9-21](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L21)
 
 **Section sources**
-- [rent_request_controller.dart:26-37](file://lib/features/rent_request/controllers/rent_request_controller.dart#L26-L37)
-- [rent_property_type_controller.dart:1-16](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L1-L16)
-- [rent_property_details_controller.dart:1-32](file://lib/features/rent_request/controllers/rent_property_details_controller.dart#L1-L32)
+- [rent_step_controller.dart:15-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L34)
+- [rent_request_controller.dart:9-21](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L21)
 
 ## Dependency Analysis
-**Updated** Enhanced dependency analysis reflecting the new controller structure and improved component relationships.
+**Updated** Enhanced dependency analysis reflecting the centralized RentStepController architecture.
 
 The Rent Request feature now depends on:
-- **Shared validators** for form input correctness with enhanced validation logic
-- **Shared UI widgets** for consistent styling and behavior with improved visual feedback
-- **GetX framework** for reactive state and navigation with optimized performance
-- **Specialized controllers** for each form step with better separation of concerns
-- **Enhanced widget libraries** for property management, furniture selection, and period calculation
+- **Centralized Step Management**: RentStepController coordinates all specialized controllers
+- **Enhanced Validation**: Step-specific validation logic integrated into RentStepController
+- **Streamlined Dependencies**: Reduced coupling between controllers
+- **Specialized Domain Logic**: Controllers maintain focus on their respective domains
+- **Improved Performance**: Lazy loading through RentBindings with RentStepController as primary dependency
 
 ```mermaid
 graph LR
-Validators["Shared Validators<br/>email/name/phone"] --> Form["RentRequestViewForm"]
-UIWidgets["Enhanced UI Widgets<br/>FlowStepCount, FlowPageCount"] --> Views["Rent Views"]
-GetX["GetX State & Routing"] --> MainController["RentRequestController"]
-MainController --> SpecializedControllers["Specialized Controllers<br/>Property, Furniture, Appliance, etc."]
-SpecializedControllers --> Views
-Views --> Form
-Views --> TypeView["RentPropertyTypeView"]
-Views --> DetailsView["RentPropertyDetailsView"]
+RentStepController["RentStepController<br/>Centralized orchestration"] --> RentRequestController["RentRequestController<br/>Business form validation"]
+RentStepController --> RentPropertyTypeController["RentPropertyTypeController<br/>Property type selection"]
+RentStepController --> RentPropertyDetailsController["RentPropertyDetailsController<br/>Space breakdown"]
+RentStepController --> RentFloorPlanController["RentFloorPlanController<br/>Layout configuration"]
+RentStepController --> RentFurnitureController["RentFurnitureController<br/>Furniture preferences"]
+RentStepController --> RentApplianceController["RentApplianceController<br/>Appliance requirements"]
+RentStepController --> RentBrandController["RentBrandController<br/>Brand specifications"]
+RentStepController --> RentPeriodController["RentPeriodController<br/>Rental period selection"]
+RentStepController --> RentDeliveryController["RentDeliveryController<br/>Delivery arrangements"]
+RentStepController --> RentReviewController["RentReviewController<br/>Final review & submission"]
+RentStepController --> RentAdditionalNoteController["RentAdditionalNoteController<br/>Additional notes"]
 ```
 
 **Diagram sources**
-- [rent_request_view_form.dart:6-11](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart#L6-L11)
-- [rent_request_view.dart:67-72](file://lib/features/rent_request/views/rent_request_view.dart#L67-L72)
-- [rent_property_type_view.dart:10](file://lib/features/rent_request/views/rent_property_type_view.dart#L10)
-- [rent_property_details_view.dart:9](file://lib/features/rent_request/views/rent_property_details_view.dart#L9)
+- [rent_step_controller.dart:23-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L23-L34)
+- [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
 
 **Section sources**
-- [rent_request_view_form.dart:6-11](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart#L6-L11)
-- [rent_request_view.dart:67-72](file://lib/features/rent_request/views/rent_request_view.dart#L67-L72)
-- [rent_property_type_view.dart:10](file://lib/features/rent_request/views/rent_property_type_view.dart#L10)
-- [rent_property_details_view.dart:9](file://lib/features/rent_request/views/rent_property_details_view.dart#L9)
+- [rent_step_controller.dart:23-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L23-L34)
+- [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
 
 ## Performance Considerations
-**Updated** Enhanced performance considerations reflecting the new controller architecture and improved component design.
+**Updated** Enhanced performance considerations reflecting the centralized architecture benefits.
 
-- **Lazy Loading**: Use Get.lazyPut to avoid initializing specialized controllers until needed
-- **Optimized Rebuilds**: Keep form keys scoped to each step to minimize rebuilds across the enhanced component tree
-- **Reactive State Management**: Avoid unnecessary widget rebuilds by using Obx only around reactive reads in specialized controllers
-- **Memory Management**: Proper disposal of all text editing controllers in specialized controllers
-- **Component Optimization**: Consider virtualizing long lists if space breakdown grows large in RentPropertyDetailsView
-- **Controller Lifecycle**: Ensure proper initialization and disposal in all specialized controllers
-- **Import Path Optimization**: Updated import paths reduce compilation overhead and improve build performance
+- **Centralized State Management**: RentStepController reduces memory overhead through single point of control
+- **Optimized Step Transitions**: Reactive loading states prevent unnecessary widget rebuilds
+- **Lazy Loading Benefits**: RentBindings efficiently manages controller instantiation
+- **Reduced Coupling**: Specialized controllers operate independently with minimal interdependencies
+- **Enhanced Navigation**: Direct widget rendering eliminates complex navigation logic
+- **Improved Memory Usage**: Centralized step management reduces controller duplication
+- **Streamlined Dependencies**: RentStepController coordinates dependencies more efficiently
 
 ## Troubleshooting Guide
-**Updated** Enhanced troubleshooting guide addressing the new controller structure and improved component interactions.
+**Updated** Enhanced troubleshooting guide addressing the new centralized architecture.
 
 Common issues and resolutions:
-- **Navigation not advancing**: Verify currentIndex increments after tapping Next and that the current step widget exists in the rentWidgets list. Check that all specialized controllers are properly initialized in RentBindings.
-- **Form validation failures**: Ensure validators are attached to the form and that AutovalidateMode is configured appropriately. Verify that specialized controllers are properly integrated with the main controller.
-- **State not updating**: Confirm that specialized controllers update Rx values and that views observe them via Obx. Check that import paths are correctly updated to the new controllers/ directory structure.
-- **Route not found**: Confirm the route name exists in AppRoutes and that the binding is registered in RentBindings.
-- **Controller initialization errors**: Verify that all specialized controllers are properly lazy-loaded in RentBindings and that import paths are correctly updated.
-- **Visual feedback issues**: Ensure that FlowStepCount and other enhanced UI components are properly imported and configured.
+- **Step navigation not working**: Verify RentStepController currentIndex updates and RentRequestNext widget logic
+- **Form validation failing**: Check RentRequestController formKey validation and Step Zero Repository response handling
+- **Loading states not updating**: Ensure RentStepController isLoading reactive variable is properly toggled
+- **Step widgets not rendering**: Confirm RentStepController rentWidgets list contains all 10 step widgets
+- **Controller initialization errors**: Verify RentBindings lazy loading and RentStepController dependency injection
+- **Navigation state inconsistencies**: Check RentStepController step validation logic and special cases
+- **Performance issues**: Monitor RentStepController widget rebuilds and optimize step-specific controllers
 
 **Section sources**
-- [rent_request_controller.dart:24-35](file://lib/features/rent_request/controllers/rent_request_controller.dart#L24-L35)
-- [rent_request_view.dart:38-72](file://lib/features/rent_request/views/rent_request_view.dart#L38-L72)
-- [app_routes.dart:7](file://lib/core/routes/app_routes.dart#L7)
-- [rent_bindings.dart:14-29](file://lib/features/rent_request/bindings/rent_bindings.dart#L14-L29)
+- [rent_step_controller.dart:40-73](file://lib/features/rent_request/controllers/rent_step_controller.dart#L40-L73)
+- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
+- [rent_request_next.dart:16-58](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L16-L58)
 
 ## Conclusion
-The Rent Furniture System implements a modular, reactive, and extensible workflow for collecting tenant and property information. The enhanced controller architecture with specialized controllers for each form step, improved visual feedback, and optimized navigation provides a superior user experience. The reorganized controllers/ directory structure improves maintainability and scalability, while the comprehensive widget library ensures consistent design and functionality. Future enhancements can include backend integration for saving progress, tenant screening, and contract generation, building upon the robust multi-step foundation established by the enhanced controller architecture.
+The Rent Furniture System has successfully transitioned to a centralized, reactive, and scalable architecture through the implementation of RentStepController as the primary orchestrator. The 10-step flow system provides comprehensive step-by-step navigation with integrated validation logic, while specialized controllers maintain domain-specific functionality. This architectural transformation enhances maintainability, improves user experience through intelligent navigation, and establishes a robust foundation for future enhancements including backend integration, tenant screening, and contract generation workflows.
