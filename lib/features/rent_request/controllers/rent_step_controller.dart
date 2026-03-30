@@ -17,7 +17,7 @@ class RentStepController extends GetxController {
   static RentStepController get instance => Get.find();
 
   // Step management
-  RxInt currentIndex = 2.obs;
+  RxInt currentIndex = 0.obs;
   int get totalSteps => rentWidgets.length;
   RxBool isLoading = false.obs;
   // Widgets
