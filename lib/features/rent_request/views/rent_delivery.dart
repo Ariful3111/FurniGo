@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -21,7 +21,12 @@ class RentDelivery extends GetView<RentRequestController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(child: FlowPageCount(text: 'Delivery & Setup', pageCount: controller.currentIndex.value.toString(),)),
+          Center(
+            child: FlowPageCount(
+              text: 'Delivery & Setup',
+              pageCount: controller.currentIndex.value.toString(),
+            ),
+          ),
           SizedBox(height: 20.h),
           CustomDivider(),
           SizedBox(height: 24.h),

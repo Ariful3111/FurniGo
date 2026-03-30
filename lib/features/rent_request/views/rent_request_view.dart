@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/flow_widgets/flow_header.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart';
@@ -64,7 +64,12 @@ class RentRequestView extends GetView<RentRequestController> {
                     ),
                   ),
                 controller.currentIndex.value > 0
-                    ? FlowStepCount(currentPage: controller.currentIndex.value.toString(), totalPage: {controller.rentWidgets.length-1}.toString(),)
+                    ? FlowStepCount(
+                        currentPage: controller.currentIndex.value.toString(),
+                        totalPage: {
+                          controller.rentWidgets.length - 1,
+                        }.toString(),
+                      )
                     : SizedBox.shrink(),
                 RentRequestNext(),
               ],

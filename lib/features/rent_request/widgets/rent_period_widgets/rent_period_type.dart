@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_period_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_period_controller.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_period_widgets/rent_period_type_budget.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';

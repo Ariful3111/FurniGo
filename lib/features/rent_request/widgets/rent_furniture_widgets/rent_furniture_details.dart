@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_furniture_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_furniture_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/property_add_button.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/property_details_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_furniture_widgets/rent_furniture_preference.dart';
