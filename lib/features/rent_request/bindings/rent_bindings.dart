@@ -10,11 +10,13 @@ import 'package:zb_dezign/features/rent_request/controllers/rent_period_controll
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_details_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_review_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 
 class RentBindings implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => RentRequestController());
+    Get.lazyPut(() => RentStepController());
     Get.lazyPut(() => RentPropertyTypeController());
     Get.lazyPut(() => RentPropertyDetailsController());
     Get.lazyPut(() => RentFloorPlanController());

@@ -55,7 +55,7 @@ class SellFlowNext extends GetWidget<SellFlowController> {
                 );
               },
             )
-          : RentHelper().myButton(
+          : RentHelper.myButton(
               color: AppColors.primaryColor,
               onTap: () {
                 if (!isLast) {

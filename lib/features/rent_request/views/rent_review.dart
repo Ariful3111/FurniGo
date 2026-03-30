@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
-import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_review_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -17,7 +17,7 @@ class RentReview extends GetView<RentReviewController> {
   @override
   Widget build(BuildContext context) {
     RentPropertyTypeController rentPropertyTypeController = Get.find();
-    RentRequestController rentRequestController = Get.find();
+    final stepController = Get.find<RentStepController>();
 
     return SharedContainer(
       child: Column(
@@ -26,7 +26,7 @@ class RentReview extends GetView<RentReviewController> {
           Center(
             child: FlowPageCount(
               text: 'Review & Submit',
-              pageCount: rentRequestController.currentIndex.value.toString(),
+              pageCount: (stepController.currentIndex.value + 1).toString(),
             ),
           ),
           SizedBox(height: 20.h),

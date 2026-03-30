@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_brand_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
-import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_additional_note_view.dart';
 import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_brand_widgets/rent_brand_details.dart';
@@ -20,7 +20,7 @@ class RentBrand extends GetView<RentBrandController> {
   @override
   Widget build(BuildContext context) {
     RentPropertyTypeController rentPropertyTypeController = Get.find();
-    RentRequestController rentRequestController = Get.find();
+    final stepController = Get.find<RentStepController>();
     return SharedContainer(
       child: Column(
         children: [
@@ -30,7 +30,7 @@ class RentBrand extends GetView<RentBrandController> {
                     'Residential'
                 ? 'Additional Notes'
                 : 'Brand Placement',
-            pageCount: rentRequestController.currentIndex.value.toString(),
+            pageCount: (stepController.currentIndex.value + 1).toString(),
           ),
           SizedBox(height: 20.h),
           CustomDivider(),
@@ -38,7 +38,7 @@ class RentBrand extends GetView<RentBrandController> {
               ? RentAdditionalNoteView()
               : Column(
                   children: [
-                    RentHelper().optionContainer(
+                    RentHelper.optionContainer(
                       context: context,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

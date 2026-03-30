@@ -16,7 +16,7 @@ class RentDeliveryDetails extends GetWidget<RentDeliveryController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RentHelper().optionContainer(
+        RentHelper.optionContainer(
           context: context,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

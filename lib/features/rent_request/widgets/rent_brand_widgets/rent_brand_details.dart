@@ -22,7 +22,7 @@ class RentBrandDetails extends GetWidget<RentBrandController> {
         SizedBox(height: 12.h),
         ...List.generate(controller.brand.length, (index) {
           return Obx(
-            () => RentHelper().propertyCheckBox(
+            () => RentHelper.propertyCheckBox(
               context: context,
               isLastIndex: controller.brand.length - 1 == index,
               isChecked: controller.isSelect[index],

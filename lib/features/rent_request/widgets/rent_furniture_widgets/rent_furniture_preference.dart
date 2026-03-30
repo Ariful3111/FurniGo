@@ -29,8 +29,7 @@ class RentFurniturePreference extends GetWidget<RentFurnitureController> {
                 Obx(
                   () => CustomRadioButton(
                     value: index,
-                    groupValue:
-                        controller.selectedPreference.value,
+                    groupValue: controller.selectedPreference.value,
                     onChange: (value) {
                       controller.selectedPreference.value = value!;
                     },
@@ -64,14 +63,13 @@ class RentFurniturePreference extends GetWidget<RentFurnitureController> {
             crossAxisCount: 2,
             mainAxisSpacing: 12.h,
             crossAxisSpacing: 12.w,
-            childAspectRatio: 2.5
+            childAspectRatio: 2.5,
           ),
           itemBuilder: (context, index) {
             return Obx(
-              () => RentHelper().propertyCheckBox(
+              () => RentHelper.propertyCheckBox(
                 context: context,
-                isLastIndex:
-                    controller.stylePreference.length - 1 == index,
+                isLastIndex: controller.stylePreference.length - 1 == index,
                 isChecked: controller.checkedPreference[index],
                 onChange: (value) {
                   controller.checkedPreference[index] = value!;

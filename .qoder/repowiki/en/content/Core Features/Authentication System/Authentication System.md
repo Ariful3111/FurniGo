@@ -41,14 +41,16 @@
 - [lib/features/auth/widgets/signin_form.dart](file://lib/features/auth/widgets/signin_form.dart)
 - [lib/features/auth/controller/logout_controller.dart](file://lib/features/auth/controller/logout_controller.dart)
 - [lib/features/auth/repositories/logout_repo.dart](file://lib/features/auth/repositories/logout_repo.dart)
+- [lib/core/data/networks/post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Enhanced Firebase Google Login security by implementing Firebase ID token authentication instead of Google OAuth tokens
-- Added new `getCurrentUserIdToken()` helper method for retrieving current user Firebase ID tokens
-- Improved security by removing debug token printing from authentication flows
-- Updated Google authentication flow to use Firebase ID tokens for enhanced security and reliability
+- Modernized Google Login authentication system with streamlined ID token approach
+- Simplified GoogleLoginRepository using PostWithoutResponse for HTTP requests
+- Enhanced network layer with debugPrint functionality for better debugging
+- Removed complex token management infrastructure in favor of Firebase ID token approach
+- Updated Google authentication flow to use Firebase ID tokens for improved security and reliability
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -165,11 +167,11 @@ FGAS --> SV
 - [lib/features/auth/controller/forgot_password_controller.dart](file://lib/features/auth/controller/forgot_password_controller.dart)
 - [lib/features/auth/views/new_password_view.dart](file://lib/features/auth/views/new_password_view.dart)
 - [lib/features/auth/controller/new_password_controller.dart](file://lib/features/auth/controller/new_password_controller.dart)
-- [lib/features/auth/controller/google_login_controller.dart:1-38](file://lib/features/auth/controller/google_login_controller.dart#L1-L38)
+- [lib/features/auth/controller/google_login_controller.dart:1-36](file://lib/features/auth/controller/google_login_controller.dart#L1-L36)
 - [lib/features/auth/models/google_login_model.dart:1-263](file://lib/features/auth/models/google_login_model.dart#L1-L263)
-- [lib/features/auth/repositories/google_login_repo.dart:1-30](file://lib/features/auth/repositories/google_login_repo.dart#L1-L30)
+- [lib/features/auth/repositories/google_login_repo.dart:1-29](file://lib/features/auth/repositories/google_login_repo.dart#L1-L29)
 - [lib/core/data/global_models/google_user_info_model.dart:1-21](file://lib/core/data/global_models/google_user_info_model.dart#L1-L21)
-- [lib/features/auth/widgets/onboard_login.dart:1-85](file://lib/features/auth/widgets/onboard_login.dart#L1-L85)
+- [lib/features/auth/widgets/onboard_login.dart:1-84](file://lib/features/auth/widgets/onboard_login.dart#L1-L84)
 - [lib/features/auth/controller/logout_controller.dart:1-30](file://lib/features/auth/controller/logout_controller.dart#L1-L30)
 - [lib/features/auth/repositories/logout_repo.dart:1-21](file://lib/features/auth/repositories/logout_repo.dart#L1-L21)
 
@@ -207,10 +209,10 @@ FGAS --> SV
 - [lib/features/auth/controller/forgot_password_controller.dart](file://lib/features/auth/controller/forgot_password_controller.dart)
 - [lib/features/auth/views/new_password_view.dart](file://lib/features/auth/views/new_password_view.dart)
 - [lib/features/auth/controller/new_password_controller.dart](file://lib/features/auth/controller/new_password_controller.dart)
-- [lib/core/services/firebase_google_auth.dart:6-83](file://lib/core/services/firebase_google_auth.dart#L6-L83)
-- [lib/features/auth/controller/google_login_controller.dart:1-38](file://lib/features/auth/controller/google_login_controller.dart#L1-L38)
+- [lib/core/services/firebase_google_auth.dart:6-84](file://lib/core/services/firebase_google_auth.dart#L6-L84)
+- [lib/features/auth/controller/google_login_controller.dart:1-36](file://lib/features/auth/controller/google_login_controller.dart#L1-L36)
 - [lib/features/auth/models/google_login_model.dart:1-263](file://lib/features/auth/models/google_login_model.dart#L1-L263)
-- [lib/features/auth/repositories/google_login_repo.dart:1-30](file://lib/features/auth/repositories/google_login_repo.dart#L1-L30)
+- [lib/features/auth/repositories/google_login_repo.dart:1-29](file://lib/features/auth/repositories/google_login_repo.dart#L1-L29)
 - [lib/core/data/global_models/google_user_info_model.dart:1-21](file://lib/core/data/global_models/google_user_info_model.dart#L1-L21)
 - [lib/features/auth/controller/logout_controller.dart:1-30](file://lib/features/auth/controller/logout_controller.dart#L1-L30)
 - [lib/features/auth/repositories/logout_repo.dart:1-21](file://lib/features/auth/repositories/logout_repo.dart#L1-L21)
@@ -318,7 +320,7 @@ GoogleLoginController --> GoogleUserInfoModel : "receives"
 - [lib/features/auth/repositories/login_repo.dart](file://lib/features/auth/repositories/login_repo.dart)
 - [lib/features/auth/repositories/register_repo.dart](file://lib/features/auth/repositories/register_repo.dart)
 - [lib/features/auth/repositories/forgot_password_repo.dart](file://lib/features/auth/repositories/forgot_password_repo.dart)
-- [lib/features/auth/repositories/google_login_repo.dart:1-30](file://lib/features/auth/repositories/google_login_repo.dart#L1-L30)
+- [lib/features/auth/repositories/google_login_repo.dart:1-29](file://lib/features/auth/repositories/google_login_repo.dart#L1-L29)
 - [lib/features/auth/repositories/logout_repo.dart:1-21](file://lib/features/auth/repositories/logout_repo.dart#L1-L21)
 - [lib/features/auth/controller/signin_controller.dart:9-51](file://lib/features/auth/controller/signin_controller.dart#L9-L51)
 - [lib/features/auth/controller/signup_controller.dart:10-66](file://lib/features/auth/controller/signup_controller.dart#L10-L66)
@@ -327,7 +329,7 @@ GoogleLoginController --> GoogleUserInfoModel : "receives"
 - [lib/features/auth/controller/otp_controller.dart](file://lib/features/auth/controller/otp_controller.dart)
 - [lib/features/auth/controller/forgot_password_controller.dart](file://lib/features/auth/controller/forgot_password_controller.dart)
 - [lib/features/auth/controller/new_password_controller.dart](file://lib/features/auth/controller/new_password_controller.dart)
-- [lib/features/auth/controller/google_login_controller.dart:1-38](file://lib/features/auth/controller/google_login_controller.dart#L1-L38)
+- [lib/features/auth/controller/google_login_controller.dart:1-36](file://lib/features/auth/controller/google_login_controller.dart#L1-L36)
 - [lib/features/auth/controller/logout_controller.dart:1-30](file://lib/features/auth/controller/logout_controller.dart#L1-L30)
 
 ## Detailed Component Analysis
@@ -455,16 +457,16 @@ Ctrl->>Nav : navigate to BottomNav
 - [lib/features/auth/views/signin_view.dart:17-93](file://lib/features/auth/views/signin_view.dart#L17-L93)
 - [lib/features/auth/repositories/login_repo.dart](file://lib/features/auth/repositories/login_repo.dart)
 
-### Enhanced Google Login Authentication System
-**Updated** The Google Login Authentication System has been significantly enhanced with improved security measures and better token management.
+### Modernized Google Login Authentication System
+**Updated** The Google Login Authentication System has been significantly modernized with a streamlined ID token approach, simplified repository structure, and enhanced network layer capabilities.
 
-- **Enhanced Security**: GoogleLoginController now manages Google authentication flow with reactive loading states and uses Firebase ID tokens instead of Google OAuth tokens for improved security.
-- **Improved Token Management**: GoogleLoginRepository handles HTTP requests for Google authentication with proper headers and token handling using Firebase ID tokens.
-- **Comprehensive Data Models**: GoogleLoginModel provides comprehensive user data structures including nested User, TokenResponse, and ProviderData models with enhanced security.
-- **Standardized User Info**: FirebaseGoogleAuthService now returns standardized GoogleUserInfoModel with Firebase ID tokens for consistent data handling.
-- **Security Enhancement**: All debug token printing has been removed for improved security in production environments.
+- **Streamlined ID Token Approach**: GoogleLoginController now manages Google authentication flow with reactive loading states and uses Firebase ID tokens instead of Google OAuth tokens for improved security and simplicity.
+- **Simplified Repository Pattern**: GoogleLoginRepository uses PostWithoutResponse for HTTP requests, eliminating complex token management infrastructure and focusing on streamlined authentication flow.
+- **Enhanced Network Layer**: PostWithoutResponse includes debugPrint functionality for better debugging capabilities while maintaining clean separation of concerns.
+- **Modernized Data Flow**: GoogleLoginController receives GoogleUserInfoModel with Firebase ID tokens and passes them directly to the repository for authentication.
+- **Simplified Token Handling**: Removed complex token management infrastructure in favor of direct Firebase ID token usage for improved reliability.
 - **Helper Method**: Added `getCurrentUserIdToken()` method for retrieving current user Firebase ID tokens when needed.
-- **Integration**: Google login button in OnboardLogin widget integrates with both Firebase service and custom GoogleLoginController using enhanced security.
+- **Integration**: Google login button in OnboardLogin widget integrates with both Firebase service and custom GoogleLoginController using the modernized approach.
 
 ```mermaid
 sequenceDiagram
@@ -473,6 +475,7 @@ participant OLW as "OnboardLogin Widget"
 participant FGAS as "FirebaseGoogleAuthService"
 participant GLC as "GoogleLoginController"
 participant GLR as "GoogleLoginRepository"
+participant PWR as "PostWithoutResponse"
 participant Storage as "StorageService"
 participant Nav as "Navigator"
 User->>OLW : Tap Continue With Google
@@ -480,25 +483,29 @@ OLW->>FGAS : signInWithGoogle()
 FGAS-->>OLW : GoogleUserInfoModel (Firebase ID Token)
 OLW->>GLC : googleLogin(user)
 GLC->>GLR : execute(name, email, avatar, idToken)
-GLR-->>GLC : GoogleLoginModel with User and TokenResponse
-GLC->>Storage : write(tokenKey, accessToken)
+GLR->>PWR : postData(url : "/api/auth", headers : Authorization : Bearer idToken)
+PWR-->>GLR : Either<ErrorModel, bool>
+GLR-->>GLC : Result
+GLC->>Storage : write(tokenKey, idToken)
 GLC->>Nav : navigate to BottomNav
 ```
 
 **Diagram sources**
 - [lib/features/auth/widgets/onboard_login.dart:35-42](file://lib/features/auth/widgets/onboard_login.dart#L35-L42)
 - [lib/core/services/firebase_google_auth.dart:15-58](file://lib/core/services/firebase_google_auth.dart#L15-L58)
-- [lib/features/auth/controller/google_login_controller.dart:15-37](file://lib/features/auth/controller/google_login_controller.dart#L15-L37)
-- [lib/features/auth/repositories/google_login_repo.dart:12-29](file://lib/features/auth/repositories/google_login_repo.dart#L12-L29)
+- [lib/features/auth/controller/google_login_controller.dart:15-34](file://lib/features/auth/controller/google_login_controller.dart#L15-L34)
+- [lib/features/auth/repositories/google_login_repo.dart:11-27](file://lib/features/auth/repositories/google_login_repo.dart#L11-L27)
+- [lib/core/data/networks/post_without_response.dart:12-46](file://lib/core/data/networks/post_without_response.dart#L12-L46)
 - [lib/features/auth/models/google_login_model.dart:14-34](file://lib/features/auth/models/google_login_model.dart#L14-L34)
 
 **Section sources**
-- [lib/features/auth/controller/google_login_controller.dart:1-38](file://lib/features/auth/controller/google_login_controller.dart#L1-L38)
+- [lib/features/auth/controller/google_login_controller.dart:1-36](file://lib/features/auth/controller/google_login_controller.dart#L1-L36)
 - [lib/features/auth/models/google_login_model.dart:1-263](file://lib/features/auth/models/google_login_model.dart#L1-L263)
-- [lib/features/auth/repositories/google_login_repo.dart:1-30](file://lib/features/auth/repositories/google_login_repo.dart#L1-L30)
+- [lib/features/auth/repositories/google_login_repo.dart:1-29](file://lib/features/auth/repositories/google_login_repo.dart#L1-L29)
 - [lib/core/data/global_models/google_user_info_model.dart:1-21](file://lib/core/data/global_models/google_user_info_model.dart#L1-L21)
-- [lib/features/auth/widgets/onboard_login.dart:1-85](file://lib/features/auth/widgets/onboard_login.dart#L1-L85)
-- [lib/core/services/firebase_google_auth.dart:6-83](file://lib/core/services/firebase_google_auth.dart#L6-L83)
+- [lib/features/auth/widgets/onboard_login.dart:1-84](file://lib/features/auth/widgets/onboard_login.dart#L1-L84)
+- [lib/core/services/firebase_google_auth.dart:6-84](file://lib/core/services/firebase_google_auth.dart#L6-L84)
+- [lib/core/data/networks/post_without_response.dart:1-47](file://lib/core/data/networks/post_without_response.dart#L1-L47)
 
 ### OTP Verification
 - OTP view/controller coordinates user input and verification submission.
@@ -585,12 +592,12 @@ LGC->>Nav : navigate to SignInView
 - [lib/features/auth/controller/logout_controller.dart:1-30](file://lib/features/auth/controller/logout_controller.dart#L1-L30)
 - [lib/features/auth/repositories/logout_repo.dart:1-21](file://lib/features/auth/repositories/logout_repo.dart#L1-L21)
 
-### Enhanced Google Sign-In Integration
-**Updated** The Google Sign-In integration has been enhanced with improved security measures and better token management.
+### Modernized Google Sign-In Integration
+**Updated** The Google Sign-In integration has been modernized with streamlined ID token approach and simplified token management.
 
-- **Enhanced Security**: Service wrapper integrates Google Sign-In with Firebase Auth using Firebase ID tokens instead of Google OAuth tokens for improved security.
-- **Improved Token Handling**: Provides sign-in and sign-out operations returning user info with Firebase ID tokens or null on failure.
-- **Security Enhancement**: All debug token printing has been removed for improved security in production environments.
+- **Streamlined ID Token Approach**: Service wrapper integrates Google Sign-In with Firebase Auth using Firebase ID tokens instead of Google OAuth tokens for improved security and simplicity.
+- **Enhanced Token Handling**: Provides sign-in and sign-out operations returning user info with Firebase ID tokens or null on failure.
+- **Simplified Infrastructure**: Removed complex token management infrastructure in favor of direct Firebase ID token usage.
 - **Helper Method**: Added `getCurrentUserIdToken()` method for retrieving current user Firebase ID tokens when needed.
 - **Platform-specific Optimizations**: Enhanced with platform-specific configurations for Android and iOS using Firebase ID tokens.
 
@@ -615,12 +622,12 @@ FGAS-->>View : GoogleUserInfoModel with Firebase ID Token or null
 - [lib/features/auth/views/signin_view.dart:73-86](file://lib/features/auth/views/signin_view.dart#L73-L86)
 
 **Section sources**
-- [lib/core/services/firebase_google_auth.dart:6-83](file://lib/core/services/firebase_google_auth.dart#L6-L83)
+- [lib/core/services/firebase_google_auth.dart:6-84](file://lib/core/services/firebase_google_auth.dart#L6-L84)
 - [lib/features/auth/views/signin_view.dart:73-86](file://lib/features/auth/views/signin_view.dart#L73-L86)
 
 ## Dependency Analysis
 - Bindings: AuthBindings wires controllers and repositories for lazy loading.
-- OnboardBindings: New binding specifically for Google authentication components with enhanced security.
+- OnboardBindings: New binding specifically for Google authentication components with streamlined architecture.
 - Controllers depend on repositories and shared services (storage, routes).
 - Views depend on controllers and reactive state via Obx.
 - Models are consumed by repositories and passed to APIs.
@@ -643,6 +650,7 @@ FPC --> FR["ForgotPasswordRepository"]
 GLC --> GLR
 GLC --> GUIM["GoogleUserInfoModel"]
 GLR --> GLM["GoogleLoginModel"]
+GLR --> PWR["PostWithoutResponse"]
 ```
 
 **Diagram sources**
@@ -657,6 +665,7 @@ GLR --> GLM["GoogleLoginModel"]
 - [lib/features/auth/repositories/google_login_repo.dart:8-10](file://lib/features/auth/repositories/google_login_repo.dart#L8-L10)
 - [lib/core/data/global_models/google_user_info_model.dart:1-21](file://lib/core/data/global_models/google_user_info_model.dart#L1-L21)
 - [lib/features/auth/models/google_login_model.dart:1-263](file://lib/features/auth/models/google_login_model.dart#L1-L263)
+- [lib/core/data/networks/post_without_response.dart:9-10](file://lib/core/data/networks/post_without_response.dart#L9-L10)
 
 **Section sources**
 - [lib/features/auth/bindings/auth_bindings.dart:13-28](file://lib/features/auth/bindings/auth_bindings.dart#L13-L28)
@@ -668,9 +677,10 @@ GLR --> GLM["GoogleLoginModel"]
 - Gesture handling: Clamp drag offsets and throttle animations to prevent excessive recomposition.
 - Token persistence: Persist tokens efficiently to avoid repeated login attempts.
 - Network calls: Debounce form submissions and show loading indicators to improve UX and reduce redundant requests.
-- **Enhanced Security**: Google authentication caching: Store user tokens locally to minimize repeated authentication flows using Firebase ID tokens.
-- **Platform-specific Optimizations**: Leverage native Google Sign-In SDKs for better performance on Android/iOS with enhanced security.
-- **Security Optimization**: Removed debug token printing to improve security and reduce potential information leakage.
+- **Streamlined Google Authentication**: Simplified Google login flow reduces complexity and improves performance by using Firebase ID tokens directly.
+- **Enhanced Network Layer**: PostWithoutResponse provides efficient HTTP communication with built-in debugging capabilities.
+- **Modernized Token Management**: Removal of complex token infrastructure reduces memory overhead and improves reliability.
+- **Platform-specific Optimizations**: Leverage native Google Sign-In SDKs for better performance on Android/iOS with streamlined Firebase ID token usage.
 
 ## Troubleshooting Guide
 - Authentication errors: Catch and surface user-friendly messages via snackbars; log underlying exceptions for diagnostics.
@@ -678,11 +688,11 @@ GLR --> GLM["GoogleLoginModel"]
 - Navigation issues: Verify route names and binding registrations to prevent runtime navigation errors.
 - Google sign-in failures: Handle cancellation and error cases gracefully; confirm Google Play services availability on Android devices.
 - Token persistence: Confirm storage keys and secure token handling to prevent unauthorized access.
-- **Enhanced Security Issues**: Verify Firebase configuration for both Android and iOS platforms; check Google Services JSON and Plist files.
-- **Platform-specific Problems**: Ensure proper Firebase initialization for each platform with correct configuration values.
-- **Google Login Errors**: Check network connectivity, verify OAuth client IDs, and ensure proper Firebase Auth configuration.
-- **Firebase ID Token Issues**: Verify that Firebase ID tokens are being properly retrieved and used instead of Google OAuth tokens.
-- **Security Concerns**: Ensure no debug token printing is occurring in production builds.
+- **Modernized Google Login Issues**: Verify Firebase configuration for both Android and iOS platforms; check Google Services JSON and Plist files.
+- **Streamlined Authentication Flow**: Ensure Firebase ID tokens are being properly retrieved and used instead of Google OAuth tokens.
+- **Network Layer Debugging**: Use debugPrint functionality in PostWithoutResponse for better troubleshooting of HTTP requests.
+- **Simplified Repository Issues**: Verify PostWithoutResponse is properly configured and accessible through dependency injection.
+- **Token Management**: Confirm Firebase ID tokens are being stored correctly and used for authentication requests.
 
 **Section sources**
 - [lib/features/auth/controller/signin_controller.dart:25-34](file://lib/features/auth/controller/signin_controller.dart#L25-L34)
@@ -690,10 +700,11 @@ GLR --> GLM["GoogleLoginModel"]
 - [lib/core/services/firebase_google_auth.dart:51-57](file://lib/core/services/firebase_google_auth.dart#L51-L57)
 - [lib/features/auth/controller/google_login_controller.dart:24-27](file://lib/features/auth/controller/google_login_controller.dart#L24-L27)
 - [lib/firebase_options.dart:18-69](file://lib/firebase_options.dart#L18-L69)
+- [lib/core/data/networks/post_without_response.dart:22-23](file://lib/core/data/networks/post_without_response.dart#L22-L23)
 
 ## Conclusion
-The Authentication System leverages a clean MVVM architecture with GetX for state management and DI. It supports a complete user journey from onboarding to verified login, with robust integration for Google Sign-In and extensible repositories for backend interactions. The newly added Google Login Authentication System provides comprehensive support for social authentication with proper error handling, token management, and platform-specific configurations for Android and iOS. 
+The Authentication System leverages a clean MVVM architecture with GetX for state management and DI. It supports a complete user journey from onboarding to verified login, with robust integration for Google Sign-In and extensible repositories for backend interactions. The newly modernized Google Login Authentication System provides comprehensive support for social authentication with proper error handling, streamlined token management, and platform-specific configurations for Android and iOS.
 
-**Key Enhancements**: The system has been significantly enhanced with improved security measures, including the use of Firebase ID tokens instead of Google OAuth tokens, removal of debug token printing for better security, and addition of the `getCurrentUserIdToken()` helper method for retrieving current user Firebase ID tokens. These improvements ensure more secure authentication flows while maintaining the modular design that ensures maintainability and scalability across authentication flows.
+**Key Modernization Enhancements**: The system has been significantly enhanced with streamlined Google authentication using Firebase ID tokens, simplified repository pattern with PostWithoutResponse, enhanced network layer with debugPrint functionality, and removal of complex token management infrastructure. These improvements ensure more secure and reliable authentication flows while maintaining the modular design that ensures maintainability and scalability across authentication workflows.
 
-The enhanced security measures, combined with the existing comprehensive feature set, provide a robust foundation for modern mobile applications requiring secure and reliable authentication systems.
+The modernized security measures, combined with the existing comprehensive feature set, provide a robust foundation for modern mobile applications requiring secure and reliable authentication systems with improved developer experience through simplified token management and enhanced debugging capabilities.

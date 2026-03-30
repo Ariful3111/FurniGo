@@ -23,7 +23,7 @@ class RentApplianceHeader extends GetWidget<RentApplianceController> {
             color: AppColors.darkColor,
           ),
           SizedBox(height: 20.h),
-          RentHelper().optionContainer(
+          RentHelper.optionContainer(
             context: context,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
