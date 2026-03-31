@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  TextEditingController searchController = TextEditingController();
   RxInt colorIndex = 0.obs;
-
   RxDouble position = 0.5.obs;
 
   void updatePosition(double dx, double width) {

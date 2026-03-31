@@ -298,22 +298,22 @@ class Links {
 
 class Meta {
   final int currentPage;
-  final int from;
+  final int? from;
   final int lastPage;
   final List<Link>? links;
   final String path;
   final int perPage;
-  final int to;
+  final int? to;
   final int total;
 
   Meta({
     required this.currentPage,
-    required this.from,
+    this.from,
     required this.lastPage,
     this.links,
     required this.path,
     required this.perPage,
-    required this.to,
+    this.to,
     required this.total,
   });
 
