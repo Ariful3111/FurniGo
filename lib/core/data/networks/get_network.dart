@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:zb_dezign/core/constant/networks_path.dart';
 import 'package:zb_dezign/core/data/global_models/error_model.dart';
@@ -18,10 +19,8 @@ class GetNetwork {
           response.statusCode == 201 ||
           response.statusCode == 202) {
         return Right(fromJson(jsonDecode(response.body)));
-        
       }
-      // ignore: avoid_print
-      print(response.body);
+
       try {
         return left(
           ErrorModel.fromHttp(
@@ -34,6 +33,7 @@ class GetNetwork {
         return left(ErrorModel.fromUnknown());
       }
     } catch (error) {
+      debugPrint(error.toString());
       return left(error as ErrorModel);
     }
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_delivery_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_delivery_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_error_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_switch_button.dart';
@@ -16,7 +16,7 @@ class RentDeliveryDetails extends GetWidget<RentDeliveryController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RentHelper().optionContainer(
+        RentHelper.optionContainer(
           context: context,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

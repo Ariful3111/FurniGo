@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:zb_dezign/core/data/local/storage_service.dart';
@@ -7,9 +8,13 @@ import 'package:zb_dezign/core/data/networks/get_network.dart';
 import 'package:zb_dezign/core/data/networks/post_with_response.dart';
 import 'package:zb_dezign/core/data/networks/post_without_response.dart';
 import 'package:zb_dezign/core/theme/theme_controller.dart';
+import 'package:zb_dezign/firebase_options.dart';
 
 class DependencyInjection {
   static Future<String> init() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     await GetStorage.init();
     Get.put<StorageService>(StorageService(), permanent: true);
     Get.put<ThemeService>(ThemeService(), permanent: true);

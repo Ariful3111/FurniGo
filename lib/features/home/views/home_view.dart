@@ -11,64 +11,77 @@ import 'package:zb_dezign/features/home/widgets/home_widgets/home_product_placem
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_rent.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_sell.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_shop.dart';
+import 'package:zb_dezign/features/home/widgets/home_widgets/global_search_suggestion_box.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
+
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      body: Container(
-        height: MediaQuery.heightOf(context),
-        width: MediaQuery.widthOf(context),
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.darkColor : AppColors.whiteColor,
-        ),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            HomeHeader(),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: DashboardQuickAction(text: 'Categories'),
+      body: Stack(
+        children: [
+          Container(
+            height: MediaQuery.heightOf(context),
+            width: MediaQuery.widthOf(context),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkColor : AppColors.whiteColor,
             ),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HomeHelper.categoryTitle(
-                    title: 'Shop by Room',
-                    onTap: () {},
-                    isDark: isDark,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                HomeHeader(),
+                SizedBox(height: 20.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: DashboardQuickAction(text: 'Categories'),
+                ),
+                SizedBox(height: 20.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HomeHelper.categoryTitle(
+                        title: 'Shop by Room',
+                        onTap: () {},
+                        isDark: isDark,
+                      ),
+                      SizedBox(height: 16.h),
+                      HomeShop(),
+                      SizedBox(height: 40.h),
+                      HomeHelper.categoryTitle(
+                        title: 'New Arrival',
+                        onTap: () {},
+                        isDark: isDark,
+                      ),
+                      SizedBox(height: 16.h),
+                      HomeNewArrival(),
+                      SizedBox(height: 20.h),
+                    ],
                   ),
-                  SizedBox(height: 16.h),
-                  HomeShop(),
-                  SizedBox(height: 40.h),
-                  HomeHelper.categoryTitle(
-                    title: 'New Arrival',
-                    onTap: () {},
-                    isDark: isDark,
-                  ),
-                  SizedBox(height: 16.h),
-                  HomeNewArrival(),
-                  SizedBox(height: 20.h),
-                ],
-              ),
+                ),
+                HomeProductPlacement(),
+                SizedBox(height: 20.h),
+                HomeOurProducts(),
+                SizedBox(height: 40.h),
+                HomeSell(),
+                SizedBox(height: 40.h),
+                HomeRent(),
+                SizedBox(height: 20.h),
+                HomeAiDesign(),
+              ],
             ),
-            HomeProductPlacement(),
-            SizedBox(height: 20.h),
-            HomeOurProducts(),
-            SizedBox(height: 40.h),
-            HomeSell(),
-            SizedBox(height: 40.h),
-            HomeRent(),
-            SizedBox(height: 20.h),
-            HomeAiDesign(),
-          ],
-        ),
+          ),
+          Positioned(
+            top: 330.h,
+            left: 16.w,
+            right: 16.w,
+            child: const GlobalSearchSuggestionBox(),
+          ),
+        ],
       ),
     );
   }

@@ -14,8 +14,6 @@ class RentalsActiveInfo extends GetWidget<RentalDetailsController> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final rentalDetails = controller.rentalDetails.value;
-
     return Column(
       children: [
         SharedContainer(
@@ -26,12 +24,16 @@ class RentalsActiveInfo extends GetWidget<RentalDetailsController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomPrimaryText(
-                text: rentalDetails?.uuid ?? 'N/A',
+                text: controller.rentalDetails.value?.uuid ?? "",
                 color: isDark ? AppColors.whiteColor : AppColors.labelColor,
                 fontWeight: FontWeight.w600,
               ),
               SizedBox(height: 12.w),
-              CustomTableStatus(status: rentalDetails?.status ?? 'Pending'),
+              CustomTableStatus(
+                status:
+                    controller.rentalDetails.value?.status?.capitalizeFirst ??
+                    "",
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -39,7 +41,8 @@ class RentalsActiveInfo extends GetWidget<RentalDetailsController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomPrimaryText(
-                        text: 'Started ${rentalDetails?.startDate ?? 'N/A'}',
+                        text:
+                            'Started ${controller.rentalDetails.value?.startDate}',
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
                         color: isDark
@@ -49,7 +52,7 @@ class RentalsActiveInfo extends GetWidget<RentalDetailsController> {
                       SizedBox(height: 8.h),
                       CustomPrimaryText(
                         text:
-                            'Lease End Date: ${rentalDetails?.endDate ?? 'N/A'}',
+                            'Lease End Date:  ${controller.rentalDetails.value?.endDate}',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         color: isDark
@@ -71,7 +74,7 @@ class RentalsActiveInfo extends GetWidget<RentalDetailsController> {
                       ),
                       SizedBox(height: 4.h),
                       CustomPrimaryText(
-                        text: '\$125.00',
+                        text: '\$ dummy',
                         fontWeight: FontWeight.w600,
                         color: isDark
                             ? AppColors.whiteColor
@@ -79,20 +82,36 @@ class RentalsActiveInfo extends GetWidget<RentalDetailsController> {
                       ),
                       SizedBox(height: 4.h),
                       CustomPrimaryText(
-                        text: rentalDetails?.status?.capitalizeFirst == 'Active'
+                        text:
+                            controller
+                                    .rentalDetails
+                                    .value
+                                    ?.status
+                                    ?.capitalizeFirst ==
+                                'Active'
                             ? 'Due Nov 15, 2023'
                             : 'Paid',
                         fontSize: 12.sp,
                         fontWeight:
-                            rentalDetails?.status?.capitalizeFirst == 'Active'
+                            controller
+                                    .rentalDetails
+                                    .value
+                                    ?.status
+                                    ?.capitalizeFirst ==
+                                'Active'
                             ? FontWeight.w400
                             : FontWeight.w700,
                         color:
-                            rentalDetails?.status?.capitalizeFirst == 'Active'
-                            ? (isDark
+                            controller
+                                    .rentalDetails
+                                    .value
+                                    ?.status
+                                    ?.capitalizeFirst ==
+                                'Active'
+                            ? isDark
                                   ? AppColors.whiteColor
-                                  : AppColors.labelColor)
-                            : const Color(0xFF00A63E),
+                                  : AppColors.labelColor
+                            : Color(0xFF00A63E),
                       ),
                     ],
                   ),
@@ -102,7 +121,7 @@ class RentalsActiveInfo extends GetWidget<RentalDetailsController> {
           ),
         ),
         SizedBox(height: 12.h),
-        const RentalsActiveInfoDetails(),
+        RentalsActiveInfoDetails(),
       ],
     );
   }

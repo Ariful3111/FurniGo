@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/controllers/rental_details_controller.dart';
-
 import 'package:zb_dezign/features/rental/widgets/rental_completed_widgets/rentals_complete_delivery.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_delivery_status.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_active_widgets/rentals_active_info.dart';
@@ -25,94 +24,96 @@ class RentalDetailsView extends GetView<RentalDetailsController> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Obx(() {
-      if (controller.isLoading.value) {
-        return const CustomContainer(child: ButtonLoading());
-      }
-
-      final rentalDetails = controller.rentalDetails.value;
-
+      final rentDetails = controller.rentalDetails.value;
       return CustomContainer(
         padding: EdgeInsets.all(0.r),
-        child: Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: ListView(
+        child: controller.isLoading.value
+            ? ButtonLoading()
+            : Stack(
                 children: [
-                  CustomAppbar(
-                    title: 'Rentals',
-                    onDrawerTap: () {
-                      Navigator.pop(context);
-                    },
-                    icon: IconsPath.back,
-                  ),
-                  SizedBox(height: 12.h),
-                  rentalsTop(isDark: isDark),
-                  SizedBox(height: 16.h),
-                  rentalDetails?.status?.capitalizeFirst == 'Active' ||
-                          rentalDetails?.status?.capitalizeFirst == 'Completed'
-                      ? RentalsActiveInfo()
-                      : SharedContainer(
-                          padding: EdgeInsets.all(20.r),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  CustomPrimaryText(
-                                    text: rentalDetails?.uuid ?? 'N/A',
-                                    color: isDark
-                                        ? AppColors.whiteColor
-                                        : AppColors.labelColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  SizedBox(width: 12.w),
-                                  CustomTableStatus(
-                                    status: rentalDetails?.status ?? 'Pending',
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 4.h),
-                              CustomPrimaryText(
-                                text: rentalDetails?.startDate ?? 'N/A',
-                                color: isDark
-                                    ? AppColors.primaryBorderColor
-                                    : AppColors.greyTextColor,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              SizedBox(height: 20.h),
-                              Divider(
-                                color: isDark
-                                    ? AppColors.darkBorderColor
-                                    : AppColors.borderColor,
-                                thickness: 1,
-                                height: 0,
-                              ),
-                            ],
-                          ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: ListView(
+                      children: [
+                        CustomAppbar(
+                          title: 'Rentals',
+                          onDrawerTap: () {
+                            Navigator.pop(context);
+                          },
+                          icon: IconsPath.back,
                         ),
-                  SizedBox(height: 20.h),
-                  PendingWidgets(),
-                  if (rentalDetails?.status?.capitalizeFirst == 'Quote Sent')
-                    RentalQuotesCalculation(),
-                  if (rentalDetails?.status?.capitalizeFirst == 'Active')
-                    RentalsActiveDeliveryStatus(),
-                  if (rentalDetails?.status?.capitalizeFirst == 'Completed')
-                    RentalsCompleteDelivery(),
+                        SizedBox(height: 12.h),
+                        rentalsTop(isDark: isDark),
+                        SizedBox(height: 16.h),
+                        rentDetails?.status?.capitalizeFirst == 'Active' ||
+                                rentDetails?.status?.capitalizeFirst ==
+                                    'Completed'
+                            ? RentalsActiveInfo()
+                            : SharedContainer(
+                                padding: EdgeInsets.all(20.r),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CustomPrimaryText(
+                                          text: rentDetails?.uuid ?? "",
+                                          color: isDark
+                                              ? AppColors.whiteColor
+                                              : AppColors.labelColor,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        SizedBox(width: 12.w),
+                                        CustomTableStatus(
+                                          status:
+                                              rentDetails
+                                                  ?.status
+                                                  ?.capitalizeFirst ??
+                                              "",
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    CustomPrimaryText(
+                                      text: rentDetails?.startDate ?? "",
+                                      color: isDark
+                                          ? AppColors.primaryBorderColor
+                                          : AppColors.greyTextColor,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    SizedBox(height: 20.h),
+                                    Divider(
+                                      color: isDark
+                                          ? AppColors.darkBorderColor
+                                          : AppColors.borderColor,
+                                      thickness: 1,
+                                      height: 0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                        SizedBox(height: 20.h),
+                        PendingWidgets(),
+                        if (rentDetails?.status?.capitalizeFirst ==
+                            'Quote Sent')
+                          RentalQuotesCalculation(),
+                        if (rentDetails?.status?.capitalizeFirst == 'Active')
+                          RentalsActiveDeliveryStatus(),
+                        if (rentDetails?.status?.capitalizeFirst == 'Completed')
+                          RentalsCompleteDelivery(),
+                      ],
+                    ),
+                  ),
+                  if (rentDetails?.status?.capitalizeFirst == 'Quote Sent')
+                    Positioned(
+                      right: 0,
+                      top: (MediaQuery.heightOf(context) * 0.5) - 60.h,
+                      child: RentalItemDialogOpen(),
+                    ),
                 ],
               ),
-            ),
-            if (rentalDetails?.status?.capitalizeFirst == 'Quote Sent')
-              Positioned(
-                right: 0,
-                top: (MediaQuery.heightOf(context) * 0.5) - 60.h,
-                child: RentalItemDialogOpen(),
-              ),
-          ],
-        ),
       );
     });
   }

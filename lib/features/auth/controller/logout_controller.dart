@@ -18,11 +18,11 @@ class LogoutController extends GetxController {
       (error) async {
         ErrorSnackbar.show(description: error.message);
         await storage.remove(key: storage.tokenKey);
-        Get.offAllNamed(AppRoutes.signInView);
+        Get.offAllNamed(AppRoutes.onboardingView);
       },
       (data) async {
         await storage.remove(key: storage.tokenKey);
-        Get.offAllNamed(AppRoutes.signInView);
+        Get.offAllNamed(AppRoutes.onboardingView);
       },
     );
   }

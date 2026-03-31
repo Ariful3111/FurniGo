@@ -7,78 +7,112 @@ import 'package:zb_dezign/features/rental/controllers/rental_quotes_controller.d
 
 class RentalQuotesFurnitureAction extends GetWidget<RentalQuotesController> {
   final int index;
-  final bool isAppliance;
-  final QuoteItemAction action;
+  final String category;
 
   const RentalQuotesFurnitureAction({
     super.key,
     required this.index,
-    required this.isAppliance,
-    required this.action,
+    this.category = 'furniture',
   });
 
   @override
   Widget build(BuildContext context) {
-    final isApproved = action == QuoteItemAction.approved;
-    final isChange = action == QuoteItemAction.change;
-    final isClose = action == QuoteItemAction.closed;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return Obx(() {
+      final actions = category == 'furniture'
+          ? controller.furnitureActions
+          : controller.applianceActions;
 
-    return Row(
-      children: [
-        button(
-          onTap: () {
-            controller.toggleItemAction(index, isAppliance);
-          },
-          borderColor: AppColors.acceptButtonColor,
-          icon: IconsPath.approved,
-          color: isApproved ? AppColors.acceptButtonColor : null,
-          iconColor: isApproved ? AppColors.whiteColor : null,
-        ),
-        SizedBox(width: 6.4.w),
-        button(
-          onTap: () {
-            controller.toggleItemAction(index, isAppliance);
-          },
-          borderColor: AppColors.reviseTextColor,
-          icon: IconsPath.revision,
-          color: isChange ? AppColors.reviseTextColor : null,
-          iconColor: isChange ? AppColors.whiteColor : null,
-        ),
-        SizedBox(width: 6.4.w),
-        button(
-          onTap: () {
-            controller.toggleItemAction(index, isAppliance);
-          },
-          borderColor: AppColors.rejectedTextColor,
-          icon: IconsPath.close,
-          color: isClose ? AppColors.rejectedTextColor : null,
-          iconColor: isClose ? AppColors.whiteColor : null,
-        ),
-      ],
-    );
+      final action = index < actions.length
+          ? actions[index]
+          : QuoteItemAction.none;
+      final isApproved = action == QuoteItemAction.approved;
+      final isChange = action == QuoteItemAction.change;
+      final isClose = action == QuoteItemAction.closed;
+
+      return Row(
+        children: [
+          button(
+            onTap: () {
+              controller.toggleItemAction(
+                index,
+                QuoteItemAction.approved,
+                category: category,
+              );
+            },
+            borderColor: AppColors.successColor,
+            icon: IconsPath.approved,
+            color: isApproved ? AppColors.successColor : null,
+            iconColor: isApproved ? AppColors.whiteColor : null,
+          ),
+          SizedBox(width: 6.4.w),
+          button(
+            onTap: () {
+              controller.toggleItemAction(
+                index,
+                QuoteItemAction.change,
+                category: category,
+              );
+            },
+            borderColor: isDark ? AppColors.whiteColor : AppColors.primaryColor,
+            icon: IconsPath.reset,
+            color: isChange
+                ? isDark
+                      ? AppColors.whiteColor
+                      : AppColors.primaryColor
+                : null,
+            iconColor: isChange
+                ? isDark
+                      ? null
+                      : AppColors.whiteColor
+                : isDark
+                ? AppColors.whiteColor
+                : null,
+          ),
+          SizedBox(width: 6.4.w),
+          button(
+            onTap: () {
+              controller.toggleItemAction(
+                index,
+                QuoteItemAction.closed,
+                category: category,
+              );
+            },
+            borderColor: Color(0xFFDF1C41),
+            icon: IconsPath.close,
+            color: isClose ? const Color(0xFFDF1C41) : null,
+            iconColor: isClose ? AppColors.whiteColor : null,
+          ),
+        ],
+      );
+    });
   }
 
   Widget button({
-    required Function() onTap,
+    required VoidCallback onTap,
+    required Color borderColor,
     required String icon,
     Color? color,
-    Color? borderColor,
     Color? iconColor,
   }) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
       child: Container(
-        height: 24.h,
-        width: 24.w,
+        height: 32.h,
+        width: 32.w,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(4.r),
-          border: Border.all(
-            color: borderColor ?? AppColors.primaryBorderColor,
-            width: 1.r,
+          border: Border.all(width: 1.6.r, color: borderColor),
+          borderRadius: BorderRadius.circular(43.2.r),
+        ),
+        child: Center(
+          child: Image.asset(
+            icon,
+            height: 19.2.h,
+            width: 19.2.w,
+            color: iconColor,
           ),
         ),
-        child: Image.asset(icon, color: iconColor, height: 12.h, width: 12.w),
       ),
     );
   }

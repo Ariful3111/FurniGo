@@ -22,7 +22,7 @@ class RoomsModel {
 }
 
 class Rooms {
-  int? id;
+  num? id;
   String? name;
   String? imageUrl;
 

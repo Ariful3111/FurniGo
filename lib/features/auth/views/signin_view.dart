@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/data/global_models/google_user_info_model.dart';
+import 'package:zb_dezign/core/services/firebase_google_auth.dart';
+import 'package:zb_dezign/features/auth/controller/google_login_controller.dart';
 import 'package:zb_dezign/features/auth/controller/signin_controller.dart';
 import 'package:zb_dezign/features/auth/widgets/auth_header.dart';
 import 'package:zb_dezign/features/auth/widgets/login_button.dart';
@@ -22,7 +25,7 @@ class SigninView extends GetView<SigninController> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     final fromKey = GlobalKey<FormState>();
     return CustomContainer(
-      gradient:isDark? AppColors.darkAuthBG:AppColors.authBG,
+      gradient: isDark ? AppColors.darkAuthBG : AppColors.authBG,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,17 +73,27 @@ class SigninView extends GetView<SigninController> {
               ],
             ),
             SizedBox(height: 20.h),
-            LoginButton(
-              onTap: () {},
-              icon: IconsPath.google,
-              title: 'Continue With Goggle',
-              radius: 12.r,
-            ),
+            Obx(() {
+              return Get.find<GoogleLoginController>().isLoading.value
+                  ? ButtonLoading()
+                  : LoginButton(
+                      onTap: () async {
+                        GoogleUserInfoModel? user =
+                            await FirebaseGoogleAuthService.signInWithGoogle();
+                        await Get.find<GoogleLoginController>().googleLogin(
+                          user: user!,
+                        );
+                      },
+                      icon: IconsPath.google,
+                      title: 'Continue With Goggle',
+                      radius: 12.r,
+                    );
+            }),
             SizedBox(height: 16.h),
             LoginButton(
               onTap: () {},
               icon: IconsPath.apple,
-              iconColor: isDark?AppColors.whiteColor:null,
+              iconColor: isDark ? AppColors.whiteColor : null,
               title: 'Continue With Apple',
               radius: 12.r,
             ),
@@ -89,5 +102,4 @@ class SigninView extends GetView<SigninController> {
       ),
     );
   }
-
 }

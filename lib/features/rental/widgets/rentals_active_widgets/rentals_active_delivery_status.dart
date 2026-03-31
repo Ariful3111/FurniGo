@@ -9,53 +9,52 @@ import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class RentalsActiveDeliveryStatus extends StatelessWidget {
+class RentalsActiveDeliveryStatus extends GetWidget<RentalDetailsController> {
   const RentalsActiveDeliveryStatus({super.key});
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final controller = Get.find<RentalDetailsController>();
-    final rentalDetails = controller.rentalDetails.value;
-
-    final deliveryStatus = rentalDetails?.status?.capitalizeFirst ?? 'Pending';
-    final deliverySetup = rentalDetails?.deliverySetup;
-    final preferredDate = deliverySetup?.preferredDeliveryDate ?? '12/8/26';
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SharedContainer(
-          padding: EdgeInsets.all(20.sp),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomPrimaryText(
-                text: 'Delivery Status',
-                fontWeight: FontWeight.w400,
-                fontSize: 14.sp,
-                color: isDark ? AppColors.whiteColor : AppColors.darkColor,
-              ),
-              SizedBox(height: 8.h),
-              CustomTableStatus(status: deliveryStatus),
-              SizedBox(height: 12.h),
-              CustomDivider(),
-              SizedBox(height: 12.h),
-              row(title: 'Preferred Date', sub: preferredDate, isDark: isDark),
-              SizedBox(height: 20.h),
-              row(
-                title: 'Contact Person',
-                sub: deliverySetup?.contactPerson ?? 'John Doe',
-                isDark: isDark,
-                fontWeight: FontWeight.w400,
-              ),
-            ],
+    return Obx(() {
+      bool isDark = Theme.of(context).brightness == Brightness.dark;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SharedContainer(
+            padding: EdgeInsets.all(20.sp),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomPrimaryText(
+                  text: 'Delivery Status',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14.sp,
+                  color: isDark ? AppColors.whiteColor : AppColors.darkColor,
+                ),
+                SizedBox(height: 8.h),
+                CustomTableStatus(
+                  status:
+                      controller.rentalDetails.value?.status?.capitalizeFirst ??
+                      '',
+                ),
+                SizedBox(height: 12.h),
+                CustomDivider(),
+                SizedBox(height: 12.h),
+                row(title: 'Availability1', sub: 'Dummy', isDark: isDark),
+                SizedBox(height: 20.h),
+                row(
+                  title: 'Time',
+                  sub: 'Dummy',
+                  isDark: isDark,
+                  fontWeight: FontWeight.w400,
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(height: 12.h),
-        RentalsActiveButton(),
-      ],
-    );
+          SizedBox(height: 12.h),
+          RentalsActiveButton(),
+        ],
+      );
+    });
   }
 
   Widget row({

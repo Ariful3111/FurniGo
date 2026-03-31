@@ -3,7 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/data/global_models/google_user_info_model.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
+import 'package:zb_dezign/core/services/firebase_google_auth.dart';
+import 'package:zb_dezign/features/auth/controller/google_login_controller.dart';
 import 'package:zb_dezign/features/auth/controller/signup_option_controller.dart';
 import 'package:zb_dezign/features/auth/controller/user_mode_controller.dart';
 import 'package:zb_dezign/features/auth/widgets/auth_check_box.dart';
@@ -11,6 +14,7 @@ import 'package:zb_dezign/features/auth/widgets/auth_header.dart';
 import 'package:zb_dezign/features/auth/widgets/login_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_span_text.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
@@ -58,12 +62,22 @@ class SignupOptionView extends GetView<SignupOptionController> {
                       : AppColors.darkColor,
                 ),
           SizedBox(height: 32.h),
-          LoginButton(
-            onTap: () {},
-            icon: IconsPath.google,
-            title: 'Continue With Goggle',
-            radius: 12.r,
-          ),
+          Obx(() {
+            return Get.find<GoogleLoginController>().isLoading.value
+                ? ButtonLoading()
+                : LoginButton(
+                    onTap: () async {
+                      GoogleUserInfoModel? user =
+                          await FirebaseGoogleAuthService.signInWithGoogle();
+                      await Get.find<GoogleLoginController>().googleLogin(
+                        user: user!,
+                      );
+                    },
+                    icon: IconsPath.google,
+                    title: 'Continue With Goggle',
+                    radius: 12.r,
+                  );
+          }),
           SizedBox(height: 16.h),
           LoginButton(
             onTap: () {},
@@ -76,12 +90,12 @@ class SignupOptionView extends GetView<SignupOptionController> {
           LoginButton(
             onTap: () {
               if (controller.isChecked.value) {
-                  Get.toNamed(AppRoutes.signUpView);
-                } else {
-                  ErrorSnackbar.show(
-                    description: 'Please Agree to the Terms & Privacy Policy',
-                  );
-                }
+                Get.toNamed(AppRoutes.signUpView);
+              } else {
+                ErrorSnackbar.show(
+                  description: 'Please Agree to the Terms & Privacy Policy',
+                );
+              }
             },
             icon: IconsPath.authEmail,
             title: 'Continue With email',

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_delivery_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_delivery_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
 import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_phone_field.dart';

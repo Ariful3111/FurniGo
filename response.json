@@ -1,176 +1,1343 @@
 {
-  "data": {
-    "uuid": "RNT-2026-16799",
-    "user_id": 6,
-    "current_step": 9,
-    "status": "submitted",
-    "business_info": {
-      "business_name": "Acme Corp",
-      "contact_person": "John Doe",
-      "email": "john@acme.com",
-      "phone": "+61 400 000 000",
-      "abn": "12345678901",
-      "website": "https://acme.com"
-    },
-    "property_type": "Residential",
-    "property_use": "Personal",
-    "address": "123 Test St",
-    "size_sqm": 150,
-    "space_breakdown": {
+  "data": [
+    {
+      "id": 20,
+      "category_id": 23,
+      "category_name": "Outdoor Lounges",
+      "name": "consequatur blanditiis voluptatum",
+      "sku": "SKU-9784-ZLCC",
+      "description": "Necessitatibus velit necessitatibus dolore id. Quia iste voluptas quos at deserunt consequatur eaque. Doloribus error ut deleniti magni error eos. Beatae libero iure culpa.",
+      "price": 1710.55999999999994543031789362430572509765625,
+      "selling_price": 1710.55999999999994543031789362430572509765625,
+      "discount_type": "fixed",
+      "discount_amount": 95,
+      "final_price": 1615.55999999999994543031789362430572509765625,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 49.3900000000000005684341886080801486968994140625,
+        "length_cm": 137.530000000000001136868377216160297393798828125,
+        "width_cm": 161.599999999999994315658113919198513031005859375,
+        "height_cm": 65.2600000000000051159076974727213382720947265625,
+        "weight_kg": 9.518000000000000682121026329696178436279296875
+      },
+      "category": {
+        "id": 23,
+        "name": "Outdoor Lounges",
+        "slug": "outdoor-outdoor-lounges",
+        "parent_id": 22,
+        "image_url": null,
+        "status": "active",
+        "order": 1,
+        "created_at": "2026-03-29T09:51:29.000000Z",
+        "updated_at": "2026-03-29T09:51:29.000000Z"
+      },
+      "furniture_type": {
+        "id": 4,
+        "name": "Coffee Table"
+      },
       "rooms": [
         {
-          "type": "bedroom",
-          "name": "Master Bedroom",
-          "count": 1
+          "id": 3,
+          "name": "Dining Room"
         },
         {
-          "type": "bedroom",
-          "name": "Bedroom 2",
-          "count": 1
-        },
-        {
-          "type": "bedroom",
-          "name": "Bedroom 3",
-          "count": 1
-        },
-        {
-          "type": "bathroom",
-          "name": "Bathroom 1",
-          "count": 1
-        },
-        {
-          "type": "bathroom",
-          "name": "Bathroom 2",
-          "count": 1
-        },
-        {
-          "type": "living",
-          "name": "Living Room",
-          "count": 1
-        },
-        {
-          "type": "dining",
-          "name": "Dining Area",
-          "count": 1
+          "id": 6,
+          "name": "Kitchen"
         }
-      ]
+      ],
+      "media": [
+        {
+          "id": 30,
+          "product_id": 20,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_20_2x2WS.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:53.000000Z",
+          "updated_at": "2026-03-29T09:51:53.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:39.000000Z",
+      "updated_at": "2026-03-29T09:51:39.000000Z"
     },
-    "room_dimensions": [
-      {
-        "room_name": "Bedroom 01",
-        "length": "4.5",
-        "width": "5"
-      }
-    ],
-    "furniture_selection": [
-      {
-        "room": "Master Bedroom",
-        "items": [
-          {
-            "name": "Bed",
-            "count": 1
-          },
-          {
-            "name": "Mattress",
-            "count": 1
-          },
-          {
-            "name": "Side Table",
-            "count": 2
-          }
-        ],
-        "condition": "New",
-        "style": "Modern"
+    {
+      "id": 21,
+      "category_id": 44,
+      "category_name": "Fixed Lighting",
+      "name": "modi hic et",
+      "sku": "SKU-2053-DOWK",
+      "description": "Vero libero blanditiis neque dolorem dolores. Consectetur ducimus quo magni rerum sunt. Provident est deleniti in maiores. In assumenda omnis voluptatem ut vitae distinctio. Dolore cum sed molestiae commodi.",
+      "price": 2054.78000000000020008883439004421234130859375,
+      "selling_price": 2054.78000000000020008883439004421234130859375,
+      "discount_type": "percentage",
+      "discount_amount": 9,
+      "final_price": 1869.84999999999990905052982270717620849609375,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 3.319999999999999840127884453977458178997039794921875,
+        "length_cm": 51.0499999999999971578290569595992565155029296875,
+        "width_cm": 65.7099999999999937472239253111183643341064453125,
+        "height_cm": 60.72999999999999687361196265555918216705322265625,
+        "weight_kg": 95.91100000000000136424205265939235687255859375
       },
-      {
-        "room": "Living Room",
-        "items": [
-          {
-            "name": "Sofa",
-            "count": 2
-          },
-          {
-            "name": "TV Unit",
-            "count": 1
-          }
-        ],
-        "condition": "Mix",
-        "style": "Neutral"
-      }
-    ],
-    "appliance_selection": [
-      {
-        "room": "Master Bedroom",
-        "items": [
-          {
-            "name": "Refrigerator",
-            "count": 1
-          },
-          {
-            "name": "Microwave",
-            "count": 1
-          }
-        ]
+      "category": {
+        "id": 44,
+        "name": "Fixed Lighting",
+        "slug": "fixed-lighting",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 13,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
       },
-      {
-        "room": "Living Room",
-        "items": [
-          {
-            "name": "Television",
-            "count": 2
-          }
-        ]
-      }
-    ],
-    "rental_terms": {
-      "rental_term_id": 3,
-      "rental_term_days": 90,
-      "term_type": "fixed",
-      "duration_months": 3,
-      "payment_frequency": "monthly",
-      "rental_term_discount": 7,
-      "pricing_preference": "installments",
-      "start_date": "2024-12-01",
-      "installment_schedule": {
-        "upfront": "40%",
-        "second_payment": "30%",
-        "final_payment": "30%"
+      "furniture_type": {
+        "id": 3,
+        "name": "Bed"
       },
-      "timeline_urgency": "urgent",
-      "budget_preference": "500000-600000",
-      "fire_safety_required": true,
-      "weight_restrictions": "500kg per lift",
-      "ohs_requirements": "Additional OH&S requirements here"
+      "rooms": [
+        {
+          "id": 6,
+          "name": "Kitchen"
+        }
+      ],
+      "media": [
+        {
+          "id": 31,
+          "product_id": 21,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_21_3BBgk.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:53.000000Z",
+          "updated_at": "2026-03-29T09:51:53.000000Z"
+        },
+        {
+          "id": 32,
+          "product_id": 21,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_21_2_Rcbol.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:53.000000Z",
+          "updated_at": "2026-03-29T09:51:53.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:39.000000Z",
+      "updated_at": "2026-03-29T09:51:39.000000Z"
     },
-    "rental_term_id": 3,
-    "rental_term": {
+    {
+      "id": 22,
+      "category_id": 44,
+      "category_name": "Fixed Lighting",
+      "name": "laborum quod et",
+      "sku": "SKU-9940-KJJH",
+      "description": "Libero atque sit consequuntur magnam iusto perspiciatis quis. Repellat ab consequatur beatae nulla velit ut tempora magni. Velit ipsum sed praesentium laudantium.",
+      "price": 3362.75,
+      "selling_price": 3362.75,
+      "discount_type": "fixed",
+      "discount_amount": 81,
+      "final_price": 3281.75,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 41.32000000000000028421709430404007434844970703125,
+        "length_cm": 159.580000000000012505552149377763271331787109375,
+        "width_cm": 187.780000000000001136868377216160297393798828125,
+        "height_cm": 95.5799999999999982946974341757595539093017578125,
+        "weight_kg": 58.3010000000000019326762412674725055694580078125
+      },
+      "category": {
+        "id": 44,
+        "name": "Fixed Lighting",
+        "slug": "fixed-lighting",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 13,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 5,
+        "name": "Lamp"
+      },
+      "rooms": [
+        {
+          "id": 2,
+          "name": "Bedroom"
+        },
+        {
+          "id": 7,
+          "name": "Bathroom"
+        }
+      ],
+      "media": [
+        {
+          "id": 33,
+          "product_id": 22,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_22_Wby9a.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:54.000000Z",
+          "updated_at": "2026-03-29T09:51:54.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:39.000000Z",
+      "updated_at": "2026-03-29T09:51:39.000000Z"
+    },
+    {
+      "id": 23,
+      "category_id": 44,
+      "category_name": "Fixed Lighting",
+      "name": "veritatis delectus odit",
+      "sku": "SKU-1142-ZGDY",
+      "description": "Quia commodi praesentium sit eos. Alias error dolorem magnam et ipsum voluptatem sed amet.",
+      "price": 3590.80999999999994543031789362430572509765625,
+      "selling_price": 3590.80999999999994543031789362430572509765625,
+      "discount_type": "fixed",
+      "discount_amount": 68,
+      "final_price": 3522.80999999999994543031789362430572509765625,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 82.7099999999999937472239253111183643341064453125,
+        "length_cm": 176.719999999999998863131622783839702606201171875,
+        "width_cm": 33.86999999999999744204615126363933086395263671875,
+        "height_cm": 171.840000000000003410605131648480892181396484375,
+        "weight_kg": 86.8709999999999951114659779705107212066650390625
+      },
+      "category": {
+        "id": 44,
+        "name": "Fixed Lighting",
+        "slug": "fixed-lighting",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 13,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 4,
+        "name": "Coffee Table"
+      },
+      "rooms": [
+        {
+          "id": 1,
+          "name": "Living Room"
+        },
+        {
+          "id": 6,
+          "name": "Kitchen"
+        }
+      ],
+      "media": [
+        {
+          "id": 34,
+          "product_id": 23,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_23_uxVQ4.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:54.000000Z",
+          "updated_at": "2026-03-29T09:51:54.000000Z"
+        },
+        {
+          "id": 35,
+          "product_id": 23,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_23_2_z9A3T.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:54.000000Z",
+          "updated_at": "2026-03-29T09:51:54.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:39.000000Z",
+      "updated_at": "2026-03-29T09:51:39.000000Z"
+    },
+    {
+      "id": 24,
+      "category_id": 44,
+      "category_name": "Fixed Lighting",
+      "name": "saepe dolore dicta",
+      "sku": "SKU-5763-DGEX",
+      "description": "Officiis minus doloremque officia aut qui est reiciendis. Fugit iusto voluptates cum nesciunt vero atque. Iure error tempora et saepe cupiditate.",
+      "price": 1459.700000000000045474735088646411895751953125,
+      "selling_price": 1459.700000000000045474735088646411895751953125,
+      "discount_type": "fixed",
+      "discount_amount": 32,
+      "final_price": 1427.700000000000045474735088646411895751953125,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 13.1400000000000005684341886080801486968994140625,
+        "length_cm": 163.18000000000000682121026329696178436279296875,
+        "width_cm": 29.85000000000000142108547152020037174224853515625,
+        "height_cm": 117.5400000000000062527760746888816356658935546875,
+        "weight_kg": 93.9860000000000042064129956997931003570556640625
+      },
+      "category": {
+        "id": 44,
+        "name": "Fixed Lighting",
+        "slug": "fixed-lighting",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 13,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 4,
+        "name": "Coffee Table"
+      },
+      "rooms": [
+        {
+          "id": 8,
+          "name": "Garage"
+        }
+      ],
+      "media": [
+        {
+          "id": 36,
+          "product_id": 24,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_24_SU9Uu.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:55.000000Z",
+          "updated_at": "2026-03-29T09:51:55.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:39.000000Z",
+      "updated_at": "2026-03-29T09:51:39.000000Z"
+    },
+    {
+      "id": 26,
+      "category_id": 44,
+      "category_name": "Fixed Lighting",
+      "name": "ut non in",
+      "sku": "SKU-3771-UKVR",
+      "description": "Accusantium qui ut ex eius. Ut pariatur eligendi labore in vel. Et qui aspernatur consectetur. Quo deleniti possimus distinctio aliquid placeat.",
+      "price": 752.69000000000005456968210637569427490234375,
+      "selling_price": 752.69000000000005456968210637569427490234375,
+      "discount_type": "fixed",
+      "discount_amount": 44,
+      "final_price": 708.69000000000005456968210637569427490234375,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 37.07000000000000028421709430404007434844970703125,
+        "length_cm": 91.0199999999999960209606797434389591217041015625,
+        "width_cm": 66.7099999999999937472239253111183643341064453125,
+        "height_cm": 161.94999999999998863131622783839702606201171875,
+        "weight_kg": 81.79099999999999681676854379475116729736328125
+      },
+      "category": {
+        "id": 44,
+        "name": "Fixed Lighting",
+        "slug": "fixed-lighting",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 13,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 2,
+        "name": "Chair"
+      },
+      "rooms": [
+        {
+          "id": 6,
+          "name": "Kitchen"
+        }
+      ],
+      "media": [
+        {
+          "id": 39,
+          "product_id": 26,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_26_d33AV.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:55.000000Z",
+          "updated_at": "2026-03-29T09:51:55.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:39.000000Z",
+      "updated_at": "2026-03-29T09:51:39.000000Z"
+    },
+    {
+      "id": 1,
+      "category_id": 44,
+      "category_name": "Fixed Lighting",
+      "name": "minima est odit",
+      "sku": "SKU-9560-LFZO",
+      "description": "Earum tempore voluptas sequi facilis rerum velit. Enim ipsum minus adipisci animi perspiciatis qui et. Id totam impedit voluptas dolor. Ipsam quas animi odio. Deleniti reprehenderit cum totam expedita voluptates labore quisquam enim.",
+      "price": 4564.9600000000000363797880709171295166015625,
+      "selling_price": 4564.9600000000000363797880709171295166015625,
+      "discount_type": "percentage",
+      "discount_amount": 15,
+      "final_price": 3880.21999999999979991116560995578765869140625,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 66.030000000000001136868377216160297393798828125,
+        "length_cm": 148.259999999999990905052982270717620849609375,
+        "width_cm": 34.72999999999999687361196265555918216705322265625,
+        "height_cm": 158.150000000000005684341886080801486968994140625,
+        "weight_kg": 55.8990000000000009094947017729282379150390625
+      },
+      "category": {
+        "id": 44,
+        "name": "Fixed Lighting",
+        "slug": "fixed-lighting",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 13,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 1,
+        "name": "Sofa"
+      },
+      "rooms": [
+        {
+          "id": 7,
+          "name": "Bathroom"
+        }
+      ],
+      "media": [
+        {
+          "id": 1,
+          "product_id": 1,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_1_uWECC.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:39.000000Z",
+          "updated_at": "2026-03-29T09:51:39.000000Z"
+        },
+        {
+          "id": 2,
+          "product_id": 1,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_1_2_Y8aMd.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:39.000000Z",
+          "updated_at": "2026-03-29T09:51:39.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 2,
+      "category_id": 9,
+      "category_name": "Chest of Drawers",
+      "name": "est velit accusantium",
+      "sku": "SKU-0974-TXHL",
+      "description": "Eos nulla et et ea et asperiores qui. Sed qui libero et ut maiores quas. Consequatur amet odit autem corrupti.",
+      "price": 537.5700000000000500222085975110530853271484375,
+      "selling_price": 537.5700000000000500222085975110530853271484375,
+      "discount_type": "fixed",
+      "discount_amount": 71,
+      "final_price": 466.56999999999999317878973670303821563720703125,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 2.890000000000000124344978758017532527446746826171875,
+        "length_cm": 199.669999999999987494447850622236728668212890625,
+        "width_cm": 111.3299999999999982946974341757595539093017578125,
+        "height_cm": 68.219999999999998863131622783839702606201171875,
+        "weight_kg": 68.90399999999999636202119290828704833984375
+      },
+      "category": {
+        "id": 9,
+        "name": "Chest of Drawers",
+        "slug": "dressers-chest-of-drawers",
+        "parent_id": 6,
+        "image_url": null,
+        "status": "active",
+        "order": 3,
+        "created_at": "2026-03-29T09:51:29.000000Z",
+        "updated_at": "2026-03-29T09:51:29.000000Z"
+      },
+      "furniture_type": {
+        "id": 4,
+        "name": "Coffee Table"
+      },
+      "rooms": [
+        {
+          "id": 2,
+          "name": "Bedroom"
+        },
+        {
+          "id": 4,
+          "name": "Office"
+        },
+        {
+          "id": 7,
+          "name": "Bathroom"
+        }
+      ],
+      "media": [
+        {
+          "id": 3,
+          "product_id": 2,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_2_DAzQi.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:39.000000Z",
+          "updated_at": "2026-03-29T09:51:39.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
       "id": 3,
-      "name": "90 Days",
-      "days": 90,
-      "discount_percent": 7
-    },
-    "delivery_setup": {
-      "delivery_address": "123 Test St, Suburb, State, Postcode",
-      "contact_person": "John Doe",
-      "preferred_delivery_date": "2024-12-01",
-      "access_details": {
-        "lift_access": true,
-        "loading_dock_available": true,
-        "working_hours_restrictions": false
+      "category_id": 21,
+      "category_name": "Bar Stools",
+      "name": "ipsa dolor deleniti",
+      "sku": "SKU-9826-JXBA",
+      "description": "Architecto voluptatem saepe autem saepe inventore necessitatibus odio. Libero natus aperiam ut consequuntur ad voluptatem.",
+      "price": 2174.17999999999983629095368087291717529296875,
+      "selling_price": 2174.17999999999983629095368087291717529296875,
+      "discount_type": "fixed",
+      "discount_amount": 63,
+      "final_price": 2111.17999999999983629095368087291717529296875,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 78.18999999999999772626324556767940521240234375,
+        "length_cm": 173.75,
+        "width_cm": 53.75999999999999801048033987171947956085205078125,
+        "height_cm": 28.989999999999998436805981327779591083526611328125,
+        "weight_kg": 91.34600000000000363797880709171295166015625
       },
-      "installation_required": true
+      "category": {
+        "id": 21,
+        "name": "Bar Stools",
+        "slug": "dining-settings-bar-stools",
+        "parent_id": 18,
+        "image_url": null,
+        "status": "active",
+        "order": 3,
+        "created_at": "2026-03-29T09:51:29.000000Z",
+        "updated_at": "2026-03-29T09:51:29.000000Z"
+      },
+      "furniture_type": {
+        "id": 1,
+        "name": "Sofa"
+      },
+      "rooms": [
+        {
+          "id": 7,
+          "name": "Bathroom"
+        }
+      ],
+      "media": [
+        {
+          "id": 4,
+          "product_id": 3,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_3_XZ3Cz.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:41.000000Z",
+          "updated_at": "2026-03-29T09:51:41.000000Z"
+        },
+        {
+          "id": 5,
+          "product_id": 3,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_3_2_kNmFf.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:41.000000Z",
+          "updated_at": "2026-03-29T09:51:41.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
     },
-    "additional_notes": {
-      "custom_requests": "Please call before arrival.",
-      "branding_required": true,
-      "branding_elements": ["logo_placement", "brand_color_matching"]
+    {
+      "id": 5,
+      "category_id": 45,
+      "category_name": "Ceiling Lights",
+      "name": "quia possimus dolores",
+      "sku": "SKU-2639-DZHE",
+      "description": "Enim nulla rerum quod dolor. Nemo et voluptatem debitis autem.",
+      "price": 156.219999999999998863131622783839702606201171875,
+      "selling_price": 156.219999999999998863131622783839702606201171875,
+      "discount_type": "percentage",
+      "discount_amount": 8,
+      "final_price": 143.719999999999998863131622783839702606201171875,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 20.469999999999998863131622783839702606201171875,
+        "length_cm": 74.900000000000005684341886080801486968994140625,
+        "width_cm": 178.18999999999999772626324556767940521240234375,
+        "height_cm": 133.56000000000000227373675443232059478759765625,
+        "weight_kg": 54.46000000000000085265128291212022304534912109375
+      },
+      "category": {
+        "id": 45,
+        "name": "Ceiling Lights",
+        "slug": "fixed-lighting-ceiling-lights",
+        "parent_id": 44,
+        "image_url": null,
+        "status": "active",
+        "order": 1,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 5,
+        "name": "Lamp"
+      },
+      "rooms": [
+        {
+          "id": 3,
+          "name": "Dining Room"
+        }
+      ],
+      "media": [
+        {
+          "id": 7,
+          "product_id": 5,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_5_yOBYb.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:42.000000Z",
+          "updated_at": "2026-03-29T09:51:42.000000Z"
+        },
+        {
+          "id": 8,
+          "product_id": 5,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_5_2_7Ktwc.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:42.000000Z",
+          "updated_at": "2026-03-29T09:51:42.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
     },
-    "start_date": "2024-12-01",
-    "end_date": "2025-03-01",
-    "quotation_uuid": null,
-    "quotation_status": null,
-    "quotation": null,
-    "created_at": "2026-03-28T09:52:14.000000Z",
-    "updated_at": "2026-03-28T09:54:07.000000Z"
+    {
+      "id": 6,
+      "category_id": 2,
+      "category_name": "King Beds",
+      "name": "voluptatem excepturi vitae",
+      "sku": "SKU-7388-LYLN",
+      "description": "Cum minima nulla numquam ut ut quis. Unde eaque delectus dolorum ipsam voluptates. Ullam nostrum dolores et velit.",
+      "price": 476.740000000000009094947017729282379150390625,
+      "selling_price": 476.740000000000009094947017729282379150390625,
+      "discount_type": "percentage",
+      "discount_amount": 20,
+      "final_price": 381.3899999999999863575794734060764312744140625,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 29.660000000000000142108547152020037174224853515625,
+        "length_cm": 99.0499999999999971578290569595992565155029296875,
+        "width_cm": 49.03999999999999914734871708787977695465087890625,
+        "height_cm": 195.6399999999999863575794734060764312744140625,
+        "weight_kg": 47.33899999999999863575794734060764312744140625
+      },
+      "category": {
+        "id": 2,
+        "name": "King Beds",
+        "slug": "beds-king-beds",
+        "parent_id": 1,
+        "image_url": null,
+        "status": "active",
+        "order": 1,
+        "created_at": "2026-03-29T09:51:29.000000Z",
+        "updated_at": "2026-03-29T09:51:29.000000Z"
+      },
+      "furniture_type": {
+        "id": 2,
+        "name": "Chair"
+      },
+      "rooms": [
+        {
+          "id": 4,
+          "name": "Office"
+        },
+        {
+          "id": 5,
+          "name": "Outdoor"
+        },
+        {
+          "id": 6,
+          "name": "Kitchen"
+        }
+      ],
+      "media": [
+        {
+          "id": 9,
+          "product_id": 6,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_6_KaLcV.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:42.000000Z",
+          "updated_at": "2026-03-29T09:51:42.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 7,
+      "category_id": 18,
+      "category_name": "Dining Settings",
+      "name": "voluptates distinctio eum",
+      "sku": "SKU-8479-ZPJC",
+      "description": "Rerum non unde aut esse rem iste mollitia. Qui quos assumenda repudiandae sit. Quia sed eveniet sint sed. Vel et voluptas quam enim recusandae suscipit debitis est.",
+      "price": 4003.53000000000020008883439004421234130859375,
+      "selling_price": 4003.53000000000020008883439004421234130859375,
+      "discount_type": "percentage",
+      "discount_amount": 21,
+      "final_price": 3162.7899999999999636202119290828704833984375,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 11.6199999999999992184029906638897955417633056640625,
+        "length_cm": 127.68999999999999772626324556767940521240234375,
+        "width_cm": 67.7600000000000051159076974727213382720947265625,
+        "height_cm": 189.8899999999999863575794734060764312744140625,
+        "weight_kg": 51.34599999999999653255144949071109294891357421875
+      },
+      "category": {
+        "id": 18,
+        "name": "Dining Settings",
+        "slug": "dining-settings",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 5,
+        "created_at": "2026-03-29T09:51:29.000000Z",
+        "updated_at": "2026-03-29T09:51:29.000000Z"
+      },
+      "furniture_type": {
+        "id": 3,
+        "name": "Bed"
+      },
+      "rooms": [
+        {
+          "id": 1,
+          "name": "Living Room"
+        },
+        {
+          "id": 4,
+          "name": "Office"
+        },
+        {
+          "id": 8,
+          "name": "Garage"
+        }
+      ],
+      "media": [
+        {
+          "id": 10,
+          "product_id": 7,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_7_bLMiX.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:43.000000Z",
+          "updated_at": "2026-03-29T09:51:43.000000Z"
+        },
+        {
+          "id": 11,
+          "product_id": 7,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_7_2_wBdyb.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:43.000000Z",
+          "updated_at": "2026-03-29T09:51:43.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 8,
+      "category_id": 17,
+      "category_name": "Outdoor Rugs",
+      "name": "aut dolor veniam",
+      "sku": "SKU-6558-QJTP",
+      "description": "Eos sunt facere qui consequatur. Ipsam aliquid est minima vero tempore quaerat aliquam. Reiciendis exercitationem laboriosam veniam optio qui odit. Ea aut aperiam omnis architecto assumenda qui. Quibusdam voluptatem porro dolor sed quibusdam atque.",
+      "price": 256.6399999999999863575794734060764312744140625,
+      "selling_price": 256.6399999999999863575794734060764312744140625,
+      "discount_type": "fixed",
+      "discount_amount": 70,
+      "final_price": 186.6399999999999863575794734060764312744140625,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 90.5199999999999960209606797434389591217041015625,
+        "length_cm": 143.030000000000001136868377216160297393798828125,
+        "width_cm": 104.2000000000000028421709430404007434844970703125,
+        "height_cm": 74.8799999999999954525264911353588104248046875,
+        "weight_kg": 14.94500000000000028421709430404007434844970703125
+      },
+      "category": {
+        "id": 17,
+        "name": "Outdoor Rugs",
+        "slug": "rugs-outdoor-rugs",
+        "parent_id": 14,
+        "image_url": null,
+        "status": "active",
+        "order": 3,
+        "created_at": "2026-03-29T09:51:29.000000Z",
+        "updated_at": "2026-03-29T09:51:29.000000Z"
+      },
+      "furniture_type": {
+        "id": 5,
+        "name": "Lamp"
+      },
+      "rooms": [
+        {
+          "id": 8,
+          "name": "Garage"
+        }
+      ],
+      "media": [
+        {
+          "id": 12,
+          "product_id": 8,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_8_9dvhU.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:43.000000Z",
+          "updated_at": "2026-03-29T09:51:43.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 9,
+      "category_id": 27,
+      "category_name": "Hallway Consoles",
+      "name": "ex assumenda sed",
+      "sku": "SKU-2864-KDAP",
+      "description": "Laboriosam pariatur eum consequatur dolores beatae. Sed magni ea a provident accusantium molestiae. Iusto illo porro sed adipisci saepe ullam quas.",
+      "price": 3721.4600000000000363797880709171295166015625,
+      "selling_price": 3721.4600000000000363797880709171295166015625,
+      "discount_type": "percentage",
+      "discount_amount": 16,
+      "final_price": 3126.03000000000020008883439004421234130859375,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 66.6700000000000017053025658242404460906982421875,
+        "length_cm": 101.06000000000000227373675443232059478759765625,
+        "width_cm": 192.990000000000009094947017729282379150390625,
+        "height_cm": 155.460000000000007958078640513122081756591796875,
+        "weight_kg": 73.498999999999995225152815692126750946044921875
+      },
+      "category": {
+        "id": 27,
+        "name": "Hallway Consoles",
+        "slug": "consoles-hallway-consoles",
+        "parent_id": 26,
+        "image_url": null,
+        "status": "active",
+        "order": 1,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 1,
+        "name": "Sofa"
+      },
+      "rooms": [
+        {
+          "id": 8,
+          "name": "Garage"
+        }
+      ],
+      "media": [
+        {
+          "id": 13,
+          "product_id": 9,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_9_ljVuS.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:45.000000Z",
+          "updated_at": "2026-03-29T09:51:45.000000Z"
+        },
+        {
+          "id": 14,
+          "product_id": 9,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_9_2_kugcG.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:45.000000Z",
+          "updated_at": "2026-03-29T09:51:45.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 10,
+      "category_id": 29,
+      "category_name": "Buffet",
+      "name": "ad eos et",
+      "sku": "SKU-0011-KDSQ",
+      "description": "Consequatur cumque repellendus necessitatibus ut odio. Qui cumque corporis excepturi atque. Eveniet quia incidunt eveniet laudantium quis consequatur illo.",
+      "price": 334.1299999999999954525264911353588104248046875,
+      "selling_price": 334.1299999999999954525264911353588104248046875,
+      "discount_type": "fixed",
+      "discount_amount": 16,
+      "final_price": 318.1299999999999954525264911353588104248046875,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 49,
+        "length_cm": 99.7300000000000039790393202565610408782958984375,
+        "width_cm": 56.4500000000000028421709430404007434844970703125,
+        "height_cm": 93.2999999999999971578290569595992565155029296875,
+        "weight_kg": 6.16500000000000003552713678800500929355621337890625
+      },
+      "category": {
+        "id": 29,
+        "name": "Buffet",
+        "slug": "buffet",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 8,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 4,
+        "name": "Coffee Table"
+      },
+      "rooms": [
+        {
+          "id": 4,
+          "name": "Office"
+        },
+        {
+          "id": 7,
+          "name": "Bathroom"
+        }
+      ],
+      "media": [
+        {
+          "id": 15,
+          "product_id": 10,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_10_AKeRh.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:46.000000Z",
+          "updated_at": "2026-03-29T09:51:46.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 12,
+      "category_id": 17,
+      "category_name": "Outdoor Rugs",
+      "name": "in laborum ea",
+      "sku": "SKU-2647-ADQF",
+      "description": "Qui qui fugiat suscipit eos. Enim veniam autem adipisci id. Pariatur corporis eos culpa.",
+      "price": 2925.05999999999994543031789362430572509765625,
+      "selling_price": 2925.05999999999994543031789362430572509765625,
+      "discount_type": null,
+      "discount_amount": 0,
+      "final_price": 2925.05999999999994543031789362430572509765625,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 72.530000000000001136868377216160297393798828125,
+        "length_cm": 16.629999999999999005240169935859739780426025390625,
+        "width_cm": 31.089999999999999857891452847979962825775146484375,
+        "height_cm": 122.25,
+        "weight_kg": 53.03999999999999914734871708787977695465087890625
+      },
+      "category": {
+        "id": 17,
+        "name": "Outdoor Rugs",
+        "slug": "rugs-outdoor-rugs",
+        "parent_id": 14,
+        "image_url": null,
+        "status": "active",
+        "order": 3,
+        "created_at": "2026-03-29T09:51:29.000000Z",
+        "updated_at": "2026-03-29T09:51:29.000000Z"
+      },
+      "furniture_type": {
+        "id": 5,
+        "name": "Lamp"
+      },
+      "rooms": [
+        {
+          "id": 2,
+          "name": "Bedroom"
+        },
+        {
+          "id": 5,
+          "name": "Outdoor"
+        }
+      ],
+      "media": [
+        {
+          "id": 18,
+          "product_id": 12,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_12_MdBT5.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:48.000000Z",
+          "updated_at": "2026-03-29T09:51:48.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 13,
+      "category_id": 14,
+      "category_name": "Rugs",
+      "name": "facilis laboriosam odit",
+      "sku": "SKU-3729-LVEF",
+      "description": "Harum est quia ullam dolores in autem. Earum id placeat quia reprehenderit tempora facilis. Sint cupiditate est dicta aut.",
+      "price": 2317.48000000000001818989403545856475830078125,
+      "selling_price": 2317.48000000000001818989403545856475830078125,
+      "discount_type": "fixed",
+      "discount_amount": 96,
+      "final_price": 2221.48000000000001818989403545856475830078125,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 48.25999999999999801048033987171947956085205078125,
+        "length_cm": 19.10000000000000142108547152020037174224853515625,
+        "width_cm": 76.06000000000000227373675443232059478759765625,
+        "height_cm": 42.090000000000003410605131648480892181396484375,
+        "weight_kg": 71.792000000000001591615728102624416351318359375
+      },
+      "category": {
+        "id": 14,
+        "name": "Rugs",
+        "slug": "rugs",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 4,
+        "created_at": "2026-03-29T09:51:29.000000Z",
+        "updated_at": "2026-03-29T09:51:29.000000Z"
+      },
+      "furniture_type": {
+        "id": 5,
+        "name": "Lamp"
+      },
+      "rooms": [
+        {
+          "id": 3,
+          "name": "Dining Room"
+        }
+      ],
+      "media": [
+        {
+          "id": 19,
+          "product_id": 13,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_13_GFUNy.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:49.000000Z",
+          "updated_at": "2026-03-29T09:51:49.000000Z"
+        },
+        {
+          "id": 20,
+          "product_id": 13,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_13_2_5z078.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:49.000000Z",
+          "updated_at": "2026-03-29T09:51:49.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 14,
+      "category_id": 49,
+      "category_name": "Cushions",
+      "name": "quo numquam voluptates",
+      "sku": "SKU-0404-JNAY",
+      "description": "Dicta corporis sint ad minus perferendis. Sed accusamus provident est excepturi omnis. Voluptate in quae aut similique.",
+      "price": 3784.53000000000020008883439004421234130859375,
+      "selling_price": 3784.53000000000020008883439004421234130859375,
+      "discount_type": "percentage",
+      "discount_amount": 13,
+      "final_price": 3292.5399999999999636202119290828704833984375,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 41.99000000000000198951966012828052043914794921875,
+        "length_cm": 134.080000000000012505552149377763271331787109375,
+        "width_cm": 10.6899999999999995026200849679298698902130126953125,
+        "height_cm": 136.030000000000001136868377216160297393798828125,
+        "weight_kg": 15.3420000000000005258016244624741375446319580078125
+      },
+      "category": {
+        "id": 49,
+        "name": "Cushions",
+        "slug": "decor-cushions",
+        "parent_id": 47,
+        "image_url": null,
+        "status": "active",
+        "order": 2,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 2,
+        "name": "Chair"
+      },
+      "rooms": [
+        {
+          "id": 4,
+          "name": "Office"
+        },
+        {
+          "id": 5,
+          "name": "Outdoor"
+        },
+        {
+          "id": 7,
+          "name": "Bathroom"
+        }
+      ],
+      "media": [
+        {
+          "id": 21,
+          "product_id": 14,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_14_Rtf5Z.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:49.000000Z",
+          "updated_at": "2026-03-29T09:51:49.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 15,
+      "category_id": 47,
+      "category_name": "Décor",
+      "name": "nesciunt nihil amet",
+      "sku": "SKU-1243-OGTK",
+      "description": "Dolor earum expedita ea esse. Ea rerum doloribus sint voluptates culpa autem provident recusandae.",
+      "price": 2031.220000000000027284841053187847137451171875,
+      "selling_price": 2031.220000000000027284841053187847137451171875,
+      "discount_type": "percentage",
+      "discount_amount": 13,
+      "final_price": 1767.160000000000081854523159563541412353515625,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 88.75,
+        "length_cm": 187.460000000000007958078640513122081756591796875,
+        "width_cm": 164.19999999999998863131622783839702606201171875,
+        "height_cm": 130.460000000000007958078640513122081756591796875,
+        "weight_kg": 46.203000000000002955857780762016773223876953125
+      },
+      "category": {
+        "id": 47,
+        "name": "Décor",
+        "slug": "decor",
+        "parent_id": null,
+        "image_url": null,
+        "status": "active",
+        "order": 14,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 4,
+        "name": "Coffee Table"
+      },
+      "rooms": [
+        {
+          "id": 5,
+          "name": "Outdoor"
+        }
+      ],
+      "media": [
+        {
+          "id": 22,
+          "product_id": 15,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_15_BOzN6.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:50.000000Z",
+          "updated_at": "2026-03-29T09:51:50.000000Z"
+        },
+        {
+          "id": 23,
+          "product_id": 15,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_15_2_sNCHy.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:50.000000Z",
+          "updated_at": "2026-03-29T09:51:50.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    },
+    {
+      "id": 17,
+      "category_id": 53,
+      "category_name": "Framed Art",
+      "name": "iste dolore ex",
+      "sku": "SKU-1660-CNEV",
+      "description": "Est dolorem reiciendis iste odio delectus culpa voluptates. Maxime quia qui sit sunt labore quo architecto. Rerum soluta deserunt aut repellat rerum et soluta iusto.",
+      "price": 834.26999999999998181010596454143524169921875,
+      "selling_price": 834.26999999999998181010596454143524169921875,
+      "discount_type": "percentage",
+      "discount_amount": 25,
+      "final_price": 625.700000000000045474735088646411895751953125,
+      "is_rentable": false,
+      "is_favourite": false,
+      "is_in_stock": true,
+      "status": "active",
+      "dimensions": {
+        "weight": 9.089999999999999857891452847979962825775146484375,
+        "length_cm": 173.909999999999996589394868351519107818603515625,
+        "width_cm": 162.94999999999998863131622783839702606201171875,
+        "height_cm": 111.340000000000003410605131648480892181396484375,
+        "weight_kg": 56.64699999999999846522769075818359851837158203125
+      },
+      "category": {
+        "id": 53,
+        "name": "Framed Art",
+        "slug": "paintings-framed-art",
+        "parent_id": 51,
+        "image_url": null,
+        "status": "active",
+        "order": 2,
+        "created_at": "2026-03-29T09:51:30.000000Z",
+        "updated_at": "2026-03-29T09:51:30.000000Z"
+      },
+      "furniture_type": {
+        "id": 1,
+        "name": "Sofa"
+      },
+      "rooms": [
+        {
+          "id": 7,
+          "name": "Bathroom"
+        }
+      ],
+      "media": [
+        {
+          "id": 25,
+          "product_id": 17,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_17_G1eRb.jpg",
+          "is_primary": true,
+          "created_at": "2026-03-29T09:51:51.000000Z",
+          "updated_at": "2026-03-29T09:51:51.000000Z"
+        },
+        {
+          "id": 26,
+          "product_id": 17,
+          "type": "image",
+          "url": "https://jbdesign.sepiabd.com/storage/products/product_17_2_vE5OY.jpg",
+          "is_primary": false,
+          "created_at": "2026-03-29T09:51:51.000000Z",
+          "updated_at": "2026-03-29T09:51:51.000000Z"
+        }
+      ],
+      "created_at": "2026-03-29T09:51:38.000000Z",
+      "updated_at": "2026-03-29T09:51:38.000000Z"
+    }
+  ],
+  "links": {
+    "first": "https://jbdesign.sepiabd.com/api/products?page=1",
+    "last": "https://jbdesign.sepiabd.com/api/products?page=2",
+    "prev": null,
+    "next": "https://jbdesign.sepiabd.com/api/products?page=2"
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 2,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "active": false
+      },
+      {
+        "url": "https://jbdesign.sepiabd.com/api/products?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://jbdesign.sepiabd.com/api/products?page=2",
+        "label": "2",
+        "active": false
+      },
+      {
+        "url": "https://jbdesign.sepiabd.com/api/products?page=2",
+        "label": "Next &raquo;",
+        "active": false
+      }
+    ],
+    "path": "https://jbdesign.sepiabd.com/api/products",
+    "per_page": 20,
+    "to": 20,
+    "total": 22
   }
 }

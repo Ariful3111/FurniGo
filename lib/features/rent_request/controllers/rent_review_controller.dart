@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_property_type_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
 
 class RentReviewController extends GetxController {
   var propertyType = [

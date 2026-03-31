@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/home/controller/home_controller.dart';
+import 'package:zb_dezign/features/home/controller/global_search_controller.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 
-class HomeSearchFilter extends GetWidget<HomeController> {
+class HomeSearchFilter extends GetWidget<GlobalSearchController> {
   const HomeSearchFilter({super.key});
 
   @override
@@ -20,6 +20,7 @@ class HomeSearchFilter extends GetWidget<HomeController> {
           radius: 12.r,
           child: CustomTextFormField(
             controller: controller.searchController,
+            focusNode: controller.searchFocusNode,
             border: BorderSide.none,
             isFilled: false,
             borderRadius: 12.r,
@@ -38,6 +39,21 @@ class HomeSearchFilter extends GetWidget<HomeController> {
             labelText: 'Search Product...',
             labelColor: AppColors.whiteColor,
             floatingLabelBehavior: FloatingLabelBehavior.never,
+            suffixIcon: Obx(
+              () => controller.showSuggestions.value
+                  ? GestureDetector(
+                      onTap: controller.clearSearch,
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.only(right: 16.w),
+                        child: Icon(
+                          Icons.clear,
+                          color: AppColors.whiteColor,
+                          size: 20.sp,
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
           ),
         ),
         SizedBox(width: 12.w),
