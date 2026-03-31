@@ -3,8 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/data/global_models/google_user_info_model.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
+import 'package:zb_dezign/core/services/firebase_google_auth.dart';
+import 'package:zb_dezign/features/auth/controller/google_login_controller.dart';
 import 'package:zb_dezign/features/auth/widgets/login_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class OnboardLogin extends StatelessWidget {
@@ -24,12 +28,22 @@ class OnboardLogin extends StatelessWidget {
       key: key,
       children: [
         SizedBox(height: 20.h),
-        LoginButton(
-          onTap: () {},
-          icon: IconsPath.google,
-          title: 'Continue With Goggle',
-          borderColor: Color(0xFFBEBEBE),
-        ),
+        Obx(() {
+          return Get.find<GoogleLoginController>().isLoading.value
+              ? ButtonLoading()
+              : LoginButton(
+                  onTap: () async {
+                    GoogleUserInfoModel? user =
+                        await FirebaseGoogleAuthService.signInWithGoogle();
+                    await Get.find<GoogleLoginController>().googleLogin(
+                      user: user!,
+                    );
+                  },
+                  icon: IconsPath.google,
+                  title: 'Continue With Goggle',
+                  borderColor: Color(0xFFBEBEBE),
+                );
+        }),
         SizedBox(height: 12.h),
         LoginButton(
           onTap: () {},

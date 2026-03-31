@@ -31,7 +31,9 @@ class HomeOurProductFilter extends GetWidget<GetProductTypesController> {
                     return GestureDetector(
                       onTap: () async {
                         controller.selectedProductType.value =
-                            controller.productTypes.value?.data[index].id ?? 0;
+                            controller.productTypes.value?.data[index].id
+                                .toInt() ??
+                            0;
 
                         await Get.find<GetProductsByTypeController>()
                             .getProductsByType(

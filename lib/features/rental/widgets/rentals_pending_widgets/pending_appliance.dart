@@ -1,39 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/rental/controllers/rental_details_controller.dart';
-import 'package:zb_dezign/features/rental/controllers/rental_quotes_controller.dart';
-import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/rental_quotes_furniture_widget.dart';
 import 'package:zb_dezign/shared/widgets/details_row_model.dart';
 
-class PendingAppliance extends StatelessWidget {
+class PendingAppliance extends GetWidget<RentalDetailsController> {
   const PendingAppliance({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final detailsController = Get.find<RentalDetailsController>();
-    final quotesController = Get.find<RentalQuotesController>();
-    final rentalDetails = detailsController.rentalDetails.value;
+    final details = controller.rentalDetails.value;
 
-    final applianceSelection = rentalDetails?.applianceSelection ?? [];
+    if (details == null ||
+        details.applianceSelection == null ||
+        details.applianceSelection!.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
-    final appliance = applianceSelection
-        .map(
-          (selection) => {
-            'title': selection.room ?? 'Unknown Room',
-            'value':
-                selection.items
-                    ?.map((item) => '${item.name} (${item.count})')
-                    .join(', ') ??
-                'No items',
-          },
-        )
-        .toList();
+    List<Map<String, String>> applianceData = [];
 
-    return rentalDetails?.status?.capitalizeFirst == 'Quote Sent'
-        ? RentalQuotesFurnitureWidget(
-            itemList: quotesController.appliance,
-            isOpen: quotesController.isOpenAppliance,
-          )
-        : DetailsRowModel(data: appliance);
+    for (var applianceSelection in details.applianceSelection!) {
+      String itemsValue = '';
+      if (applianceSelection.items != null &&
+          applianceSelection.items!.isNotEmpty) {
+        itemsValue = applianceSelection.items!
+            .map((item) => '${item.name} (${item.count})')
+            .join(', ');
+      }
+
+      applianceData.add({
+        'title': applianceSelection.room ?? '',
+        'value': itemsValue,
+      });
+    }
+
+    return DetailsRowModel(data: applianceData);
   }
 }

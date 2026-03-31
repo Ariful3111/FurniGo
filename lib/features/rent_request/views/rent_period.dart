@@ -12,9 +12,9 @@ class RentPeriod extends StatelessWidget {
     return Column(
       children: [
         RentPeriodDiscount(),
-        SizedBox(height: 20.h,),
+        SizedBox(height: 20.h),
         RentPeriodType(),
-        SizedBox(height: 20.h,),
+        SizedBox(height: 20.h),
         RentPeriodOptional(),
       ],
     );

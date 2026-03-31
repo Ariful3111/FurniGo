@@ -1,4 +1,4 @@
-package com.example.zb_dezign
+package zbdezign.com.au
 
 import io.flutter.embedding.android.FlutterActivity
 

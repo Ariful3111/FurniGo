@@ -16,11 +16,6 @@ class RentalsActiveInfoDetails extends GetWidget<RentalDetailsController> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final rentalDetails = controller.rentalDetails.value;
-
-    final rentalTerm = rentalDetails?.rentalTerm;
-    final discountPercent = rentalTerm?.discountPercent ?? 0;
-
     return SharedContainer(
       radius: 12.r,
       padding: EdgeInsets.all(20.r),
@@ -42,7 +37,8 @@ class RentalsActiveInfoDetails extends GetWidget<RentalDetailsController> {
                   text(text: 'Term', isDark: isDark),
                   SizedBox(height: 4.h),
                   CustomPrimaryText(
-                    text: '${rentalTerm?.days ?? 0} days',
+                    text:
+                        controller.rentalDetails.value?.rentalTerm?.name ?? '',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     color: isDark ? AppColors.whiteColor : AppColors.labelColor,
@@ -55,12 +51,11 @@ class RentalsActiveInfoDetails extends GetWidget<RentalDetailsController> {
                   text(text: 'Discount applied', isDark: isDark),
                   SizedBox(height: 4.h),
                   CustomPrimaryText(
-                    text: '$discountPercent%',
+                    text:
+                        '${controller.rentalDetails.value?.rentalTerm?.discountPercent}%',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
-                    color: isDark
-                        ? AppColors.whiteColor
-                        : const Color(0xFF00A63E),
+                    color: isDark ? AppColors.whiteColor : Color(0xFF00A63E),
                   ),
                 ],
               ),
@@ -76,7 +71,7 @@ class RentalsActiveInfoDetails extends GetWidget<RentalDetailsController> {
                   text(text: 'Total', isDark: isDark),
                   SizedBox(height: 4.h),
                   CustomPrimaryText(
-                    text: '\$155.00',
+                    text: '\$ Dummy}',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     color: isDark ? AppColors.whiteColor : AppColors.labelColor,
@@ -89,16 +84,29 @@ class RentalsActiveInfoDetails extends GetWidget<RentalDetailsController> {
                   text(text: 'Status', isDark: isDark),
                   SizedBox(height: 4.h),
                   CustomTableStatus(
-                    status: rentalDetails?.status?.capitalizeFirst ?? 'Pending',
+                    status:
+                        controller
+                                .rentalDetails
+                                .value
+                                ?.deliverySetup
+                                ?.isInstallationRequired ==
+                            true
+                        ? controller
+                                  .rentalDetails
+                                  .value
+                                  ?.status
+                                  ?.capitalizeFirst ??
+                              ''
+                        : '2nd installment: Due',
                   ),
                 ],
               ),
             ],
           ),
           SizedBox(height: 20.h),
-          const CustomDivider(),
+          CustomDivider(),
           SizedBox(height: 20.h),
-          const RentalsActiveInfoPayment(),
+          RentalsActiveInfoPayment(),
         ],
       ),
     );

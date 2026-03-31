@@ -11,11 +11,19 @@ class RentalDetailsRepository {
   Future<Either<ErrorModel, RentalDetailsModel>> execute({
     required String rentalRequestUuid,
   }) async {
-    final response = await getNetwork.getData<RentalDetailsModel>(
+    final response = await getNetwork.getData<Map<String, dynamic>>(
       url: "/api/rental-requests/$rentalRequestUuid",
-      headers: HeadersManager.getHeaders(),
-      fromJson: (json) => RentalDetailsModel.fromJson(json),
+      headers: HeadersManager.getHeaders(isContentType: true),
+      fromJson: (json) => json,
     );
-    return response;
+
+    return response.fold((error) => Left(error), (rawJson) {
+      if (rawJson.containsKey('data')) {
+        final data = rawJson['data'];
+        return Right(RentalDetailsModel.fromJson(data as Map<String, dynamic>));
+      } else {
+        return Right(RentalDetailsModel.fromJson(rawJson));
+      }
+    });
   }
 }

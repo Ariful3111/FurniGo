@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_floor_plan_controller.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_floor_plan_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_floor_plan_widgets/floor_plan_widgets.dart';
 import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
@@ -17,14 +17,19 @@ class RentFloorPlanView extends GetView<RentFloorPlanController> {
 
   @override
   Widget build(BuildContext context) {
-    RentRequestController rentRequestController = Get.find();
+    final stepController = Get.find<RentStepController>();
     return Column(
       children: [
         SharedContainer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: FlowPageCount(text: 'Floor Plan', pageCount: rentRequestController.currentIndex.value.toString(),)),
+              Center(
+                child: FlowPageCount(
+                  text: 'Floor Plan',
+                  pageCount: (stepController.currentIndex.value + 1).toString(),
+                ),
+              ),
               SizedBox(height: 20.h),
               CustomDivider(),
               SizedBox(height: 24.h),
@@ -34,7 +39,7 @@ class RentFloorPlanView extends GetView<RentFloorPlanController> {
                 color: AppColors.darkColor,
               ),
               SizedBox(height: 26.h),
-              RentHelper().optionContainer(
+              RentHelper.optionContainer(
                 context: context,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

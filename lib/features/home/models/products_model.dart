@@ -8,30 +8,36 @@ String productsResponseModelToJson(ProductsModel data) =>
 
 class ProductsModel {
   final List<Product> data;
+  final Links? links;
+  final Meta? meta;
 
-  ProductsModel({required this.data});
+  ProductsModel({required this.data, this.links, this.meta});
 
   factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(
     data: List<Product>.from(json["data"].map((x) => Product.fromJson(x))),
+    links: json["links"] != null ? Links.fromJson(json["links"]) : null,
+    meta: json["meta"] != null ? Meta.fromJson(json["meta"]) : null,
   );
 
   Map<String, dynamic> toJson() => {
     "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "links": links?.toJson(),
+    "meta": meta?.toJson(),
   };
 }
 
 class Product {
-  final int id;
-  final int categoryId;
+  final num id;
+  final num categoryId;
   final String categoryName;
   final String name;
   final String sku;
   final String? description;
-  final double price;
-  final int sellingPrice;
+  final num price;
+  final num sellingPrice;
   final String? discountType;
-  final int discountAmount;
-  final double finalPrice;
+  final num discountAmount;
+  final num finalPrice;
   final bool isRentable;
   final bool isFavourite;
   final bool isInStock;
@@ -41,7 +47,7 @@ class Product {
   final FurnitureType furnitureType;
   final List<Room> rooms;
   final List<Media> media;
-  final List<DefaultOptionId> defaultOptionIds;
+  final List<DefaultOptionId>? defaultOptionIds;
   final DateTime createdAt;
   final dynamic updatedAt;
 
@@ -66,7 +72,7 @@ class Product {
     required this.furnitureType,
     required this.rooms,
     required this.media,
-    required this.defaultOptionIds,
+    this.defaultOptionIds,
     required this.createdAt,
     this.updatedAt,
   });
@@ -78,11 +84,11 @@ class Product {
     name: json["name"],
     sku: json["sku"],
     description: json["description"],
-    price: json["price"].toDouble(),
+    price: json["price"],
     sellingPrice: json["selling_price"],
     discountType: json["discount_type"],
     discountAmount: json["discount_amount"],
-    finalPrice: json["final_price"].toDouble(),
+    finalPrice: json["final_price"],
     isRentable: json["is_rentable"],
     isFavourite: json["is_favourite"],
     isInStock: json["is_in_stock"],
@@ -92,9 +98,11 @@ class Product {
     furnitureType: FurnitureType.fromJson(json["furniture_type"]),
     rooms: List<Room>.from(json["rooms"].map((x) => Room.fromJson(x))),
     media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
-    defaultOptionIds: List<DefaultOptionId>.from(
-      json["default_option_ids"].map((x) => DefaultOptionId.fromJson(x)),
-    ),
+    defaultOptionIds: json["default_option_ids"] != null
+        ? List<DefaultOptionId>.from(
+            json["default_option_ids"].map((x) => DefaultOptionId.fromJson(x)),
+          )
+        : [],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"],
   );
@@ -120,16 +128,16 @@ class Product {
     "furniture_type": furnitureType.toJson(),
     "rooms": List<dynamic>.from(rooms.map((x) => x.toJson())),
     "media": List<dynamic>.from(media.map((x) => x.toJson())),
-    "default_option_ids": List<dynamic>.from(
-      defaultOptionIds.map((x) => x.toJson()),
-    ),
+    "default_option_ids": defaultOptionIds != null
+        ? List<dynamic>.from(defaultOptionIds!.map((x) => x.toJson()))
+        : [],
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt,
   };
 }
 
 class Category {
-  final int id;
+  final num id;
   final String name;
   final String slug;
   final dynamic parentId;
@@ -177,7 +185,7 @@ class Category {
 }
 
 class FurnitureType {
-  final int id;
+  final num id;
   final String name;
 
   FurnitureType({required this.id, required this.name});
@@ -189,7 +197,7 @@ class FurnitureType {
 }
 
 class Room {
-  final int id;
+  final num id;
   final String name;
 
   Room({required this.id, required this.name});
@@ -201,8 +209,8 @@ class Room {
 }
 
 class Media {
-  final int id;
-  final int productId;
+  final num id;
+  final num productId;
   final String type;
   final String url;
   final bool isPrimary;
@@ -241,9 +249,9 @@ class Media {
 }
 
 class DefaultOptionId {
-  final int productAttributeOptionId;
-  final int attributeId;
-  final int optionId;
+  final num productAttributeOptionId;
+  final num attributeId;
+  final num optionId;
 
   DefaultOptionId({
     required this.productAttributeOptionId,
@@ -262,5 +270,93 @@ class DefaultOptionId {
     "product_attribute_option_id": productAttributeOptionId,
     "attribute_id": attributeId,
     "option_id": optionId,
+  };
+}
+
+class Links {
+  final String? first;
+  final String? last;
+  final String? prev;
+  final String? next;
+
+  Links({this.first, this.last, this.prev, this.next});
+
+  factory Links.fromJson(Map<String, dynamic> json) => Links(
+    first: json["first"],
+    last: json["last"],
+    prev: json["prev"],
+    next: json["next"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "first": first,
+    "last": last,
+    "prev": prev,
+    "next": next,
+  };
+}
+
+class Meta {
+  final int currentPage;
+  final int? from;
+  final int lastPage;
+  final List<Link>? links;
+  final String path;
+  final int perPage;
+  final int? to;
+  final int total;
+
+  Meta({
+    required this.currentPage,
+    this.from,
+    required this.lastPage,
+    this.links,
+    required this.path,
+    required this.perPage,
+    this.to,
+    required this.total,
+  });
+
+  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
+    currentPage: json["current_page"],
+    from: json["from"],
+    lastPage: json["last_page"],
+    links: json["links"] != null
+        ? List<Link>.from(json["links"].map((x) => Link.fromJson(x)))
+        : null,
+    path: json["path"],
+    perPage: json["per_page"],
+    to: json["to"],
+    total: json["total"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "current_page": currentPage,
+    "from": from,
+    "last_page": lastPage,
+    "links": links != null
+        ? List<dynamic>.from(links!.map((x) => x.toJson()))
+        : null,
+    "path": path,
+    "per_page": perPage,
+    "to": to,
+    "total": total,
+  };
+}
+
+class Link {
+  final String? url;
+  final String label;
+  final bool active;
+
+  Link({this.url, required this.label, required this.active});
+
+  factory Link.fromJson(Map<String, dynamic> json) =>
+      Link(url: json["url"], label: json["label"], active: json["active"]);
+
+  Map<String, dynamic> toJson() => {
+    "url": url,
+    "label": label,
+    "active": active,
   };
 }

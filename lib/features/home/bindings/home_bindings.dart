@@ -4,11 +4,14 @@ import 'package:zb_dezign/features/home/controller/get_new_arrivals_controller.d
 import 'package:zb_dezign/features/home/controller/get_product_types_controller.dart';
 import 'package:zb_dezign/features/home/controller/get_products_by_type_controller.dart';
 import 'package:zb_dezign/features/home/controller/get_rooms_controller.dart';
+import 'package:zb_dezign/features/home/controller/global_search_controller.dart';
 import 'package:zb_dezign/features/home/controller/home_controller.dart';
 import 'package:zb_dezign/features/home/repositories/get_new_arrivals_repo.dart';
 import 'package:zb_dezign/features/home/repositories/get_product_type_repo.dart';
 import 'package:zb_dezign/features/home/repositories/get_products_by_type_repo.dart';
 import 'package:zb_dezign/features/home/repositories/get_rooms_repo.dart';
+import 'package:zb_dezign/features/home/repositories/global_search_repo.dart';
+import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer_controller.dart';
 
 class HomeBindings implements Bindings {
   @override
@@ -17,6 +20,7 @@ class HomeBindings implements Bindings {
     Get.lazyPut(() => GetNewArrivalsRepository(getNetwork: Get.find()));
     Get.lazyPut(() => GetProductTypeRepository(getNetwork: Get.find()));
     Get.lazyPut(() => GetProductsByTypeRepository(getNetwork: Get.find()));
+    Get.lazyPut(() => GlobalSearchRepository(getNetwork: Get.find()));
     Get.lazyPut(() => BottomNavController());
     Get.lazyPut(() => HomeController());
     Get.lazyPut(() => GetRoomsController(getRoomsRepository: Get.find()));
@@ -30,5 +34,10 @@ class HomeBindings implements Bindings {
       () =>
           GetProductsByTypeController(getProductsByTypeRepository: Get.find()),
     );
+
+    Get.lazyPut(
+      () => GlobalSearchController(globalSearchRepository: Get.find()),
+    );
+    Get.lazyPut(() => CustomDrawerController());
   }
 }

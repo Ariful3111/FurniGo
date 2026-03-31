@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controller/rent_request_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/shared/extensions/validators/email_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/name_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/phone_validator.dart';

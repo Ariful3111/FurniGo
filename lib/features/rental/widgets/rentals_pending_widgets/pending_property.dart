@@ -6,65 +6,75 @@ import 'package:zb_dezign/features/rental/controllers/rental_details_controller.
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/details_row_model.dart';
 
-class PendingProperty extends StatelessWidget {
+class PendingProperty extends GetWidget<RentalDetailsController> {
   const PendingProperty({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<RentalDetailsController>();
-    final rentalDetails = controller.rentalDetails.value;
+    final details = controller.rentalDetails.value;
 
-    if (rentalDetails == null) {
+    if (details == null) {
       return const SizedBox.shrink();
     }
 
-    final propertyType = rentalDetails.propertyType ?? 'N/A';
-    final propertyUse = rentalDetails.propertyUse ?? 'N/A';
-    final address = rentalDetails.address ?? 'N/A';
-    final sizeSqm = rentalDetails.sizeSqm ?? 0;
-
-    final spaceBreakdown = rentalDetails.spaceBreakdown;
-    final rooms = spaceBreakdown?.rooms ?? [];
-
-    final roomDimensions = rentalDetails.roomDimensions ?? [];
-
-    final type = [
-      {'title': 'Property Type', 'value': propertyType},
-      {'title': 'Property Use', 'value': propertyUse},
+    // Property Type section
+    final propertyTypeData = [
+      {'title': 'Property Type', 'value': details.propertyType ?? ''},
+      {'title': 'Property Use', 'value': details.propertyUse ?? ''},
     ];
 
-    final propertyAddress = [
-      {'title': 'Property Address', 'value': address},
-      {'title': 'Property Size', 'value': '$sizeSqm sqm'},
-      {
+    // Property Address section
+    final propertyAddressData = [
+      {'title': 'Property Address', 'value': details.address ?? ''},
+      {'title': 'Property Size', 'value': '${details.sizeSqm ?? 0} sqm'},
+    ];
+
+    // Space Breakdown section
+    String spaceBreakdownValue = '';
+    if (details.spaceBreakdown?.rooms != null &&
+        details.spaceBreakdown!.rooms!.isNotEmpty) {
+      spaceBreakdownValue = details.spaceBreakdown!.rooms!
+          .map((room) => '${room.name} (${room.count})')
+          .join(', ');
+    }
+
+    final propertyDetailsData = [...propertyAddressData];
+    if (spaceBreakdownValue.isNotEmpty) {
+      propertyDetailsData.add({
         'title': 'Space Breakdown',
-        'value': rooms.map((room) => '${room.name} (${room.count})').join(', '),
-      },
-    ];
+        'value': spaceBreakdownValue,
+      });
+    }
 
-    final propertyFloorPlan = roomDimensions
-        .map(
-          (dimension) => {
-            'title': dimension.roomName ?? 'Room',
-            'value':
-                'Length: ${dimension.length ?? 'N/A'}m * Width: ${dimension.width ?? 'N/A'}m',
-          },
-        )
-        .toList();
+    // Room Dimensions section
+    List<Map<String, String>> floorPlanData = [];
+    if (details.roomDimensions != null && details.roomDimensions!.isNotEmpty) {
+      for (var dimension in details.roomDimensions!) {
+        floorPlanData.add({
+          'title': dimension.roomName ?? '',
+          'value':
+              'Length: ${dimension.length ?? ''}m × Width: ${dimension.width ?? ''}m',
+        });
+      }
+    }
 
     return Column(
       children: [
-        propertyDetails(data: type, title: 'Property Type', context: context),
+        propertyDetails(
+          data: propertyTypeData,
+          title: 'Property Type',
+          context: context,
+        ),
         SizedBox(height: 20.h),
         propertyDetails(
-          data: propertyAddress,
+          data: propertyDetailsData,
           title: 'Property details',
           context: context,
         ),
-        if (propertyFloorPlan.isNotEmpty) ...[
+        if (floorPlanData.isNotEmpty) ...[
           SizedBox(height: 20.h),
           propertyDetails(
-            data: propertyFloorPlan,
+            data: floorPlanData,
             title: 'Floorplan & dimensions',
             context: context,
           ),
@@ -74,7 +84,7 @@ class PendingProperty extends StatelessWidget {
   }
 
   Widget propertyDetails({
-    required List<Map<String, String>> data,
+    required List data,
     required String title,
     required BuildContext context,
   }) {
