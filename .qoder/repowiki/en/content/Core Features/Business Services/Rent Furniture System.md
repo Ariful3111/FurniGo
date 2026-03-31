@@ -20,12 +20,11 @@
 
 ## Update Summary
 **Changes Made**
-- Added new StepOneRepository for property type and use selection workflow
-- Enhanced RentPropertyTypeController with comprehensive property type validation and dynamic property use options
-- Improved dependency injection patterns with separate repositories for different HTTP operations
-- Added reactive UI updates through Obx widgets for dynamic property use dropdown
-- Integrated StepOneRepository into RentStepController for step 1 validation and navigation
-- Enhanced property type selection workflow with commercial and residential use options
+- Updated default starting position from step 2 to step 0 for improved user experience
+- Enhanced RentStepController initialization to begin at business information collection
+- Improved user flow by ensuring all users start at the first step
+- Maintained backward compatibility through resetFlow() method
+- Updated navigation logic to reflect new default starting position
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -46,6 +45,8 @@
 ## Introduction
 This document describes the Rent Furniture System, focusing on the end-to-end rent request workflow from property listing creation to tenant approval. The system has undergone a major architectural transformation with the addition of a comprehensive zero-step rental request system featuring StepZeroModel, StepZeroRepository, and enhanced dependency injection patterns. The system now implements a modular, reactive, and extensible workflow for collecting tenant and property information with centralized validation logic and step-by-step navigation. Recent enhancements include the introduction of StepOneRepository for property type selection and improved property type validation with dynamic use options.
 
+**Updated** The system now begins at step 0 (business information collection) rather than step 2, providing a more intuitive user experience by ensuring all users start at the first step of the rental process.
+
 ## Project Structure
 The Rent Furniture System features a streamlined architecture with RentStepController as the central orchestrator managing the complete 10-step workflow. The system maintains specialized controllers for domain-specific logic while centralizing navigation and validation through the RentStepController. A new zero-step system has been integrated for initial business identification and UUID generation, along with a new step-one system for property type selection.
 
@@ -65,7 +66,7 @@ STEP_ONE_REPO["StepOneRepository<br/>Property type & use selection"]
 PROPERTY_TYPE_CONTROLLER["RentPropertyTypeController<br/>Dynamic property options"]
 END
 subgraph "Centralized Step Management"
-STEP_CONTROLLER["RentStepController<br/>10-step flow orchestration"]
+STEP_CONTROLLER["RentStepController<br/>10-step flow orchestration<br/>Default: Step 0"]
 END
 subgraph "Specialized Domain Controllers"
 REQUEST_CONTROLLER["RentRequestController<br/>Business form & validation"]
@@ -117,7 +118,7 @@ VIEW --> PROPERTY_TYPE_VIEW
 - [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
 
 ## Core Components
-- **RentStepController**: Central orchestrator managing 10-step workflow with comprehensive validation logic, loading states, and step navigation. Handles step-specific validation and transitions between form widgets, including integration with StepOneRepository for property type selection.
+- **RentStepController**: Central orchestrator managing 10-step workflow with comprehensive validation logic, loading states, and step navigation. Handles step-specific validation and transitions between form widgets, including integration with StepOneRepository for property type selection. **Updated** Now initializes at step 0 by default, ensuring all users begin at the first step of the rental process.
 - **RentRequestController**: Specialized controller managing business form data, validation, and initial submission to Step Zero Repository. Coordinates with RentStepController for step advancement.
 - **RentPropertyTypeController**: New controller managing property type and use selection with dynamic options based on property type. Handles validation and submission to StepOneRepository.
 - **StepZeroModel**: Data model representing the zero-step rental request with business information, UUID, and status tracking.
@@ -127,7 +128,7 @@ VIEW --> PROPERTY_TYPE_VIEW
 - **Streamlined View Architecture**: RentRequestView delegates step rendering to RentStepController, providing a clean separation of concerns.
 
 **Section sources**
-- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
+- [rent_step_controller.dart:15-98](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L98)
 - [rent_request_controller.dart:9-69](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L69)
 - [rent_property_type_controller.dart:6-71](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L6-L71)
 - [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
@@ -143,6 +144,7 @@ The system now follows a centralized step management architecture with RentStepC
 - **Specialized Domain Logic**: Individual controllers handle domain-specific data and validation
 - **Enhanced State Management**: Reactive variables for current step, loading states, and navigation control
 - **Streamlined Dependencies**: RentRequestController and RentPropertyTypeController focus on form validation and submission coordination
+- **Default Step Position**: **Updated** System now defaults to step 0 (business information collection) for improved user experience
 
 ```mermaid
 sequenceDiagram
@@ -171,27 +173,28 @@ StepController-->>View : Next step widget
 ## Detailed Component Analysis
 
 ### RentStepController
-**Updated** Complete architectural transformation from monolithic approach to centralized step management with comprehensive validation logic and enhanced integration with StepOneRepository.
+**Updated** Complete architectural transformation from monolithic approach to centralized step management with comprehensive validation logic and enhanced integration with StepOneRepository. **Updated** Now initializes at step 0 by default, ensuring all users begin at the first step of the rental process.
 
 Responsibilities:
 - Manages 10-step workflow with centralized validation and navigation logic
-- Controls current step index with reactive state management
+- Controls current step index with reactive state management starting at step 0
 - Handles step-specific validation through switch statement
 - Provides loading states and error handling for step transitions
 - Coordinates with specialized controllers for domain-specific data
 - Integrates StepOneRepository for property type selection validation
 
 Navigation and state management:
-- currentIndex drives step rendering from rentWidgets list
+- currentIndex drives step rendering from rentWidgets list starting at 0
 - isLoading reactive variable controls loading states during transitions
 - totalSteps computed property provides step count for UI indicators
 - Enhanced debugging with step transition logging
 - Step 1 validation through RentPropertyTypeController integration
+- **Updated** resetFlow() method ensures consistent reset to step 0
 
 ```mermaid
 classDiagram
 class RentStepController {
-+RxInt currentIndex
++RxInt currentIndex = 0
 +RxBool isLoading
 +Widget[] rentWidgets
 +getCurrentWidget() Widget
@@ -204,10 +207,10 @@ class RentStepController {
 ```
 
 **Diagram sources**
-- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
+- [rent_step_controller.dart:15-98](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L98)
 
 **Section sources**
-- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
+- [rent_step_controller.dart:15-98](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L98)
 
 ### RentRequestController
 **Updated** Streamlined role focused on business form validation and initial submission coordination with StepZeroRepository integration.
@@ -364,6 +367,7 @@ Navigation logic:
 - Loading state prevents double submissions
 - Step-specific validation before navigation
 - Smooth transitions between form widgets
+- **Updated** Previous button logic ensures users cannot go back from step 0
 
 **Section sources**
 - [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
@@ -382,6 +386,7 @@ View delegation:
 - Obx widgets for reactive step state updates
 - Clean separation between presentation and logic
 - Enhanced visual feedback through flow widgets
+- **Updated** Previous button only appears after step 0
 
 **Section sources**
 - [rent_request_view.dart:16-79](file://lib/features/rent_request/views/rent_request_view.dart#L16-L79)
@@ -432,6 +437,7 @@ Dynamic options:
 - **Loading State Management**: Reactive loading indicators prevent concurrent step transitions
 - **Enhanced Progress Tracking**: FlowStepCount and FlowPageCount provide real-time step information
 - **Property Type Validation**: Step-specific validation ensures proper property type and use selection
+- **Updated** Previous button logic prevents navigation from step 0, ensuring users complete the business information step first
 
 ### Visual Design Improvements
 - **Consistent Styling**: SharedContainer widgets ensure uniform appearance across steps
@@ -446,6 +452,7 @@ Dynamic options:
 - **Progress Indication**: Clear visual representation of form completion status
 - **Smooth Transitions**: Animated step changes with proper timing and easing
 - **Dynamic Property Options**: Automatic property use dropdown updates based on selection
+- **Updated** **Default Starting Position**: All users now begin at step 0, providing a more intuitive experience
 
 ## Controller Architecture
 **Updated** Complete architectural transformation to centralized step management with RentStepController as the primary orchestrator, enhanced by zero-step and step-one system integrations.
@@ -456,6 +463,7 @@ Dynamic options:
 - **Streamlined Dependencies**: Reduced complexity through centralized coordination
 - **Enhanced Maintainability**: Single point of control for step transitions and validation
 - **Step-One Integration**: RentPropertyTypeController coordinates with StepOneRepository for property type validation
+- **Updated** **Default Step Position**: System now initializes at step 0, ensuring consistent user experience
 
 ### Zero-Step and Step-One Integration
 - **StepZeroRepository**: Handles initial business identification and UUID generation
@@ -470,6 +478,7 @@ Dynamic options:
 - **Step 2-9**: Progressive form completion with domain-specific controllers
 - **Validation Logic**: Step-specific validation through switch statement
 - **Loading States**: Reactive loading management for smooth transitions
+- **Updated** **Navigation Logic**: Previous button disabled for step 0, ensuring proper workflow progression
 
 ### Controller Implementation Patterns
 - **GetxController Base**: All controllers extend GetxController for reactive state management
@@ -481,7 +490,7 @@ Dynamic options:
 ```mermaid
 graph LR
 subgraph "Centralized Architecture"
-RentStepController["RentStepController<br/>10-step orchestration"]
+RentStepController["RentStepController<br/>10-step orchestration<br/>Default: Step 0"]
 subgraph "Zero-Step System"
 StepZeroRepository["StepZeroRepository<br/>API integration"]
 StepZeroModel["StepZeroModel<br/>Data modeling"]
@@ -559,6 +568,7 @@ RentPropertyTypeController --> StepOneRepository
 - **RentPropertyTypeController**: Depends on StepOneRepository and RentStepController
 - **RentStepController**: Coordinates all specialized controllers
 - **Specialized Controllers**: Independent with minimal interdependencies
+- **Updated** **Initialization**: RentStepController now properly initializes at step 0 through dependency injection
 
 ```mermaid
 graph TD
@@ -620,6 +630,7 @@ PostWithoutResponse --> StepOneRepository
 - **Validation Layer**: Shared validators ensure data integrity before submission
 - **API Integration**: StepZeroRepository handles HTTP communication and response processing
 - **Session Management**: UUID stored in StorageService for continuous session tracking
+- **Updated** **Default Starting Position**: Users begin at this step by default, ensuring complete business information capture
 
 ### Data Flow Architecture
 - **Form Input**: RentRequestViewForm captures business information
@@ -729,6 +740,7 @@ PostWithoutResponse --> StepOneRepository
 - **Improved Memory Usage**: Centralized step management reduces controller duplication
 - **Streamlined Dependencies**: RentStepController coordinates dependencies more efficiently
 - **Reactive UI Updates**: Obx widgets optimize rendering through selective updates
+- **Updated** **Default Step Position**: **New** Optimized initialization at step 0 reduces unnecessary navigation overhead
 
 ## Troubleshooting Guide
 **Updated** Enhanced troubleshooting guide addressing the new centralized architecture, zero-step and step-one systems.
@@ -748,6 +760,8 @@ Common issues and resolutions:
 - **Dependency injection problems**: Ensure PostWithResponse and PostWithoutResponse services are properly registered
 - **Error handling not working**: Verify Either type usage and ErrorSnackbar integration
 - **Reactive UI not updating**: Check Obx widget usage and proper reactive variable declarations
+- **Updated** **Default step position issues**: Verify RentStepController currentIndex initialization and resetFlow() method
+- **Previous button visibility**: Check RentRequestView logic for step 0 navigation prevention
 
 **Section sources**
 - [rent_step_controller.dart:40-73](file://lib/features/rent_request/controllers/rent_step_controller.dart#L40-L73)
@@ -758,4 +772,4 @@ Common issues and resolutions:
 - [step_one_repo.dart:15-32](file://lib/features/rent_request/repositories/step_one_repo.dart#L15-L32)
 
 ## Conclusion
-The Rent Furniture System has successfully transitioned to a centralized, reactive, and scalable architecture through the implementation of RentStepController as the primary orchestrator, enhanced by comprehensive zero-step and step-one rental request systems. The integration of StepZeroModel, StepZeroRepository, and the new StepOneRepository provides robust business identification, property type selection, and session management capabilities, while the enhanced dependency injection patterns ensure proper service coordination. The 10-step flow system provides comprehensive step-by-step navigation with integrated validation logic, while specialized controllers maintain domain-specific functionality. The new property type selection workflow with dynamic options and reactive UI updates significantly enhances user experience. This architectural transformation enhances maintainability, improves user experience through intelligent navigation, and establishes a robust foundation for future enhancements including backend integration, tenant screening, and contract generation workflows.
+The Rent Furniture System has successfully transitioned to a centralized, reactive, and scalable architecture through the implementation of RentStepController as the primary orchestrator, enhanced by comprehensive zero-step and step-one rental request systems. **Updated** The system now begins at step 0 (business information collection) rather than step 2, providing a more intuitive user experience by ensuring all users start at the first step of the rental process. The integration of StepZeroModel, StepZeroRepository, and the new StepOneRepository provides robust business identification, property type selection, and session management capabilities, while the enhanced dependency injection patterns ensure proper service coordination. The 10-step flow system provides comprehensive step-by-step navigation with integrated validation logic, while specialized controllers maintain domain-specific functionality. The new property type selection workflow with dynamic options and reactive UI updates significantly enhances user experience. This architectural transformation enhances maintainability, improves user experience through intelligent navigation, and establishes a robust foundation for future enhancements including backend integration, tenant screening, and contract generation workflows.
