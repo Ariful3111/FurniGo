@@ -27,7 +27,7 @@ class RentDelivery extends GetView<RentRequestController> {
           Center(
             child: FlowPageCount(
               text: 'Delivery & Setup',
-              pageCount: (stepController.currentIndex.value + 1).toString(),
+              pageCount: (stepController.currentIndex.value).toString(),
             ),
           ),
           SizedBox(height: 20.h),

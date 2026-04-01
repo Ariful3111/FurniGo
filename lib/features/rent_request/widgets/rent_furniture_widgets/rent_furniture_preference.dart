@@ -3,12 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_furniture_controller.dart';
+import 'package:zb_dezign/features/rent_request/models/rent_furniture_model.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentFurniturePreference extends GetWidget<RentFurnitureController> {
-  const RentFurniturePreference({super.key});
+  final RentFurnitureModel model;
+  const RentFurniturePreference({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +31,9 @@ class RentFurniturePreference extends GetWidget<RentFurnitureController> {
                 Obx(
                   () => CustomRadioButton(
                     value: index,
-                    groupValue: controller.selectedPreference.value,
+                    groupValue: model.selectedPreference.value,
                     onChange: (value) {
-                      controller.selectedPreference.value = value!;
+                      model.selectedPreference.value = value!;
                     },
                   ),
                 ),
@@ -70,9 +72,9 @@ class RentFurniturePreference extends GetWidget<RentFurnitureController> {
               () => RentHelper.propertyCheckBox(
                 context: context,
                 isLastIndex: controller.stylePreference.length - 1 == index,
-                isChecked: controller.checkedPreference[index],
+                isChecked: model.checkedPreference[index],
                 onChange: (value) {
-                  controller.checkedPreference[index] = value!;
+                  model.checkedPreference[index] = value!;
                 },
                 title: controller.stylePreference[index],
               ),

@@ -6,6 +6,7 @@ import 'package:zb_dezign/features/rent_request/controllers/rent_request_control
 import 'package:zb_dezign/shared/extensions/validators/email_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/name_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/phone_validator.dart';
+import 'package:zb_dezign/shared/widgets/custom_form_field/custom_phone_field.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -52,10 +53,16 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
               validator: emailValidation,
             ),
             SizedBox(height: 24.h),
-            myField(
+            CustomPrimaryText(
               text: 'Phone Phone *',
+              color: AppColors.darkTextColor,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+            ),
+            SizedBox(height: 8.h),
+            CustomPhoneField(
               controller: controller.phoneController,
-              labeText: 'Enter Phone Number',
+              labelText: 'Enter Phone Number',
               validation: AutovalidateMode.onUserInteraction,
               validator: phoneValidation,
             ),

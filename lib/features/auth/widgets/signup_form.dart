@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/auth/controller/signup_controller.dart';
 import 'package:zb_dezign/features/auth/controller/user_mode_controller.dart';
@@ -11,6 +12,8 @@ import 'package:zb_dezign/shared/extensions/validators/email_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/name_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/password_validator.dart';
 import 'package:zb_dezign/shared/extensions/validators/phone_validator.dart';
+import 'package:zb_dezign/shared/widgets/custom_form_field/custom_phone_field.dart';
+import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class SignupForm extends GetWidget<SignupController> {
   final GlobalKey<FormState> formKey;
@@ -19,6 +22,7 @@ class SignupForm extends GetWidget<SignupController> {
   @override
   Widget build(BuildContext context) {
     UserModeController userModeController = Get.find();
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Form(
       key: formKey,
       child: Column(
@@ -73,16 +77,24 @@ class SignupForm extends GetWidget<SignupController> {
             context: context,
           ),
           SizedBox(height: 22.h),
-          authField(
-            text: 'Phone Number *',
-            labelText: userModeController.selectedIndex.value == 0
-                ? 'Enter your phone number'
-                : 'Enter your business phone number',
-            controller: controller.phoneController,
-            icon: IconsPath.phone,
+          CustomPrimaryText(
+        text: 'Phone Number *',
+        fontSize: 16.sp,
+        color: isDark
+            ? AppColors.primaryBorderColor
+            : AppColors.buttonTextColor,
+      ),
+      SizedBox(height: 8.h),
+          CustomPhoneField(
             validation: AutovalidateMode.onUserInteraction,
             validator: phoneValidation,
-            context: context,
+            controller: controller.phoneController,
+            labelText: 'Enter Your Phone Number',
+            borderColor: isDark
+                ? AppColors.darkBorderColor
+                : AppColors.fieldBorderColor,
+            fillColor: isDark ? AppColors.labelColor : AppColors.fieldColor,
+            borderRadius: 12.r,
           ),
           if (userModeController.selectedIndex.value == 1)
             SizedBox(height: 22.h),

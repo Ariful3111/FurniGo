@@ -1,5 +1,7 @@
-String? phoneValidation(String? value) {
-  final text = (value ?? '').trim();
+import 'package:intl_phone_field/phone_number.dart';
+
+String? phoneValidation(PhoneNumber? value) {
+  final text = (value?.number ?? '').trim();
   if (text.isEmpty) {
     return "Phone number is required";
   }

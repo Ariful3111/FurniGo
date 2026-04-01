@@ -27,7 +27,7 @@ class RentFloorPlanView extends GetView<RentFloorPlanController> {
               Center(
                 child: FlowPageCount(
                   text: 'Floor Plan',
-                  pageCount: (stepController.currentIndex.value + 1).toString(),
+                  pageCount: (stepController.currentIndex.value).toString(),
                 ),
               ),
               SizedBox(height: 20.h),
@@ -68,7 +68,12 @@ class RentFloorPlanView extends GetView<RentFloorPlanController> {
           ),
         ),
         SizedBox(height: 20.h),
-        FloorPlanWidgets(),
+        Obx(() {
+          return AnimatedSize(
+            duration: Duration(milliseconds: 300),
+            child: controller.isShare.value ? FloorPlanWidgets() : SizedBox(),
+          );
+        }),
       ],
     );
   }

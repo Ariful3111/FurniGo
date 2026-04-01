@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/shared/widgets/custom_form_field/other_field.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -9,13 +9,12 @@ class PropertyDetailsContainer extends StatelessWidget {
   final bool isChecked;
   final ValueChanged onChange;
   final String title;
-  final String ?subTitle;
+  final VoidCallback onClose;
+  final String? subTitle;
   final VoidCallback onAdd;
   final VoidCallback onRemoved;
   final String count;
-  final bool isOther;
   final bool readOnly;
-  final TextEditingController otherController;
   const PropertyDetailsContainer({
     super.key,
     required this.isChecked,
@@ -23,7 +22,9 @@ class PropertyDetailsContainer extends StatelessWidget {
     required this.title,
     required this.onAdd,
     required this.onRemoved,
-    required this.count, required this.isOther, required this.otherController, required this.readOnly, this.subTitle,
+    required this.count,
+    required this.readOnly,
+    this.subTitle, required this.onClose,
   });
 
   @override
@@ -54,19 +55,24 @@ class PropertyDetailsContainer extends StatelessWidget {
                 onChange: onChange,
                 color: Color(0xFF00C0E8),
               ),
-             isOther?Expanded(child: OtherField(controller: otherController, readOnly: readOnly?false:true,)) :CustomPrimaryText(
+              CustomPrimaryText(
                 text: title,
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.darkColor,
               ),
+              Spacer(),
+              InkWell(
+                onTap: onClose,
+                child: Image.asset(IconsPath.close,height: 20.h,width: 20.w,),
+              )
             ],
           ),
           Row(
             children: [
               SizedBox(width: 32.w),
               CustomPrimaryText(
-                text:subTitle?? 'Count',
+                text: subTitle ?? 'Count',
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.darkColor,
@@ -74,11 +80,11 @@ class PropertyDetailsContainer extends StatelessWidget {
               Spacer(),
               button(
                 child: InkWell(
-                  onTap:isChecked? onRemoved:(){},
+                  onTap: isChecked ? onRemoved : () {},
                   child: Icon(
                     Icons.remove,
                     size: 12.r,
-                    color:isChecked? AppColors.darkColor:Color(0xFFC0C0C0),
+                    color: isChecked ? AppColors.darkColor : Color(0xFFC0C0C0),
                   ),
                 ),
               ),
@@ -87,17 +93,19 @@ class PropertyDetailsContainer extends StatelessWidget {
                 child: CustomPrimaryText(
                   text: count,
                   fontSize: 10.sp,
-                  color:isChecked? AppColors.buttonTextColor:Color(0xFFC0C0C0),
+                  color: isChecked
+                      ? AppColors.buttonTextColor
+                      : Color(0xFFC0C0C0),
                 ),
               ),
               SizedBox(width: 1.63.w),
               button(
                 child: InkWell(
-                  onTap:isChecked? onAdd:(){},
+                  onTap: isChecked ? onAdd : () {},
                   child: Icon(
                     Icons.add,
                     size: 12.r,
-                    color:isChecked? AppColors.darkColor:Color(0xFFC0C0C0),
+                    color: isChecked ? AppColors.darkColor : Color(0xFFC0C0C0),
                   ),
                 ),
               ),
