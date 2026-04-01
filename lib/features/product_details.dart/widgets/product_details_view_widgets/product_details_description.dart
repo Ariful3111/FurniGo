@@ -19,58 +19,60 @@ class ProductDetailsDescription extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 305.w,
-                child: Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomPrimaryText(
-                        text: 'Luxe VelvetAccent Chair',
-                        fontWeight: FontWeight.w600,
-                        textOverflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: 4.h),
-                      Row(
-                        children: [
-                          Image.asset(IconsPath.star, height: 18.h, width: 18.w),
-                          SizedBox(width: 8.w),
-                          CustomPrimaryText(
-                            text: '4.9',
-                            fontSize: 14.sp,
-                            color: isDark
-                                ? AppColors.darkPrimaryTextColor
-                                : AppColors.buttonTextColor,
-                          ),
-                          SizedBox(width: 14.w),
-                          CustomPrimaryText(
-                            text: '120 Reviews',
-                            fontSize: 14.sp,
-                            color: isDark
-                                ? AppColors.darkPrimaryTextColor
-                                : AppColors.buttonTextColor,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomPrimaryText(
+                      text: 'Luxe VelvetAccent Chair',
+                      fontWeight: FontWeight.w600,
+                      textOverflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 4.h),
+                    Row(
+                      children: [
+                        Image.asset(
+                          IconsPath.star,
+                          height: 18.h,
+                          width: 18.w,
+                        ),
+                        SizedBox(width: 8.w),
+                        CustomPrimaryText(
+                          text: '4.9',
+                          fontSize: 14.sp,
+                          color: isDark
+                              ? AppColors.darkPrimaryTextColor
+                              : AppColors.buttonTextColor,
+                        ),
+                        SizedBox(width: 14.w),
+                        CustomPrimaryText(
+                          text: '120 Reviews',
+                          fontSize: 14.sp,
+                          color: isDark
+                              ? AppColors.darkPrimaryTextColor
+                              : AppColors.buttonTextColor,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: CustomPrimaryText(
-                  text: '\$320.00',
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w600,
-                  textOverflow: TextOverflow.ellipsis,
-                ),
+              SizedBox(width: 20.w,),
+              CustomPrimaryText(
+                text: '\$320.00',
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w600,
+                textOverflow: TextOverflow.ellipsis,
               ),
             ],
           ),
-          CustomPrimaryText(text: 'Kiln-dried hardwood frame meet plush, high-density foam cushioning. A modern classic re-engineered for supreme comfort.',
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w400,
-          color: isDark?AppColors.boxColor:Color(0xFF62547C),
-          )
+          CustomPrimaryText(
+            text:
+                'Kiln-dried hardwood frame meet plush, high-density foam cushioning. A modern classic re-engineered for supreme comfort.',
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w400,
+            color: isDark ? AppColors.boxColor : Color(0xFF62547C),
+          ),
         ],
       ),
     );
