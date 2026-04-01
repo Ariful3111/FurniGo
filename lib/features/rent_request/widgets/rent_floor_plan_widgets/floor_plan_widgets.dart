@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_floor_plan_controller.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_floor_plan_widgets/office_floor.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -15,66 +16,71 @@ class FloorPlanWidgets extends GetWidget<RentFloorPlanController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Column(
-        children: List.generate(controller.widgets.length, (
-          index,
-        ) {
-          final item = controller.widgets[index];
+        children: List.generate(controller.items.length, (index) {
+          final item = controller.items[index];
           final isSelected = controller.isOpenList[index];
           return Column(
-            key: ValueKey(index),
+            key: ValueKey(item.title),
             children: [
-              SharedContainer(
-                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
-                radius: 16.r,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomPrimaryText(
-                          text: item['title'],
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.darkColor,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            controller.isOpenList[index] =
-                                !controller.isOpenList[index];
-                          },
-                          child: AnimatedRotation(
-                            turns: isSelected ? 1 : 0,
-                            duration: const Duration(milliseconds: 300),
-                            child: Image.asset(
-                              isSelected
-                                  ? IconsPath.upArrow
-                                  : IconsPath.downArrow,
-                              height: 20.h,
-                              width: 20.w,
-                              color: AppColors.darkColor,
+              GestureDetector(
+                onTap: () {
+                  controller.isOpenList[index] = !controller.isOpenList[index];
+                },
+                child: SharedContainer(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 20.h,
+                    horizontal: 24.w,
+                  ),
+                  radius: 16.r,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomPrimaryText(
+                            text: item.title,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.darkColor,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              controller.isOpenList[index] =
+                                  !controller.isOpenList[index];
+                            },
+                            child: AnimatedRotation(
+                              turns: isSelected ? 1 : 0,
+                              duration: const Duration(milliseconds: 300),
+                              child: Image.asset(
+                                isSelected
+                                    ? IconsPath.upArrow
+                                    : IconsPath.downArrow,
+                                height: 20.h,
+                                width: 20.w,
+                                color: AppColors.darkColor,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    AnimatedSize(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.linear,
-                      child: isSelected
-                          ? Padding(
-                              padding: EdgeInsetsGeometry.only(top: 20.h),
-                              child: Column(
-                                key: ValueKey('widgets'),
-                                children: [
-                                  CustomDivider(),
-                                  SizedBox(height: 16.h),
-                                  item['child'],
-                                ],
-                              ),
-                            )
-                          : SizedBox.shrink(),
-                    ),
-                  ],
+                        ],
+                      ),
+                      AnimatedSize(
+                        duration: Duration(milliseconds: 300),
+                        child: isSelected
+                            ? Padding(
+                                padding: EdgeInsetsGeometry.only(top: 20.h),
+                                child: Column(
+                                  key: ValueKey('${item.title}_details'),
+                                  children: [
+                                    CustomDivider(),
+                                    SizedBox(height: 16.h),
+                                    OfficeFloor(item: item),
+                                  ],
+                                ),
+                              )
+                            : SizedBox.shrink(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 16.h),

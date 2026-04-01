@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_additional_note_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_appliance_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_floor_plan_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_furniture_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_property_details_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
-import 'package:zb_dezign/features/rent_request/views/rent_appliance.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_appliance_widgets/rent_appliance.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_brand.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_delivery.dart';
-import 'package:zb_dezign/features/rent_request/views/rent_floor_plan_view.dart';
-import 'package:zb_dezign/features/rent_request/views/rent_furniture.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_floor_plan_widgets/rent_floor_plan_view.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_furniture_widgets/rent_furniture.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_period.dart';
-import 'package:zb_dezign/features/rent_request/views/rent_property_details_view.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/rent_property_details_view.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_property_type_view.dart';
 import 'package:zb_dezign/features/rent_request/views/rent_review.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart';
@@ -24,7 +29,7 @@ class RentStepController extends GetxController {
   late final List<Widget> rentWidgets = [
     RentRequestViewForm(formKey: Get.find<RentRequestController>().formKey),
     RentPropertyTypeView(),
-    RentPropertyDetailsView(formKey: GlobalKey()),
+    RentPropertyDetailsView(),
     RentFloorPlanView(),
     RentFurniture(),
     RentAppliance(),
@@ -51,14 +56,19 @@ class RentStepController extends GetxController {
         await Get.find<RentPropertyTypeController>().submitRentRequestOne();
         break;
       case 2:
+        await Get.find<RentPropertyDetailsController>().submitRentRequestTwo();
         break;
       case 3:
+        await Get.find<RentFloorPlanController>().submitRentRequestThree();
         break;
       case 4:
+        await Get.find<RentFurnitureController>().submitRentRequestFour();
         break;
       case 5:
+        await Get.find<RentApplianceController>().submitRentRequestFive();
         break;
       case 6:
+        await Get.find<RentAdditionalNoteController>().submitRentRequestSix();
         break;
       case 7:
         break;

@@ -26,7 +26,7 @@ class RentReview extends GetView<RentReviewController> {
           Center(
             child: FlowPageCount(
               text: 'Review & Submit',
-              pageCount: (stepController.currentIndex.value + 1).toString(),
+              pageCount: (stepController.currentIndex.value).toString(),
             ),
           ),
           SizedBox(height: 20.h),

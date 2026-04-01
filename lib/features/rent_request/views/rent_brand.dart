@@ -30,7 +30,7 @@ class RentBrand extends GetView<RentBrandController> {
                     'Residential'
                 ? 'Additional Notes'
                 : 'Brand Placement',
-            pageCount: (stepController.currentIndex.value + 1).toString(),
+            pageCount: (stepController.currentIndex.value).toString(),
           ),
           SizedBox(height: 20.h),
           CustomDivider(),

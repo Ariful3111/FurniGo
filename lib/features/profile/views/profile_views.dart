@@ -18,7 +18,6 @@ class ProfileViews extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
-      transparentScaffold: true,
       child: Obx(() {
         return controller.isLoading.value
             ? ButtonLoading()

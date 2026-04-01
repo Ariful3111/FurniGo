@@ -4,45 +4,34 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_details_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
-import 'package:zb_dezign/shared/extensions/validators/name_validator.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class PropertyDetailsField extends GetWidget<RentPropertyDetailsController> {
-  final GlobalKey<FormState> formKey;
-  const PropertyDetailsField({super.key, required this.formKey});
+  const PropertyDetailsField({super.key, });
 
   @override
   Widget build(BuildContext context) {
     RentPropertyTypeController rentPropertyTypeController = Get.find();
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          myField(
-            text: 'Property Address *',
-            controller: controller.propertyAddressController,
-            labelText: 'Enter Property Address',
-            validation: AutovalidateMode.onUserInteraction,
-            validator: nameValidation,
-          ),
-          SizedBox(height: 16.h),
-          myField(
-            text:
-                rentPropertyTypeController.selectedPropertyType.value ==
-                    'Residential'
-                ? 'Property Size *'
-                : 'Property Size (Optional)',
-            controller: controller.propertySizeController,
-            labelText: 'Enter Property Size',
-            validation: AutovalidateMode.onUserInteraction,
-            validator:rentPropertyTypeController.selectedPropertyType.value=='Residential'? nameValidation: (value) {
-              return null;
-            },
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        myField(
+          text: 'Property Address *',
+          controller: controller.propertyAddressController,
+          labelText: 'Enter Property Address',
+        ),
+        SizedBox(height: 16.h),
+        myField(
+          text:
+              rentPropertyTypeController.selectedPropertyType.value ==
+                  'Residential'
+              ? 'Property Size *'
+              : 'Property Size (Optional)',
+          controller: controller.propertySizeController,
+          labelText: 'Enter Property Size',
+        ),
+      ],
     );
   }
 }

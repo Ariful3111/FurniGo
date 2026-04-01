@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_furniture_controller.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_furniture_widgets/rent_furniture_details.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -14,16 +15,17 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Column(
-        children: List.generate(controller.widgets.length, (
-          index,
-        ) {
-          final item = controller.widgets[index];
+        children: List.generate(controller.groups.length, (index) {
+          final item = controller.groups[index];
           final isSelected = controller.isOpenList[index];
           return Column(
             key: ValueKey(index),
             children: [
               SharedContainer(
-                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
+                padding: EdgeInsets.symmetric(
+                  vertical: 20.h,
+                  horizontal: 24.w,
+                ),
                 radius: 16.r,
                 child: Column(
                   children: [
@@ -31,7 +33,7 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomPrimaryText(
-                          text: item['title'],
+                          text: item.title,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                           color: AppColors.darkColor,
@@ -43,7 +45,7 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
                           },
                           child: AnimatedRotation(
                             turns: isSelected ? 1 : 0,
-                            duration: const Duration(milliseconds: 300),
+                            duration: Duration(milliseconds: 300),
                             child: Image.asset(
                               isSelected
                                   ? IconsPath.upArrow
@@ -67,12 +69,12 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
                                 key: ValueKey('widgets'),
                                 children: [
                                   CustomPrimaryText(
-                                    text: 'Furniture Required:',
+                                    text: 'Furniture Required',
                                     fontSize: 14.sp,
                                     color: AppColors.darkColor,
                                   ),
                                   SizedBox(height: 12.h),
-                                  item['child'],
+                                  RentFurnitureDetails(model: item),
                                 ],
                               ),
                             )

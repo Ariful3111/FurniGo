@@ -15,6 +15,11 @@ class CustomPhoneField extends StatelessWidget {
   final String initialCountryCode;
   final Color? fillColor;
   final bool? isFilled;
+  final double? borderRadius;
+  final double? borderWidth;
+  final Color? borderColor;
+  final AutovalidateMode? validation;
+  final String? Function(PhoneNumber?)? validator;
   const CustomPhoneField({
     super.key,
     required this.controller,
@@ -24,13 +29,15 @@ class CustomPhoneField extends StatelessWidget {
     this.onSaved,
     this.initialCountryCode = 'BD',
     this.fillColor,
-    this.isFilled,
+    this.isFilled, this.borderRadius, this.borderWidth, this.borderColor, this.validation, this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return IntlPhoneField(
+      autovalidateMode: validation,
+      validator: validator,
       controller: controller,
       initialCountryCode: initialCountryCode,
       showCountryFlag: false,
@@ -67,24 +74,30 @@ class CustomPhoneField extends StatelessWidget {
               )
             : null,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
           borderSide: BorderSide(
-            width: 1.r,
-            color:isDark?AppColors.darkBorderColor: AppColors.fieldBorderColorLight,
+            width: borderWidth ?? 1.r,
+            color: isDark
+                ? borderColor ?? AppColors.darkBorderColor
+                : borderColor ?? AppColors.fieldBorderColorLight,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
           borderSide: BorderSide(
-            width: 1.r,
-            color:isDark?AppColors.darkBorderColor: AppColors.fieldBorderColorLight,
+            width: borderWidth ?? 1.r,
+            color: isDark
+                ? borderColor ?? AppColors.darkBorderColor
+                : borderColor ?? AppColors.fieldBorderColorLight,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
           borderSide: BorderSide(
-            width: 1.r,
-            color:isDark?AppColors.darkBorderColor: AppColors.fieldBorderColorLight,
+            width: borderWidth ?? 1.r,
+            color: isDark
+                ? borderColor ?? AppColors.darkBorderColor
+                : borderColor ?? AppColors.fieldBorderColorLight,
           ),
         ),
         filled: isFilled ?? true,
