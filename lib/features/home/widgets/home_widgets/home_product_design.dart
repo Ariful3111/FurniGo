@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 
 class HomeProductDesign extends StatelessWidget {
@@ -49,12 +51,17 @@ class HomeProductDesign extends StatelessWidget {
             alignment: Alignment.center,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.r),
-              child: CachedNetworkImage(
-                imageUrl: image,
-                height: 120.h,
-                width: 136.w,
-                fit: BoxFit.fill,
-                placeholder: (context, url) => ButtonLoading(),
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.productDetailsView);
+                },
+                child: CachedNetworkImage(
+                  imageUrl: image,
+                  height: 120.h,
+                  width: 136.w,
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => ButtonLoading(),
+                ),
               ),
             ),
           ),
