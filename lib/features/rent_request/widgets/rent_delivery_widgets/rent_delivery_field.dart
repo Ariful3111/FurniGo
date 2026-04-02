@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_delivery_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
-import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_phone_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -40,31 +39,11 @@ class RentDeliveryField extends GetWidget<RentDeliveryController> {
         SizedBox(height: 26.h),
         text(text: 'City'),
         SizedBox(height: 8.h),
-        CustomDropdownMenu(
-          onSelect: (value) {
-            controller.selectedCity.value = value!;
-          },
-          option: controller.city,
-          isSelect: controller.selectedCity,
-          label: controller.selectedCity.value,
-          labelColor: AppColors.fieldTextColor,
-          selectedTrailingIconColor: AppColors.fieldTextColor,
-          trailingIconColor: AppColors.fieldTextColor,
-        ),
+        CustomTextFormField(controller: controller.cityController,labelText: 'Enter City',),
         SizedBox(height: 26.h),
         text(text: 'State'),
         SizedBox(height: 8.h),
-        CustomDropdownMenu(
-          onSelect: (value) {
-            controller.selectedState.value = value!;
-          },
-          option: controller.state,
-          isSelect: controller.selectedState,
-          label: controller.selectedState.value,
-          labelColor: AppColors.fieldTextColor,
-          selectedTrailingIconColor: AppColors.fieldTextColor,
-          trailingIconColor: AppColors.fieldTextColor,
-        ),
+        CustomTextFormField(controller: controller.stateController,labelText: 'Enter State',),
         SizedBox(height: 26.h),
         text(text: 'Zip code'),
         SizedBox(height: 8.h),

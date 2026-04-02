@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 
 class RentPeriodController extends GetxController {
   RxInt selectedPayment = 0.obs;
@@ -20,6 +22,27 @@ class RentPeriodController extends GetxController {
     {'title': '12 Month', 'subTitle': '48% OFF'},
     {'title': 'custom'},
   ];
+  String getDiscount(String title) {
+    switch (selectedRentPeriodTitle.value) {
+      case '60 Days':
+        return '3% OFF';
+      case '90 Days':
+        return '7% OFF';
+      case '6 Month':
+        return '16% OFF';
+      case '12 Month':
+        return '48% OFF';
+      default:
+        return '12 Month';
+    }
+  }
+
+  Future<void> submitRentRequestSix()async{
+    Get.find<RentRequestController>().rentController.position.minScrollExtent;
+    Get.find<RentStepController>().currentIndex.value++;
+    
+  }
+
   RxInt selectedType = 0.obs;
   RxInt selectedOption = 0.obs;
   List payment = ['Pay in full', 'Pay in instalment'];
@@ -39,6 +62,14 @@ class RentPeriodController extends GetxController {
       'subTitle': 'Charged in the last billing period of the plan.',
     },
   ];
+
+  @override
+  void onInit() {
+    // Set default selection to first item
+    selectedRentPeriodTitle.value = '12 Month';
+    searchController.text = '12 Month';
+    super.onInit();
+  }
 
   @override
   void dispose() {

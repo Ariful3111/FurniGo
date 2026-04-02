@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
@@ -22,6 +23,18 @@ class RentPropertyDetailsController extends GetxController {
     isChecked.assignAll(List.generate(spaceBreakdown.length, (_) => false));
     counts.assignAll(List.generate(spaceBreakdown.length, (_) => 0));
     super.onInit();
+  }
+
+  String get formattedSpaceBreakdown {
+    List<String> result = [];
+
+    for (int i = 0; i < spaceBreakdown.length; i++) {
+      if (isChecked[i] && counts[i] > 0) {
+        result.add('${spaceBreakdown[i]} (${counts[i]})');
+      }
+    }
+
+    return result.join(', ');
   }
 
   void addSpaceBreakdownItem(String item) {
@@ -57,6 +70,8 @@ class RentPropertyDetailsController extends GetxController {
     } else if (counts.every((c) => c == 0)) {
       ErrorSnackbar.show(description: 'Please add quantity');
     } else {
+      Get.find<RentRequestController>().rentController.position.minScrollExtent;
+
       Get.find<RentStepController>().currentIndex.value++;
     }
   }

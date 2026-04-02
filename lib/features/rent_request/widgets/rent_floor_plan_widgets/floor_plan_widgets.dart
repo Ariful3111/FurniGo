@@ -22,65 +22,60 @@ class FloorPlanWidgets extends GetWidget<RentFloorPlanController> {
           return Column(
             key: ValueKey(item.title),
             children: [
-              GestureDetector(
-                onTap: () {
-                  controller.isOpenList[index] = !controller.isOpenList[index];
-                },
-                child: SharedContainer(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 20.h,
-                    horizontal: 24.w,
-                  ),
-                  radius: 16.r,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomPrimaryText(
-                            text: item.title,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.darkColor,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              controller.isOpenList[index] =
-                                  !controller.isOpenList[index];
-                            },
-                            child: AnimatedRotation(
-                              turns: isSelected ? 1 : 0,
-                              duration: const Duration(milliseconds: 300),
-                              child: Image.asset(
-                                isSelected
-                                    ? IconsPath.upArrow
-                                    : IconsPath.downArrow,
-                                height: 20.h,
-                                width: 20.w,
-                                color: AppColors.darkColor,
-                              ),
+              SharedContainer(
+                padding: EdgeInsets.symmetric(
+                  vertical: 20.h,
+                  horizontal: 24.w,
+                ),
+                radius: 16.r,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomPrimaryText(
+                          text: item.title,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.darkColor,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            controller.isOpenList[index] =
+                                !controller.isOpenList[index];
+                          },
+                          child: AnimatedRotation(
+                            turns: isSelected ? 1 : 0,
+                            duration: const Duration(milliseconds: 300),
+                            child: Image.asset(
+                              isSelected
+                                  ? IconsPath.upArrow
+                                  : IconsPath.downArrow,
+                              height: 20.h,
+                              width: 20.w,
+                              color: AppColors.darkColor,
                             ),
                           ),
-                        ],
-                      ),
-                      AnimatedSize(
-                        duration: Duration(milliseconds: 300),
-                        child: isSelected
-                            ? Padding(
-                                padding: EdgeInsetsGeometry.only(top: 20.h),
-                                child: Column(
-                                  key: ValueKey('${item.title}_details'),
-                                  children: [
-                                    CustomDivider(),
-                                    SizedBox(height: 16.h),
-                                    OfficeFloor(item: item),
-                                  ],
-                                ),
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                    AnimatedSize(
+                      duration: Duration(milliseconds: 300),
+                      child: isSelected
+                          ? Padding(
+                              padding: EdgeInsetsGeometry.only(top: 20.h),
+                              child: Column(
+                                key: ValueKey('${item.title}_details'),
+                                children: [
+                                  CustomDivider(),
+                                  SizedBox(height: 16.h),
+                                  OfficeFloor(item: item),
+                                ],
+                              ),
+                            )
+                          : SizedBox.shrink(),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 16.h),

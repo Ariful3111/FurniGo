@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_setup.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_time.dart';
 import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
-import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_access.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_date.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_details.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class RentDelivery extends GetView<RentRequestController> {
+class RentDelivery extends GetView<RentStepController> {
   const RentDelivery({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final stepController = Get.find<RentStepController>();
-
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +25,7 @@ class RentDelivery extends GetView<RentRequestController> {
           Center(
             child: FlowPageCount(
               text: 'Delivery & Setup',
-              pageCount: (stepController.currentIndex.value).toString(),
+              pageCount: (controller.currentIndex.value).toString(),
             ),
           ),
           SizedBox(height: 20.h),
@@ -64,17 +62,11 @@ class RentDelivery extends GetView<RentRequestController> {
           ),
           SizedBox(height: 12.h),
           RentDeliveryDate(),
+          SizedBox(height: 12.h),
+          RentDeliveryTime(),
           SizedBox(height: 26.h),
           RentDeliveryDetails(),
-          SizedBox(height: 26.h),
-          CustomPrimaryText(
-            text: 'Access Detail',
-            fontSize: 16.sp,
-            color: AppColors.titleTextColor,
-            fontWeight: FontWeight.w600,
-          ),
-          SizedBox(height: 16.h),
-          RentDeliveryAccess(),
+          RentDeliverySetup(),
         ],
       ),
     );
