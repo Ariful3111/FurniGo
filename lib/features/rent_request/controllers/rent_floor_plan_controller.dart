@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/models/floor_plan_model.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_details_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
@@ -64,7 +65,23 @@ class RentFloorPlanController extends GetxController {
   }
 
   Future<void> submitRentRequestThree() async {
+    Get.find<RentRequestController>().rentController.position.minScrollExtent;
     Get.find<RentStepController>().currentIndex.value++;
+  }
+
+  List<Map<String, dynamic>> get formattedFloorPlanDetails {
+    List<Map<String, dynamic>> result = [];
+
+    for (var item in items) {
+      String length = item.lengthController.text;
+      String width = item.widthController.text;
+      result.add({
+        'title': item.title,
+        'value': 'Length ($length) x Width ($width)',
+      });
+    }
+
+    return result;
   }
 
   @override

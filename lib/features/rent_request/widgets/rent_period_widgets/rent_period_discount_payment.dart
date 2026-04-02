@@ -12,6 +12,7 @@ class RentPeriodDiscountPayment extends GetWidget<RentPeriodController> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPrimaryText(
           text: 'How would you like to pay?',
@@ -19,7 +20,6 @@ class RentPeriodDiscountPayment extends GetWidget<RentPeriodController> {
           fontWeight: FontWeight.w600,
           color: AppColors.darkTextColor,
         ),
-        SizedBox(height: 28.h),
         ...List.generate(controller.payment.length, (index) {
           return Row(
             children: [

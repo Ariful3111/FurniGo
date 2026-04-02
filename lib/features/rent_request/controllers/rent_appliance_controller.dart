@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_details_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/features/rent_request/models/rent_appliance_model.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
@@ -43,7 +44,9 @@ class RentApplianceController extends GetxController {
   }
 
   Future<void> submitRentRequestFive() async {
+    Get.find<RentRequestController>().rentController.position.minScrollExtent;
     Get.find<RentStepController>().currentIndex.value++;
+    
   }
 
   void addApplianceItemToModel(RentApplianceModel model, String item) {

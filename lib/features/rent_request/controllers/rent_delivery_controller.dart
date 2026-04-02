@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 
 class RentDeliveryController extends GetxController {
   TextEditingController deliveryAddressController = TextEditingController();
@@ -9,12 +11,11 @@ class RentDeliveryController extends GetxController {
   TextEditingController deliveryDateController = TextEditingController();
   TextEditingController otherDateController = TextEditingController();
   TextEditingController numberDateController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
   RxBool isChecked = false.obs;
   RxBool isSetup = false.obs;
-  List<String> city = ['City 1', 'City 2', 'City 3'];
-  RxString selectedCity = 'Select'.obs;
-  List<String> state = ['State 1', 'State 2', 'State 3'];
-  RxString selectedState = 'Select'.obs;
+RxList<int> timeIndex = <int>[0].obs;
   List<String> timePeriod = [
     'Between 8 a.m. - 12 p.m.',
     'Between 12 p.m. - 5 p.m.',
@@ -42,6 +43,13 @@ class RentDeliveryController extends GetxController {
       'selectedOption': 0.obs,
     },
   ];
+
+  Future<void> submitRentRequestSeven() async {
+        Get.find<RentRequestController>().rentController.position.minScrollExtent;
+    Get.find<RentStepController>().currentIndex.value++;
+
+  }
+
   @override
   void dispose() {
     deliveryAddressController.dispose();

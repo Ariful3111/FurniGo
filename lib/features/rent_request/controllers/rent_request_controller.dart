@@ -48,8 +48,9 @@ class RentRequestController extends GetxController {
           ErrorSnackbar.show(description: error.message);
         },
         (data) async {
-          await storage.write(key: storage.rentRequestUUID, value: data.uuid);
           Get.find<RentStepController>().currentIndex.value++;
+
+          await storage.write(key: storage.rentRequestUUID, value: data.uuid);
         },
       );
     }

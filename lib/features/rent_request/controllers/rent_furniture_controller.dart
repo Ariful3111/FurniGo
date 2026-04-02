@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_details_controller.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/features/rent_request/models/rent_furniture_model.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
@@ -12,7 +13,7 @@ class RentFurnitureController extends GetxController {
   RxList<bool> isOpenList = <bool>[].obs;
   TextEditingController itemController = TextEditingController();
 
-   RxList<String> furniture = <String>[
+  RxList<String> furniture = <String>[
     'Bed',
     'Chair',
     'Sofa',
@@ -95,9 +96,48 @@ class RentFurnitureController extends GetxController {
     }
   }
 
-Future<void> submitRentRequestFour()async{
-  Get.find<RentStepController>().currentIndex.value++;
-}
+  List<Map<String, dynamic>> get formattedFurnitureData {
+    List<Map<String, dynamic>> result = [];
+
+    for (var group in groups) {
+      List<String> checkedItems = [];
+      for (int i = 0; i < group.furnitureItems.length; i++) {
+        if (group.isChecked[i] && group.counts[i] > 0) {
+          checkedItems.add('${group.furnitureItems[i]} (${group.counts[i]})');
+        }
+      }
+
+      if (checkedItems.isNotEmpty) {
+        // Get selected condition preference
+        String conditionPreference =
+            preference[group.selectedPreference.value] ?? 'Not specified';
+
+        // Get selected style preferences
+        List<String> selectedStyles = [];
+        for (int i = 0; i < group.checkedPreference.length; i++) {
+          if (group.checkedPreference[i]) {
+            selectedStyles.add(stylePreference[i]);
+          }
+        }
+        String styleText = selectedStyles.isNotEmpty
+            ? selectedStyles.join(', ')
+            : 'Not specified';
+
+        String value =
+            '${checkedItems.join(', ')} | Condition: $conditionPreference | Style: $styleText';
+
+        result.add({'title': group.title, 'value': value});
+      }
+    }
+
+    return result;
+  }
+
+  Future<void> submitRentRequestFour() async {
+    Get.find<RentRequestController>().rentController.position.minScrollExtent;
+
+    Get.find<RentStepController>().currentIndex.value++;
+  }
 
   @override
   void dispose() {

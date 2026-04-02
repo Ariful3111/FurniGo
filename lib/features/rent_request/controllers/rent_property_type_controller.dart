@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/features/rent_request/repositories/step_one_repo.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
@@ -63,6 +64,8 @@ class RentPropertyTypeController extends GetxController {
           ErrorSnackbar.show(description: error.message);
         },
         (data) {
+          Get.find<RentRequestController>().rentController.position.minScrollExtent;
+
           Get.find<RentStepController>().currentIndex.value++;
         },
       );

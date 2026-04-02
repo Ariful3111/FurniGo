@@ -8,8 +8,8 @@ class FloorPlanItem {
   final RxString imagePath;
 
   FloorPlanItem({required this.title})
-    : lengthController = TextEditingController(),
-      widthController = TextEditingController(),
+    : lengthController = TextEditingController(text: '1'),
+      widthController = TextEditingController(text: '2'),
       imagePath = ''.obs;
 
   void dispose() {

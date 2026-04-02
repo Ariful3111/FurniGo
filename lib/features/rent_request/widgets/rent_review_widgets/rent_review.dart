@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_floor_plan_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_property_type_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_review_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
@@ -56,12 +57,12 @@ class RentReview extends GetView<RentReviewController> {
           SizedBox(height: 26.h),
           RentReviewModel(
             title: 'Floorplan & dimensions',
-            data: controller.propertyFloorPlan,
+            data: Get.find<RentFloorPlanController>().formattedFloorPlanDetails,
           ),
           SizedBox(height: 26.h),
           RentReviewModel(
             title: 'Furniture Requirements',
-            data: controller.propertyFloorPlan,
+            data: controller.propertyFurniture,
           ),
           SizedBox(height: 26.h),
           RentReviewModel(
@@ -72,7 +73,7 @@ class RentReview extends GetView<RentReviewController> {
           rentPropertyTypeController.selectedPropertyType.value == 'Residential'
               ? RentReviewModel(
                   title: 'Additional Notes',
-                  data: controller.propertyNotes,
+                  data: controller.additionalNote,
                 )
               : RentReviewModel(
                   title: 'Branding & Customization',
