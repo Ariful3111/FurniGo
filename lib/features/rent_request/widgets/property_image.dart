@@ -49,6 +49,7 @@ class PropertyImage extends StatelessWidget {
                   title: 'Chose from Gallery',
                 ),
               ),
+              SizedBox(width: 16.w),
               Expanded(
                 child: imageUpload(
                   onTap: onCamera,

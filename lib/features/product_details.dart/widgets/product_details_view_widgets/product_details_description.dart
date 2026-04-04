@@ -32,7 +32,7 @@ class ProductDetailsDescription extends StatelessWidget {
                     Row(
                       children: [
                         Image.asset(
-                          IconsPath.star,
+                          IconsPath.rating,
                           height: 18.h,
                           width: 18.w,
                         ),
@@ -66,6 +66,7 @@ class ProductDetailsDescription extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: 8.h,),
           CustomPrimaryText(
             text:
                 'Kiln-dried hardwood frame meet plush, high-density foam cushioning. A modern classic re-engineered for supreme comfort.',

@@ -76,9 +76,14 @@ class RentBrand extends GetView<RentBrandController> {
                       ),
                     ),
                     SizedBox(height: 28.h),
-                   Obx(()=> AnimatedSize(
-                      duration: Duration(milliseconds: 300),
-                      child:controller.isBrand.value?RentBrandDetails(): SizedBox())),
+                    Obx(
+                      () => AnimatedSize(
+                        duration: Duration(milliseconds: 300),
+                        child: controller.isBrand.value
+                            ? RentBrandDetails()
+                            : SizedBox(),
+                      ),
+                    ),
                   ],
                 ),
         ],
