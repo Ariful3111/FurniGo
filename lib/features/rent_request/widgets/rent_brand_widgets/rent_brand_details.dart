@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/utils/image_picker.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_brand_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/property_image.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
@@ -40,12 +41,33 @@ class RentBrandDetails extends GetWidget<RentBrandController> {
           color: AppColors.darkColor,
         ),
         SizedBox(height: 16.h),
-        PropertyImage(
-          title:
-              'Upload your brand kit, logo files, or style guide to ensure accurate customization.',
-          onGallery: () {},
-          onCamera: () {},
-        ),
+        Obx(() {
+          if (controller.imagePath.value.isEmpty) {
+            return PropertyImage(
+              title:
+                  'Upload your brand kit, logo files, or style guide to ensure accurate customization.',
+              onGallery: () async {
+                final path = await ImageManager.pickImageFromGallery();
+                if (path != null) {
+                  controller.imagePath.value = path;
+                }
+              },
+              onCamera: () async {
+                final path = await ImageManager.captureImageViaCamera();
+                if (path != null) {
+                  controller.imagePath.value = path;
+                }
+              },
+            );
+          }
+          return RentHelper().propertyImageView(
+            path: controller.imagePath.value,
+            onRemove: () {
+              controller.imagePath.value = '';
+            },
+            context: context,
+          );
+        }),
         SizedBox(height: 20.h),
       ],
     );

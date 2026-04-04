@@ -117,4 +117,12 @@ class IconsPath {
   static const String plus = 'assets/icons/plus.png';
   static const String location = 'assets/icons/location.png';
   static const String navigation = 'assets/icons/navigation.png';
+  static const String wood = 'assets/icons/wood.png';
+  static const String marble = 'assets/icons/marble.png';
+  static const String fabric = 'assets/icons/fabric.png';
+  static const String hammer = 'assets/icons/hammer.png';
+  static const String productCart = 'assets/icons/product_cart.png';
+  static const String tag = 'assets/icons/tag.png';
+  static const String offer = 'assets/icons/offer.png';
+
 }

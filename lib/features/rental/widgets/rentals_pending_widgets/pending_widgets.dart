@@ -58,7 +58,7 @@ class PendingWidgets extends GetWidget<RentalPendingController> {
                           ),
                           AnimatedRotation(
                             turns: isSelected ? 1 : 0,
-                            duration: const Duration(milliseconds: 300),
+                            duration:  Duration(milliseconds: 300),
                             child: Image.asset(
                               isSelected
                                   ? IconsPath.upArrow
@@ -73,18 +73,18 @@ class PendingWidgets extends GetWidget<RentalPendingController> {
                         ],
                       ),
                       AnimatedSize(
-                        duration: const Duration(milliseconds: 300),
+                        duration: Duration(milliseconds: 300),
                         curve: Curves.linear,
                         alignment: Alignment.topCenter,
                         child: isSelected
                             ? Padding(
                                 padding: EdgeInsets.only(top: 20.h),
                                 child: Column(
-                                  key: const ValueKey('widgets'),
+                                  key:  ValueKey('widgets'),
                                   children: [item['widgets']],
                                 ),
                               )
-                            : const SizedBox.shrink(),
+                            : SizedBox.shrink(),
                       ),
                     ],
                   ),

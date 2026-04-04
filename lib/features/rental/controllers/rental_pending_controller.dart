@@ -17,35 +17,33 @@ class RentalPendingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    // Determine if it's residential or commercial based on property use
     bool isResident =
         rentalDetailsController.rentalDetails.value?.propertyUse
             ?.toLowerCase() ==
         'personal';
 
     pendingWidgets = [
-      {'title': 'Property details', 'widgets': const PendingProperty()},
+      {'title': 'Property details', 'widgets':  PendingProperty()},
       {
         'title': 'Furniture',
-        'widgets': const PendingFurniture(),
+        'widgets':  PendingFurniture(),
         'subTitle': 'Please review your request before submitting.',
       },
       {
         'title': 'Appliances',
-        'widgets': const PendingAppliance(),
+        'widgets':  PendingAppliance(),
         'subTitle': 'Please review your request before submitting.',
       },
       isResident
-          ? {'title': 'Additional Notes', 'widgets': const PendingNotes()}
+          ? {'title': 'Additional Notes', 'widgets':  PendingNotes()}
           : {
               'title': 'Branding & Customization',
-              'widgets': const CommercialPendingBranding(),
+              'widgets':  CommercialPendingBranding(),
             },
-      {'title': 'Rental Period & Budget', 'widgets': const PendingPeriod()},
+      {'title': 'Rental Period & Budget', 'widgets':  PendingPeriod()},
       {
         'title': isResident ? 'Delivery & Setup' : 'Delivery Details',
-        'widgets': const PendingDelivery(),
+        'widgets': PendingDelivery(),
       },
     ];
     isOpenList.value = List.generate(pendingWidgets.length, (_) => false);

@@ -4,6 +4,7 @@ class RentBrandController extends GetxController {
   RxBool isBrand = false.obs;
   RxList<bool> isSelect = <bool>[].obs;
   List brand = ['Logo Placement', 'Brand Color Matching', 'Custom Finishes'];
+  RxString imagePath = ''.obs;
   @override
   void onInit() {
     isSelect.assignAll(List.generate(brand.length, (_) => false));
