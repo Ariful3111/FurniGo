@@ -11,9 +11,10 @@ class CreditUsageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       padding: EdgeInsets.all(24.r),
-      color: Colors.white,
+      color: isDark ? AppColors.labelColor : AppColors.whiteColor,
       radius: 16,
       boxShadow: [
         BoxShadow(

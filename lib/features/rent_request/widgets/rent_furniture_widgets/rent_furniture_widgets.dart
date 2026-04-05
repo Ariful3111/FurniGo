@@ -13,6 +13,7 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Column(
         children: List.generate(controller.groups.length, (index) {
@@ -36,7 +37,7 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
                           text: item.title,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.darkColor,
+                          color: isDark ? AppColors.whiteColor : AppColors.darkColor,
                         ),
                         InkWell(
                           onTap: () {
@@ -44,7 +45,7 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
                                 !controller.isOpenList[index];
                           },
                           child: AnimatedRotation(
-                            turns: isSelected ? 1 : 0,
+                            turns: isSelected ? 0.5 : 0,
                             duration: Duration(milliseconds: 300),
                             child: Image.asset(
                               isSelected
@@ -52,7 +53,7 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
                                   : IconsPath.downArrow,
                               height: 20.h,
                               width: 20.w,
-                              color: AppColors.darkColor,
+                              color: isDark ? AppColors.whiteColor : AppColors.darkColor,
                             ),
                           ),
                         ),
@@ -71,7 +72,7 @@ class RentFurnitureWidgets extends GetWidget<RentFurnitureController> {
                                   CustomPrimaryText(
                                     text: 'Furniture Required',
                                     fontSize: 14.sp,
-                                    color: AppColors.darkColor,
+                                    color: isDark ? AppColors.whiteColor : AppColors.darkColor,
                                   ),
                                   SizedBox(height: 12.h),
                                   RentFurnitureDetails(model: item),

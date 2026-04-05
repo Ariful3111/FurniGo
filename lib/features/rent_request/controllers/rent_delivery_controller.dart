@@ -44,8 +44,13 @@ RxList<int> timeIndex = <int>[0].obs;
     },
   ];
 
+  RentRequestController controller = Get.find();
   Future<void> submitRentRequestSeven() async {
-        Get.find<RentRequestController>().rentController.position.minScrollExtent;
+    controller.rentController.animateTo(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.linear,
+      controller.rentController.position.minScrollExtent,
+    );
     Get.find<RentStepController>().currentIndex.value++;
 
   }

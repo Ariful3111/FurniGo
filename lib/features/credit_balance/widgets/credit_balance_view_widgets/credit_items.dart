@@ -35,13 +35,19 @@ class CreditItems extends GetWidget<CreditBalanceController> {
               padding: EdgeInsets.all(12.w),
               color: isSelected
                   ? (isDark
-                        ? AppColors.darkPendingBGColor
+                        ? AppColors.darkTitleColor
                         : AppColors.darkPendingTextColor)
+                  : isDark
+                  ? AppColors.darkColor
                   : AppColors.whiteColor,
               border: Border.all(
                 width: 1.r,
                 color: isSelected
-                    ? AppColors.primaryColor
+                    ? isDark
+                          ? Color(0xFFAE45FA)
+                          : AppColors.secondaryColor
+                    : isDark
+                    ? AppColors.darkBorderColor
                     : AppColors.primaryBorderColor,
               ),
               child: Column(

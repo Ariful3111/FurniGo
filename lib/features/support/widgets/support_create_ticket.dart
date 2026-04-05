@@ -50,7 +50,7 @@ class SupportCreateTicket extends GetWidget<SupportController> {
             labelText: "Describe your issue in detail...",
             isAlignLabelWithHint: true,
             maxLines: 6,
-            fillColor: Color(0xFFF3F3F3),
+            fillColor:isDark?AppColors.labelColor :Color(0xFFF3F3F3),
           ),
           SizedBox(height: 24.h),
           Align(

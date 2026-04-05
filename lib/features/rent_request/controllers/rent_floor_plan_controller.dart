@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/models/floor_plan_model.dart';
@@ -64,8 +65,13 @@ class RentFloorPlanController extends GetxController {
     items[index].imagePath.value = '';
   }
 
+  RentRequestController controller = Get.find();
   Future<void> submitRentRequestThree() async {
-    Get.find<RentRequestController>().rentController.position.minScrollExtent;
+    controller.rentController.animateTo(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.linear,
+      controller.rentController.position.minScrollExtent,
+    );
     Get.find<RentStepController>().currentIndex.value++;
   }
 

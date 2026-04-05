@@ -13,6 +13,8 @@ class RentApplianceHeader extends GetWidget<RentApplianceController> {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +22,7 @@ class RentApplianceHeader extends GetWidget<RentApplianceController> {
           CustomPrimaryText(
             text: 'Items & appliances',
             fontWeight: FontWeight.w600,
-            color: AppColors.darkColor,
+            color:isDark? AppColors.whiteColor:AppColors.darkColor,
           ),
           SizedBox(height: 20.h),
           RentHelper.optionContainer(
@@ -34,7 +36,7 @@ class RentApplianceHeader extends GetWidget<RentApplianceController> {
                     CustomPrimaryText(
                       text: 'Appliances required?',
                       fontSize: 14.sp,
-                      color: AppColors.darkTextColor,
+                      color:isDark? AppColors.whiteColor: AppColors.darkTextColor,
                       fontWeight: FontWeight.w600,
                     ),
                     SizedBox(height: 4.h),
@@ -55,7 +57,7 @@ class RentApplianceHeader extends GetWidget<RentApplianceController> {
                   );
                 }),
               ],
-            ),
+            ), isDark: isDark,
           ),
         ],
       ),

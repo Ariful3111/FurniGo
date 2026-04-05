@@ -26,7 +26,7 @@ class HomeProductDesign extends StatelessWidget {
       width: 196.w,
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
-        color: isDark ? Color(0xFF161616) : AppColors.fieldColor,
+        color: isDark ? AppColors.darkTitleColor : AppColors.fieldColor,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Stack(

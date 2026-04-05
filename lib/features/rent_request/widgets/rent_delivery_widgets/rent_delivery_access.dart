@@ -11,6 +11,8 @@ class RentDeliveryAccess extends GetWidget<RentDeliveryController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(controller.access.length, (index) {
@@ -21,34 +23,34 @@ class RentDeliveryAccess extends GetWidget<RentDeliveryController> {
             CustomPrimaryText(
               text: item['title'],
               fontSize: 14.sp,
-              color: AppColors.titleTextColor,
+              color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
             ),
             SizedBox(height: 12.h),
             Row(
               children: List.generate(item['Option'].length, (index) {
-              return SizedBox(
-                width: 171.w,
-                child: Row(
-                  children: [
-                    Obx(
-                      () => CustomRadioButton(
-                        value: index,
-                        groupValue: item['selectedOption'].value,
-                        onChange: (value) {
-                          item['selectedOption'].value = value!;
-                        },
+                return SizedBox(
+                  width: 171.w,
+                  child: Row(
+                    children: [
+                      Obx(
+                        () => CustomRadioButton(
+                          value: index,
+                          groupValue: item['selectedOption'].value,
+                          onChange: (value) {
+                            item['selectedOption'].value = value!;
+                          },
+                        ),
                       ),
-                    ),
-                    CustomPrimaryText(
-                      text: item['Option'][index],
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.darkColor,
-                    ),
-                  ],
-                ),
-              );
-            }),
+                      CustomPrimaryText(
+                        text: item['Option'][index],
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: isDark? AppColors.whiteColor: AppColors.darkColor,
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ),
           ],
         );

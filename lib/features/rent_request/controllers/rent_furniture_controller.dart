@@ -133,8 +133,13 @@ class RentFurnitureController extends GetxController {
     return result;
   }
 
+  RentRequestController controller = Get.find();
   Future<void> submitRentRequestFour() async {
-    Get.find<RentRequestController>().rentController.position.minScrollExtent;
+    controller.rentController.animateTo(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.linear,
+      controller.rentController.position.minScrollExtent,
+    );
 
     Get.find<RentStepController>().currentIndex.value++;
   }

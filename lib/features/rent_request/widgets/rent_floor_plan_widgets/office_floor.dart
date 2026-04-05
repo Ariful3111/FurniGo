@@ -15,16 +15,19 @@ class OfficeFloor extends StatelessWidget {
   const OfficeFloor({super.key, required this.item});
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         myField(
+          isDark: isDark,
           text: 'Length',
           controller: item.lengthController,
           labelText: 'Enter Length',
         ),
         SizedBox(height: 10.h),
         myField(
+          isDark: isDark,
           text: 'Width',
           controller: item.widthController,
           labelText: 'Enter Width',

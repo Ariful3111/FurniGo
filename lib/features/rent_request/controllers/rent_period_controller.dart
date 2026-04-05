@@ -36,9 +36,13 @@ class RentPeriodController extends GetxController {
         return '12 Month';
     }
   }
-
+RentRequestController controller = Get.find();
   Future<void> submitRentRequestSix()async{
-    Get.find<RentRequestController>().rentController.position.minScrollExtent;
+    controller.rentController.animateTo(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.linear,
+      controller.rentController.position.minScrollExtent,
+    );
     Get.find<RentStepController>().currentIndex.value++;
     
   }

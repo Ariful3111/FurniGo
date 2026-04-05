@@ -37,7 +37,7 @@ class ProductDetailsViewImage extends GetWidget<ProductDetailsController> {
                       width: 60.w,
                       height: 60.h,
                       radius: 12.r,
-                      color: isDark ? Color(0xFF161616) : AppColors.fieldColor,
+                      color: isDark ? AppColors.darkTitleColor : AppColors.fieldColor,
                       child: Padding(
                         padding: EdgeInsets.all(4.w),
                         child: Image.asset(

@@ -14,6 +14,7 @@ class FloorPlanWidgets extends GetWidget<RentFloorPlanController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Column(
         children: List.generate(controller.items.length, (index) {
@@ -23,10 +24,7 @@ class FloorPlanWidgets extends GetWidget<RentFloorPlanController> {
             key: ValueKey(item.title),
             children: [
               SharedContainer(
-                padding: EdgeInsets.symmetric(
-                  vertical: 20.h,
-                  horizontal: 24.w,
-                ),
+                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
                 radius: 16.r,
                 child: Column(
                   children: [
@@ -37,7 +35,9 @@ class FloorPlanWidgets extends GetWidget<RentFloorPlanController> {
                           text: item.title,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.darkColor,
+                          color: isDark
+                              ? AppColors.whiteColor
+                              : AppColors.darkColor,
                         ),
                         InkWell(
                           onTap: () {
@@ -53,7 +53,9 @@ class FloorPlanWidgets extends GetWidget<RentFloorPlanController> {
                                   : IconsPath.downArrow,
                               height: 20.h,
                               width: 20.w,
-                              color: AppColors.darkColor,
+                              color: isDark
+                                  ? AppColors.whiteColor
+                                  : AppColors.darkColor,
                             ),
                           ),
                         ),

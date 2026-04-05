@@ -12,6 +12,7 @@ class RentDeliveryDetails extends GetWidget<RentDeliveryController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return RentHelper.optionContainer(
       context: context,
       child: Row(
@@ -24,14 +25,14 @@ class RentDeliveryDetails extends GetWidget<RentDeliveryController> {
                 CustomPrimaryText(
                   text: 'Setup required?',
                   fontSize: 14.sp,
-                  color: AppColors.darkTextColor,
+                  color: isDark? AppColors.whiteColor: AppColors.darkTextColor,
                   fontWeight: FontWeight.w600,
                 ),
                 SizedBox(height: 4.h),
                 CustomPrimaryText(
                   text: 'Professional setup service',
                   fontSize: 14.sp,
-                  color: AppColors.greyColor,
+                  color: isDark? AppColors.primaryBorderColor: AppColors.greyColor,
                   fontWeight: FontWeight.w400,
                 ),
               ],
@@ -46,7 +47,7 @@ class RentDeliveryDetails extends GetWidget<RentDeliveryController> {
             );
           }),
         ],
-      ),
+      ), isDark: isDark,
     );
   }
 }

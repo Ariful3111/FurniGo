@@ -16,6 +16,7 @@ class RentPropertyTypeView extends GetView<RentPropertyTypeController> {
   @override
   Widget build(BuildContext context) {
     final stepController = Get.find<RentStepController>();
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SharedContainer(
       child: Column(
@@ -33,14 +34,14 @@ class RentPropertyTypeView extends GetView<RentPropertyTypeController> {
           CustomPrimaryText(
             text: 'Property Details',
             fontWeight: FontWeight.w600,
-            color: AppColors.darkColor,
+            color: isDark?AppColors.whiteColor: AppColors.darkColor,
           ),
           SizedBox(height: 26.h),
           CustomPrimaryText(
             text: 'Property Type *',
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.darkTextColor,
+            color: isDark?AppColors.whiteColor: AppColors.darkTextColor,
           ),
           SizedBox(height: 8.h),
           CustomDropdownMenu(
@@ -56,7 +57,7 @@ class RentPropertyTypeView extends GetView<RentPropertyTypeController> {
             text: 'Property Use *',
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.darkTextColor,
+            color: isDark?AppColors.whiteColor: AppColors.darkTextColor,
           ),
           SizedBox(height: 8.h),
           Obx(

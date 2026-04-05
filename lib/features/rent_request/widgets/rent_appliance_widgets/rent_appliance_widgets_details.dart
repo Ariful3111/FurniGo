@@ -15,6 +15,8 @@ class RentApplianceWidgetsDetails extends GetWidget<RentApplianceController> {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +25,7 @@ class RentApplianceWidgetsDetails extends GetWidget<RentApplianceController> {
           CustomPrimaryText(
             text: 'Selected Appliance:',
             fontSize: 14.sp,
-            color: AppColors.darkColor,
+            color: isDark? AppColors.whiteColor: AppColors.darkColor,
           ),
           SizedBox(height: 12.h),
           ...List.generate(model.applianceItems.length, (index) {

@@ -13,7 +13,7 @@ class  DropdownMenuItems {
       label: option,
       style: ButtonStyle(
         backgroundColor: isDark
-            ? WidgetStatePropertyAll(AppColors.whiteColor)
+            ? WidgetStatePropertyAll(AppColors.darkColor)
             : WidgetStatePropertyAll(AppColors.whiteColor),
       ),
       labelWidget: dropdownItem(
@@ -24,7 +24,7 @@ class  DropdownMenuItems {
                   ? AppColors.labelColor
                   : AppColors.labelColor
             : isDark
-            ? AppColors.labelColor
+            ? AppColors.whiteColor
             : AppColors.labelColor,
         fontSize: menuFontSize ?? 14.sp,
       ),

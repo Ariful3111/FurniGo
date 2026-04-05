@@ -20,6 +20,8 @@ class RentBrand extends GetView<RentBrandController> {
   @override
   Widget build(BuildContext context) {
     RentPropertyTypeController rentPropertyTypeController = Get.find();
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     final stepController = Get.find<RentStepController>();
     return SharedContainer(
       child: Column(
@@ -50,7 +52,7 @@ class RentBrand extends GetView<RentBrandController> {
                                 CustomPrimaryText(
                                   text: 'Branding Required?',
                                   fontSize: 14.sp,
-                                  color: AppColors.darkTextColor,
+                                  color: isDark? AppColors.whiteColor: AppColors.darkTextColor,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 SizedBox(height: 4.h),
@@ -73,7 +75,7 @@ class RentBrand extends GetView<RentBrandController> {
                             );
                           }),
                         ],
-                      ),
+                      ), isDark: isDark,
                     ),
                     SizedBox(height: 28.h),
                     Obx(

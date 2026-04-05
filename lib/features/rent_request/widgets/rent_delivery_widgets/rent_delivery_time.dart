@@ -12,6 +12,8 @@ class RentDeliveryTime extends GetWidget<RentDeliveryController> {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +47,7 @@ class RentDeliveryTime extends GetWidget<RentDeliveryController> {
                               text: controller.timePeriod[index],
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
-                              color: AppColors.darkColor,
+                              color: isDark? AppColors.whiteColor: AppColors.darkColor,
                             ),
                     ],
                   ),

@@ -17,6 +17,7 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       child: Form(
         key: formKey,
@@ -34,7 +35,7 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
               controller: controller.businessNameController,
               labeText: 'Enter Business Name',
               validation: AutovalidateMode.onUserInteraction,
-              validator: nameValidation,
+              validator: nameValidation, isDark: isDark,
             ),
             SizedBox(height: 24.h),
             myField(
@@ -42,7 +43,7 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
               controller: controller.personNameController,
               labeText: 'Enter Contact Person Name',
               validation: AutovalidateMode.onUserInteraction,
-              validator: nameValidation,
+              validator: nameValidation, isDark: isDark,
             ),
             SizedBox(height: 24.h),
             myField(
@@ -50,12 +51,12 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
               controller: controller.emailController,
               labeText: 'Enter Email Address',
               validation: AutovalidateMode.onUserInteraction,
-              validator: emailValidation,
+              validator: emailValidation, isDark: isDark,
             ),
             SizedBox(height: 24.h),
             CustomPrimaryText(
               text: 'Phone Phone *',
-              color: AppColors.darkTextColor,
+              color: isDark?AppColors.whiteColor: AppColors.darkTextColor,
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
             ),
@@ -70,13 +71,13 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
             myField(
               text: 'ABN',
               controller: controller.abnController,
-              labeText: 'Enter ABN',
+              labeText: 'Enter ABN', isDark: isDark,
             ),
             SizedBox(height: 24.h),
             myField(
               text: 'Business Website / Company Profile Link',
               controller: controller.businessSiteController,
-              labeText: 'Enter Link',
+              labeText: 'Enter Link', isDark: isDark,
             ),
           ],
         ),
@@ -88,6 +89,7 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
     required String text,
     required String labeText,
     required TextEditingController controller,
+    required bool isDark,
     AutovalidateMode? validation,
     String? Function(String?)? validator,
   }) {
@@ -96,7 +98,7 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
       children: [
         CustomPrimaryText(
           text: text,
-          color: AppColors.darkTextColor,
+          color: isDark?AppColors.whiteColor: AppColors.darkTextColor,
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
         ),
@@ -104,9 +106,9 @@ class RentRequestViewForm extends GetWidget<RentRequestController> {
         CustomTextFormField(
           controller: controller,
           labelColor: AppColors.labelColor,
-          fillColor: AppColors.whiteColor,
+          fillColor:isDark? AppColors.labelColor:AppColors.whiteColor,
           borderRadius: 16.r,
-          borderColor: Color(0xFFE5E7EB),
+          borderColor:isDark?AppColors.darkBorderColor: Color(0xFFE5E7EB),
           borderWidth: 1.2.r,
           labelText: labeText,
           validation: validation,
