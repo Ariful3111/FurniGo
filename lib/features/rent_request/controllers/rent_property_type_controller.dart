@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_request_controller.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
@@ -49,7 +50,7 @@ class RentPropertyTypeController extends GetxController {
       }
     });
   }
-
+ RentRequestController controller = Get.find();
   Future<void> submitRentRequestOne() async {
     if (selectedPropertyType.value.isEmpty ||
         selectedPropertyUse.value.isEmpty) {
@@ -64,11 +65,19 @@ class RentPropertyTypeController extends GetxController {
           ErrorSnackbar.show(description: error.message);
         },
         (data) {
-          Get.find<RentRequestController>().rentController.position.minScrollExtent;
-
+          Get.find<RentRequestController>()
+              .rentController
+              .position
+              .minScrollExtent;
+              controller.rentController.animateTo(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.linear,
+        controller.rentController.position.minScrollExtent,
+      );
           Get.find<RentStepController>().currentIndex.value++;
         },
       );
     }
+   
   }
 }

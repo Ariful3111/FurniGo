@@ -14,6 +14,8 @@ class RentApplianceWidgets extends GetWidget<RentApplianceController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +27,6 @@ class RentApplianceWidgets extends GetWidget<RentApplianceController> {
             final isSelected = controller.isOpenList[index];
             return AnimatedSize(
               duration: Duration(milliseconds: 300),
-
               child: controller.isAppliance.value
                   ? Column(
                       key: ValueKey(index),
@@ -46,7 +47,9 @@ class RentApplianceWidgets extends GetWidget<RentApplianceController> {
                                     text: item.appliances,
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.darkColor,
+                                    color: isDark
+                                        ? AppColors.whiteColor
+                                        : AppColors.darkColor,
                                   ),
                                   InkWell(
                                     onTap: () {
@@ -64,7 +67,9 @@ class RentApplianceWidgets extends GetWidget<RentApplianceController> {
                                             : IconsPath.downArrow,
                                         height: 20.h,
                                         width: 20.w,
-                                        color: AppColors.darkColor,
+                                        color: isDark
+                                            ? AppColors.whiteColor
+                                            : AppColors.darkColor,
                                       ),
                                     ),
                                   ),
@@ -74,7 +79,10 @@ class RentApplianceWidgets extends GetWidget<RentApplianceController> {
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.linear,
                                 child: isSelected
-                                    ? RentApplianceWidgetsDetails(key: ValueKey('widgets'), model: item,)
+                                    ? RentApplianceWidgetsDetails(
+                                        key: ValueKey('widgets'),
+                                        model: item,
+                                      )
                                     : SizedBox.shrink(),
                               ),
                             ],

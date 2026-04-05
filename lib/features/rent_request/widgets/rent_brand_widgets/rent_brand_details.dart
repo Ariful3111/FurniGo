@@ -13,12 +13,14 @@ class RentBrandDetails extends GetWidget<RentBrandController> {
 
   @override
   Widget build(BuildContext context) {
+     bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       children: [
         CustomPrimaryText(
           text: 'Select the branding elements you want to apply:',
           fontSize: 14.sp,
-          color: AppColors.darkColor,
+          color: isDark? AppColors.whiteColor: AppColors.darkColor,
         ),
         SizedBox(height: 12.h),
         ...List.generate(controller.brand.length, (index) {
@@ -30,7 +32,7 @@ class RentBrandDetails extends GetWidget<RentBrandController> {
               onChange: (value) {
                 controller.isSelect[index] = value!;
               },
-              title: controller.brand[index],
+              title: controller.brand[index], isDark: isDark,
             ),
           );
         }),
@@ -38,7 +40,7 @@ class RentBrandDetails extends GetWidget<RentBrandController> {
         CustomPrimaryText(
           text: 'Upload Brand Guidelines',
           fontSize: 16.sp,
-          color: AppColors.darkColor,
+          color: isDark? AppColors.whiteColor: AppColors.darkColor,
         ),
         SizedBox(height: 16.h),
         Obx(() {

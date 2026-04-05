@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/product_details.dart/controller/product_details_controller.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class ProductDetailsOffer extends StatelessWidget {
+class ProductDetailsOffer extends GetWidget<ProductDetailsController> {
   const ProductDetailsOffer({super.key});
 
   @override
@@ -15,7 +18,9 @@ class ProductDetailsOffer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _deliveryCard(isDark),
+          controller.isStock.value
+              ? _deliveryCard(isDark)
+              : ProductDetailsHelper().outOfStock(onTap: () {}, isDark: isDark),
           SizedBox(height: 12.h),
           _offerCard(isDark),
         ],
@@ -47,7 +52,7 @@ class ProductDetailsOffer extends StatelessWidget {
             child: CustomPrimaryText(
               text: '7-10 Days / Made to Order: 12-15 Days',
               fontSize: 16.sp,
-              color: AppColors.darkTextColor,
+              color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
             ),
           ),
         ],
@@ -77,20 +82,27 @@ class ProductDetailsOffer extends StatelessWidget {
                   text: 'Special Offers',
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF6B5A2B),
+                  color: isDark ? AppColors.whiteColor : Color(0xFF6B5A2B),
                 ),
                 SizedBox(height: 12.h),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset(IconsPath.offer, height: 24.h, width: 24.w),
+                    Image.asset(
+                      IconsPath.offer,
+                      height: 24.h,
+                      width: 24.w,
+                      color: isDark ? AppColors.whiteColor : null,
+                    ),
                     SizedBox(width: 10.w),
                     Expanded(
                       child: CustomPrimaryText(
                         text: 'Use Code: SAVE10 — Get 10% Off',
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xFF6B5A2B),
+                        color: isDark
+                            ? AppColors.whiteColor
+                            : Color(0xFF6B5A2B),
                       ),
                     ),
                   ],

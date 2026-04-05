@@ -15,18 +15,24 @@ class OtherField extends StatelessWidget {
     required this.controller,
     this.readOnly,
     this.height,
-    this.width, this.labelText, this.keyboardType,
+    this.width,
+    this.labelText,
+    this.keyboardType,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: height ?? 36.h,
       width: width,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
-          BoxShadow( 
-            color: Color(0xFFE4E5E7).withValues(alpha: 0.24),
+          BoxShadow(
+            color: isDark
+                ? AppColors.darkColor
+                : Color(0xFFE4E5E7).withValues(alpha: 0.24),
             offset: Offset(0, 1),
             blurRadius: 2,
           ),
@@ -34,12 +40,14 @@ class OtherField extends StatelessWidget {
       ),
       child: CustomTextFormField(
         controller: controller,
-        borderColor: Color(0xFFE2E4E9),
-        labelText:labelText?? 'Other',
-        labelColor: AppColors.primaryGreyTextColor,
+        borderColor:isDark?AppColors.darkBorderColor: Color(0xFFE2E4E9),
+        labelText: labelText ?? 'Other',
+        labelColor: isDark
+            ? AppColors.primaryBorderColor
+            : AppColors.primaryGreyTextColor,
         labelFontSize: 12.sp,
-        padding: EdgeInsets.zero,
-        fillColor: AppColors.whiteColor,
+        padding: EdgeInsets.all(4.r),
+        fillColor: isDark ? AppColors.labelColor : AppColors.whiteColor,
         readOnly: readOnly,
         keyboardType: keyboardType,
       ),

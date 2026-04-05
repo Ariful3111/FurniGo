@@ -16,6 +16,7 @@ class RentFurnitureDetails extends GetWidget<RentFurnitureController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +74,7 @@ class RentFurnitureDetails extends GetWidget<RentFurnitureController> {
           CustomPrimaryText(
             text: 'Preference:',
             fontSize: 14.sp,
-            color: AppColors.darkColor,
+            color: isDark ? AppColors.whiteColor : AppColors.darkColor,
           ),
           SizedBox(height: 12.h),
           RentFurniturePreference(model: model),

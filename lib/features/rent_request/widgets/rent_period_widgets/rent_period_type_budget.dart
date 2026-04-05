@@ -12,13 +12,15 @@ class RentPeriodTypeBudget extends GetWidget<RentPeriodController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPrimaryText(
           text: 'Budget Preference',
           fontSize: 14.sp,
-          color: AppColors.titleTextColor,
+          color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
         ),
         SizedBox(height: 12.h),
         OtherField(

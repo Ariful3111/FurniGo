@@ -20,6 +20,7 @@ class RentPropertyDetailsView extends GetView<RentPropertyDetailsController> {
   @override
   Widget build(BuildContext context) {
     final stepController = Get.find<RentStepController>();
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SharedContainer(
       child: Column(
@@ -37,7 +38,7 @@ class RentPropertyDetailsView extends GetView<RentPropertyDetailsController> {
           CustomPrimaryText(
             text: 'Property Details',
             fontWeight: FontWeight.w600,
-            color: AppColors.darkColor,
+            color: isDark?AppColors.whiteColor: AppColors.darkColor,
           ),
           SizedBox(height: 20.h),
           PropertyDetailsField(),
@@ -45,7 +46,7 @@ class RentPropertyDetailsView extends GetView<RentPropertyDetailsController> {
           CustomPrimaryText(
             text: 'Space Breakdown',
             fontSize: 16.sp,
-            color: AppColors.darkTextColor,
+            color: isDark?AppColors.whiteColor: AppColors.darkTextColor,
           ),
           SizedBox(height: 16.h),
           RentPropertyDetailsList(),

@@ -11,6 +11,7 @@ class RentAdditionalNoteView extends GetView<RentAdditionalNoteController> {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,12 +22,14 @@ class RentAdditionalNoteView extends GetView<RentAdditionalNoteController> {
         ),
         SizedBox(height: 26.h),
         myField(
+          isDark: isDark,
           text: 'Custom notes or special requests',
           controller: controller.noteController,
           labelText: 'Enter Your Note',
         ),
         SizedBox(height: 26.h),
         myField(
+          isDark: isDark,
           text: 'Brand or material preferences',
           controller: controller.brandController,
           labelText: 'Enter Your Preferences',

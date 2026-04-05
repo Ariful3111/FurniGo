@@ -24,16 +24,19 @@ class PropertyDetailsContainer extends StatelessWidget {
     required this.onRemoved,
     required this.count,
     required this.readOnly,
-    this.subTitle, required this.onClose,
+    this.subTitle,
+    required this.onClose,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(12.r),
       width: MediaQuery.widthOf(context),
       decoration: BoxDecoration(
-        color: AppColors.whiteColor,
+        color: isDark ? AppColors.darkColor : AppColors.whiteColor,
         border: Border.all(width: 1.r, color: AppColors.borderColor),
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
@@ -59,13 +62,13 @@ class PropertyDetailsContainer extends StatelessWidget {
                 text: title,
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
-                color: AppColors.darkColor,
+                color: isDark ? AppColors.whiteColor : AppColors.darkColor,
               ),
               Spacer(),
               InkWell(
                 onTap: onClose,
-                child: Image.asset(IconsPath.close,height: 20.h,width: 20.w,),
-              )
+                child: Image.asset(IconsPath.close, height: 20.h, width: 20.w),
+              ),
             ],
           ),
           Row(
@@ -75,39 +78,50 @@ class PropertyDetailsContainer extends StatelessWidget {
                 text: subTitle ?? 'Count',
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
-                color: AppColors.darkColor,
+                color: isDark ? AppColors.whiteColor : AppColors.darkColor,
               ),
               Spacer(),
               button(
-                child: InkWell(
-                  onTap: isChecked ? onRemoved : () {},
-                  child: Icon(
-                    Icons.remove,
-                    size: 12.r,
-                    color: isChecked ? AppColors.darkColor : Color(0xFFC0C0C0),
-                  ),
+                onTap: isChecked ? onRemoved : () {},
+                child: Icon(
+                  Icons.remove,
+                  size: 12.r,
+                  color: isChecked
+                      ? isDark
+                            ? AppColors.whiteColor
+                            : AppColors.darkColor
+                      : Color(0xFFC0C0C0),
                 ),
+                isDark: isDark,
               ),
-              SizedBox(width: 1.63.w),
+              SizedBox(width: 2.w),
               button(
+                onTap: () {},
                 child: CustomPrimaryText(
                   text: count,
                   fontSize: 10.sp,
                   color: isChecked
-                      ? AppColors.buttonTextColor
+                      ? isDark
+                            ? AppColors.whiteColor
+                            : AppColors.buttonTextColor
                       : Color(0xFFC0C0C0),
                 ),
+                isDark: isDark,
               ),
-              SizedBox(width: 1.63.w),
+              SizedBox(width: 2.w),
               button(
-                child: InkWell(
-                  onTap: isChecked ? onAdd : () {},
-                  child: Icon(
-                    Icons.add,
-                    size: 12.r,
-                    color: isChecked ? AppColors.darkColor : Color(0xFFC0C0C0),
-                  ),
+                onTap: isChecked ? onAdd : () {},
+                child: Icon(
+                  Icons.add,
+                  size: 12.r,
+                  color: isChecked
+                      ? isDark
+                            ? AppColors.whiteColor
+                            : AppColors.darkColor
+                      : Color(0xFFC0C0C0),
                 ),
+
+                isDark: isDark,
               ),
             ],
           ),
@@ -116,15 +130,28 @@ class PropertyDetailsContainer extends StatelessWidget {
     );
   }
 
-  Widget button({required Widget child}) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 1.75.h, horizontal: 9.8.w),
-      decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(3.5.r),
-        border: Border.all(width: 0.44.r, color: AppColors.fieldBorderColor),
+  Widget button({
+    required Widget child,
+    required bool isDark,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 20.h,
+        width: 22.w,
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.labelColor : AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(3.5.r),
+          border: Border.all(
+            width: 0.44.r,
+            color: isDark
+                ? AppColors.darkBorderColor
+                : AppColors.fieldBorderColor,
+          ),
+        ),
+        child: Center(child: child),
       ),
-      child: child,
     );
   }
 }

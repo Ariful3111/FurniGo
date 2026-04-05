@@ -12,6 +12,8 @@ class RentDeliverySetup extends GetWidget<RentDeliveryController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Obx(
       () => AnimatedSize(
         duration: Duration(milliseconds: 300),
@@ -43,7 +45,7 @@ class RentDeliverySetup extends GetWidget<RentDeliveryController> {
                   CustomPrimaryText(
                     text: 'Access Detail',
                     fontSize: 16.sp,
-                    color: AppColors.titleTextColor,
+                    color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
                     fontWeight: FontWeight.w600,
                   ),
                   SizedBox(height: 16.h),

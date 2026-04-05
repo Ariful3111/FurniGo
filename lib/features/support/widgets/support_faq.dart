@@ -65,7 +65,7 @@ class SupportFaq extends StatelessWidget {
             text: "View all FAQs",
             fontSize: 14.sp,
             fontWeight: FontWeight.w700,
-            color: AppColors.primaryColor,
+            color:isDark? AppColors.whiteColor:AppColors.primaryColor,
           ),
         ],
       ),

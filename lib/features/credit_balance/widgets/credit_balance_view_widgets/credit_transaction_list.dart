@@ -97,9 +97,9 @@ class CreditTransactionList extends StatelessWidget {
             controller: scrollController,
             thumbVisibility: true,
             trackVisibility: true,
-            thumbColor: AppColors.primaryColor,
+            thumbColor:isDark? AppColors.whiteColor:AppColors.primaryColor,
             trackRadius: Radius.circular(12.r),
-            trackColor: AppColors.buttonBorderColor,
+            trackColor:isDark? AppColors.primaryColor:AppColors.buttonBorderColor,
             thickness: 3.83.w,
             radius: Radius.circular(8.r),
             child: Padding(

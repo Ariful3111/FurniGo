@@ -6,6 +6,7 @@ import 'package:zb_dezign/features/sell_flow/controller/sell_flow_review_control
 import 'package:zb_dezign/features/sell_flow/widgets/sell_flow_review_widgets/sell_flow_review_ai.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/details_row_model.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class SellFlowReview extends GetView<SellFlowReviewController> {
   const SellFlowReview({super.key});
@@ -38,12 +39,11 @@ class SellFlowReview extends GetView<SellFlowReviewController> {
           color: AppColors.labelColor,
         ),
         SizedBox(height: 20.h),
-        Container(
+        SharedContainer(
           padding: EdgeInsets.all(20.r),
-          decoration: BoxDecoration(
-            color: AppColors.whiteColor,
-            borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(color: AppColors.borderColor),
+          radius: 16.r,
+          border: Border.all(
+            color: isDark ? AppColors.darkBorderColor : AppColors.borderColor,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +60,7 @@ class SellFlowReview extends GetView<SellFlowReviewController> {
           ),
         ),
         SizedBox(height: 16.h),
-        SellFlowReviewAi()
+        SellFlowReviewAi(),
       ],
     );
   }

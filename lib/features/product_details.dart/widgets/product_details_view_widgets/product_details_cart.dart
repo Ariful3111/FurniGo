@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/product_details.dart/controller/product_details_controller.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class ProductDetailsCart extends GetWidget<ProductDetailsController> {
@@ -14,79 +15,96 @@ class ProductDetailsCart extends GetWidget<ProductDetailsController> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: MediaQuery.widthOf(context),
-      
       decoration: BoxDecoration(
-        gradient:isDark? LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [
-            AppColors.darkColor,
-            AppColors.darkColor.withValues(alpha: 0.75),
-            AppColors.darkColor.withValues(alpha: 0),
-          ],
-        ):LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [
-            AppColors.whiteColor,
-            AppColors.whiteColor.withValues(alpha: 0.75),
-            AppColors.whiteColor.withValues(alpha: 0),
-          ],
-        ),
+        gradient: isDark
+            ? LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  AppColors.darkColor,
+                  AppColors.darkColor.withValues(alpha: 0.75),
+                  AppColors.darkColor.withValues(alpha: 0),
+                ],
+              )
+            : LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  AppColors.whiteColor,
+                  AppColors.whiteColor.withValues(alpha: 0.75),
+                  AppColors.whiteColor.withValues(alpha: 0),
+                ],
+              ),
       ),
       child: Padding(
-        padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h,top: 40.h),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    _qtyButton(
-                      icon: Icons.remove,
-                      onTap: () {
-                        if (controller.qty > 1) {
-                          controller.qty--;
-                        }
-                      },
-                    ),
-                    SizedBox(width: 6.w),
-                    Obx(() => _qtyValue(controller.qty.toString())),
-                    SizedBox(width: 6.w),
-                    _qtyButton(
-                      icon: Icons.add,
-                      onTap: () {
-                        controller.qty++;
-                      },
-                    ),
-                  ],
-                ),
-                button(
-                  text: 'Add TO CART',
-                  icon: IconsPath.productCart,
-                  onTap: () {},
-                  border: Border.all(color: Color(0xFF111116)),
-                  bgColor: AppColors.whiteColor,
-                  iconColor: AppColors.darkColor,
-                  textColor: AppColors.darkColor,
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
-            button(
-              width: MediaQuery.widthOf(context),
-              text: 'BUY NOW',
-              icon: IconsPath.cart,
-              onTap: () {},
-              bgColor: AppColors.secondaryColor,
-              textColor: AppColors.whiteColor,
-              iconColor: AppColors.whiteColor,
-            ),
-          ],
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+          bottom: 20.h,
+          top: 40.h,
         ),
+        child: controller.isStock.value
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          _qtyButton(
+                            icon: Icons.remove,
+                            onTap: () {
+                              if (controller.qty > 1) {
+                                controller.qty--;
+                              }
+                            },
+                          ),
+                          SizedBox(width: 6.w),
+                          Obx(() => _qtyValue(controller.qty.toString())),
+                          SizedBox(width: 6.w),
+                          _qtyButton(
+                            icon: Icons.add,
+                            onTap: () {
+                              controller.qty++;
+                            },
+                          ),
+                        ],
+                      ),
+                      button(
+                        text: 'Add TO CART',
+                        icon: IconsPath.productCart,
+                        onTap: () {},
+                        border: Border.all(color: Color(0xFF111116)),
+                        bgColor: AppColors.whiteColor,
+                        iconColor: AppColors.darkColor,
+                        textColor: AppColors.darkColor,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  button(
+                    width: MediaQuery.widthOf(context),
+                    text: 'BUY NOW',
+                    icon: IconsPath.cart,
+                    onTap: () {},
+                    bgColor: AppColors.secondaryColor,
+                    textColor: AppColors.whiteColor,
+                    iconColor: AppColors.whiteColor,
+                  ),
+                ],
+              )
+            : Column(
+                children: [
+                  ProductDetailsHelper().outOfStock(
+                    onTap: () {},
+                    isDark: isDark,
+                  ),
+                  SizedBox(height: 12.h),
+                  ProductDetailsHelper().reStock(onTap: () {}, isDark: isDark),
+                ],
+              ),
       ),
     );
   }

@@ -15,12 +15,12 @@ class CreditTransactionItem extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     bool isPositive = transaction.amount > 0;
     return SharedContainer(
-      margin: EdgeInsets.only(bottom:4.h),
+      margin: EdgeInsets.only(bottom: 4.h),
       padding: EdgeInsets.all(10.r),
       radius: 10.r,
-      color: isDark ? AppColors.labelColor : AppColors.primaryBorderColor,
+      color: isDark ? AppColors.darkColor : AppColors.primaryBorderColor,
       border: Border.all(
-        color: isDark ? AppColors.darkBorderColor : AppColors.borderColor,
+        color: isDark ? AppColors.darkColor : AppColors.borderColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,14 +46,15 @@ class CreditTransactionItem extends StatelessWidget {
             ],
           ),
           SharedContainer(
+            
             padding: EdgeInsets.symmetric(horizontal: 6.26.w, vertical: 5.22.h),
-            color: isDark ? AppColors.darkColor : AppColors.whiteColor,
+            color: isDark ? AppColors.labelColor : AppColors.whiteColor,
             radius: 20.r,
             child: CustomPrimaryText(
               text: _amountText(isPositive),
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
-              color: AppColors.labelColor,
+              color:isDark? AppColors.whiteColor:AppColors.labelColor,
             ),
           ),
         ],

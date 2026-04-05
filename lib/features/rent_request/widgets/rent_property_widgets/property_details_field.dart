@@ -13,16 +13,19 @@ class PropertyDetailsField extends GetWidget<RentPropertyDetailsController> {
   @override
   Widget build(BuildContext context) {
     RentPropertyTypeController rentPropertyTypeController = Get.find();
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         myField(
+          isDark: isDark,
           text: 'Property Address *',
           controller: controller.propertyAddressController,
           labelText: 'Enter Property Address',
         ),
         SizedBox(height: 16.h),
         myField(
+          isDark: isDark,
           text:
               rentPropertyTypeController.selectedPropertyType.value ==
                   'Residential'
@@ -40,6 +43,7 @@ Widget myField({
   required String text,
   required TextEditingController controller,
   required String labelText,
+  required bool isDark,
   String? Function(String?)? validator,
   AutovalidateMode? validation,
 }) {
@@ -50,15 +54,15 @@ Widget myField({
         text: text,
         fontSize: 16.sp,
         fontWeight: FontWeight.w600,
-        color: AppColors.darkTextColor,
+        color: isDark?AppColors.whiteColor: AppColors.darkTextColor,
       ),
       SizedBox(height: 8.h),
       CustomTextFormField(
         controller: controller,
         labelText: labelText,
-        fillColor: AppColors.whiteColor,
+        fillColor: isDark?AppColors.darkColor: AppColors.whiteColor,
         borderWidth: 1.2.r,
-        borderColor: AppColors.fieldBorderColorLight,
+        borderColor:isDark?AppColors.darkBorderColor :AppColors.fieldBorderColorLight,
         validation: validation,
         validator: validator,
       ),

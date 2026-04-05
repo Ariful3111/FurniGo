@@ -9,7 +9,7 @@ import 'package:zb_dezign/features/product_details.dart/widgets/product_details_
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
-  const ProductDetailsViewHeader({super.key});
+  const  ProductDetailsViewHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
       width: MediaQuery.widthOf(context),
       height: 360.h,
       radius: 16.r,
-      color: isDark ? Color(0xFF161616) : AppColors.fieldColor,
+      color: isDark ? AppColors.darkTitleColor : AppColors.fieldColor,
       child: Stack(
         children: [
           CarouselSlider.builder(
@@ -108,7 +108,7 @@ class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
             icon,
             height: 20.h,
             width: 20.w,
-            color: isDark ? AppColors.primaryBorderColor : Color(0xFF161616),
+            color: isDark ? AppColors.primaryBorderColor : AppColors.darkTitleColor,
           ),
         ),
       ),

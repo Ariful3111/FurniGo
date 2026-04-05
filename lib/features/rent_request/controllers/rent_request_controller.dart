@@ -32,8 +32,8 @@ class RentRequestController extends GetxController {
     phoneController.text = user?.phone ?? '';
     abnController.text = user?.abn ?? '';
   }
-
   Future<void> submitRentRequestZero() async {
+    
     if (formKey.currentState?.validate() == true) {
       final response = await stepZeroRepository.execute(
         businessName: businessNameController.text,

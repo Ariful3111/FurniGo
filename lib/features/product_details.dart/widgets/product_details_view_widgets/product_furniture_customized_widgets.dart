@@ -52,6 +52,9 @@ class ProductFurnitureCustomizedWidgets
                                   item['icon'],
                                   height: 16.h,
                                   width: 16.w,
+                                  color: isDark
+                                      ? AppColors.whiteColor
+                                      : AppColors.labelColor,
                                 ),
                               ),
                             ),
@@ -80,6 +83,9 @@ class ProductFurnitureCustomizedWidgets
                                   : IconsPath.downArrow,
                               height: 20.h,
                               width: 20.w,
+                              color: isDark
+                                  ? AppColors.whiteColor
+                                  : AppColors.labelColor,
                             ),
                           ),
                         ),

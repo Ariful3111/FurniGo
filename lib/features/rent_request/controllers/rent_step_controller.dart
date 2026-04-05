@@ -90,15 +90,19 @@ class RentStepController extends GetxController {
 
   // Final step
   void _handleFinalStep() {
-    Get.find<RentRequestController>().rentController.position.minScrollExtent;
     debugPrint(
       '🏁 Step ${currentIndex.value}: Final step reached - Ready for submission',
     );
   }
-
+RentRequestController controller = Get.find();
   // Navigate to previous step
   void goToPreviousStep() {
     if (currentIndex.value > 0) {
+      controller.rentController.animateTo(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.linear,
+        controller.rentController.position.minScrollExtent,
+      );
       currentIndex.value--;
       debugPrint('⏮️ Moved back to Step ${currentIndex.value}');
     }

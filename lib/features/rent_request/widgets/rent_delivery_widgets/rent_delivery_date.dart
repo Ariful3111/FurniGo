@@ -12,13 +12,15 @@ class RentDeliveryDate extends GetWidget<RentDeliveryController> {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPrimaryText(
           text: 'Availability1',
           fontSize: 14.sp,
-          color: AppColors.titleTextColor,
+          color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
         ),
         SizedBox(height: 8.h),
         CustomDateField(
@@ -38,7 +40,7 @@ class RentDeliveryDate extends GetWidget<RentDeliveryController> {
         CustomPrimaryText(
           text: 'Preferred Time Period *',
           fontSize: 14.sp,
-          color: AppColors.titleTextColor,
+          color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
         ),
       ],
     );

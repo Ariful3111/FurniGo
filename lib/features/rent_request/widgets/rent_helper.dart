@@ -11,12 +11,13 @@ class RentHelper {
   static Widget optionContainer({
     required BuildContext context,
     required Widget child,
+    required bool isDark,
   }) {
     return Container(
       padding: EdgeInsets.all(16.r),
       width: MediaQuery.widthOf(context),
       decoration: BoxDecoration(
-        color: Color(0xFFF1F1F1),
+        color: isDark ? AppColors.darkColor : Color(0xFFF1F1F1),
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: child,
@@ -49,6 +50,7 @@ class RentHelper {
     required bool isChecked,
     required ValueChanged onChange,
     required String title,
+    required bool isDark,
   }) {
     return Container(
       margin: EdgeInsets.only(bottom: isLastIndex ? 0 : 16.w),
@@ -56,7 +58,7 @@ class RentHelper {
       height: 48.h,
       padding: EdgeInsets.symmetric(vertical: 14.h),
       decoration: BoxDecoration(
-        color: AppColors.whiteColor,
+        color:isDark? AppColors.darkColor:AppColors.whiteColor,
         border: Border.all(width: 1.r, color: AppColors.borderColor),
         borderRadius: BorderRadius.circular(12.r),
       ),
@@ -67,7 +69,7 @@ class RentHelper {
             text: title,
             fontSize: 14.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.darkColor,
+            color:isDark? AppColors.whiteColor:AppColors.darkColor,
           ),
         ],
       ),

@@ -18,6 +18,8 @@ class RentDelivery extends GetView<RentStepController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,14 +36,14 @@ class RentDelivery extends GetView<RentStepController> {
           CustomPrimaryText(
             text: 'Delivery & Setup',
             fontWeight: FontWeight.w600,
-            color: AppColors.darkColor,
+            color: isDark? AppColors.whiteColor: AppColors.darkColor,
           ),
           SizedBox(height: 26.h),
           CustomPrimaryText(
             text: 'Delivery address *',
             fontWeight: FontWeight.w600,
             fontSize: 14.sp,
-            color: AppColors.darkColor,
+            color: isDark? AppColors.whiteColor: AppColors.darkColor,
           ),
           SizedBox(height: 16.h),
           RentDeliveryField(),
@@ -50,7 +52,7 @@ class RentDelivery extends GetView<RentStepController> {
             text: 'Preferred Time of Service',
             fontWeight: FontWeight.w600,
             fontSize: 16.sp,
-            color: AppColors.titleTextColor,
+            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
           ),
           SizedBox(height: 4.h),
           CustomPrimaryText(
@@ -58,7 +60,7 @@ class RentDelivery extends GetView<RentStepController> {
                 'Please provide the dates and times you are available for us to respond.',
             fontWeight: FontWeight.w400,
             fontSize: 12.sp,
-            color: AppColors.titleTextColor,
+            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
           RentDeliveryDate(),

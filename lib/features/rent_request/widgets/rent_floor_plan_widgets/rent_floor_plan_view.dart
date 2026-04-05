@@ -18,6 +18,7 @@ class RentFloorPlanView extends GetView<RentFloorPlanController> {
   @override
   Widget build(BuildContext context) {
     final stepController = Get.find<RentStepController>();
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         SharedContainer(
@@ -36,7 +37,7 @@ class RentFloorPlanView extends GetView<RentFloorPlanController> {
               CustomPrimaryText(
                 text: 'Floorplan & dimensions',
                 fontWeight: FontWeight.w600,
-                color: AppColors.darkColor,
+                color: isDark ? AppColors.whiteColor : AppColors.darkColor,
               ),
               SizedBox(height: 26.h),
               RentHelper.optionContainer(
@@ -50,7 +51,7 @@ class RentFloorPlanView extends GetView<RentFloorPlanController> {
                             'Sharing your floor plan helps us design your space faster and more accurately.',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.greyColor,
+                        color: isDark ? AppColors.whiteColor : AppColors.greyColor,
                       ),
                     ),
                     Obx(
@@ -63,6 +64,7 @@ class RentFloorPlanView extends GetView<RentFloorPlanController> {
                     ),
                   ],
                 ),
+                isDark: isDark,
               ),
             ],
           ),

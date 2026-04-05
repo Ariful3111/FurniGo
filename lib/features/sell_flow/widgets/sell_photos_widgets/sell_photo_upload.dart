@@ -21,6 +21,7 @@ class SellPhotoUpload extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,9 +35,9 @@ class SellPhotoUpload extends StatelessWidget {
           onTap: onTap,
           child: SharedContainer(
             height: 110,
-              radius: 8.r,
-              padding: EdgeInsets.zero,
-              border: Border.all(color: AppColors.borderColor),
+            radius: 8.r,
+            padding: EdgeInsets.zero,
+            border: Border.all(color: AppColors.borderColor),
             child: image != null
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(8),
@@ -50,12 +51,19 @@ class SellPhotoUpload extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(IconsPath.camera, height: 20.h, width: 20.w),
+                        Image.asset(
+                          IconsPath.camera,
+                          height: 20.h,
+                          width: 20.w,
+                          color: isDark ? AppColors.whiteColor : null,
+                        ),
                         SizedBox(height: 4),
                         CustomPrimaryText(
                           text: "Click to upload",
                           fontSize: 10,
-                          color: AppColors.secondaryTextColor,
+                          color: isDark
+                              ? AppColors.whiteColor
+                              : AppColors.secondaryTextColor,
                         ),
                       ],
                     ),

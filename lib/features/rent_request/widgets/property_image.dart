@@ -17,13 +17,15 @@ class PropertyImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(16.r),
       height: 210.h,
       width: MediaQuery.widthOf(context),
       decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        border: Border.all(width: 1.2.r, color: Color(0xFFD1D5DC)),
+        color: isDark ? AppColors.darkColor : AppColors.whiteColor,
+        border: Border.all(width: 1.2.r, color:isDark? AppColors.darkBorderColor:Color(0xFFD1D5DC)),
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
@@ -35,7 +37,7 @@ class PropertyImage extends StatelessWidget {
             text: title,
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.secondaryTextColor,
+            color: isDark ? AppColors.whiteColor : AppColors.secondaryTextColor,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16.h),

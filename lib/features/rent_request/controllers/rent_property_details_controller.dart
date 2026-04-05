@@ -61,6 +61,7 @@ class RentPropertyDetailsController extends GetxController {
     }
   }
 
+  RentRequestController controller = Get.find();
   Future<void> submitRentRequestTwo() async {
     if (propertyAddressController.text.isEmpty ||
         propertySizeController.text.isEmpty) {
@@ -70,7 +71,11 @@ class RentPropertyDetailsController extends GetxController {
     } else if (counts.every((c) => c == 0)) {
       ErrorSnackbar.show(description: 'Please add quantity');
     } else {
-      Get.find<RentRequestController>().rentController.position.minScrollExtent;
+      controller.rentController.animateTo(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.linear,
+        controller.rentController.position.minScrollExtent,
+      );
 
       Get.find<RentStepController>().currentIndex.value++;
     }

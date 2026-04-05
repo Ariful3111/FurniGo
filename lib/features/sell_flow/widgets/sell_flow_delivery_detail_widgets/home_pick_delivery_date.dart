@@ -12,6 +12,7 @@ class HomePickDeliveryDate extends GetWidget<SellFlowDeliveryController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -19,7 +20,7 @@ class HomePickDeliveryDate extends GetWidget<SellFlowDeliveryController> {
           text: 'Preferred Time of Service',
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
-          color: AppColors.titleTextColor,
+          color:isDark ? AppColors.whiteColor : AppColors.titleTextColor,
         ),
         SizedBox(height: 4.h),
         CustomPrimaryText(
@@ -27,14 +28,14 @@ class HomePickDeliveryDate extends GetWidget<SellFlowDeliveryController> {
               'Please provide the dates and times you are available for us to respond.',
           fontSize: 12.sp,
           fontWeight: FontWeight.w400,
-          color: AppColors.titleTextColor,
+          color:isDark ? AppColors.primaryBorderColor : AppColors.titleTextColor,
         ),
         SizedBox(height: 24.h),
         CustomPrimaryText(
           text: 'Availability1',
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
-          color: AppColors.darkTextColor,
+          color:isDark ? AppColors.whiteColor : AppColors.darkTextColor,
         ),
         SizedBox(height: 8.h),
         CustomDateField(

@@ -13,6 +13,8 @@ class RentPeriodType extends GetWidget<RentPeriodController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,13 +23,13 @@ class RentPeriodType extends GetWidget<RentPeriodController> {
             text: 'Special Requests / Constraints',
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.titleTextColor,
+            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
           CustomPrimaryText(
             text: 'Timeline Urgency',
             fontSize: 14.sp,
-            color: AppColors.titleTextColor,
+            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
           Row(
@@ -47,7 +49,7 @@ class RentPeriodType extends GetWidget<RentPeriodController> {
                   CustomPrimaryText(
                     text: controller.type[index],
                     fontSize: 14.sp,
-                    color: AppColors.darkColor,
+                    color: isDark? AppColors.whiteColor: AppColors.darkColor,
                   ),
                 ],
               );

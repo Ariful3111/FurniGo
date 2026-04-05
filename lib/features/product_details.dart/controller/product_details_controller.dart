@@ -11,6 +11,7 @@ class ProductDetailsController extends GetxController {
       CarouselSliderController();
   final ScrollController productScrollController = ScrollController();
   RxBool isCartVisible = true.obs;
+  RxBool isStock = false.obs;
   RxInt qty = 1.obs;
   RxInt selectedIndex = 0.obs;
   RxInt selectedColor = 0.obs;
@@ -53,6 +54,7 @@ class ProductDetailsController extends GetxController {
       'widgets': ProductFurnitureCustomized(),
     },
   ];
+
   RxInt currentIndex = 0.obs;
   RxBool isAi = false.obs;
   final List<String> images = [
@@ -80,6 +82,36 @@ class ProductDetailsController extends GetxController {
     }
   }
 
+  RxInt reviewIndex = 0.obs;
+
+  final reviews = [
+    {
+      "name": "Ramic Matue",
+      "time": "2 days ago",
+      "rating": 4.9,
+      "image": IconsPath.profile,
+      "review":
+          "NextGen's dedication to sustainability and ethical practices resonates strongly with today's consumers.",
+    },
+    {
+      "name": "John Doe",
+      "time": "5 days ago",
+      "rating": 4.5,
+      "image": IconsPath.profile,
+      "review":
+          "Amazing product quality and fast delivery. Highly recommended!",
+    },
+    {
+      "name": "Sarah Ali",
+      "time": "1 week ago",
+      "rating": 4.8,
+      "image": IconsPath.profile,
+      "review": "Loved the design and comfort. Will definitely buy again.",
+    },
+  ];
+  TextEditingController ratingController = TextEditingController();
+  RxDouble rating = 0.0.obs;
+  RxBool isLoading = false.obs;
   double lastScrollOffset = 0;
   @override
   void onInit() {
@@ -102,6 +134,7 @@ class ProductDetailsController extends GetxController {
   @override
   void dispose() {
     productScrollController.dispose();
+    ratingController.dispose();
     super.dispose();
   }
 }

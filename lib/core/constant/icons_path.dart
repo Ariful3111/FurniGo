@@ -63,6 +63,7 @@ class IconsPath {
   static const String drawerTrans = 'assets/icons/drawer_trans.png';
   static const String spent = 'assets/icons/spent.png';
   static const String activeOrder = 'assets/icons/active_order.png';
+  static const String errorOrder = 'assets/icons/error_order.png';
   static const String activeRentals = 'assets/icons/active_rentals.png';
   static const String design = 'assets/icons/design.png';
   static const String shopProduction = 'assets/icons/shop_production.png';
@@ -124,5 +125,8 @@ class IconsPath {
   static const String productCart = 'assets/icons/product_cart.png';
   static const String tag = 'assets/icons/tag.png';
   static const String offer = 'assets/icons/offer.png';
+  static const String upload = 'assets/icons/upload.png';
+  static const String speed = 'assets/icons/speed.png';
+  static const String verify = 'assets/icons/verify.png';
 
 }

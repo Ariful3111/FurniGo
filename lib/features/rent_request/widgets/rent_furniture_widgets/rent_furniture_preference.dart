@@ -14,6 +14,7 @@ class RentFurniturePreference extends GetWidget<RentFurnitureController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -41,7 +42,7 @@ class RentFurniturePreference extends GetWidget<RentFurnitureController> {
                   child: CustomPrimaryText(
                     text: controller.preference[index],
                     fontSize: 14.sp,
-                    color: AppColors.darkColor,
+                    color: isDark ? AppColors.whiteColor : AppColors.darkColor,
                     fontWeight: FontWeight.w400,
                     textOverflow: TextOverflow.ellipsis,
                   ),
@@ -54,7 +55,7 @@ class RentFurniturePreference extends GetWidget<RentFurnitureController> {
         CustomPrimaryText(
           text: 'Style Preference:',
           fontSize: 14.sp,
-          color: AppColors.darkColor,
+          color: isDark ? AppColors.whiteColor : AppColors.darkColor,
         ),
         SizedBox(height: 12.h),
         GridView.builder(
@@ -76,7 +77,7 @@ class RentFurniturePreference extends GetWidget<RentFurnitureController> {
                 onChange: (value) {
                   model.checkedPreference[index] = value!;
                 },
-                title: controller.stylePreference[index],
+                title: controller.stylePreference[index], isDark: isDark,
               ),
             );
           },
