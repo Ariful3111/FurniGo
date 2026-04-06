@@ -4,8 +4,8 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class ProductDetailsShippingMembership extends StatelessWidget {
-  const ProductDetailsShippingMembership({super.key});
+class ShippingMembershipCard extends StatelessWidget {
+  const ShippingMembershipCard({super.key});
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;

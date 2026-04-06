@@ -18,7 +18,7 @@ class RentPeriodDiscount extends GetWidget<RentPeriodController> {
   @override
   Widget build(BuildContext context) {
     final stepController = Get.find<RentStepController>();
-        bool isDark = Theme.of(context).brightness == Brightness.dark;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SharedContainer(
       child: Column(
@@ -35,7 +35,7 @@ class RentPeriodDiscount extends GetWidget<RentPeriodController> {
           SizedBox(height: 44.h),
           CustomPrimaryText(
             text: 'Rental term (days) *',
-            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
+            color: isDark ? AppColors.whiteColor : AppColors.titleTextColor,
             fontWeight: FontWeight.w600,
             fontSize: 16.sp,
           ),
@@ -46,7 +46,7 @@ class RentPeriodDiscount extends GetWidget<RentPeriodController> {
             text: 'Discount tiers apply automatically.',
             fontSize: 14.sp,
             fontWeight: FontWeight.w400,
-            color:isDark? AppColors.primaryBorderColor:AppColors.greyColor,
+            color: isDark ? AppColors.primaryBorderColor : AppColors.greyColor,
           ),
           SizedBox(height: 12.h),
           Obx(
@@ -77,7 +77,7 @@ class RentPeriodDiscount extends GetWidget<RentPeriodController> {
                               () => CustomPrimaryText(
                                 text:
                                     'A ${controller.getDiscount(controller.selectedRentPeriodTitle.value)} discount has been applied for selecting a ${controller.selectedRentPeriodTitle.value} rental period.',
-                                color: Color(0xFF212121),
+                                color: AppColors.darkSecondaryColor,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w400,
                               ),

@@ -25,7 +25,6 @@ class ProductFurnitureCustomizedWidgets
             children: [
               SharedContainer(
                 radius: 12.r,
-
                 border: Border.all(
                   color: isDark ? AppColors.darkBorderColor : Color(0xFFE8E6EB),
                 ),

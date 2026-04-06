@@ -31,4 +31,5 @@ class AppRoutes {
   static const String sellFlowView = '/sellFlowView';
   static const String productDetailsView = '/productDetailsView';
   static const String cartView = '/cartView';
+  static const String checkoutView = '/checkoutView';
 }

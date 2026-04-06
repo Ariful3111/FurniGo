@@ -29,14 +29,14 @@ class ProductDetailsRating extends StatelessWidget {
               CustomPrimaryText(
                 text: "Rating & Reviews",
                 fontWeight: FontWeight.w600,
-                color: isDark
-                    ? AppColors.whiteColor
-                    : AppColors.darkTextColor,
+                color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
               ),
               CustomPrimaryText(
                 text: "(18 New Reviews)",
                 fontSize: 12.sp,
-                color: isDark?AppColors.primaryBorderColor:Color(0xFF212121),
+                color: isDark
+                    ? AppColors.primaryBorderColor
+                    : AppColors.darkSecondaryColor,
               ),
             ],
           ),
@@ -51,19 +51,20 @@ class ProductDetailsRating extends StatelessWidget {
           SizedBox(height: 20.h),
           Column(
             children: ratings
-                .map((e) => Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
-                      child: ProductDetailsRatingPercent(
-                        star: e["star"] as int,
-                        percent: e["value"] as double,
-                        isDark: isDark,
-                      ),
-                    ))
+                .map(
+                  (e) => Padding(
+                    padding: EdgeInsets.only(bottom: 12.h),
+                    child: ProductDetailsRatingPercent(
+                      star: e["star"] as int,
+                      percent: e["value"] as double,
+                      isDark: isDark,
+                    ),
+                  ),
+                )
                 .toList(),
           ),
         ],
       ),
     );
   }
-  
 }
