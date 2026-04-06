@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/product_details.dart/controller/product_details_controller.dart';
-import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
@@ -59,7 +58,7 @@ class ProductDetailsTab extends GetWidget<ProductDetailsController> {
             SizedBox(height: 12.h),
             AnimatedSize(
               duration: Duration(milliseconds: 300),
-              child: ProductFurnitureCustomizedWidgets(),
+              child: controller.widgets[controller.selectedIndex.value],
             ),
           ],
         ),

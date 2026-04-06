@@ -40,7 +40,9 @@ class RentalsQuoteItemDetailsInfo extends StatelessWidget {
                   text: info[index]['label'],
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
-                  color: isDark ? AppColors.whiteColor : Color(0xFF737373),
+                  color: isDark
+                      ? AppColors.whiteColor
+                      : AppColors.lightTextColor,
                 ),
                 CustomPrimaryText(
                   text: info[index]['value'],
@@ -69,7 +71,7 @@ class RentalsQuoteItemDetailsInfo extends StatelessWidget {
               text: details[index],
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
-              color: isDark ? AppColors.whiteColor : Color(0xFF737373),
+              color: isDark ? AppColors.whiteColor : AppColors.lightTextColor,
             ),
           );
         }),
