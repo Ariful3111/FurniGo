@@ -57,7 +57,11 @@ class ProductDetailsController extends GetxController {
   RxList<bool> isOpen = <bool>[].obs;
 
   final List<String> tabs = ['Customize', 'Product Details', 'Shipping'];
-  List<Widget> widgets = [ProductFurnitureCustomizedWidgets(),ProductDetailsInfo(),ProductDetailsShipping()];
+  List<Widget> widgets = [
+    ProductFurnitureCustomizedWidgets(),
+    ProductDetailsInfo(),
+    ProductDetailsShipping(),
+  ];
 
   final List<Map<String, dynamic>> items = [
     {
@@ -101,6 +105,7 @@ class ProductDetailsController extends GetxController {
     int prevIndex = (currentIndex.value - 1 + imagesLength) % imagesLength;
     changeIndex(prevIndex);
   }
+
   RxInt reviewIndex = 0.obs;
   final reviews = [
     {

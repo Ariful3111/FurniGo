@@ -67,7 +67,7 @@ class ProductDetailsDescription extends GetWidget<ProductDetailsController> {
               SizedBox(width: 20.w),
               CustomPrimaryText(
                 text:
-                    '\$${controller.productDetails.value?.data.price.toDouble().toPrecision(2)}',
+                    '\$${controller.productDetails.value?.data.finalPrice.toDouble().toPrecision(2)}',
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w600,
                 textOverflow: TextOverflow.ellipsis,

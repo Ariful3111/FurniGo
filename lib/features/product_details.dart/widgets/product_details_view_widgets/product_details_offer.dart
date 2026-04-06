@@ -18,7 +18,7 @@ class ProductDetailsOffer extends GetWidget<ProductDetailsController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          controller.isStock.value
+          controller.productDetails.value?.data.isInStock == true
               ? _deliveryCard(isDark)
               : ProductDetailsHelper().outOfStock(onTap: () {}, isDark: isDark),
           SizedBox(height: 12.h),
