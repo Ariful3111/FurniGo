@@ -58,7 +58,7 @@ class RentalsQuoteItemDetailsInfo extends StatelessWidget {
         CustomPrimaryText(
           text: 'Why it works for rentals',
           fontSize: 14.sp,
-          color: isDark ? AppColors.whiteColor : Color(0xFF212121),
+          color: isDark ? AppColors.whiteColor : AppColors.darkSecondaryColor,
         ),
         SizedBox(height: 14.h),
         ...List.generate(details.length, (index) {

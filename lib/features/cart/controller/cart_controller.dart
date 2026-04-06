@@ -4,14 +4,10 @@ import 'package:zb_dezign/features/cart/models/cart_item_model.dart';
 
 class CartController extends GetxController {
   RxList<CartItemModel> cartList = <CartItemModel>[].obs;
-
   RxBool isAllSelected = false.obs;
-
   @override
   void onInit() {
     super.onInit();
-
-    /// dummy data
     cartList.addAll([
       CartItemModel(
         name: "ECHO LOUNGE CHAIR",
@@ -37,21 +33,11 @@ class CartController extends GetxController {
     ]);
   }
 
-  ////////////////////////////////////////////////////////////
-  /// SELECT SINGLE
-  ////////////////////////////////////////////////////////////
-
   void toggleItem(int index) {
     cartList[index].isSelected.toggle();
-
     isAllSelected.value =
         cartList.every((item) => item.isSelected.value);
   }
-
-  ////////////////////////////////////////////////////////////
-  /// SELECT ALL
-  ////////////////////////////////////////////////////////////
-
   void toggleSelectAll() {
     isAllSelected.toggle();
 
@@ -59,11 +45,6 @@ class CartController extends GetxController {
       item.isSelected.value = isAllSelected.value;
     }
   }
-
-  ////////////////////////////////////////////////////////////
-  /// DELETE SINGLE
-  ////////////////////////////////////////////////////////////
-
   void deleteItem(int index) {
     cartList.removeAt(index);
 
@@ -71,20 +52,10 @@ class CartController extends GetxController {
         cartList.isNotEmpty &&
         cartList.every((item) => item.isSelected.value);
   }
-
-  ////////////////////////////////////////////////////////////
-  /// DELETE ALL
-  ////////////////////////////////////////////////////////////
-
   void deleteAll() {
     cartList.clear();
     isAllSelected.value = false;
   }
-
-  ////////////////////////////////////////////////////////////
-  /// QUANTITY
-  ////////////////////////////////////////////////////////////
-
   void increaseQty(int index) {
     cartList[index].quantity++;
     cartList.refresh();

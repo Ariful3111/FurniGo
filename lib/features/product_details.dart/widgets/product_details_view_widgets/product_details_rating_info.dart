@@ -35,7 +35,7 @@ class ProductDetailsRatingInfo extends StatelessWidget {
         CustomPrimaryText(
           text: "/5",
           fontSize: 16.sp,
-          color: isDark ? AppColors.whiteColor : Color(0xFF212121),
+          color: isDark ? AppColors.whiteColor : AppColors.darkSecondaryColor,
         ),
       ],
     );
@@ -60,14 +60,16 @@ class ProductDetailsRatingInfo extends StatelessWidget {
             CustomPrimaryText(
               text: "4.5",
               fontSize: 14.sp,
-              color:isDark?AppColors.primaryBorderColor: Color(0xFF585858),
+              color: isDark ? AppColors.primaryBorderColor : Color(0xFF585858),
             ),
             SizedBox(width: 6.w),
             Container(
               width: 4.w,
               height: 4.w,
               decoration: BoxDecoration(
-                color:isDark?AppColors.primaryBorderColor: Color(0xFF585858),
+                color: isDark
+                    ? AppColors.primaryBorderColor
+                    : Color(0xFF585858),
                 shape: BoxShape.circle,
               ),
             ),
@@ -75,7 +77,7 @@ class ProductDetailsRatingInfo extends StatelessWidget {
             CustomPrimaryText(
               text: "5.2 Rating",
               fontSize: 14.sp,
-             color:isDark?AppColors.primaryBorderColor: Color(0xFF585858),
+              color: isDark ? AppColors.primaryBorderColor : Color(0xFF585858),
             ),
           ],
         ),
