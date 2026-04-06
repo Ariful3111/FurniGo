@@ -36,6 +36,12 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
                         HomeProductDesign(
                           onFavorite: () {},
                           onCart: () {},
+                          productID: controller
+                              .newArrivals
+                              .value!
+                              .data[index]
+                              .id
+                              .toInt(),
                           image:
                               controller
                                       .newArrivals

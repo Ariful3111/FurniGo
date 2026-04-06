@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +10,8 @@ import 'package:zb_dezign/features/product_details.dart/widgets/product_details_
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
-  const  ProductDetailsViewHeader({super.key});
+  final List<String> images;
+  const ProductDetailsViewHeader({super.key, required this.images});
 
   @override
   Widget build(BuildContext context) {
@@ -18,28 +20,39 @@ class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
       width: MediaQuery.widthOf(context),
       height: 360.h,
       radius: 16.r,
-      color: isDark ? AppColors.darkTitleColor : AppColors.fieldColor,
+      padding: EdgeInsets.zero,
+      color: Colors.transparent,
       child: Stack(
         children: [
-          CarouselSlider.builder(
-            carouselController: controller.carouselController,
-            itemCount: controller.images.length,
-            options: CarouselOptions(
-              height: 360.h,
-              viewportFraction: 1,
-              onPageChanged: (index, reason) {
-                controller.currentIndex.value = index;
+          // Carousel as background
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16.r),
+            child: CarouselSlider.builder(
+              carouselController: controller.carouselController,
+              itemCount: images.length,
+              options: CarouselOptions(
+                height: 360.h,
+                viewportFraction: 1,
+                onPageChanged: (index, reason) {
+                  controller.currentIndex.value = index;
+                },
+              ),
+              itemBuilder: (context, index, realIndex) {
+                return Center(
+                  child: CachedNetworkImage(
+                    imageUrl: images[index],
+                    width: double.infinity,
+                    height: 360.h,
+                    fit: BoxFit.cover,
+                  ),
+                );
               },
             ),
-            itemBuilder: (context, index, realIndex) {
-              return Center(
-                child: Image.asset(controller.images[index], fit: BoxFit.cover),
-              );
-            },
           ),
+          // Overlay elements on top of carousel
           Positioned(
-            left: 0.w,
-            top: 40.h,
+            left: 20.w,
+            top: 50.h,
             child: button(
               onTap: () {
                 Navigator.pop(context);
@@ -49,8 +62,8 @@ class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
             ),
           ),
           Positioned(
-            right: 0.w,
-            top: 40.h,
+            right: 20.w,
+            top: 50.h,
             child: button(
               onTap: () {},
               icon: IconsPath.favorite,
@@ -65,7 +78,7 @@ class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
               () => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  controller.images.length,
+                  images.length,
                   (index) => Container(
                     margin: EdgeInsets.symmetric(horizontal: 4.w),
                     width: 8.w,
@@ -81,10 +94,7 @@ class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
               ),
             ),
           ),
-          Positioned(
-            left: 0,
-            bottom: 24.h,
-            child: ProductDetailsViewAi())
+          Positioned(left: 20.w, bottom: 24.h, child: ProductDetailsViewAi()),
         ],
       ),
     );
@@ -108,7 +118,9 @@ class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
             icon,
             height: 20.h,
             width: 20.w,
-            color: isDark ? AppColors.primaryBorderColor : AppColors.darkTitleColor,
+            color: isDark
+                ? AppColors.primaryBorderColor
+                : AppColors.darkTitleColor,
           ),
         ),
       ),

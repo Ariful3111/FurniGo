@@ -11,11 +11,14 @@ class HomeProductDesign extends StatelessWidget {
   final VoidCallback onFavorite;
   final VoidCallback onCart;
   final String image;
+  final int productID;
+
   const HomeProductDesign({
     super.key,
     required this.onFavorite,
     required this.onCart,
     required this.image,
+    required this.productID,
   });
 
   @override
@@ -53,7 +56,10 @@ class HomeProductDesign extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.r),
               child: GestureDetector(
                 onTap: () {
-                  Get.toNamed(AppRoutes.productDetailsView);
+                  Get.toNamed(
+                    AppRoutes.productDetailsView,
+                    arguments: productID,
+                  );
                 },
                 child: CachedNetworkImage(
                   imageUrl: image,

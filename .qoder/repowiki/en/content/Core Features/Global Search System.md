@@ -10,8 +10,17 @@
 - [products_model.dart](file://lib/features/home/models/products_model.dart)
 - [get_network.dart](file://lib/core/data/networks/get_network.dart)
 - [headers_manager.dart](file://lib/core/data/networks/headers_manager.dart)
+- [error_model.dart](file://lib/core/data/global_models/error_model.dart)
+- [error_snackbar.dart](file://lib/shared/widgets/snackbars/error_snackbar.dart)
 - [pubspec.yaml](file://pubspec.yaml)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Enhanced error logging mechanism with URL information in debug prints
+- Updated error handling strategy to consistently return ErrorModel.fromUnknown() for network exceptions
+- Improved error debugging capabilities with comprehensive URL tracking
+- Strengthened error handling consistency across network operations
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -30,7 +39,7 @@
 
 The Global Search System is a comprehensive search functionality integrated into the ZB-DEZINE Flutter application. This system enables users to search for products across the platform with real-time suggestions, debounced search queries, and responsive UI feedback. The implementation follows modern Flutter architecture patterns using GetX for state management and dependency injection.
 
-The search system is designed to provide an optimal user experience with features including instant search suggestions, loading indicators, empty state handling, and seamless integration with the application's routing system.
+The search system is designed to provide an optimal user experience with features including instant search suggestions, loading indicators, empty state handling, and seamless integration with the application's routing system. Recent enhancements have strengthened the error handling mechanisms with improved logging capabilities and consistent error responses.
 
 ## System Architecture
 
@@ -56,6 +65,7 @@ end
 subgraph "Network Layer"
 GN[GetNetwork]
 HM[HeadersManager]
+EM[ErrorModel]
 end
 subgraph "External Services"
 API[Product API]
@@ -65,6 +75,7 @@ SuggestionBox --> GSC
 GSC --> GSR
 GSR --> GN
 GN --> HM
+GN --> EM
 GN --> API
 GSR --> Model
 Model --> Product
@@ -75,6 +86,7 @@ ProductItem --> Product
 - [global_search_controller.dart:1-74](file://lib/features/home/controller/global_search_controller.dart#L1-L74)
 - [global_search_repo.dart:1-22](file://lib/features/home/repositories/global_search_repo.dart#L1-L22)
 - [get_network.dart:1-42](file://lib/core/data/networks/get_network.dart#L1-L42)
+- [error_model.dart:1-15](file://lib/core/data/global_models/error_model.dart#L1-L15)
 
 ## Core Components
 
@@ -117,8 +129,15 @@ class Product {
 +fromJson(json) Product
 +toJson() Map
 }
+class ErrorModel {
++int? statusCode
++String message
++fromHttp(statusCode, bodyMessage) ErrorModel
++fromUnknown() ErrorModel
+}
 GlobalSearchController --> GlobalSearchRepository : uses
 GlobalSearchRepository --> ProductsModel : returns
+GlobalSearchRepository --> ErrorModel : handles errors
 ProductsModel --> Product : contains
 ```
 
@@ -126,6 +145,7 @@ ProductsModel --> Product : contains
 - [global_search_controller.dart:7-73](file://lib/features/home/controller/global_search_controller.dart#L7-L73)
 - [global_search_repo.dart:7-21](file://lib/features/home/repositories/global_search_repo.dart#L7-L21)
 - [products_model.dart:9-137](file://lib/features/home/models/products_model.dart#L9-L137)
+- [error_model.dart:1-15](file://lib/core/data/global_models/error_model.dart#L1-L15)
 
 **Section sources**
 - [global_search_controller.dart:1-74](file://lib/features/home/controller/global_search_controller.dart#L1-L74)
@@ -156,13 +176,15 @@ Controller->>Repository : execute(query)
 Repository->>Network : getData(url, headers)
 Network->>API : GET /api/products?search=query
 API-->>Network : JSON response
-Network-->>Repository : ProductsModel
+Network->>Network : Enhanced error logging with URL
+Network-->>Repository : ProductsModel or ErrorModel
 Repository-->>Controller : Either<ErrorModel, ProductsModel>
 Controller->>Controller : Update state
-Controller-->>UI : Show results
-UI-->>User : Display suggestions
+Controller->>ErrorModel : fromUnknown() for network exceptions
+Controller-->>UI : Show results or error snackbar
+UI-->>User : Display suggestions or empty state
 Note over Controller : Loading state during search
-Note over Controller : Error handling for failed requests
+Note over Network : debugPrint with URL information
 ```
 
 **Diagram sources**
@@ -184,7 +206,8 @@ Clear --> End([End])
 CallAPI --> Loading["Set Loading State"]
 Loading --> Response{"API Response"}
 Response --> |Success| Parse["Parse JSON Response"]
-Response --> |Error| HandleError["Handle Error"]
+Response --> |Error| LogError["Enhanced Error Logging<br/>debugPrint with URL"]
+LogError --> HandleError["Handle Error with<br/>ErrorModel.fromUnknown()"]
 Parse --> UpdateState["Update Search Results"]
 HandleError --> ShowError["Show Error Snackbar"]
 UpdateState --> End
@@ -193,6 +216,7 @@ ShowError --> End
 
 **Diagram sources**
 - [global_search_controller.dart:35-42](file://lib/features/home/controller/global_search_controller.dart#L35-L42)
+- [get_network.dart:33-38](file://lib/core/data/networks/get_network.dart#L33-L38)
 
 **Section sources**
 - [global_search_controller.dart:24-43](file://lib/features/home/controller/global_search_controller.dart#L24-L43)
@@ -256,7 +280,7 @@ Product --> Media : contains multiple
 
 ## Network Layer
 
-The network layer provides robust communication capabilities with comprehensive error handling and authentication support:
+The network layer provides robust communication capabilities with comprehensive error handling and authentication support. Recent enhancements have strengthened the error logging mechanism with URL information and consistent error handling.
 
 ### Authentication Integration
 
@@ -279,16 +303,18 @@ API --> Response[JSON Response]
 **Diagram sources**
 - [headers_manager.dart:9-21](file://lib/core/data/networks/headers_manager.dart#L9-L21)
 
-### Error Handling Strategy
+### Enhanced Error Handling Strategy
 
-The network layer implements comprehensive error handling for various failure scenarios:
+The network layer implements comprehensive error handling for various failure scenarios with improved logging capabilities:
 
-| Error Type | Status Code | Handling Strategy |
-|------------|-------------|-------------------|
-| Successful Response | 200, 201, 202 | Parse and return data |
-| HTTP Error | Other | Extract error message from JSON |
-| Network Error | Exception | Return unknown error |
-| Parsing Error | JSON Decode | Fallback to unknown error |
+| Error Type | Status Code | Handling Strategy | Enhanced Logging |
+|------------|-------------|-------------------|------------------|
+| Successful Response | 200, 201, 202 | Parse and return data | No logging |
+| HTTP Error | Other | Extract error message from JSON | URL information logged |
+| Network Error | Exception | Return unknown error | URL information logged |
+| Parsing Error | JSON Decode | Fallback to unknown error | URL information logged |
+
+**Updated** Enhanced error logging mechanism now includes URL information in debug prints for better debugging capabilities.
 
 **Section sources**
 - [get_network.dart:1-42](file://lib/core/data/networks/get_network.dart#L1-L42)
@@ -358,7 +384,7 @@ The search system implements several optimization strategies to ensure smooth pe
 
 ## Error Handling
 
-The system provides comprehensive error handling across all layers:
+The system provides comprehensive error handling across all layers with enhanced logging capabilities:
 
 ### Frontend Error Display
 - ErrorSnackbar integration for user feedback
@@ -368,16 +394,24 @@ The system provides comprehensive error handling across all layers:
 ### Backend Error Management
 - HTTP status code validation
 - JSON parsing error recovery
-- Unknown error fallback mechanisms
+- Unknown error fallback mechanisms with consistent ErrorModel.fromUnknown() return
+
+### Enhanced Error Logging
+- **Updated** Debug prints now include URL information for better troubleshooting
+- **Updated** Consistent error handling across all network exceptions
+- **Updated** Improved error visibility with comprehensive logging
 
 ### User Experience Considerations
 - Clear error messages for failed searches
 - Automatic retry capability through re-submission
 - Visual feedback for all error states
 
+**Updated** Enhanced error logging mechanism with URL information in debug prints and consistent error handling returning ErrorModel.fromUnknown() for network exceptions.
+
 **Section sources**
 - [global_search_controller.dart:49-57](file://lib/features/home/controller/global_search_controller.dart#L49-L57)
 - [get_network.dart:24-39](file://lib/core/data/networks/get_network.dart#L24-L39)
+- [error_model.dart:11-13](file://lib/core/data/global_models/error_model.dart#L11-L13)
 
 ## Integration Points
 
@@ -408,4 +442,4 @@ The Global Search System represents a well-architected solution that balances fu
 - Performance optimizations including debouncing and efficient rendering
 - Seamless integration with existing application infrastructure
 
-The system provides a solid foundation for future enhancements while maintaining code quality and maintainability standards. The modular design allows for easy extension and customization as the application evolves.
+Recent enhancements have strengthened the system's reliability and maintainability through improved error logging with URL information and consistent error handling strategies. The system provides a solid foundation for future enhancements while maintaining code quality and maintainability standards. The modular design allows for easy extension and customization as the application evolves.

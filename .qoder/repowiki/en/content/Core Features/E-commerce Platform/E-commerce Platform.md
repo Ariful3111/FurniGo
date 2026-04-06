@@ -14,6 +14,11 @@
 - [order_controller.dart](file://lib/features/order/controllers/order_controller.dart)
 - [product_details_controller.dart](file://lib/features/product_details.dart/controller/product_details_controller.dart)
 - [payment_controller.dart](file://lib/features/payment/controller/payment_controller.dart)
+- [home_our_products.dart](file://lib/features/home/widgets/home_widgets/home_our_products.dart)
+- [home_product_design.dart](file://lib/features/home/widgets/home_widgets/home_product_design.dart)
+- [global_search_suggestion_box.dart](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart)
+- [product_details_view_image.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart)
+- [product_details_view.dart](file://lib/features/product_details.dart/views/product_details_view.dart)
 - [error_model.dart](file://lib/core/data/global_models/error_model.dart)
 - [get_network.dart](file://lib/core/data/networks/get_network.dart)
 - [post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
@@ -31,12 +36,11 @@
 
 ## Update Summary
 **Changes Made**
-- Added comprehensive form field components documentation with enhanced styling and validation
-- Documented custom phone field validation with international phone number support
-- Added rating bar widgets documentation with interactive and static rating displays
-- Updated UI improvement documentation covering shared container components and dark mode support
-- Enhanced order management system with rating dialog integration
-- Added validator extensions for phone and ABN number validation
+- Added comprehensive UI safety checks documentation for product image loading with null and empty list validation
+- Documented media URL validation patterns across product catalog, search suggestions, and product details views
+- Enhanced error handling documentation for image loading failures and fallback mechanisms
+- Updated product catalog system documentation to include robust image loading safeguards
+- Added documentation for cached network image implementation and placeholder handling
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -48,13 +52,14 @@
 7. [Form Field Components](#form-field-components)
 8. [Rating System Components](#rating-system-components)
 9. [Validation Extensions](#validation-extensions)
-10. [Dependency Analysis](#dependency-analysis)
-11. [Performance Considerations](#performance-considerations)
-12. [Troubleshooting Guide](#troubleshooting-guide)
-13. [Conclusion](#conclusion)
+10. [UI Safety Checks for Product Image Loading](#ui-safety-checks-for-product-image-loading)
+11. [Dependency Analysis](#dependency-analysis)
+12. [Performance Considerations](#performance-considerations)
+13. [Troubleshooting Guide](#troubleshooting-guide)
+14. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the e-commerce platform feature set implemented in the Flutter application. It focuses on the product catalog system, product details view, order management, payment processing, category management, filtering mechanisms, and the integrated lifecycle from browsing to order fulfillment. The platform leverages a modular feature-based architecture using GetX for state management and dependency injection, with network repositories abstracted via core networking utilities. Recent enhancements include improved form field components, custom phone field validation, rating bar widgets, and various UI improvements across product catalog, shopping cart, and order management systems.
+This document describes the e-commerce platform feature set implemented in the Flutter application. It focuses on the product catalog system, product details view, order management, payment processing, category management, filtering mechanisms, and the integrated lifecycle from browsing to order fulfillment. The platform leverages a modular feature-based architecture using GetX for state management and dependency injection, with network repositories abstracted via core networking utilities. Recent enhancements include improved form field components, custom phone field validation, rating bar widgets, comprehensive UI safety checks for product image loading, and various UI improvements across product catalog, shopping cart, and order management systems.
 
 ## Project Structure
 The application initializes through a central entry point that sets up dependency injection, theme, routing, and navigation bindings. Features are organized under the features directory, with dedicated modules for product catalog, product details, orders, payments, categories, and more. Core infrastructure resides under core, including DI, routes, theme, and network utilities. Enhanced UI components are organized under shared/widgets with specialized components for forms, ratings, dialogs, and containers.
@@ -75,6 +80,10 @@ GR["get_orders_repo.dart"]
 PM["payment_controller.dart"]
 CM["products_model.dart"]
 OM["orders_model.dart"]
+HPD["home_product_design.dart"]
+GSSB["global_search_suggestion_box.dart"]
+HOUP["home_our_products.dart"]
+PDVI["product_details_view_image.dart"]
 end
 subgraph "Core"
 GN["get_network.dart"]
@@ -108,6 +117,10 @@ OR --> EM
 PC --> CM
 PC --> CRD
 OC --> CRD
+PC --> HPD
+PC --> GSSB
+PC --> HOUP
+PC --> PDVI
 ```
 
 **Diagram sources**
@@ -121,6 +134,10 @@ OC --> CRD
 - [get_orders_repo.dart:1-20](file://lib/features/order/repositories/get_orders_repo.dart#L1-L20)
 - [products_model.dart:1-267](file://lib/features/home/models/products_model.dart#L1-L267)
 - [orders_model.dart:1-308](file://lib/features/order/models/orders_model.dart#L1-L308)
+- [home_product_design.dart:1-99](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L99)
+- [global_search_suggestion_box.dart:150-226](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L150-L226)
+- [home_our_products.dart:54-82](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L54-L82)
+- [product_details_view_image.dart:1-91](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L1-L91)
 - [get_network.dart](file://lib/core/data/networks/get_network.dart)
 - [post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
 - [headers_manager.dart](file://lib/core/data/networks/headers_manager.dart)
@@ -183,11 +200,13 @@ FORM["Form Components<br/>CustomTextFormField, CustomPhoneField"]
 RATING["Rating Components<br/>CustomRatingBar, CustomRatingBuilder"]
 DIALOG["Dialog Components<br/>CustomRatingDialog"]
 CONTAINER["Container Components<br/>SharedContainer"]
+IMG["Image Loading Safety<br/>Media Validation, Fallback Handling"]
 END
 UI --> FORM
 UI --> RATING
 UI --> DIALOG
 UI --> CONTAINER
+UI --> IMG
 ```
 
 **Diagram sources**
@@ -214,6 +233,7 @@ UI --> CONTAINER
 - Purpose: Load and present product listings with metadata, pricing, stock status, and media.
 - Data Model: Product entity includes category, furniture type, rooms, media, and default options.
 - Usage Pattern: Controllers initialize repository calls during initialization to fetch product data.
+- **UI Safety Checks**: Implemented comprehensive null and empty list validation before accessing product media URLs to prevent crashes when products have no associated images.
 
 ```mermaid
 classDiagram
@@ -262,6 +282,8 @@ class Media {
 +String type
 +String url
 +bool is_primary
++DateTime created_at
++DateTime updated_at
 +fromJson(json)
 +toJson()
 }
@@ -281,6 +303,7 @@ Product --> Media : "has many"
 ### Product Details View
 - Purpose: Present product media via carousel, handle navigation, and expose AI toggle state.
 - Implementation: Uses a carousel controller to manage page transitions and reactive index tracking.
+- **UI Safety Checks**: Implements robust image loading with fallback mechanisms and placeholder handling.
 
 ```mermaid
 sequenceDiagram
@@ -513,12 +536,112 @@ Business registration number validation for Australian businesses.
 **Section sources**
 - [abn_validator.dart:1-12](file://lib/shared/extensions/validators/abn_validator.dart#L1-L12)
 
+## UI Safety Checks for Product Image Loading
+
+### Overview
+The e-commerce platform implements comprehensive UI safety checks to prevent crashes when products have no associated images. These safety measures ensure robust image loading across all product display components.
+
+### Null and Empty List Validation Patterns
+
+#### Product Catalog Validation
+The product catalog implements strict validation before accessing product media URLs:
+
+```mermaid
+flowchart TD
+A["Product Catalog Request"] --> B{"Has Product Media?"}
+B --> |Yes| C{"Media List Not Empty?"}
+B --> |No| D["Use Empty String Fallback"]
+C --> |Yes| E["Access media.first.url"]
+C --> |No| F["Use Empty String Fallback"]
+E --> G["Render Product Image"]
+F --> G
+D --> G
+```
+
+**Diagram sources**
+- [home_our_products.dart:54-82](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L54-L82)
+
+#### Search Suggestions Validation
+Global search suggestions implement primary image selection with fallback mechanisms:
+
+```mermaid
+flowchart TD
+A["Search Suggestion Request"] --> B{"Has Product Media?"}
+B --> |Yes| C{"Has Primary Media?"}
+B --> |No| D["Build Placeholder Icon"]
+C --> |Yes| E["Use Primary Media URL"]
+C --> |No| F["Use First Media URL"]
+E --> G["Render Product Image"]
+F --> G
+D --> G
+```
+
+**Diagram sources**
+- [global_search_suggestion_box.dart:151-182](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L151-L182)
+
+### Image Loading Components
+
+#### HomeProductDesign Component
+Implements cached network image loading with comprehensive error handling:
+
+**Key Features:**
+- CachedNetworkImage for efficient image loading
+- Placeholder loading indicator during image fetch
+- Automatic fallback to loading state for failed requests
+- Safe image URL handling with null checks
+
+**Section sources**
+- [home_product_design.dart:58-66](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L58-L66)
+
+#### Global Search Suggestion Box
+Implements robust image loading with error handling and fallback icons:
+
+**Key Features:**
+- Primary image selection priority
+- Fallback to first available image
+- Error builder for network failures
+- Placeholder icon for empty states
+- Comprehensive null safety checks
+
+**Section sources**
+- [global_search_suggestion_box.dart:151-182](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L151-L182)
+
+#### Product Details Image Gallery
+Implements safe image navigation with fallback mechanisms:
+
+**Key Features:**
+- Local image assets for product details
+- Navigation controls with boundary checking
+- Placeholder handling for empty image lists
+- Smooth transitions between images
+
+**Section sources**
+- [product_details_view_image.dart:33-51](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L33-L51)
+
+### Error Handling Mechanisms
+
+#### Fallback Strategies
+- **Empty Media Lists**: Return empty string to prevent null pointer exceptions
+- **Missing Primary Images**: Fall back to first available image
+- **Network Failures**: Use placeholder icons instead of crashing
+- **Null URLs**: Provide default empty string for safe rendering
+
+#### Placeholder Components
+- Chair outline icons for empty product images
+- Loading indicators during image fetch operations
+- Graceful degradation when image loading fails
+
+**Section sources**
+- [global_search_suggestion_box.dart:184-192](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L184-L192)
+- [home_product_design.dart:63-64](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L63-L64)
+
 ## Dependency Analysis
 - Controllers depend on Repositories for data access.
 - Repositories depend on Network utilities and HeadersManager for HTTP communication.
 - Models encapsulate JSON serialization/deserialization and are consumed by Repositories and Controllers.
 - Error handling is centralized via ErrorModel and ErrorSnackbar.
 - Enhanced UI components provide reusable building blocks for consistent user experience.
+- **UI Safety Checks**: Comprehensive validation patterns ensure robust image loading across all components.
 
 ```mermaid
 graph LR
@@ -534,12 +657,17 @@ OC --> OM["OrdersModel"]
 OC --> ES["ErrorSnackbar"]
 OC --> CRD["CustomRatingDialog"]
 PC --> CRD
+PC --> HPD["HomeProductDesign"]
+PC --> GSSB["GlobalSearchSuggestionBox"]
+PC --> HOUP["HomeOurProducts"]
+PC --> PDVI["ProductDetailsViewImage"]
 subgraph "Enhanced UI Dependencies"
 CTFF["CustomTextFormField"] --> CTFF
 CPHF["CustomPhoneField"] --> CPHF
 CRB["CustomRatingBuilder"] --> CRB
 CRBAR["CustomRatingBar"] --> CRBAR
 SC["SharedContainer"] --> SC
+IMG["Image Safety Checks"] --> IMG
 END
 ```
 
@@ -555,6 +683,10 @@ END
 - [product_details_controller.dart:1-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L36)
 - [products_model.dart:1-267](file://lib/features/home/models/products_model.dart#L1-L267)
 - [orders_model.dart:1-308](file://lib/features/order/models/orders_model.dart#L1-L308)
+- [home_product_design.dart:1-99](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L99)
+- [global_search_suggestion_box.dart:150-226](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L150-L226)
+- [home_our_products.dart:54-82](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L54-L82)
+- [product_details_view_image.dart:1-91](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L1-L91)
 - [custom_text_form_field.dart:1-191](file://lib/shared/widgets/custom_form_field/custom_text_form_field.dart#L1-L191)
 - [custom_phone_field.dart:1-116](file://lib/shared/widgets/custom_form_field/custom_phone_field.dart#L1-L116)
 - [custom_rating_builder.dart:1-35](file://lib/shared/widgets/custom_rating/custom_rating_builder.dart#L1-L35)
@@ -571,6 +703,7 @@ END
 - Caching: Cache frequently accessed product and order data to minimize network calls.
 - Reactive Updates: Keep controllers reactive to avoid unnecessary rebuilds; use granular observables.
 - UI Component Optimization: Enhanced form fields and rating components use efficient rendering patterns with proper widget caching.
+- **Image Loading Optimization**: CachedNetworkImage implementation reduces memory usage and improves performance for repeated image loads.
 
 ## Troubleshooting Guide
 - Network Failures: Errors are returned as Either<ErrorModel, T>; ensure controllers handle failures gracefully and display user-friendly messages via ErrorSnackbar.
@@ -578,6 +711,8 @@ END
 - UI Feedback: Use OrderController's loading state and error snackbar to inform users during data fetches.
 - Form Validation: Custom validators provide clear error messages for invalid inputs in form fields.
 - Rating System: Ensure proper initialization of rating components and handle edge cases in rating updates.
+- **Image Loading Issues**: Verify media validation patterns are correctly implemented; check for null URL handling and fallback mechanisms.
+- **Empty Product States**: Ensure fallback placeholders are displayed when product media is unavailable.
 
 **Section sources**
 - [order_controller.dart:16-27](file://lib/features/order/controllers/order_controller.dart#L16-L27)
@@ -587,4 +722,4 @@ END
 - [phone_validator.dart:1-15](file://lib/shared/extensions/validators/phone_validator.dart#L1-L15)
 
 ## Conclusion
-The e-commerce platform establishes a solid foundation with product catalogs, order retrieval, and UI controllers. Recent enhancements significantly improve the user experience through comprehensive form field components, custom phone field validation, rating bar widgets, and various UI improvements. The platform now includes robust validation systems, interactive rating capabilities, and enhanced form components that provide better user experience across product catalog, shopping cart, and order management systems. Missing pieces include a cart module, checkout flow, payment gateway integration, category filtering, and inventory management. Extending the existing architecture with repositories and controllers for these features will complete the end-to-end shopping experience while maintaining modularity and testability.
+The e-commerce platform establishes a solid foundation with product catalogs, order retrieval, and UI controllers. Recent enhancements significantly improve the user experience through comprehensive form field components, custom phone field validation, rating bar widgets, robust UI safety checks for product image loading, and various UI improvements. The platform now includes comprehensive validation systems, interactive rating capabilities, enhanced form components, and critical safety mechanisms that prevent crashes when products have no associated images. Missing pieces include a cart module, checkout flow, payment gateway integration, category filtering, and inventory management. Extending the existing architecture with repositories and controllers for these features will complete the end-to-end shopping experience while maintaining modularity, testability, and robust error handling across all image loading scenarios.

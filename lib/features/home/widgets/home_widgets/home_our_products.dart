@@ -51,6 +51,11 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
                               HomeProductDesign(
                                 onFavorite: () {},
                                 onCart: () {},
+                                productID:
+                                    controller.products.value?.data[index].id
+                                        .toInt() ??
+                                    0,
+
                                 image:
                                     controller
                                             .products
