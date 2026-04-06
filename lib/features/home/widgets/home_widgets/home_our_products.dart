@@ -53,13 +53,21 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
                                 onCart: () {},
                                 image:
                                     controller
-                                        .products
-                                        .value
-                                        ?.data[index]
-                                        .media
-                                        .first
-                                        .url ??
-                                    '',
+                                            .products
+                                            .value
+                                            ?.data[index]
+                                            .media
+                                            .isNotEmpty ==
+                                        true
+                                    ? controller
+                                              .products
+                                              .value
+                                              ?.data[index]
+                                              .media
+                                              .first
+                                              .url ??
+                                          ''
+                                    : '',
                               ),
                               SizedBox(height: 14.h),
                               HomeProductText(

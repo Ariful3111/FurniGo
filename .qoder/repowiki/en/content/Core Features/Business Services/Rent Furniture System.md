@@ -9,10 +9,25 @@
 - [rent_step_controller.dart](file://lib/features/rent_request/controllers/rent_step_controller.dart)
 - [rent_request_controller.dart](file://lib/features/rent_request/controllers/rent_request_controller.dart)
 - [rent_property_type_controller.dart](file://lib/features/rent_request/controllers/rent_property_type_controller.dart)
+- [rent_floor_plan_controller.dart](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart)
+- [rent_furniture_controller.dart](file://lib/features/rent_request/controllers/rent_furniture_controller.dart)
+- [rent_appliance_controller.dart](file://lib/features/rent_request/controllers/rent_appliance_controller.dart)
+- [rent_delivery_controller.dart](file://lib/features/rent_request/controllers/rent_delivery_controller.dart)
+- [rent_period_controller.dart](file://lib/features/rent_request/controllers/rent_period_controller.dart)
+- [rent_brand_controller.dart](file://lib/features/rent_request/controllers/rent_brand_controller.dart)
+- [floor_plan_model.dart](file://lib/features/rent_request/models/floor_plan_model.dart)
+- [rent_furniture_model.dart](file://lib/features/rent_request/models/rent_furniture_model.dart)
+- [rent_appliance_model.dart](file://lib/features/rent_request/models/rent_appliance_model.dart)
 - [step_zero_model.dart](file://lib/features/rent_request/models/step_zero_model.dart)
 - [step_zero_repo.dart](file://lib/features/rent_request/repositories/step_zero_repo.dart)
 - [step_one_repo.dart](file://lib/features/rent_request/repositories/step_one_repo.dart)
 - [rent_request_view.dart](file://lib/features/rent_request/views/rent_request_view.dart)
+- [rent_floor_plan_view.dart](file://lib/features/rent_request/widgets/rent_floor_plan_widgets/rent_floor_plan_view.dart)
+- [rent_furniture.dart](file://lib/features/rent_request/widgets/rent_furniture_widgets/rent_furniture.dart)
+- [rent_appliance.dart](file://lib/features/rent_request/widgets/rent_appliance_widgets/rent_appliance.dart)
+- [rent_delivery_setup.dart](file://lib/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_setup.dart)
+- [rent_brand.dart](file://lib/features/rent_request/widgets/rent_brand_widgets/rent_brand.dart)
+- [rent_period.dart](file://lib/features/rent_request/widgets/rent_period_widgets/rent_period.dart)
 - [rent_request_view_form.dart](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart)
 - [rent_request_next.dart](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart)
 - [rent_property_type_view.dart](file://lib/features/rent_request/views/rent_property_type_view.dart)
@@ -20,11 +35,14 @@
 
 ## Update Summary
 **Changes Made**
-- Updated default starting position from step 2 to step 0 for improved user experience
-- Enhanced RentStepController initialization to begin at business information collection
-- Improved user flow by ensuring all users start at the first step
-- Maintained backward compatibility through resetFlow() method
-- Updated navigation logic to reflect new default starting position
+- Added comprehensive appliance management system with RentApplianceController and RentApplianceModel
+- Implemented advanced furniture selection with dynamic grouping and preference management
+- Enhanced floor plan configuration with image upload and dimension tracking
+- Expanded delivery setup functionality with access details and time slots
+- Integrated brand specification controller for commercial properties
+- Added rental period selection with discount calculation and payment options
+- Updated RentStepController to manage 10-step workflow with enhanced validation
+- Improved property details integration enabling dynamic item generation across controllers
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -38,17 +56,21 @@
 9. [Step Zero System Implementation](#step-zero-system-implementation)
 10. [Step One System Implementation](#step-one-system-implementation)
 11. [Property Type Selection Workflow](#property-type-selection-workflow)
-12. [Performance Considerations](#performance-considerations)
-13. [Troubleshooting Guide](#troubleshooting-guide)
-14. [Conclusion](#conclusion)
+12. [Advanced Item Management Systems](#advanced-item-management-systems)
+13. [Delivery and Setup Configuration](#delivery-and-setup-configuration)
+14. [Brand Specification and Customization](#brand-specification-and-customization)
+15. [Rental Period and Pricing Management](#rental-period-and-pricing-management)
+16. [Performance Considerations](#performance-considerations)
+17. [Troubleshooting Guide](#troubleshooting-guide)
+18. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the Rent Furniture System, focusing on the end-to-end rent request workflow from property listing creation to tenant approval. The system has undergone a major architectural transformation with the addition of a comprehensive zero-step rental request system featuring StepZeroModel, StepZeroRepository, and enhanced dependency injection patterns. The system now implements a modular, reactive, and extensible workflow for collecting tenant and property information with centralized validation logic and step-by-step navigation. Recent enhancements include the introduction of StepOneRepository for property type selection and improved property type validation with dynamic use options.
+This document describes the comprehensive Rent Furniture System, focusing on the end-to-end rent request workflow from property listing creation to tenant approval. The system has undergone significant architectural enhancements with the addition of advanced item management controllers, comprehensive models, and expanded delivery setup functionality. The system now implements a sophisticated 10-step workflow with specialized controllers for floor plan configuration, furniture preferences, appliance requirements, brand specifications, rental periods, and delivery arrangements, while maintaining centralized validation logic and step-by-step navigation.
 
-**Updated** The system now begins at step 0 (business information collection) rather than step 2, providing a more intuitive user experience by ensuring all users start at the first step of the rental process.
+The enhanced system features dynamic item management across multiple controllers, comprehensive data models for each item category, and integrated property details that drive dynamic content generation. Recent improvements include the introduction of RentApplianceController for appliance management, RentFurnitureController for sophisticated furniture selection, RentFloorPlanController for detailed space configuration, and comprehensive delivery setup functionality.
 
 ## Project Structure
-The Rent Furniture System features a streamlined architecture with RentStepController as the central orchestrator managing the complete 10-step workflow. The system maintains specialized controllers for domain-specific logic while centralizing navigation and validation through the RentStepController. A new zero-step system has been integrated for initial business identification and UUID generation, along with a new step-one system for property type selection.
+The Rent Furniture System features a comprehensive architecture with RentStepController as the central orchestrator managing the complete 10-step workflow. The system maintains specialized controllers for domain-specific logic while centralizing navigation and validation through the RentStepController. Advanced item management systems have been integrated with dynamic property-driven content generation.
 
 ```mermaid
 graph TB
@@ -57,48 +79,49 @@ MAIN["main.dart<br/>Initialize DI, theme, routes"]
 DI["dependency_injection.dart<br/>Global service registration"]
 ROUTES["app_routes.dart<br/>Define named routes"]
 END
-subgraph "Zero-Step System"
-STEP_ZERO_MODEL["StepZeroModel<br/>Business info & UUID structure"]
-STEP_ZERO_REPO["StepZeroRepository<br/>API integration & data handling"]
-END
-subgraph "Step-One System"
-STEP_ONE_REPO["StepOneRepository<br/>Property type & use selection"]
-PROPERTY_TYPE_CONTROLLER["RentPropertyTypeController<br/>Dynamic property options"]
-END
-subgraph "Centralized Step Management"
-STEP_CONTROLLER["RentStepController<br/>10-step flow orchestration<br/>Default: Step 0"]
-END
-subgraph "Specialized Domain Controllers"
+subgraph "Core Orchestration"
+STEP_CONTROLLER["RentStepController<br/>10-step flow orchestration<br/>Centralized validation"]
 REQUEST_CONTROLLER["RentRequestController<br/>Business form & validation"]
+PROPERTY_TYPE_CONTROLLER["RentPropertyTypeController<br/>Property type selection"]
 PROPERTY_DETAILS_CONTROLLER["RentPropertyDetailsController<br/>Space breakdown & counts"]
-FLOOR_PLAN_CONTROLLER["RentFloorPlanController<br/>Layout configuration"]
-FURNITURE_CONTROLLER["RentFurnitureController<br/>Furniture preferences"]
-APPLIANCE_CONTROLLER["RentApplianceController<br/>Appliance requirements"]
-BRAND_CONTROLLER["RentBrandController<br/>Brand specifications"]
-PERIOD_CONTROLLER["RentPeriodController<br/>Rental period selection"]
-DELIVERY_CONTROLLER["RentDeliveryController<br/>Delivery arrangements"]
-REVIEW_CONTROLLER["RentReviewController<br/>Final review & submission"]
-ADDITIONAL_NOTE_CONTROLLER["RentAdditionalNoteController<br/>Additional notes"]
+END
+subgraph "Advanced Item Management"
+FLOOR_PLAN_CONTROLLER["RentFloorPlanController<br/>Dynamic floor plan config<br/>Image & dimension tracking"]
+FURNITURE_CONTROLLER["RentFurnitureController<br/>Sophisticated furniture prefs<br/>Style & condition prefs"]
+APPLIANCE_CONTROLLER["RentApplianceController<br/>Dynamic appliance items<br/>Multi-unit support"]
+BRAND_CONTROLLER["RentBrandController<br/>Commercial branding specs"]
+PERIOD_CONTROLLER["RentPeriodController<br/>Rental period & pricing<br/>Discount calc & payments"]
+DELIVERY_CONTROLLER["RentDeliveryController<br/>Delivery setup & access<br/>Time slots & restrictions"]
+END
+subgraph "Data Models"
+FLOOR_PLAN_MODEL["FloorPlanModel<br/>Item with controllers & image"]
+FURNITURE_MODEL["RentFurnitureModel<br/>Group with prefs & counts"]
+APPLIANCE_MODEL["RentApplianceModel<br/>Multi-item per unit"]
+STEP_ZERO_MODEL["StepZeroModel<br/>Business info & UUID"]
 END
 subgraph "View Components"
 BINDINGS["rent_bindings.dart<br/>Lazy-load controllers & repositories"]
 VIEW["RentRequestView<br/>UI container & navigation"]
-FORM["RentRequestViewForm<br/>Business info form"]
-PROPERTY_TYPE_VIEW["RentPropertyTypeView<br/>Property type selection"]
+FLOOR_PLAN_VIEW["RentFloorPlanView<br/>Floor plan & sharing toggle"]
+FURNITURE_VIEW["RentFurniture<br/>Furniture requirements"]
+APPLIANCE_VIEW["RentAppliance<br/>Appliance requirements"]
+BRAND_VIEW["RentBrand<br/>Brand placement & customization"]
+PERIOD_VIEW["RentPeriod<br/>Rental period & discounts"]
+DELIVERY_VIEW["RentDeliverySetup<br/>Delivery configuration"]
 NEXT_BUTTON["RentRequestNext<br/>Enhanced navigation"]
 END
 MAIN --> DI
 DI --> BINDINGS
-BINDINGS --> STEP_ZERO_REPO
-BINDINGS --> STEP_ONE_REPO
 BINDINGS --> STEP_CONTROLLER
-STEP_CONTROLLER --> REQUEST_CONTROLLER
-STEP_CONTROLLER --> PROPERTY_TYPE_CONTROLLER
-STEP_CONTROLLER --> PROPERTY_DETAILS_CONTROLLER
-VIEW --> STEP_CONTROLLER
-VIEW --> NEXT_BUTTON
-VIEW --> FORM
-VIEW --> PROPERTY_TYPE_VIEW
+STEP_CONTROLLER --> FLOOR_PLAN_CONTROLLER
+STEP_CONTROLLER --> FURNITURE_CONTROLLER
+STEP_CONTROLLER --> APPLIANCE_CONTROLLER
+STEP_CONTROLLER --> BRAND_CONTROLLER
+STEP_CONTROLLER --> PERIOD_CONTROLLER
+STEP_CONTROLLER --> DELIVERY_CONTROLLER
+FLOOR_PLAN_CONTROLLER --> FLOOR_PLAN_MODEL
+FURNITURE_CONTROLLER --> FURNITURE_MODEL
+APPLIANCE_CONTROLLER --> APPLIANCE_MODEL
 ```
 
 **Diagram sources**
@@ -106,10 +129,17 @@ VIEW --> PROPERTY_TYPE_VIEW
 - [dependency_injection.dart:13-32](file://lib/core/di/dependency_injection.dart#L13-L32)
 - [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
 - [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
+- [rent_step_controller.dart:15-98](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L98)
+- [rent_floor_plan_controller.dart:8-101](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L8-L101)
+- [rent_furniture_controller.dart:9-153](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L9-L153)
+- [rent_appliance_controller.dart:9-117](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L9-L117)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+- [rent_period_controller.dart:6-89](file://lib/features/rent_request/controllers/rent_period_controller.dart#L6-L89)
+- [rent_delivery_controller.dart:6-70](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L6-L70)
+- [floor_plan_model.dart:4-19](file://lib/features/rent_request/models/floor_plan_model.dart#L4-L19)
+- [rent_furniture_model.dart:3-22](file://lib/features/rent_request/models/rent_furniture_model.dart#L3-L22)
+- [rent_appliance_model.dart:3-15](file://lib/features/rent_request/models/rent_appliance_model.dart#L3-L15)
 - [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
-- [step_zero_repo.dart:9-36](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L36)
-- [step_one_repo.dart:11-33](file://lib/features/rent_request/repositories/step_one_repo.dart#L11-L33)
-- [rent_property_type_controller.dart:6-71](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L6-L71)
 
 **Section sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
@@ -118,78 +148,80 @@ VIEW --> PROPERTY_TYPE_VIEW
 - [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
 
 ## Core Components
-- **RentStepController**: Central orchestrator managing 10-step workflow with comprehensive validation logic, loading states, and step navigation. Handles step-specific validation and transitions between form widgets, including integration with StepOneRepository for property type selection. **Updated** Now initializes at step 0 by default, ensuring all users begin at the first step of the rental process.
+- **RentStepController**: Central orchestrator managing 10-step workflow with comprehensive validation logic, loading states, and step navigation. Handles step-specific validation and transitions between form widgets, now supporting advanced item management controllers.
 - **RentRequestController**: Specialized controller managing business form data, validation, and initial submission to Step Zero Repository. Coordinates with RentStepController for step advancement.
-- **RentPropertyTypeController**: New controller managing property type and use selection with dynamic options based on property type. Handles validation and submission to StepOneRepository.
-- **StepZeroModel**: Data model representing the zero-step rental request with business information, UUID, and status tracking.
-- **StepZeroRepository**: Repository layer handling API communication for zero-step rental requests with error handling and response mapping.
-- **StepOneRepository**: New repository layer handling property type and use selection data submission with comprehensive validation and error handling.
-- **Enhanced Navigation Components**: RentRequestNext widget provides intelligent navigation with loading states and conditional rendering based on step position.
-- **Streamlined View Architecture**: RentRequestView delegates step rendering to RentStepController, providing a clean separation of concerns.
+- **RentPropertyDetailsController**: Enhanced controller managing property space breakdown, room counts, and dynamic item generation for downstream controllers.
+- **RentFloorPlanController**: Advanced controller managing floor plan configuration with image upload, dimension tracking, and sharing preferences. Generates dynamic floor plan items based on property details.
+- **RentFurnitureController**: Sophisticated controller managing furniture preferences with style choices, condition preferences, and dynamic grouping by property spaces.
+- **RentApplianceController**: Comprehensive controller managing appliance requirements with multi-unit support and dynamic item management.
+- **RentBrandController**: Controller managing brand specification requirements for commercial properties with customization options.
+- **RentPeriodController**: Controller managing rental period selection with discount calculation and payment plan options.
+- **RentDeliveryController**: Controller managing delivery setup with access details, time slots, and restriction handling.
+- **Enhanced Data Models**: Specialized models for each item category with reactive properties and proper lifecycle management.
+- **Dynamic Property Integration**: All item controllers integrate with property details to generate contextually relevant forms.
 
 **Section sources**
 - [rent_step_controller.dart:15-98](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L98)
 - [rent_request_controller.dart:9-69](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L69)
-- [rent_property_type_controller.dart:6-71](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L6-L71)
-- [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
-- [step_zero_repo.dart:9-36](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L36)
-- [step_one_repo.dart:11-33](file://lib/features/rent_request/repositories/step_one_repo.dart#L11-L33)
-- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
+- [rent_floor_plan_controller.dart:8-101](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L8-L101)
+- [rent_furniture_controller.dart:9-153](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L9-L153)
+- [rent_appliance_controller.dart:9-117](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L9-L117)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+- [rent_period_controller.dart:6-89](file://lib/features/rent_request/controllers/rent_period_controller.dart#L6-L89)
+- [rent_delivery_controller.dart:6-70](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L6-L70)
+- [floor_plan_model.dart:4-19](file://lib/features/rent_request/models/floor_plan_model.dart#L4-L19)
+- [rent_furniture_model.dart:3-22](file://lib/features/rent_request/models/rent_furniture_model.dart#L3-L22)
+- [rent_appliance_model.dart:3-15](file://lib/features/rent_request/models/rent_appliance_model.dart#L3-L15)
 
 ## Architecture Overview
-The system now follows a centralized step management architecture with RentStepController as the primary orchestrator, enhanced by the zero-step and step-one rental request systems:
+The system now follows a comprehensive, reactive architecture with RentStepController as the primary orchestrator, enhanced by advanced item management systems with dynamic property integration:
 - **Centralized Flow Control**: RentStepController manages all 10 steps with dedicated validation logic for each step
-- **Zero-Step Integration**: StepZeroRepository handles initial business identification and UUID generation
-- **Step-One Integration**: StepOneRepository manages property type and use selection with dynamic options
-- **Specialized Domain Logic**: Individual controllers handle domain-specific data and validation
+- **Dynamic Item Generation**: Property details drive dynamic content generation across all item management controllers
+- **Specialized Domain Logic**: Individual controllers handle domain-specific data and validation with comprehensive models
 - **Enhanced State Management**: Reactive variables for current step, loading states, and navigation control
-- **Streamlined Dependencies**: RentRequestController and RentPropertyTypeController focus on form validation and submission coordination
-- **Default Step Position**: **Updated** System now defaults to step 0 (business information collection) for improved user experience
+- **Advanced Property Integration**: Property details controller coordinates with all item management controllers
+- **Comprehensive Data Models**: Specialized models for each item category with proper lifecycle management
 
 ```mermaid
 sequenceDiagram
 participant User as "User"
-participant View as "RentPropertyTypeView"
-participant PropertyTypeController as "RentPropertyTypeController"
-participant StepOneRepo as "StepOneRepository"
+participant View as "RentFloorPlanView"
+participant FloorPlanController as "RentFloorPlanController"
+participant PropertyController as "RentPropertyDetailsController"
 participant StepController as "RentStepController"
-User->>View : Select Property Type
-View->>PropertyTypeController : Update selectedPropertyType
-PropertyTypeController->>PropertyTypeController : Update properUse options
-User->>View : Select Property Use
-User->>PropertyTypeController : Submit form
-PropertyTypeController->>StepOneRepo : Execute with property data
-StepOneRepo-->>PropertyTypeController : Response
-PropertyTypeController->>StepController : Increment currentIndex
+User->>View : Toggle Floor Plan Sharing
+View->>FloorPlanController : Update isShare
+FloorPlanController->>PropertyController : Read spaceBreakdown
+PropertyController-->>FloorPlanController : Return property details
+FloorPlanController->>FloorPlanController : Generate floor plan items
+FloorPlanController->>StepController : Increment currentIndex
 StepController-->>View : Next step widget
 ```
 
 **Diagram sources**
-- [rent_property_type_view.dart:46-71](file://lib/features/rent_request/views/rent_property_type_view.dart#L46-L71)
-- [rent_property_type_controller.dart:52-70](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L52-L70)
-- [step_one_repo.dart:15-32](file://lib/features/rent_request/repositories/step_one_repo.dart#L15-L32)
+- [rent_floor_plan_view.dart:57-78](file://lib/features/rent_request/widgets/rent_floor_plan_widgets/rent_floor_plan_view.dart#L57-L78)
+- [rent_floor_plan_controller.dart:30-52](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L30-L52)
 - [rent_step_controller.dart:50-52](file://lib/features/rent_request/controllers/rent_step_controller.dart#L50-L52)
 
 ## Detailed Component Analysis
 
 ### RentStepController
-**Updated** Complete architectural transformation from monolithic approach to centralized step management with comprehensive validation logic and enhanced integration with StepOneRepository. **Updated** Now initializes at step 0 by default, ensuring all users begin at the first step of the rental process.
+Complete architectural transformation from monolithic approach to centralized step management with comprehensive validation logic and enhanced integration with all item management controllers.
 
 Responsibilities:
 - Manages 10-step workflow with centralized validation and navigation logic
-- Controls current step index with reactive state management starting at step 0
+- Controls current step index with reactive state management
 - Handles step-specific validation through switch statement
 - Provides loading states and error handling for step transitions
 - Coordinates with specialized controllers for domain-specific data
-- Integrates StepOneRepository for property type selection validation
+- Integrates with property details controller for dynamic content generation
 
 Navigation and state management:
-- currentIndex drives step rendering from rentWidgets list starting at 0
+- currentIndex drives step rendering from rentWidgets list
 - isLoading reactive variable controls loading states during transitions
 - totalSteps computed property provides step count for UI indicators
 - Enhanced debugging with step transition logging
-- Step 1 validation through RentPropertyTypeController integration
-- **Updated** resetFlow() method ensures consistent reset to step 0
+- Integration with all specialized controllers for seamless workflow
 
 ```mermaid
 classDiagram
@@ -202,7 +234,13 @@ class RentStepController {
 +goToPreviousStep() void
 +resetFlow() void
 +_handleFinalStep() void
-+RentPropertyTypeController submitRentRequestOne()
++RentPropertyDetailsController submitRentRequestTwo()
++RentFloorPlanController submitRentRequestThree()
++RentFurnitureController submitRentRequestFour()
++RentApplianceController submitRentRequestFive()
++RentPeriodController submitRentRequestSix()
++RentDeliveryController submitRentRequestSeven()
++RentBrandController submitRentRequestEight()
 }
 ```
 
@@ -212,273 +250,343 @@ class RentStepController {
 **Section sources**
 - [rent_step_controller.dart:15-98](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L98)
 
-### RentRequestController
-**Updated** Streamlined role focused on business form validation and initial submission coordination with StepZeroRepository integration.
+### RentPropertyDetailsController
+Enhanced controller managing property space breakdown, room counts, and dynamic item generation for downstream controllers. Serves as the foundation for all dynamic content generation across item management systems.
 
 Responsibilities:
-- Manages business identification form data with text editing controllers
-- Validates form inputs using shared validators before submission
-- Submits data to Step Zero Repository and handles response
-- Coordinates step advancement after successful validation
-- Initializes user profile data from ProfileController
-- Stores UUID in storage service for session persistence
+- Manages property space breakdown with labels and selection states
+- Tracks room counts for each space type
+- Generates dynamic content for all item management controllers
+- Provides reactive data streams for controller synchronization
+- Coordinates with RentStepController for step advancement
 
-Submission flow:
-- Form validation using GlobalKey<FormState>
-- Repository pattern for data submission through StepZeroRepository
-- Storage service integration for UUID persistence
-- Seamless integration with RentStepController for navigation
+Dynamic content generation:
+- Space breakdown with selection states and counts
+- Reactive listeners for automatic controller updates
+- Contextual item generation based on property characteristics
+- Integration with all specialized controllers for unified workflow
+
+**Section sources**
+- [rent_step_controller.dart:85-98](file://lib/features/rent_request/controllers/rent_step_controller.dart#L85-L98)
+
+### RentFloorPlanController
+Advanced controller managing floor plan configuration with comprehensive image upload, dimension tracking, and sharing preferences. Generates dynamic floor plan items based on property details.
+
+Responsibilities:
+- Manages floor plan items with title, image path, and dimension controllers
+- Handles floor plan sharing toggle with reactive state management
+- Generates dynamic floor plan items based on property space breakdown
+- Tracks image uploads and clears with proper lifecycle management
+- Provides formatted floor plan details for review and submission
+
+Dynamic item generation:
+- Automatic item creation based on property space breakdown
+- Per-space dimension tracking with length and width controllers
+- Image upload management with proper disposal
+- Reactive updates when property details change
 
 ```mermaid
 sequenceDiagram
-participant Form as "RentRequestViewForm"
-participant Controller as "RentRequestController"
-participant Repo as "StepZeroRepository"
-participant Storage as "StorageService"
-participant StepController as "RentStepController"
-Form->>Controller : submitRentRequestZero()
-Controller->>Controller : Validate form
-Controller->>Repo : Execute with business data
-Repo-->>Controller : Response with UUID
-Controller->>Storage : Store UUID
-Controller->>StepController : Increment currentIndex
+participant PropertyController as "RentPropertyDetailsController"
+participant FloorPlanController as "RentFloorPlanController"
+participant Items as "FloorPlanItem List"
+PropertyController->>FloorPlanController : spaceBreakdown, isChecked, counts
+FloorPlanController->>Items : Create items based on selected spaces
+Loop For each selected space
+FloorPlanController->>Items : Add FloorPlanItem with title
+FloorPlanController->>Items : Initialize dimension controllers
+End Loop
+Items-->>FloorPlanController : Dynamic floor plan items
 ```
 
 **Diagram sources**
-- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
-- [step_zero_repo.dart:13-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L13-L35)
+- [rent_floor_plan_controller.dart:30-52](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L30-L52)
+- [floor_plan_model.dart:10-19](file://lib/features/rent_request/models/floor_plan_model.dart#L10-L19)
 
 **Section sources**
-- [rent_request_controller.dart:9-69](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L69)
+- [rent_floor_plan_controller.dart:8-101](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L8-L101)
+- [floor_plan_model.dart:4-19](file://lib/features/rent_request/models/floor_plan_model.dart#L4-L19)
 
-### RentPropertyTypeController
-**New Section** Comprehensive controller for property type and use selection with dynamic options and validation.
+### RentFurnitureController
+Sophisticated controller managing furniture preferences with comprehensive style choices, condition preferences, and dynamic grouping by property spaces. Generates contextual furniture requirements based on property details.
 
 Responsibilities:
-- Manages property type selection with reactive state management
-- Provides dynamic property use options based on property type
-- Handles validation for both property type and use selection
-- Submits data to StepOneRepository and handles response
-- Coordinates step advancement after successful validation
-- Integrates with RentStepController for navigation
+- Manages furniture items with style preferences and condition options
+- Handles dynamic grouping by property spaces with per-group counts
+- Provides formatted furniture data for review and submission
+- Manages style preference selections with reactive state
+- Generates contextual furniture requirements based on property characteristics
 
-Dynamic property options:
-- **Residential Options**: Short-term Rental, Long-term Residential Leasing, Serviced Apartment, Staff Accommodation
-- **Commercial Options**: Office, Retail Store, Cafe / Restaurant, Hotel / Serviced Apartments, Medical / Clinic, Showroom, Co-working Space
-- **Reactive Selection**: Automatic property use option updates when property type changes
-- **Default Values**: Initializes with Residential as default property type
-
-Validation and submission:
-- Form validation ensures both property type and use are selected
-- Repository pattern for data submission through StepOneRepository
-- Error handling through ErrorSnackbar integration
-- Seamless integration with RentStepController for navigation
+Dynamic grouping and preferences:
+- Automatic group creation based on property space breakdown
+- Per-group furniture item management with counts and selections
+- Style preference management with multiple selection support
+- Condition preference tracking with contextual options
+- Formatted data generation for comprehensive review
 
 ```mermaid
-sequenceDiagram
-participant View as "RentPropertyTypeView"
-participant Controller as "RentPropertyTypeController"
-participant Repo as "StepOneRepository"
-participant StepController as "RentStepController"
-View->>Controller : Update selectedPropertyType
-Controller->>Controller : Update properUse options
-View->>Controller : Update selectedPropertyUse
-View->>Controller : Submit form
-Controller->>Controller : Validate selections
-Controller->>Repo : Execute with property data
-Repo-->>Controller : Response
-Controller->>StepController : Increment currentIndex
+classDiagram
+class RentFurnitureController {
++RxList<bool> isOpenList
++RxList<String> furniture
++List stylePreference
++List preference
++RxList<RentFurnitureModel> groups
++addFurnitureItemToModel(model, item)
++removeFurnitureItemFromModel(model, index)
++getDataFromProperty()
++formattedFurnitureData Map[]
++submitRentRequestFour()
+}
+class RentFurnitureModel {
++String title
++RxList<String> furnitureItems
++RxList<int> counts
++RxList<bool> isChecked
++RxList<bool> checkedPreference
++RxInt selectedPreference
+}
+RentFurnitureController --> RentFurnitureModel : manages
 ```
 
 **Diagram sources**
-- [rent_property_type_controller.dart:52-70](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L52-L70)
-- [step_one_repo.dart:15-32](file://lib/features/rent_request/repositories/step_one_repo.dart#L15-L32)
+- [rent_furniture_controller.dart:9-153](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L9-L153)
+- [rent_furniture_model.dart:3-22](file://lib/features/rent_request/models/rent_furniture_model.dart#L3-L22)
 
 **Section sources**
-- [rent_property_type_controller.dart:6-71](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L6-L71)
+- [rent_furniture_controller.dart:9-153](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L9-L153)
+- [rent_furniture_model.dart:3-22](file://lib/features/rent_request/models/rent_furniture_model.dart#L3-L22)
 
-### StepZeroModel
-**Updated** Comprehensive data model for zero-step rental request system with business information and UUID management.
-
-Structure:
-- **StepZeroModel**: Main model containing UUID, user ID, business info, current step, rental status, timestamps, and ID
-- **BusinessInfo**: Nested model for business identification details including name, contact person, email, phone, ABN, and website
-
-Features:
-- JSON serialization/deserialization support
-- Nested object handling for business information
-- Optional fields for flexible data handling
-- Comprehensive data mapping for API responses
-
-**Section sources**
-- [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
-
-### StepZeroRepository
-**Updated** Repository layer handling API communication for zero-step rental requests with comprehensive error handling.
+### RentApplianceController
+Comprehensive controller managing appliance requirements with multi-unit support and dynamic item management. Generates contextual appliance lists based on property details and unit counts.
 
 Responsibilities:
-- Handles HTTP POST requests for rental request creation
-- Manages API headers and authentication
-- Processes JSON responses and maps to StepZeroModel
-- Provides error handling through Either type
-- Implements repository pattern for data persistence
+- Manages appliance items with multi-unit support and dynamic lists
+- Handles dynamic appliance item addition and removal
+- Generates contextual appliance lists based on property characteristics
+- Manages appliance selection states and counts per unit
+- Provides formatted appliance data for review and submission
 
-Integration:
-- Uses PostWithResponse for HTTP communication
-- Leverages HeadersManager for request configuration
-- Implements FP Dart Either for error handling
-- Returns typed responses for type safety
+Dynamic item management:
+- Automatic appliance list generation based on property space breakdown
+- Multi-unit support with per-unit appliance selection
+- Dynamic appliance item addition with validation
+- Per-unit count tracking with reactive state management
+- Contextual appliance recommendations based on property type
+
+```mermaid
+classDiagram
+class RentApplianceController {
++RxBool isAppliance
++RxList<bool> isOpenList
++RxList<RentApplianceModel> item
++RxList<String> appliance
++RxList<bool> isSelect
++RxList<int> count
++addApplianceItemToModel(model, item)
++removeApplianceItemFromModel(model, index)
++getDataFromProperty()
++submitRentRequestFive()
+}
+class RentApplianceModel {
++RxList<bool> isChecked
++String appliances
++RxList<int> counts
++RxList<String> applianceItems
+}
+RentApplianceController --> RentApplianceModel : manages
+```
+
+**Diagram sources**
+- [rent_appliance_controller.dart:9-117](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L9-L117)
+- [rent_appliance_model.dart:3-15](file://lib/features/rent_request/models/rent_appliance_model.dart#L3-L15)
 
 **Section sources**
-- [step_zero_repo.dart:9-36](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L36)
+- [rent_appliance_controller.dart:9-117](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L9-L117)
+- [rent_appliance_model.dart:3-15](file://lib/features/rent_request/models/rent_appliance_model.dart#L3-L15)
 
-### StepOneRepository
-**New Section** Repository layer handling property type and use selection data submission with comprehensive validation and error handling.
+### RentBrandController
+Controller managing brand specification requirements for commercial properties with comprehensive customization options and image management.
 
 Responsibilities:
-- Handles HTTP POST requests for property type and use selection
-- Manages API headers and authentication for step 1 data
-- Processes JSON responses and maps to boolean success/failure
-- Provides error handling through Either type
-- Implements repository pattern for data persistence
-- Integrates with StorageService for UUID retrieval
+- Manages brand specification toggle with reactive state
+- Handles brand customization options with multi-selection support
+- Manages brand image upload with proper lifecycle
+- Provides brand preference tracking for commercial properties
+- Coordinates with property type controller for contextual branding
 
-Integration:
-- Uses PostWithoutResponse for HTTP communication (no response body expected)
-- Leverages HeadersManager for request configuration
-- Implements FP Dart Either for error handling
-- Retrieves UUID from StorageService for session continuity
-- Returns typed responses for type safety
+Brand customization:
+- Brand specification toggle for commercial properties
+- Customization options including logo placement and color matching
+- Image upload management with proper disposal
+- Preference tracking for brand requirements
+- Contextual branding based on property type
 
 **Section sources**
-- [step_one_repo.dart:11-33](file://lib/features/rent_request/repositories/step_one_repo.dart#L11-L33)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+
+### RentPeriodController
+Controller managing rental period selection with comprehensive discount calculation and payment plan options. Provides structured rental period management with flexible options.
+
+Responsibilities:
+- Manages rental period selection with predefined options
+- Handles discount calculation based on selected period
+- Manages payment plan options with installment structures
+- Provides rental period validation and selection tracking
+- Coordinates with RentStepController for step advancement
+
+Rental period management:
+- Predefined rental periods with discount tiers
+- Discount calculation based on selected period
+- Payment plan options with upfront and installment structures
+- Custom period selection with validation
+- Flexible rental terms with promotional offers
+
+**Section sources**
+- [rent_period_controller.dart:6-89](file://lib/features/rent_request/controllers/rent_period_controller.dart#L6-L89)
+
+### RentDeliveryController
+Controller managing comprehensive delivery setup with access details, time slots, and restriction handling. Provides detailed delivery configuration for rental fulfillment.
+
+Responsibilities:
+- Manages delivery address and recipient information
+- Handles delivery date and time slot selection
+- Manages access restrictions with loading dock and lift availability
+- Provides delivery setup toggle with reactive state management
+- Coordinates with RentStepController for step advancement
+
+Delivery configuration:
+- Comprehensive delivery address management
+- Time slot selection with multiple period options
+- Access restriction handling with validation
+- Delivery setup toggle with contextual options
+- Restriction management for delivery logistics
+
+**Section sources**
+- [rent_delivery_controller.dart:6-70](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L6-L70)
 
 ### Enhanced Navigation Components
-**Updated** RentRequestNext widget provides intelligent navigation with loading states and conditional rendering.
+RentRequestNext widget provides intelligent navigation with loading states and conditional rendering, now supporting the expanded 10-step workflow.
 
 Features:
 - Dynamic button rendering based on current step position
 - Loading state management during step transitions
 - Conditional submit button for final step
 - Enhanced user feedback through visual indicators
+- Integration with all specialized controllers for seamless navigation
 
 Navigation logic:
 - Last step shows submit button with dialog confirmation
 - Loading state prevents double submissions
 - Step-specific validation before navigation
 - Smooth transitions between form widgets
-- **Updated** Previous button logic ensures users cannot go back from step 0
+- Integration with RentStepController for coordinated advancement
 
 **Section sources**
 - [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
 
 ### RentRequestView
-**Updated** Simplified view architecture delegating step management to RentStepController.
+Simplified view architecture delegating step management to RentStepController with enhanced support for advanced item management systems.
 
 Responsibilities:
 - Provides scrollable container for step-based navigation
 - Delegates current step rendering to RentStepController
 - Manages previous/next button visibility and styling
 - Integrates with flow widgets for step indicators
+- Supports advanced item management view components
 
 View delegation:
 - RentStepController manages step rendering and navigation
 - Obx widgets for reactive step state updates
 - Clean separation between presentation and logic
 - Enhanced visual feedback through flow widgets
-- **Updated** Previous button only appears after step 0
+- Integration with all specialized view components
 
 **Section sources**
 - [rent_request_view.dart:16-79](file://lib/features/rent_request/views/rent_request_view.dart#L16-L79)
 
-### RentRequestViewForm
-**Updated** Enhanced form validation with improved error handling and user feedback.
+### Enhanced View Components
+Advanced view components supporting the comprehensive item management system with dynamic content generation and user interaction.
 
 Features:
-- Comprehensive business identification form with validation
-- Shared validators for name, email, and phone fields
-- Responsive design with Flutter_ScreenUtil integration
-- Custom form field widgets with consistent styling
-
-Validation improvements:
-- Auto-validation on user interaction
-- Proper error message handling
-- Form state management with GlobalKey
-- Enhanced user experience through immediate feedback
-
-**Section sources**
-- [rent_request_view_form.dart:13-112](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_view_form.dart#L13-L112)
-
-### RentPropertyTypeView
-**New Section** Enhanced property type selection view with dynamic dropdown options and reactive UI updates.
-
-Features:
-- Property type selection dropdown with predefined options
-- Dynamic property use dropdown based on property type selection
+- Dynamic content generation based on controller state
 - Reactive UI updates through Obx widgets
-- Comprehensive form layout with proper spacing and styling
-- Integration with RentPropertyTypeController for data binding
+- Comprehensive form layouts with proper spacing
+- Integration with specialized controllers for data binding
+- Enhanced user experience through contextual interfaces
 
-Dynamic options:
-- Property type dropdown with Residential and Commercial options
-- Property use dropdown updates automatically based on property type
-- Default selection for property use based on property type
-- Proper validation and error handling integration
+Dynamic view generation:
+- Automatic view updates based on controller state
+- Reactive UI components with proper lifecycle management
+- Contextual form layouts for different item categories
+- Integration with property details for dynamic content
+- Enhanced user interaction patterns for complex forms
 
 **Section sources**
-- [rent_property_type_view.dart:13-77](file://lib/features/rent_request/views/rent_property_type_view.dart#L13-L77)
+- [rent_floor_plan_view.dart:15-83](file://lib/features/rent_request/widgets/rent_floor_plan_widgets/rent_floor_plan_view.dart#L15-L83)
+- [rent_furniture.dart:10-32](file://lib/features/rent_request/widgets/rent_furniture_widgets/rent_furniture.dart#L10-L32)
+- [rent_appliance.dart:9-31](file://lib/features/rent_request/widgets/rent_appliance_widgets/rent_appliance.dart#L9-L31)
+- [rent_brand.dart:17-96](file://lib/features/rent_request/widgets/rent_brand_widgets/rent_brand.dart#L17-L96)
+- [rent_delivery_setup.dart:10-60](file://lib/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_setup.dart#L10-L60)
+- [rent_period.dart:7-23](file://lib/features/rent_request/widgets/rent_period_widgets/rent_period.dart#L7-L23)
 
 ## Enhanced Navigation and Visual Feedback
-**Updated** The Rent Furniture System now features sophisticated navigation and visual feedback mechanisms through the centralized RentStepController architecture with enhanced property type selection workflow.
+The Rent Furniture System now features sophisticated navigation and visual feedback mechanisms through the centralized RentStepController architecture with comprehensive item management integration.
 
 ### Intelligent Step Navigation
 - **Dynamic Step Rendering**: RentStepController manages 10 distinct step widgets with proper lifecycle management
 - **Conditional Navigation**: RentRequestNext widget adapts button appearance based on step position
 - **Loading State Management**: Reactive loading indicators prevent concurrent step transitions
 - **Enhanced Progress Tracking**: FlowStepCount and FlowPageCount provide real-time step information
-- **Property Type Validation**: Step-specific validation ensures proper property type and use selection
-- **Updated** Previous button logic prevents navigation from step 0, ensuring users complete the business information step first
+- **Advanced Item Integration**: All specialized controllers integrate seamlessly with step navigation
+- **Dynamic Content Updates**: Property details drive automatic content updates across all steps
 
 ### Visual Design Improvements
-- **Consistent Styling**: SharedContainer widgets ensure uniform appearance across steps
+- **Consistent Styling**: SharedContainer widgets ensure uniform appearance across all steps
 - **Responsive Layout**: Flutter_ScreenUtil provides consistent sizing across devices
 - **Custom Components**: Specialized widgets for property management, furniture selection, and period calculation
 - **Accessibility Features**: Proper contrast ratios and touch target optimization
-- **Reactive UI Updates**: Obx widgets provide real-time updates for dynamic property use options
+- **Reactive UI Updates**: Obx widgets provide real-time updates for dynamic content
 
 ### User Experience Enhancements
 - **Step Validation**: Each step validates input before allowing navigation forward
 - **Error Handling**: Comprehensive error display with actionable feedback
 - **Progress Indication**: Clear visual representation of form completion status
 - **Smooth Transitions**: Animated step changes with proper timing and easing
-- **Dynamic Property Options**: Automatic property use dropdown updates based on selection
-- **Updated** **Default Starting Position**: All users now begin at step 0, providing a more intuitive experience
+- **Dynamic Property Options**: Automatic content updates based on property details
+- **Contextual Branding**: Brand requirements adapt based on property type selection
 
 ## Controller Architecture
-**Updated** Complete architectural transformation to centralized step management with RentStepController as the primary orchestrator, enhanced by zero-step and step-one system integrations.
+Complete architectural transformation to centralized step management with RentStepController as the primary orchestrator, enhanced by comprehensive item management systems with dynamic property integration.
 
 ### Centralized Step Management
 - **RentStepController**: Primary orchestrator managing all 10 steps with dedicated validation logic
-- **Specialized Controllers**: Secondary role handling domain-specific data and validation
+- **Specialized Controllers**: Secondary role handling domain-specific data and validation with comprehensive integration
 - **Streamlined Dependencies**: Reduced complexity through centralized coordination
 - **Enhanced Maintainability**: Single point of control for step transitions and validation
-- **Step-One Integration**: RentPropertyTypeController coordinates with StepOneRepository for property type validation
-- **Updated** **Default Step Position**: System now initializes at step 0, ensuring consistent user experience
+- **Dynamic Property Integration**: All controllers coordinate through RentPropertyDetailsController
+- **Comprehensive Data Flow**: Bidirectional data flow between property details and item controllers
 
-### Zero-Step and Step-One Integration
-- **StepZeroRepository**: Handles initial business identification and UUID generation
-- **StepOneRepository**: Manages property type and use selection with dynamic options
-- **StepZeroModel**: Manages business information and session data
-- **Storage Integration**: UUID persistence for session continuity across steps
-- **API Communication**: Centralized HTTP handling for rental requests
+### Advanced Item Management Integration
+- **Dynamic Content Generation**: Property details drive automatic content creation across all item controllers
+- **Reactive Synchronization**: Controllers automatically update when property details change
+- **Contextual Forms**: Forms adapt based on property characteristics and requirements
+- **Unified Workflow**: All item management systems integrate with the central step controller
+- **Enhanced User Experience**: Contextual interfaces improve user interaction and completion rates
 
 ### Step-Based Architecture
 - **Step 0**: Business form validation and initial submission via StepZeroRepository
 - **Step 1**: Property type and use selection with dynamic options via StepOneRepository
-- **Step 2-9**: Progressive form completion with domain-specific controllers
+- **Step 2**: Property details with space breakdown and room counts
+- **Step 3**: Floor plan configuration with image upload and dimension tracking
+- **Step 4**: Furniture requirements with style and condition preferences
+- **Step 5**: Appliance requirements with multi-unit support
+- **Step 6**: Rental period selection with discount calculation
+- **Step 7**: Delivery setup with access details and time slots
+- **Step 8**: Brand specification for commercial properties
+- **Step 9**: Final review and submission
 - **Validation Logic**: Step-specific validation through switch statement
 - **Loading States**: Reactive loading management for smooth transitions
-- **Updated** **Navigation Logic**: Previous button disabled for step 0, ensuring proper workflow progression
 
 ### Controller Implementation Patterns
 - **GetxController Base**: All controllers extend GetxController for reactive state management
@@ -486,37 +594,35 @@ Dynamic options:
 - **Central Coordination**: RentStepController coordinates between specialized controllers
 - **Proper Lifecycle**: Enhanced lifecycle management with initialization and disposal
 - **Dependency Injection**: Proper service registration and resolution through GetX
+- **Dynamic Integration**: Controllers dynamically integrate with property details for contextual content
 
 ```mermaid
 graph LR
 subgraph "Centralized Architecture"
-RentStepController["RentStepController<br/>10-step orchestration<br/>Default: Step 0"]
-subgraph "Zero-Step System"
-StepZeroRepository["StepZeroRepository<br/>API integration"]
-StepZeroModel["StepZeroModel<br/>Data modeling"]
-StorageService["StorageService<br/>UUID persistence"]
-end
-subgraph "Step-One System"
-StepOneRepository["StepOneRepository<br/>Property type selection"]
-RentPropertyTypeController["RentPropertyTypeController<br/>Dynamic options & validation"]
-end
-subgraph "Domain Controllers"
-RentRequestController["RentRequestController<br/>Business form validation"]
-RentPropertyDetailsController["RentPropertyDetailsController<br/>Space breakdown"]
-RentFloorPlanController["RentFloorPlanController<br/>Layout configuration"]
+RentStepController["RentStepController<br/>10-step orchestration"]
+RentPropertyDetailsController["RentPropertyDetailsController<br/>Property space management"]
+subgraph "Item Management Controllers"
+RentFloorPlanController["RentFloorPlanController<br/>Floor plan & dimensions"]
 RentFurnitureController["RentFurnitureController<br/>Furniture preferences"]
 RentApplianceController["RentApplianceController<br/>Appliance requirements"]
 RentBrandController["RentBrandController<br/>Brand specifications"]
-RentPeriodController["RentPeriodController<br/>Rental period selection"]
-RentDeliveryController["RentDeliveryController<br/>Delivery arrangements"]
-RentReviewController["RentReviewController<br/>Final review & submission"]
-RentAdditionalNoteController["RentAdditionalNoteController<br/>Additional notes"]
+RentPeriodController["RentPeriodController<br/>Rental period & pricing"]
+RentDeliveryController["RentDeliveryController<br/>Delivery setup & access"]
+end
+subgraph "Data Models"
+FloorPlanModel["FloorPlanModel<br/>Item with controllers & image"]
+FurnitureModel["RentFurnitureModel<br/>Group with prefs & counts"]
+ApplianceModel["RentApplianceModel<br/>Multi-item per unit"]
+end
+subgraph "View Components"
+FloorPlanView["RentFloorPlanView<br/>Floor plan interface"]
+FurnitureView["RentFurniture<br/>Furniture requirements"]
+ApplianceView["RentAppliance<br/>Appliance requirements"]
+BrandView["RentBrand<br/>Brand customization"]
+PeriodView["RentPeriod<br/>Rental period selection"]
+DeliveryView["RentDeliverySetup<br/>Delivery configuration"]
 end
 end
-RentStepController --> StepZeroRepository
-RentStepController --> StepOneRepository
-RentStepController --> RentRequestController
-RentStepController --> RentPropertyTypeController
 RentStepController --> RentPropertyDetailsController
 RentStepController --> RentFloorPlanController
 RentStepController --> RentFurnitureController
@@ -524,51 +630,62 @@ RentStepController --> RentApplianceController
 RentStepController --> RentBrandController
 RentStepController --> RentPeriodController
 RentStepController --> RentDeliveryController
-RentStepController --> RentReviewController
-RentStepController --> RentAdditionalNoteController
-StepZeroRepository --> StepZeroModel
-StepZeroRepository --> StorageService
-StepOneRepository --> StorageService
-RentPropertyTypeController --> StepOneRepository
+RentFloorPlanController --> FloorPlanModel
+RentFurnitureController --> FurnitureModel
+RentApplianceController --> ApplianceModel
+RentFloorPlanController --> FloorPlanView
+RentFurnitureController --> FurnitureView
+RentApplianceController --> ApplianceView
+RentBrandController --> BrandView
+RentPeriodController --> PeriodView
+RentDeliveryController --> DeliveryView
 ```
 
 **Diagram sources**
 - [rent_step_controller.dart:15-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L34)
-- [rent_request_controller.dart:9-21](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L21)
-- [rent_property_type_controller.dart:6-8](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L6-L8)
-- [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
-- [step_zero_repo.dart:9-36](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L36)
-- [step_one_repo.dart:11-13](file://lib/features/rent_request/repositories/step_one_repo.dart#L11-L13)
+- [rent_floor_plan_controller.dart:8-101](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L8-L101)
+- [rent_furniture_controller.dart:9-153](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L9-L153)
+- [rent_appliance_controller.dart:9-117](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L9-L117)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+- [rent_period_controller.dart:6-89](file://lib/features/rent_request/controllers/rent_period_controller.dart#L6-L89)
+- [rent_delivery_controller.dart:6-70](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L6-L70)
+- [floor_plan_model.dart:4-19](file://lib/features/rent_request/models/floor_plan_model.dart#L4-L19)
+- [rent_furniture_model.dart:3-22](file://lib/features/rent_request/models/rent_furniture_model.dart#L3-L22)
+- [rent_appliance_model.dart:3-15](file://lib/features/rent_request/models/rent_appliance_model.dart#L3-L15)
 
 **Section sources**
 - [rent_step_controller.dart:15-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L34)
-- [rent_request_controller.dart:9-21](file://lib/features/rent_request/controllers/rent_request_controller.dart#L9-L21)
-- [rent_property_type_controller.dart:6-8](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L6-L8)
-- [step_zero_model.dart:1-88](file://lib/features/rent_request/models/step_zero_model.dart#L1-L88)
-- [step_zero_repo.dart:9-36](file://lib/features/rent_request/repositories/step_zero_repo.dart#L9-L36)
-- [step_one_repo.dart:11-13](file://lib/features/rent_request/repositories/step_one_repo.dart#L11-L13)
+- [rent_floor_plan_controller.dart:8-101](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L8-L101)
+- [rent_furniture_controller.dart:9-153](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L9-L153)
+- [rent_appliance_controller.dart:9-117](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L9-L117)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+- [rent_period_controller.dart:6-89](file://lib/features/rent_request/controllers/rent_period_controller.dart#L6-L89)
+- [rent_delivery_controller.dart:6-70](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L6-L70)
+- [floor_plan_model.dart:4-19](file://lib/features/rent_request/models/floor_plan_model.dart#L4-L19)
+- [rent_furniture_model.dart:3-22](file://lib/features/rent_request/models/rent_furniture_model.dart#L3-L22)
+- [rent_appliance_model.dart:3-15](file://lib/features/rent_request/models/rent_appliance_model.dart#L3-L15)
 
 ## Dependency Injection Patterns
-**Updated** Enhanced dependency injection patterns reflecting the centralized architecture with zero-step and step-one system integrations.
+Enhanced dependency injection patterns reflecting the centralized architecture with comprehensive item management system integration.
 
 ### Global Service Registration
 - **DependencyInjection**: Centralized service registration for Firebase, storage, theme, and network services
 - **Get.lazyPut**: Lazy loading for controllers and repositories with proper dependency resolution
 - **Singleton Pattern**: Permanent service registration for global accessibility
 
-### Zero-Step and Step-One System Dependencies
-- **StepZeroRepository**: Requires PostWithResponse for HTTP communication
-- **StepOneRepository**: Requires PostWithoutResponse for HTTP communication (no response body expected)
-- **RentRequestController**: Depends on StepZeroRepository for business submission
-- **RentPropertyTypeController**: Depends on StepOneRepository for property type submission
-- **StorageService**: Integrated for UUID persistence and session management
+### Comprehensive Controller Dependencies
+- **RentStepController**: Coordinates all specialized controllers with RentPropertyDetailsController
+- **RentPropertyDetailsController**: Foundation for all dynamic content generation
+- **Item Management Controllers**: Enhanced dependencies with comprehensive model integration
+- **Data Models**: Proper integration with controller lifecycle management
+- **View Components**: Integration with specialized controller instances
 
-### Controller Dependencies
-- **RentRequestController**: Depends on StepZeroRepository and StorageService
-- **RentPropertyTypeController**: Depends on StepOneRepository and RentStepController
-- **RentStepController**: Coordinates all specialized controllers
-- **Specialized Controllers**: Independent with minimal interdependencies
-- **Updated** **Initialization**: RentStepController now properly initializes at step 0 through dependency injection
+### Advanced Integration Patterns
+- **Property Details Integration**: All item controllers depend on RentPropertyDetailsController
+- **Model Lifecycle Management**: Proper disposal and initialization for reactive models
+- **Controller Coordination**: Centralized coordination through RentStepController
+- **Dynamic Content Generation**: Property details drive automatic controller updates
+- **Enhanced Service Resolution**: Proper GetX service registration and resolution
 
 ```mermaid
 graph TD
@@ -582,55 +699,82 @@ PostWithResponse["PostWithResponse"]
 PostWithoutResponse["PostWithoutResponse"]
 DeleteNetwork["DeleteNetwork"]
 end
-subgraph "Zero-Step Dependencies"
-StepZeroRepository["StepZeroRepository"]
-PostWithResponse --> StepZeroRepository
-end
-subgraph "Step-One Dependencies"
-StepOneRepository["StepOneRepository"]
-PostWithoutResponse --> StepOneRepository
-end
 subgraph "Controller Dependencies"
-RentRequestController["RentRequestController"]
-RentPropertyTypeController["RentPropertyTypeController"]
 RentStepController["RentStepController"]
-RentRequestController --> StepZeroRepository
-RentRequestController --> Storage
-RentPropertyTypeController --> StepOneRepository
-RentPropertyTypeController --> RentStepController
-RentStepController --> RentRequestController
-RentStepController --> RentPropertyTypeController
+RentPropertyDetailsController["RentPropertyDetailsController"]
+RentFloorPlanController["RentFloorPlanController"]
+RentFurnitureController["RentFurnitureController"]
+RentApplianceController["RentApplianceController"]
+RentBrandController["RentBrandController"]
+RentPeriodController["RentPeriodController"]
+RentDeliveryController["RentDeliveryController"]
+end
+subgraph "Model Dependencies"
+FloorPlanModel["FloorPlanModel"]
+FurnitureModel["RentFurnitureModel"]
+ApplianceModel["RentApplianceModel"]
+end
+subgraph "View Dependencies"
+FloorPlanView["RentFloorPlanView"]
+FurnitureView["RentFurniture"]
+ApplianceView["RentAppliance"]
+BrandView["RentBrand"]
+PeriodView["RentPeriod"]
+DeliveryView["RentDeliverySetup"]
 end
 Firebase --> Storage
 Storage --> Theme
 Theme --> ThemeController
 GetNetwork --> PostWithResponse
 GetNetwork --> PostWithoutResponse
-PostWithResponse --> StepZeroRepository
-PostWithoutResponse --> StepOneRepository
+RentStepController --> RentPropertyDetailsController
+RentStepController --> RentFloorPlanController
+RentStepController --> RentFurnitureController
+RentStepController --> RentApplianceController
+RentStepController --> RentBrandController
+RentStepController --> RentPeriodController
+RentStepController --> RentDeliveryController
+RentFloorPlanController --> FloorPlanModel
+RentFurnitureController --> FurnitureModel
+RentApplianceController --> ApplianceModel
+RentFloorPlanController --> FloorPlanView
+RentFurnitureController --> FurnitureView
+RentApplianceController --> ApplianceView
+RentBrandController --> BrandView
+RentPeriodController --> PeriodView
+RentDeliveryController --> DeliveryView
 ```
 
 **Diagram sources**
 - [dependency_injection.dart:13-32](file://lib/core/di/dependency_injection.dart#L13-L32)
 - [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
-- [step_zero_repo.dart:10-11](file://lib/features/rent_request/repositories/step_zero_repo.dart#L10-L11)
-- [step_one_repo.dart:10-11](file://lib/features/rent_request/repositories/step_one_repo.dart#L10-L11)
+- [rent_step_controller.dart:15-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L34)
+- [rent_floor_plan_controller.dart:8-101](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L8-L101)
+- [rent_furniture_controller.dart:9-153](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L9-L153)
+- [rent_appliance_controller.dart:9-117](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L9-L117)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+- [rent_period_controller.dart:6-89](file://lib/features/rent_request/controllers/rent_period_controller.dart#L6-L89)
+- [rent_delivery_controller.dart:6-70](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L6-L70)
 
 **Section sources**
 - [dependency_injection.dart:13-32](file://lib/core/di/dependency_injection.dart#L13-L32)
 - [rent_bindings.dart:16-37](file://lib/features/rent_request/bindings/rent_bindings.dart#L16-L37)
-- [step_zero_repo.dart:10-11](file://lib/features/rent_request/repositories/step_zero_repo.dart#L10-L11)
-- [step_one_repo.dart:10-11](file://lib/features/rent_request/repositories/step_one_repo.dart#L10-L11)
+- [rent_step_controller.dart:15-34](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L34)
+- [rent_floor_plan_controller.dart:8-101](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L8-L101)
+- [rent_furniture_controller.dart:9-153](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L9-L153)
+- [rent_appliance_controller.dart:9-117](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L9-L117)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+- [rent_period_controller.dart:6-89](file://lib/features/rent_request/controllers/rent_period_controller.dart#L6-L89)
+- [rent_delivery_controller.dart:6-70](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L6-L70)
 
 ## Step Zero System Implementation
-**Updated** Comprehensive implementation of the zero-step rental request system with business identification and UUID management, integrated with the enhanced dependency injection patterns.
+Comprehensive implementation of the zero-step rental request system with business identification and UUID management, integrated with the enhanced dependency injection patterns.
 
 ### Zero-Step Workflow
 - **Business Identification**: Initial form collection with business name, contact person, email, phone, ABN, and website
 - **Validation Layer**: Shared validators ensure data integrity before submission
 - **API Integration**: StepZeroRepository handles HTTP communication and response processing
 - **Session Management**: UUID stored in StorageService for continuous session tracking
-- **Updated** **Default Starting Position**: Users begin at this step by default, ensuring complete business information capture
 
 ### Data Flow Architecture
 - **Form Input**: RentRequestViewForm captures business information
@@ -657,7 +801,7 @@ PostWithoutResponse --> StepOneRepository
 - [step_zero_repo.dart:13-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L13-L35)
 
 ## Step One System Implementation
-**New Section** Comprehensive implementation of the step-one rental request system for property type and use selection with dynamic options and validation.
+Comprehensive implementation of the step-one rental request system for property type and use selection with dynamic options and validation.
 
 ### Step-One Workflow
 - **Property Type Selection**: Dropdown selection between Residential and Commercial property types
@@ -696,7 +840,7 @@ PostWithoutResponse --> StepOneRepository
 - [step_one_repo.dart:15-32](file://lib/features/rent_request/repositories/step_one_repo.dart#L15-L32)
 
 ## Property Type Selection Workflow
-**New Section** Detailed analysis of the property type selection workflow with dynamic options, validation, and reactive UI updates.
+Detailed analysis of the property type selection workflow with dynamic options, validation, and reactive UI updates.
 
 ### Property Type Selection Process
 - **Initial State**: Property type defaults to Residential with property use set to first residential option
@@ -726,24 +870,158 @@ PostWithoutResponse --> StepOneRepository
 - [rent_property_type_controller.dart:36-50](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L36-L50)
 - [rent_property_type_view.dart:46-71](file://lib/features/rent_request/views/rent_property_type_view.dart#L46-L71)
 
+## Advanced Item Management Systems
+Comprehensive analysis of the advanced item management systems that form the backbone of the enhanced rental request workflow.
+
+### Dynamic Item Generation Architecture
+- **Property-Driven Content**: All item management controllers generate content based on property details
+- **Reactive Synchronization**: Controllers automatically update when property details change
+- **Contextual Forms**: Forms adapt based on property characteristics and requirements
+- **Unified Data Flow**: Property details serve as the single source of truth for all item controllers
+
+### Floor Plan Management System
+- **Image Upload Integration**: Comprehensive image management with proper lifecycle
+- **Dimension Tracking**: Per-space dimension tracking with length and width controllers
+- **Sharing Preferences**: Floor plan sharing toggle with reactive state management
+- **Formatted Output**: Structured data generation for review and submission
+
+### Furniture Requirements System
+- **Style Preferences**: Multiple style options with contextual selection
+- **Condition Preferences**: Furniture condition options with proper validation
+- **Grouped Management**: Per-space furniture grouping with count tracking
+- **Formatted Review**: Comprehensive data formatting for final review
+
+### Appliance Requirements System
+- **Multi-Unit Support**: Contextual appliance lists for multiple units
+- **Dynamic Item Management**: Add/remove functionality with validation
+- **Selection Tracking**: Per-appliance selection states with reactive updates
+- **Count Management**: Per-unit appliance counting with proper lifecycle
+
+### Brand Specification System
+- **Commercial Context**: Brand requirements tailored for commercial properties
+- **Customization Options**: Logo placement, color matching, and custom finishes
+- **Image Management**: Brand image upload with proper disposal
+- **Preference Tracking**: Brand specification preferences with reactive updates
+
+**Section sources**
+- [rent_floor_plan_controller.dart:30-52](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L30-L52)
+- [rent_furniture_controller.dart:71-97](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L71-L97)
+- [rent_appliance_controller.dart:84-109](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L84-L109)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+
+## Delivery and Setup Configuration
+Comprehensive delivery setup functionality with access details, time slots, and restriction handling for optimal rental fulfillment.
+
+### Delivery Configuration Architecture
+- **Address Management**: Comprehensive delivery address with validation
+- **Recipient Information**: Full name and contact details tracking
+- **Date Selection**: Flexible delivery date options with validation
+- **Time Slot Management**: Multiple time slot options with selection tracking
+- **Access Restrictions**: Loading dock, lift, and working hour restrictions
+
+### Setup Configuration System
+- **Setup Toggle**: Delivery setup requirement with reactive state
+- **Access Details**: Loading dock availability with validation
+- **Lift Access**: Lift availability tracking with proper validation
+- **Restriction Management**: Working hour restrictions with contextual options
+- **Error Communication**: Setup fee notifications with proper styling
+
+### Time Slot Management
+- **Multiple Periods**: Three standard time periods plus custom option
+- **Selection Tracking**: Selected time period with reactive updates
+- **Validation Integration**: Time slot validation with delivery date
+- **User Guidance**: Clear time slot selection with proper feedback
+
+### Access Restriction Handling
+- **Loading Dock**: Availability tracking with Yes/No options
+- **Lift Access**: Accessibility tracking with validation requirements
+- **Working Hours**: Restriction handling with contextual messaging
+- **Integration**: All restrictions integrate with delivery logistics
+
+**Section sources**
+- [rent_delivery_controller.dart:19-45](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L19-L45)
+- [rent_delivery_setup.dart:17-57](file://lib/features/rent_request/widgets/rent_delivery_widgets/rent_delivery_setup.dart#L17-L57)
+
+## Brand Specification and Customization
+Comprehensive brand specification system for commercial properties with customization options and image management.
+
+### Brand Requirement System
+- **Commercial Context**: Brand requirements specifically designed for commercial properties
+- **Specification Toggle**: Brand specification requirement with reactive state management
+- **Customization Options**: Logo placement, brand color matching, and custom finishes
+- **Preference Tracking**: Brand specification preferences with contextual selection
+- **Property Type Integration**: Brand requirements adapt based on property type selection
+
+### Image Management Integration
+- **Brand Image Upload**: Dedicated image upload for brand specifications
+- **Lifecycle Management**: Proper disposal and cleanup of brand images
+- **Preview Functionality**: Image preview with proper sizing and positioning
+- **Validation Integration**: Image validation with brand specification requirements
+
+### Contextual Branding
+- **Property Type Adaptation**: Brand requirements change based on property type
+- **Residential vs Commercial**: Different branding approaches for different property types
+- **Requirement Filtering**: Brand specifications filtered by property characteristics
+- **User Guidance**: Clear branding requirements with proper contextual messaging
+
+**Section sources**
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+- [rent_brand.dart:39-90](file://lib/features/rent_request/widgets/rent_brand_widgets/rent_brand.dart#L39-L90)
+
+## Rental Period and Pricing Management
+Comprehensive rental period selection system with discount calculation and flexible payment options for optimal pricing management.
+
+### Rental Period Selection
+- **Predefined Options**: Six predefined rental periods with promotional offers
+- **Discount Calculation**: Automatic discount calculation based on selected period
+- **Custom Period**: Flexible custom period selection with validation
+- **Selection Tracking**: Selected period with reactive updates and validation
+- **Promotional Offers**: Tiered discount structure with clear communication
+
+### Payment Plan Management
+- **Payment Options**: Pay in full versus pay in installments
+- **Installment Structure**: Three-tier installment plan with specific timing
+- **Upfront Payment**: Initial payment tracking with proper validation
+- **Subsequent Payments**: Automated payment tracking for installments
+- **Final Payment**: Completion payment with proper validation
+
+### Pricing and Discount System
+- **Tiered Discounts**: Progressive discount structure based on rental duration
+- **Automatic Calculation**: Real-time discount calculation with reactive updates
+- **Price Display**: Clear price display with discount communication
+- **Promotional Messaging**: Clear promotional messaging for extended rentals
+- **Value Communication**: Clear value communication for long-term rentals
+
+### Flexible Rental Terms
+- **Urgent Option**: Expedited rental with premium pricing
+- **Standard Option**: Regular rental terms with standard pricing
+- **Flexible Option**: Adjustable terms with premium flexibility
+- **Requirement Tracking**: Selected option with reactive updates
+- **Communication**: Clear communication of terms and conditions
+
+**Section sources**
+- [rent_period_controller.dart:17-38](file://lib/features/rent_request/controllers/rent_period_controller.dart#L17-L38)
+- [rent_period_controller.dart:55-68](file://lib/features/rent_request/controllers/rent_period_controller.dart#L55-L68)
+- [rent_period.dart:7-23](file://lib/features/rent_request/widgets/rent_period_widgets/rent_period.dart#L7-L23)
+
 ## Performance Considerations
-**Updated** Enhanced performance considerations reflecting the centralized architecture benefits and dual-step system integration.
+Enhanced performance considerations reflecting the centralized architecture benefits and comprehensive item management system integration.
 
 - **Centralized State Management**: RentStepController reduces memory overhead through single point of control
 - **Optimized Step Transitions**: Reactive loading states prevent unnecessary widget rebuilds
 - **Lazy Loading Benefits**: RentBindings efficiently manages controller instantiation
 - **Reduced Coupling**: Specialized controllers operate independently with minimal interdependencies
-- **Zero-Step Optimization**: StepZeroRepository minimizes API calls through efficient data handling
-- **Step-One Optimization**: StepOneRepository uses PostWithoutResponse for lightweight operations
-- **Storage Efficiency**: UUID caching reduces server round trips for session continuation
+- **Dynamic Content Generation**: Property details drive automatic content generation reducing manual updates
+- **Reactive Model Management**: Proper disposal and lifecycle management for all reactive models
 - **Enhanced Navigation**: Direct widget rendering eliminates complex navigation logic
 - **Improved Memory Usage**: Centralized step management reduces controller duplication
 - **Streamlined Dependencies**: RentStepController coordinates dependencies more efficiently
 - **Reactive UI Updates**: Obx widgets optimize rendering through selective updates
-- **Updated** **Default Step Position**: **New** Optimized initialization at step 0 reduces unnecessary navigation overhead
+- **Dynamic Property Integration**: Property details drive automatic controller updates reducing manual synchronization
+- **Comprehensive Model Lifecycle**: Proper disposal and initialization for all data models
 
 ## Troubleshooting Guide
-**Updated** Enhanced troubleshooting guide addressing the new centralized architecture, zero-step and step-one systems.
+Enhanced troubleshooting guide addressing the new centralized architecture, comprehensive item management systems, and dynamic property integration.
 
 Common issues and resolutions:
 - **Step navigation not working**: Verify RentStepController currentIndex updates and RentRequestNext widget logic
@@ -760,16 +1038,32 @@ Common issues and resolutions:
 - **Dependency injection problems**: Ensure PostWithResponse and PostWithoutResponse services are properly registered
 - **Error handling not working**: Verify Either type usage and ErrorSnackbar integration
 - **Reactive UI not updating**: Check Obx widget usage and proper reactive variable declarations
-- **Updated** **Default step position issues**: Verify RentStepController currentIndex initialization and resetFlow() method
-- **Previous button visibility**: Check RentRequestView logic for step 0 navigation prevention
+- **Dynamic content generation issues**: Verify RentPropertyDetailsController integration and controller updates
+- **Item management controller problems**: Check controller property integration and dynamic content generation
+- **Model lifecycle issues**: Verify proper disposal and initialization for all reactive models
+- **Floor plan image upload problems**: Check image upload integration and lifecycle management
+- **Furniture preference validation**: Verify style and condition preference validation logic
+- **Appliance item management**: Check dynamic item addition/removal with proper validation
+- **Delivery setup integration**: Verify access restriction handling and time slot validation
+- **Brand specification issues**: Check property type integration and image management
+- **Rental period calculation**: Verify discount calculation and payment plan validation
 
 **Section sources**
 - [rent_step_controller.dart:40-73](file://lib/features/rent_request/controllers/rent_step_controller.dart#L40-L73)
 - [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
 - [rent_property_type_controller.dart:52-70](file://lib/features/rent_request/controllers/rent_property_type_controller.dart#L52-L70)
-- [rent_request_next.dart:16-58](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L16-L58)
-- [step_zero_repo.dart:13-35](file://lib/features/rent_request/repositories/step_zero_repo.dart#L13-L35)
-- [step_one_repo.dart:15-32](file://lib/features/rent_request/repositories/step_one_repo.dart#L15-L32)
+- [rent_floor_plan_controller.dart:30-52](file://lib/features/rent_request/controllers/rent_floor_plan_controller.dart#L30-L52)
+- [rent_furniture_controller.dart:71-97](file://lib/features/rent_request/controllers/rent_furniture_controller.dart#L71-L97)
+- [rent_appliance_controller.dart:84-109](file://lib/features/rent_request/controllers/rent_appliance_controller.dart#L84-L109)
+- [rent_delivery_controller.dart:19-45](file://lib/features/rent_request/controllers/rent_delivery_controller.dart#L19-L45)
+- [rent_brand_controller.dart:3-14](file://lib/features/rent_request/controllers/rent_brand_controller.dart#L3-L14)
+- [rent_period_controller.dart:17-38](file://lib/features/rent_request/controllers/rent_period_controller.dart#L17-L38)
 
 ## Conclusion
-The Rent Furniture System has successfully transitioned to a centralized, reactive, and scalable architecture through the implementation of RentStepController as the primary orchestrator, enhanced by comprehensive zero-step and step-one rental request systems. **Updated** The system now begins at step 0 (business information collection) rather than step 2, providing a more intuitive user experience by ensuring all users start at the first step of the rental process. The integration of StepZeroModel, StepZeroRepository, and the new StepOneRepository provides robust business identification, property type selection, and session management capabilities, while the enhanced dependency injection patterns ensure proper service coordination. The 10-step flow system provides comprehensive step-by-step navigation with integrated validation logic, while specialized controllers maintain domain-specific functionality. The new property type selection workflow with dynamic options and reactive UI updates significantly enhances user experience. This architectural transformation enhances maintainability, improves user experience through intelligent navigation, and establishes a robust foundation for future enhancements including backend integration, tenant screening, and contract generation workflows.
+The Rent Furniture System has successfully transitioned to a comprehensive, reactive, and scalable architecture through the implementation of RentStepController as the primary orchestrator, enhanced by advanced item management systems with dynamic property integration. The system now features sophisticated 10-step workflow with specialized controllers for floor plan configuration, furniture preferences, appliance requirements, brand specifications, rental periods, and delivery arrangements.
+
+The enhanced architecture includes RentFloorPlanController for detailed floor plan management, RentFurnitureController for sophisticated furniture selection with style and condition preferences, RentApplianceController for comprehensive appliance requirements with multi-unit support, RentBrandController for commercial property branding, RentPeriodController for rental period and pricing management, and RentDeliveryController for comprehensive delivery setup. All controllers integrate with RentPropertyDetailsController for dynamic content generation based on property characteristics.
+
+The system maintains centralized validation logic through RentStepController while providing specialized domain-specific functionality. The comprehensive data models ensure proper lifecycle management and reactive updates. The enhanced dependency injection patterns ensure proper service coordination across all components.
+
+This architectural transformation enhances maintainability, improves user experience through intelligent navigation and contextual interfaces, and establishes a robust foundation for future enhancements including backend integration, tenant screening, and contract generation workflows. The dynamic property integration ensures that all item management systems adapt seamlessly to different property types and requirements, providing a truly comprehensive rental request solution.

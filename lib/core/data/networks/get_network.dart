@@ -30,11 +30,12 @@ class GetNetwork {
           ),
         );
       } catch (error) {
+        debugPrint("$error$url");
         return left(ErrorModel.fromUnknown());
       }
     } catch (error) {
-      debugPrint(error.toString());
-      return left(error as ErrorModel);
+      debugPrint("$error$url");
+      return left(ErrorModel.fromUnknown());
     }
   }
 }

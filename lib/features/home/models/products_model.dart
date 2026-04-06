@@ -44,10 +44,11 @@ class Product {
   final String status;
   final dynamic dimensions;
   final Category category;
-  final FurnitureType furnitureType;
+  final FurnitureType? furnitureType;
   final List<Room> rooms;
   final List<Media> media;
   final List<DefaultOptionId>? defaultOptionIds;
+  final int totalReviews;
   final DateTime createdAt;
   final dynamic updatedAt;
 
@@ -69,10 +70,11 @@ class Product {
     required this.status,
     this.dimensions,
     required this.category,
-    required this.furnitureType,
-    required this.rooms,
+    this.furnitureType,
+    this.rooms = const [],
     required this.media,
     this.defaultOptionIds,
+    this.totalReviews = 0,
     required this.createdAt,
     this.updatedAt,
   });
@@ -95,14 +97,19 @@ class Product {
     status: json["status"],
     dimensions: json["dimensions"],
     category: Category.fromJson(json["category"]),
-    furnitureType: FurnitureType.fromJson(json["furniture_type"]),
-    rooms: List<Room>.from(json["rooms"].map((x) => Room.fromJson(x))),
+    furnitureType: json["furniture_type"] != null
+        ? FurnitureType.fromJson(json["furniture_type"])
+        : null,
+    rooms: json["rooms"] != null
+        ? List<Room>.from(json["rooms"].map((x) => Room.fromJson(x)))
+        : [],
     media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
     defaultOptionIds: json["default_option_ids"] != null
         ? List<DefaultOptionId>.from(
             json["default_option_ids"].map((x) => DefaultOptionId.fromJson(x)),
           )
         : [],
+    totalReviews: json["total_reviews"] ?? 0,
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"],
   );
@@ -125,12 +132,13 @@ class Product {
     "status": status,
     "dimensions": dimensions,
     "category": category.toJson(),
-    "furniture_type": furnitureType.toJson(),
+    "furniture_type": furnitureType?.toJson(),
     "rooms": List<dynamic>.from(rooms.map((x) => x.toJson())),
     "media": List<dynamic>.from(media.map((x) => x.toJson())),
     "default_option_ids": defaultOptionIds != null
         ? List<dynamic>.from(defaultOptionIds!.map((x) => x.toJson()))
         : [],
+    "total_reviews": totalReviews,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt,
   };

@@ -38,13 +38,21 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
                           onCart: () {},
                           image:
                               controller
-                                  .newArrivals
-                                  .value
-                                  ?.data[index]
-                                  .media
-                                  .first
-                                  .url ??
-                              '',
+                                      .newArrivals
+                                      .value
+                                      ?.data[index]
+                                      .media
+                                      .isNotEmpty ==
+                                  true
+                              ? controller
+                                        .newArrivals
+                                        .value
+                                        ?.data[index]
+                                        .media
+                                        .first
+                                        .url ??
+                                    ''
+                              : '',
                         ),
                         SizedBox(height: 14.h),
                         HomeProductText(
