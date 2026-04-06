@@ -128,5 +128,6 @@ class IconsPath {
   static const String upload = 'assets/icons/upload.png';
   static const String speed = 'assets/icons/speed.png';
   static const String verify = 'assets/icons/verify.png';
+  static const String deliveryVan = 'assets/icons/delivery_van.png';
 
 }

@@ -14,6 +14,8 @@ import 'package:zb_dezign/features/auth/views/signin_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_option_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_view.dart';
 import 'package:zb_dezign/features/auth/views/user_mode_view.dart';
+import 'package:zb_dezign/features/cart/bindings/cart_bindings.dart';
+import 'package:zb_dezign/features/cart/views/cart_view.dart';
 import 'package:zb_dezign/features/credit_balance/bindings/credit_balance_bindings.dart';
 import 'package:zb_dezign/features/credit_balance/views/credit_balance_view.dart';
 import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
@@ -207,5 +209,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.productDetailsView,
     page: () => ProductDetailsView(),
     binding: ProductDetailsBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.cartView,
+    page: () => CartView(),
+    binding: CartBindings(),
   ),
 ];

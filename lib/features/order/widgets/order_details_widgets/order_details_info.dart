@@ -132,7 +132,7 @@ class OrderDetailsInfo extends StatelessWidget {
       text: text,
       fontWeight: FontWeight.w400,
       fontSize: 14.sp,
-      color: isDark ? AppColors.darkPrimaryTextColor : Color(0xFF737373),
+      color: isDark ? AppColors.darkPrimaryTextColor : AppColors.lightTextColor,
     );
   }
 
@@ -141,7 +141,7 @@ class OrderDetailsInfo extends StatelessWidget {
       height: 13.h,
       width: 1.w,
       decoration: BoxDecoration(
-        color: isDark ? Color(0xFF697483) : Color(0xFF737373),
+        color: isDark ? Color(0xFF697483) : AppColors.lightTextColor,
       ),
     );
   }

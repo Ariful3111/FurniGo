@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/cart/controller/cart_controller.dart';
 import 'package:zb_dezign/features/home/controller/bottom_nav_controller.dart';
 import 'package:zb_dezign/features/home/controller/get_new_arrivals_controller.dart';
 import 'package:zb_dezign/features/home/controller/get_product_types_controller.dart';
@@ -39,5 +40,6 @@ class HomeBindings implements Bindings {
       () => GlobalSearchController(globalSearchRepository: Get.find()),
     );
     Get.lazyPut(() => CustomDrawerController());
+    Get.lazyPut(() => CartController());
   }
 }

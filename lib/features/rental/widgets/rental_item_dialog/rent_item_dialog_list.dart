@@ -33,16 +33,16 @@ class RentItemDialogList extends GetWidget<RentalQuotesController> {
               title: 'Furniture',
               itemCount: '${furnitureItems.length}',
             ),
-            SizedBox(height: 24.h,),
+            SizedBox(height: 24.h),
             if (furnitureItems.isNotEmpty) ...[
               _buildListSection(context, furnitureItems, approved, isDark),
-              SizedBox(height: 24.h,),
+              SizedBox(height: 24.h),
             ],
             RentItemDialogHeader(
               title: 'Appliances',
               itemCount: '${applianceItems.length}',
             ),
-            SizedBox(height: 24.h,),
+            SizedBox(height: 24.h),
             if (applianceItems.isNotEmpty) ...[
               _buildListSection(context, applianceItems, approved, isDark),
             ],
@@ -63,7 +63,9 @@ class RentItemDialogList extends GetWidget<RentalQuotesController> {
         final item = items[index];
         final isApproved = approvedList.contains(item);
         return Padding(
-          padding:  EdgeInsets.only(bottom:items.length-1==index?0: 16.h),
+          padding: EdgeInsets.only(
+            bottom: items.length - 1 == index ? 0 : 16.h,
+          ),
           child: Row(
             children: [
               Container(
@@ -98,7 +100,7 @@ class RentItemDialogList extends GetWidget<RentalQuotesController> {
                           fontSize: 12.sp,
                           color: isDark
                               ? AppColors.primaryBorderColor
-                              : Color(0xFF737373),
+                              : AppColors.lightTextColor,
                         ),
                         SizedBox(width: 7.3.w),
                         CustomPrimaryText(
@@ -106,7 +108,7 @@ class RentItemDialogList extends GetWidget<RentalQuotesController> {
                           fontSize: 12.sp,
                           color: isDark
                               ? AppColors.primaryBorderColor
-                              : Color(0xFF737373),
+                              : AppColors.lightTextColor,
                         ),
                         SizedBox(width: 7.3.w),
                         CustomPrimaryText(
@@ -114,7 +116,7 @@ class RentItemDialogList extends GetWidget<RentalQuotesController> {
                           fontSize: 12.sp,
                           color: isDark
                               ? AppColors.primaryBorderColor
-                              : Color(0xFF737373),
+                              : AppColors.lightTextColor,
                         ),
                       ],
                     ),

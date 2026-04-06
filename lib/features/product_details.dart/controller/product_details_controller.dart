@@ -4,7 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/core/constant/images_path.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_info.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart';
 
 class ProductDetailsController extends GetxController {
   final CarouselSliderController carouselController =
@@ -31,6 +34,7 @@ class ProductDetailsController extends GetxController {
   RxList<bool> isOpen = <bool>[].obs;
 
   final List<String> tabs = ['Customize', 'Product Details', 'Shipping'];
+  List<Widget> widgets = [ProductFurnitureCustomizedWidgets(),ProductDetailsInfo(),ProductDetailsShipping()];
 
   final List<Map<String, dynamic>> items = [
     {
@@ -81,9 +85,7 @@ class ProductDetailsController extends GetxController {
       changeIndex(currentIndex.value - 1);
     }
   }
-
   RxInt reviewIndex = 0.obs;
-
   final reviews = [
     {
       "name": "Ramic Matue",
@@ -118,14 +120,12 @@ class ProductDetailsController extends GetxController {
     isOpen.value = List.generate(items.length, (index) => false);
     productScrollController.addListener(() {
       double currentScrollOffset = productScrollController.offset;
-
       if (currentScrollOffset > lastScrollOffset &&
           currentScrollOffset > 100.h) {
         isCartVisible.value = false;
       } else {
         isCartVisible.value = true;
       }
-
       lastScrollOffset = currentScrollOffset;
     });
     super.onInit();
