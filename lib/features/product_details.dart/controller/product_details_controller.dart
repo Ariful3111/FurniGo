@@ -7,6 +7,9 @@ import 'package:zb_dezign/features/product_details.dart/models/product_details_m
 import 'package:zb_dezign/features/product_details.dart/repositories/product_details_repo.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_info.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart';
 
 class ProductDetailsController extends GetxController {
   final ProductDetailsRepository productDetailsRepository;
@@ -54,6 +57,7 @@ class ProductDetailsController extends GetxController {
   RxList<bool> isOpen = <bool>[].obs;
 
   final List<String> tabs = ['Customize', 'Product Details', 'Shipping'];
+  List<Widget> widgets = [ProductFurnitureCustomizedWidgets(),ProductDetailsInfo(),ProductDetailsShipping()];
 
   final List<Map<String, dynamic>> items = [
     {
@@ -97,9 +101,7 @@ class ProductDetailsController extends GetxController {
     int prevIndex = (currentIndex.value - 1 + imagesLength) % imagesLength;
     changeIndex(prevIndex);
   }
-
   RxInt reviewIndex = 0.obs;
-
   final reviews = [
     {
       "name": "Ramic Matue",
@@ -133,14 +135,12 @@ class ProductDetailsController extends GetxController {
     isOpen.value = List.generate(items.length, (index) => false);
     productScrollController.addListener(() {
       double currentScrollOffset = productScrollController.offset;
-
       if (currentScrollOffset > lastScrollOffset &&
           currentScrollOffset > 100.h) {
         isCartVisible.value = false;
       } else {
         isCartVisible.value = true;
       }
-
       lastScrollOffset = currentScrollOffset;
     });
     super.onInit();

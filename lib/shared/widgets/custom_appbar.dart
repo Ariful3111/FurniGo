@@ -26,15 +26,15 @@ class CustomAppbar extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
-        InkWell(
+        isIcon?InkWell(
           onTap: onDrawerTap,
-          child:isIcon?Image.asset(
+          child:Image.asset(
             icon ?? IconsPath.drawer,
             height: 24.h,
             width: 24.w,
             color: isDark ? AppColors.whiteColor : null,
-          ):SizedBox.shrink(),
-        ),
+          ),
+        ):SizedBox.shrink(),
         SizedBox(width: 8.w),
         CustomPrimaryText(
           text: title,
