@@ -132,6 +132,9 @@ class IconsPath {
   static const String dropOf = 'assets/icons/drop_of.png';
   static const String fedx = 'assets/icons/fedx.png';
   static const String paypal = 'assets/icons/paypal.png';
+  static const String pen = 'assets/icons/pen.png';
+  static const String category = 'assets/icons/category.png';
+  static const String material = 'assets/icons/material.png';
 
 
 }

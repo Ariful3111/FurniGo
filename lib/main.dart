@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
             initialBinding: token.isEmpty ? OnboardBindings() : HomeBindings(),
             initialRoute: token.isEmpty
                 ? AppRoutes.onboardingView
-                : AppRoutes.checkoutView,
+                : AppRoutes.bottomNav,
             getPages: appRoutes,
           );
         });

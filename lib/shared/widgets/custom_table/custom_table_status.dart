@@ -48,6 +48,7 @@ class CustomTableStatus extends StatelessWidget {
       case 'Open':
       case 'Completed':
       case 'Competed':
+      case 'Default':
         bgColor = isDark
             ? AppColors.darkActiveBGColor
             : AppColors.activeBGColor;

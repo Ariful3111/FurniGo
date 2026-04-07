@@ -19,7 +19,12 @@ class NotificationHeader extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Image.asset(IconsPath.back, height: 24.h, width: 24.w),
+          child: Image.asset(
+            IconsPath.back,
+            height: 24.h,
+            width: 24.w,
+            color: isDark ? AppColors.primaryBorderColor : null,
+          ),
         ),
         SizedBox(width: 8.w),
         Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 
 class CustomRatingBar extends StatelessWidget {
@@ -22,6 +23,7 @@ class CustomRatingBar extends StatelessWidget {
       itemCount: 5,
       itemSize: itemSize ?? 20.sp,
       itemPadding: EdgeInsets.all(2.r),
+      unratedColor: AppColors.fieldBorderColor,
       itemBuilder: (_, _) {
         return Image.asset(image ?? IconsPath.rating, color: ratingColor);
       },

@@ -85,7 +85,7 @@ class SellFlowReviewAi extends GetView<SellFlowReviewController> {
                       "I confirm I own this item and can share these images/documents for quoting.",
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
-                  color:isDark? AppColors.primaryBorderColor: Color(0xFF364153),
+                  color:isDark? AppColors.primaryBorderColor: AppColors.lightGreyColor,
                 ),
               ),
             ],
