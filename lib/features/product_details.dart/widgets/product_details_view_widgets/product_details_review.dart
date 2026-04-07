@@ -5,8 +5,10 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/product_details.dart/controller/product_details_controller.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_review_card.dart';
+import 'package:zb_dezign/shared/extensions/formatters/date_formatter.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_rating_dialog.dart';
+import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class ProductDetailsReview extends GetWidget<ProductDetailsController> {
   const ProductDetailsReview({super.key});
@@ -14,55 +16,70 @@ class ProductDetailsReview extends GetWidget<ProductDetailsController> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return Obx(() {
-      final review = controller.reviews[controller.reviewIndex.value];
+
+    if (controller.productDetails.value == null) {
+      return SizedBox.shrink();
+    }
+
+    final reviews = controller.productDetails.value!.data.reviews;
+
+    if (reviews.isEmpty) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Column(
-          children: [
-            ProductDetailsReviewCard(
-              name: review["name"].toString(),
-              time: review["time"].toString(),
-              rating: review["rating"] as double,
-              image: review["image"].toString(),
-              review: review["review"].toString(),
-              isDark: isDark,
-            ),
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _navButton(
-                  icon: IconsPath.arrowLeft,
-                  isDark: isDark,
-                  isFilled: false,
-                  onTap: () {
-                    if (controller.reviewIndex.value > 0) {
-                      controller.reviewIndex.value--;
-                    }
-                  },
-                ),
-                SizedBox(width: 10.w),
-                _navButton(
-                  icon: IconsPath.arrowRight,
-                  isDark: isDark,
-                  isFilled: true,
-                  onTap: () {
-                    if (controller.reviewIndex.value <
-                        controller.reviews.length - 1) {
-                      controller.reviewIndex.value++;
-                    }
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            CustomPrimaryButton(
-              text: 'Submit Your Review',
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) =>Obx(()=> CustomRatingDialog(
+        child: Center(child: CustomPrimaryText(text: "No reviews yet")),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Column(
+        children: [
+          ProductDetailsReviewCard(
+            name: reviews[controller.reviewIndex.value].reviewerName,
+            time: reviews[controller.reviewIndex.value].createdAt
+                .toSmartRelativeTime(),
+            rating: reviews[controller.reviewIndex.value].rating.toDouble(),
+            image:
+                reviews[controller.reviewIndex.value].reviewerImage ??
+                IconsPath.profile,
+            review: reviews[controller.reviewIndex.value].review,
+            isDark: isDark,
+          ),
+          SizedBox(height: 16.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _navButton(
+                icon: IconsPath.arrowLeft,
+                isDark: isDark,
+                isFilled: false,
+                onTap: () {
+                  if (controller.reviewIndex.value > 0) {
+                    controller.reviewIndex.value--;
+                  }
+                },
+              ),
+              SizedBox(width: 10.w),
+              _navButton(
+                icon: IconsPath.arrowRight,
+                isDark: isDark,
+                isFilled: true,
+                onTap: () {
+                  if (controller.reviewIndex.value < reviews.length - 1) {
+                    controller.reviewIndex.value++;
+                  }
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          CustomPrimaryButton(
+            text: 'Submit Your Review',
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => Obx(
+                  () => CustomRatingDialog(
                     onSubmitTap: () {},
                     rating: controller.rating.value,
                     textEditingController: controller.ratingController,
@@ -70,15 +87,15 @@ class ProductDetailsReview extends GetWidget<ProductDetailsController> {
                       controller.rating.value = value;
                     },
                     isLoading: controller.isLoading.value,
-                  )),
-                );
-              },
-              width: 200.w,
-            ),
-          ],
-        ),
-      );
-    });
+                  ),
+                ),
+              );
+            },
+            width: 200.w,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _navButton({

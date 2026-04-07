@@ -22,13 +22,15 @@ class ProductDetailsTab extends GetWidget<ProductDetailsController> {
             padding: EdgeInsets.all(8.w),
             radius: 60.r,
             color: isDark ? AppColors.labelColor : Color(0xFFF4F6F8),
-            child: Row(
-              children: List.generate(controller.tabs.length, (index) {
-                return Obx(() {
+            child: Obx(() {
+              return Row(
+                children: List.generate(controller.tabs.length, (index) {
                   final isSelected = controller.selectedIndex.value == index;
                   return Expanded(
                     child: GestureDetector(
-                      onTap: () => controller.selectedIndex.value = index,
+                      onTap: () {
+                        controller.selectedIndex.value = index;
+                      },
                       child: SharedContainer(
                         padding: EdgeInsets.symmetric(
                           horizontal: 16.w,
@@ -52,20 +54,33 @@ class ProductDetailsTab extends GetWidget<ProductDetailsController> {
                       ),
                     ),
                   );
-                });
-              }),
-            ),
+                }),
+              );
+            }),
           ),
           SizedBox(height: 12.h),
-          AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
-            switchInCurve: Curves.easeInOut,
-            switchOutCurve: Curves.easeInOut,
-            child: KeyedSubtree(
-              key: ValueKey(controller.selectedIndex.value),
-              child: controller.widgets[controller.selectedIndex.value],
-            ),
-          ),
+          Obx(() {
+            return AnimatedSwitcher(
+              duration: Duration(milliseconds: 400),
+              switchInCurve: Curves.easeOutCubic,
+              switchOutCurve: Curves.easeInCubic,
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                final offsetAnimation = Tween<Offset>(
+                  begin: Offset(0.1, 0.0),
+                  end: Offset.zero,
+                ).animate(animation);
+
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: FadeTransition(opacity: animation, child: child),
+                );
+              },
+              child: KeyedSubtree(
+                key: ValueKey(controller.selectedIndex.value),
+                child: controller.widgets[controller.selectedIndex.value],
+              ),
+            );
+          }),
         ],
       ),
     );

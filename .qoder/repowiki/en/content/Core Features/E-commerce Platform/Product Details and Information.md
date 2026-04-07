@@ -14,6 +14,7 @@
 - [product_details_cart.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart)
 - [product_details_helper.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_helper.dart)
 - [product_furniture_customized_widgets.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart)
+- [product_furniture_customized.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized.dart)
 - [product_details_rating.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart)
 - [product_details_review.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_review.dart)
 - [related_products.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/related_products.dart)
@@ -28,6 +29,7 @@
 - [product_details_shipping.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping.dart)
 - [product_details_shipping_delivery.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping_delivery.dart)
 - [product_details_shipping_membership.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping_membership.dart)
+- [dimension_formatter.dart](file://lib/shared/extensions/formatters/dimension_formatter.dart)
 - [shared_container.dart](file://lib/shared/widgets/shared_container.dart)
 - [custom_primary_text.dart](file://lib/shared/widgets/custom_text/custom_primary_text.dart)
 - [colors.dart](file://lib/core/constant/colors.dart)
@@ -37,13 +39,12 @@
 
 ## Update Summary
 **Changes Made**
-- Added comprehensive repository layer with dedicated ProductDetailsRepository for data fetching
-- Implemented complete data model hierarchy with ProductDetailsModel, ProductDetail, and nested entities
-- Enhanced controller with dynamic loading states and comprehensive error handling
-- Added new specialized shipping information widgets with delivery and membership components
-- Expanded tabbed interface with product specifications and shipping information sections
-- Integrated new ProductDetailsInfo widget for detailed product dimensions display
-- Enhanced UI components with improved responsive design and theme adaptation
+- Enhanced dimension formatting system with new DimensionFormatter utility for robust data parsing
+- Implemented accordion-based furniture customization widgets replacing monolithic widget approach
+- Upgraded tab system with AnimatedSwitcher for smoother transitions between tab content
+- Improved data handling with dynamic dimension parsing and error management
+- Updated pricing display logic to use finalPrice instead of base price for accurate pricing
+- Added comprehensive error handling for dimension parsing with fallback mechanisms
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -56,15 +57,18 @@
 8. [Enhanced Controller Implementation](#enhanced-controller-implementation)
 9. [Dynamic Loading States](#dynamic-loading-states)
 10. [Enhanced Tabbed Interface System](#enhanced-tabbed-interface-system)
-11. [Specialized Shipping Information Components](#specialized-shipping-information-components)
-12. [Product Specifications Display](#product-specifications-display)
-13. [Dependency Analysis](#dependency-analysis)
-14. [Performance Considerations](#performance-considerations)
-15. [Troubleshooting Guide](#troubleshooting-guide)
-16. [Conclusion](#conclusion)
+11. [Accordion-Based Furniture Customization](#accordion-based-furniture-customization)
+12. [Advanced Dimension Formatting System](#advanced-dimension-formatting-system)
+13. [Specialized Shipping Information Components](#specialized-shipping-information-components)
+14. [Product Specifications Display](#product-specifications-display)
+15. [Pricing Display Enhancement](#pricing-display-enhancement)
+16. [Dependency Analysis](#dependency-analysis)
+17. [Performance Considerations](#performance-considerations)
+18. [Troubleshooting Guide](#troubleshooting-guide)
+19. [Conclusion](#conclusion)
 
 ## Introduction
-This document provides comprehensive documentation for the fully enhanced Product Details feature. The feature has been transformed from a partially completed implementation to a fully functional, production-ready solution with a complete repository layer, comprehensive data model, dynamic loading states, and enhanced UI components. The implementation now includes sophisticated product specifications display, shipping information widgets, tab navigation system, and robust error handling mechanisms.
+This document provides comprehensive documentation for the fully enhanced Product Details feature. The feature has been transformed from a partially completed implementation to a fully functional, production-ready solution with a complete repository layer, comprehensive data model, dynamic loading states, and enhanced UI components. The implementation now includes sophisticated product specifications display, shipping information widgets, tab navigation system with AnimatedSwitcher transitions, accordion-based furniture customization, and robust error handling mechanisms.
 
 ## Project Structure
 The Product Details feature now follows a complete MVVM architecture with dedicated layers for data management, business logic, and presentation.
@@ -75,13 +79,13 @@ subgraph "Application Bootstrap"
 MAIN["main.dart"]
 ROUTES["routes.dart"]
 APP_ROUTES["app_routes.dart"]
-end
+END
 subgraph "Enhanced Product Details Architecture"
 PD_BINDINGS["product_details_bindings.dart<br/>+14 lines enhanced"]
 PD_CONTROLLER["product_details_controller.dart<br/>+162 lines enhanced"]
 PD_REPO["product_details_repo.dart<br/>+22 lines enhanced"]
 PD_MODEL["product_details_model.dart<br/>+278 lines enhanced"]
-end
+END
 subgraph "Enhanced View Layer"
 PD_VIEW["product_details_view.dart<br/>+91 lines enhanced"]
 PD_TAB["product_details_tab.dart<br/>+69 lines enhanced"]
@@ -89,15 +93,20 @@ PD_INFO["product_details_info.dart<br/>+75 lines enhanced"]
 PD_SHIPPING["product_details_shipping.dart<br/>+20 lines enhanced"]
 PD_DELIVERY["product_details_shipping_delivery.dart<br/>+66 lines enhanced"]
 PD_MEMBERSHIP["product_details_shipping_membership.dart<br/>+82 lines enhanced"]
-end
+PD_CUSTOMIZED["product_furniture_customized_widgets.dart<br/>+244 lines enhanced"]
+PD_FURNITURE["product_furniture_customized.dart<br/>+63 lines enhanced"]
+END
 subgraph "Supporting Components"
 PD_CART["product_details_cart.dart"]
 PD_HELPER["product_details_helper.dart"]
-PD_CUSTOMIZED["product_furniture_customized_widgets.dart"]
+PD_DESCRIPTION["product_details_description.dart<br/>+89 lines enhanced"]
 PD_RATING["product_details_rating.dart"]
 PD_REVIEW["product_details_review.dart"]
 PD_RELATED["related_products.dart"]
-end
+END
+subgraph "Utility Extensions"
+DIMENSION_FORMATTER["dimension_formatter.dart<br/>+81 lines enhanced"]
+END
 MAIN --> ROUTES
 ROUTES --> APP_ROUTES
 PD_BINDINGS --> PD_CONTROLLER
@@ -106,11 +115,13 @@ PD_CONTROLLER --> PD_MODEL
 PD_VIEW --> PD_TAB
 PD_VIEW --> PD_INFO
 PD_VIEW --> PD_SHIPPING
+PD_VIEW --> PD_DESCRIPTION
 PD_SHIPPING --> PD_DELIVERY
 PD_SHIPPING --> PD_MEMBERSHIP
 PD_VIEW --> PD_CART
 PD_VIEW --> PD_HELPER
 PD_TAB --> PD_CUSTOMIZED
+PD_CUSTOMIZED --> DIMENSION_FORMATTER
 ```
 
 **Diagram sources**
@@ -127,6 +138,9 @@ PD_TAB --> PD_CUSTOMIZED
 - [product_details_shipping.dart:1-20](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping.dart#L1-L20)
 - [product_details_shipping_delivery.dart:1-66](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping_delivery.dart#L1-L66)
 - [product_details_shipping_membership.dart:1-82](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping_membership.dart#L1-L82)
+- [product_furniture_customized_widgets.dart:1-244](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart#L1-L244)
+- [product_furniture_customized.dart:1-63](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized.dart#L1-L63)
+- [dimension_formatter.dart:1-81](file://lib/shared/extensions/formatters/dimension_formatter.dart#L1-L81)
 
 **Section sources**
 - [main.dart:12-47](file://lib/main.dart#L12-L47)
@@ -142,9 +156,11 @@ The enhanced Product Details feature now includes a complete architectural found
 - **ProductDetailsRepository**: Dedicated data access layer with network integration and error handling
 - **ProductDetailsModel**: Complete data model hierarchy with nested entities for categories, furniture types, rooms, media, and default options
 - **ProductDetailsView**: Fully enhanced layout with dynamic loading states and comprehensive component integration
-- **ProductDetailsTab**: Advanced tabbed interface with three specialized sections
-- **ProductDetailsInfo**: Detailed product specifications display with dimensions and measurements
-- **ProductDetailsShipping**: Comprehensive shipping information with delivery and membership components
+- **ProductDetailsTab**: Advanced tabbed interface with AnimatedSwitcher for smooth transitions and three specialized sections
+- **ProductDetailsInfo**: Enhanced product specifications display with DimensionFormatter utility for robust data parsing
+- **ProductDetailsDescription**: Updated pricing display logic using finalPrice instead of base price
+- **ProductFurnitureCustomizedWidgets**: New accordion-based furniture customization system with expandable panels
+- **DimensionFormatter**: New utility class for comprehensive dimension data parsing and formatting
 
 **Section sources**
 - [product_details_bindings.dart:1-14](file://lib/features/product_details.dart/bindings/product_details_bindings.dart#L1-L14)
@@ -154,7 +170,9 @@ The enhanced Product Details feature now includes a complete architectural found
 - [product_details_view.dart:1-91](file://lib/features/product_details.dart/views/product_details_view.dart#L1-L91)
 - [product_details_tab.dart:1-69](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_tab.dart#L1-L69)
 - [product_details_info.dart:1-75](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_info.dart#L1-L75)
-- [product_details_shipping.dart:1-20](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping.dart#L1-L20)
+- [product_details_description.dart:1-89](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_description.dart#L1-L89)
+- [product_furniture_customized_widgets.dart:1-244](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart#L1-L244)
+- [dimension_formatter.dart:1-81](file://lib/shared/extensions/formatters/dimension_formatter.dart#L1-L81)
 
 ## Architecture Overview
 The enhanced Product Details feature follows a complete MVVM architecture with comprehensive separation of concerns and dependency injection.
@@ -173,6 +191,8 @@ class ProductDetailsController {
 +getProductDetails(productID) Future~void~
 +scroll controller management
 +state management integration
++accordion expansion state
++AnimatedSwitcher integration
 }
 class ProductDetailsRepository {
 +GetNetwork getNetwork
@@ -194,6 +214,13 @@ class ProductDetailsView {
 +component composition
 +responsive design
 }
+class DimensionFormatter {
++parseDimensions() Map
++formatKey() String
++formatValue() String
++toList() List
++error handling
+}
 ```
 
 **Diagram sources**
@@ -202,6 +229,7 @@ class ProductDetailsView {
 - [product_details_repo.dart:7-21](file://lib/features/product_details.dart/repositories/product_details_repo.dart#L7-L21)
 - [product_details_model.dart:9-18](file://lib/features/product_details.dart/models/product_details_model.dart#L9-L18)
 - [product_details_view.dart:19-89](file://lib/features/product_details.dart/views/product_details_view.dart#L19-L89)
+- [dimension_formatter.dart:3-80](file://lib/shared/extensions/formatters/dimension_formatter.dart#L3-L80)
 
 ## Detailed Component Analysis
 
@@ -261,7 +289,7 @@ The data model provides complete type safety and structured data representation:
 - **Nested Collections**: Support for multiple rooms, media, and default options
 - **Optional Fields**: Proper handling of nullable properties
 - **Date Time Handling**: ISO format date parsing and serialization
-- **JSON Serialization**: Complete conversion to/from JSON format
+- **Final Price Field**: Updated pricing structure with finalPrice for accurate calculations
 
 **Section sources**
 - [product_details_model.dart:1-278](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L278)
@@ -274,12 +302,15 @@ The controller now manages the complete product details lifecycle:
 - **productDetails**: Rxn<ProductDetailsModel> for reactive data binding
 - **productDetailsRepository**: Injected repository dependency
 - **woodColors**: Comprehensive wood finish palette with 10 options
-- **widgets**: Dynamic widget array for tab content
+- **widgets**: Dynamic widget array for tab content with AnimatedSwitcher support
+- **isOpen**: RxList<bool> for accordion expansion state management
+- **selectedIndex**: RxInt for tab selection with AnimatedSwitcher key binding
 
 **Enhanced Methods:**
 - **getProductDetails()**: Async data fetching with loading state management
 - **changeIndex()**: Carousel slider navigation with controller integration
 - **next()/previous()**: Image gallery navigation with modulo arithmetic
+- **toggleExpand()**: New method for accordion panel state management
 - **Scroll Controller**: Automatic cart visibility management based on scroll position
 
 **Reactive State Management:**
@@ -309,7 +340,7 @@ The enhanced loading system provides comprehensive user feedback:
 - [product_details_controller.dart:25-43](file://lib/features/product_details.dart/controller/product_details_controller.dart#L25-L43)
 
 ## Enhanced Tabbed Interface System
-The advanced tabbed interface provides three comprehensive sections:
+The advanced tabbed interface provides three comprehensive sections with AnimatedSwitcher for smooth transitions:
 
 **Tab Configuration:**
 - **Customize**: Furniture customization with expandable panels and interactive options
@@ -317,13 +348,58 @@ The advanced tabbed interface provides three comprehensive sections:
 - **Shipping**: Detailed shipping information with delivery options and membership benefits
 
 **Implementation Features:**
-- **Animated Tab Switching**: Smooth transitions between tab content
-- **Dynamic Content Loading**: Content loads based on selected tab index
+- **Animated Tab Switching**: Smooth transitions between tab content using AnimatedSwitcher
+- **Dynamic Content Loading**: Content loads based on selected tab index with proper key management
 - **Shared Container Styling**: Consistent visual design across all tabs
 - **Responsive Typography**: Adaptive text sizing and styling
+- **Smooth Animations**: 300ms duration with easeInOut curves for professional feel
 
 **Section sources**
 - [product_details_tab.dart:1-69](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_tab.dart#L1-L69)
+
+## Accordion-Based Furniture Customization
+The new accordion-based furniture customization system replaces the monolithic widget approach with modular, expandable panels:
+
+**Accordion Implementation:**
+- **ProductAccordionItem**: Individual accordion panel with expand/collapse functionality
+- **AttributeOptionsList**: Dynamic option listing for each attribute category
+- **AttributeOptionChip**: Interactive chips for selecting customization options
+- **Toggle Expansion**: Smooth animated expansion using AnimatedSize widget
+
+**Key Features:**
+- **Modular Design**: Each customization category is its own expandable panel
+- **Smooth Animations**: 300ms duration with easeInOut curves for professional feel
+- **Visual Feedback**: Animated rotation of chevron icons during expansion
+- **Responsive Layout**: Wrap-based layout for customization options with proper spacing
+- **Price Display**: Option chips show price differences for transparent pricing
+
+**Section sources**
+- [product_furniture_customized_widgets.dart:1-244](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart#L1-L244)
+
+## Advanced Dimension Formatting System
+The new DimensionFormatter utility provides comprehensive dimension data parsing and formatting:
+
+**DimensionFormatter Features:**
+- **Dynamic Parsing**: Handles both Map and JSON String input with error recovery
+- **Smart Formatting**: Automatic unit detection for weight (kg) and dimensions (cm)
+- **Key Processing**: Converts snake_case keys to readable titles
+- **Safe Error Handling**: Graceful fallback for invalid or null data
+
+**Parsing Logic:**
+- **Null Safety**: Returns empty map for null input
+- **JSON Parsing**: Attempts JSON decode for string inputs
+- **Type Checking**: Validates input types and formats
+- **Unit Detection**: Intelligent unit assignment based on key patterns
+
+**Formatting Capabilities:**
+- **Title Formatting**: Converts keys like "weight_kg" to "Weight Kg"
+- **Value Processing**: Formats numeric values with 2 decimal places
+- **Unit Addition**: Automatically appends appropriate units (kg/cm)
+- **Fallback Handling**: Returns "N/A" for invalid or null values
+
+**Section sources**
+- [dimension_formatter.dart:1-81](file://lib/shared/extensions/formatters/dimension_formatter.dart#L1-L81)
+- [product_details_info.dart:16-18](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_info.dart#L16-L18)
 
 ## Specialized Shipping Information Components
 The shipping information system provides comprehensive delivery details:
@@ -354,12 +430,12 @@ The shipping information system provides comprehensive delivery details:
 - [product_details_shipping_membership.dart:1-82](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping_membership.dart#L1-L82)
 
 ## Product Specifications Display
-The ProductDetailsInfo component provides comprehensive product dimension information:
+The ProductDetailsInfo component provides comprehensive product dimension information using the new DimensionFormatter:
 
 **Specification Categories:**
 - **Physical Dimensions**: Width, depth, height, seat height, armrest height
 - **Weight Information**: Maximum weight capacity and packaging weights
-- **Measurement Units**: Metric and imperial unit conversions
+- **Measurement Units**: Automatic metric and imperial unit conversions
 - **Technical Specifications**: Leg height and backrest dimensions
 
 **Implementation Features:**
@@ -367,6 +443,7 @@ The ProductDetailsInfo component provides comprehensive product dimension inform
 - **Responsive Typography**: Adaptive font sizing and weights
 - **Color Adaptation**: Theme-aware color schemes
 - **Data Formatting**: Proper number formatting and unit display
+- **Error Handling**: Graceful fallback for missing or invalid dimension data
 
 **Design Elements:**
 - **Bold Headings**: Clear section identification
@@ -376,6 +453,24 @@ The ProductDetailsInfo component provides comprehensive product dimension inform
 
 **Section sources**
 - [product_details_info.dart:1-75](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_info.dart#L1-L75)
+
+## Pricing Display Enhancement
+The ProductDetailsDescription component now uses the updated finalPrice field for accurate pricing display:
+
+**Pricing Implementation:**
+- **Final Price Display**: Uses finalPrice instead of base price for accurate totals
+- **Dynamic Pricing**: Real-time price updates based on product modifications
+- **Format Precision**: Two decimal places with dollar sign formatting
+- **Responsive Sizing**: Adaptive font sizing for different screen widths
+
+**Enhanced Features:**
+- **Price Accuracy**: Reflects all discounts, taxes, and modifications
+- **User Clarity**: Transparent pricing with clear final cost indication
+- **Consistent Formatting**: Standardized currency display across all components
+- **Real-time Updates**: Automatic price updates when customization options change
+
+**Section sources**
+- [product_details_description.dart:70](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_description.dart#L70)
 
 ## Dependency Analysis
 The enhanced Product Details feature has a comprehensive dependency graph:
@@ -390,15 +485,19 @@ PD_CONTROLLER --> PD_MODEL["product_details_model.dart"]
 PD_VIEW --> PD_TAB["product_details_tab.dart"]
 PD_VIEW --> PD_INFO["product_details_info.dart"]
 PD_VIEW --> PD_SHIPPING["product_details_shipping.dart"]
+PD_VIEW --> PD_DESCRIPTION["product_details_description.dart"]
 PD_SHIPPING --> PD_DELIVERY["product_details_shipping_delivery.dart"]
 PD_SHIPPING --> PD_MEMBERSHIP["product_details_shipping_membership.dart"]
 PD_VIEW --> PD_CART["product_details_cart.dart"]
 PD_VIEW --> PD_HELPER["product_details_helper.dart"]
 PD_TAB --> PD_CUSTOMIZED["product_furniture_customized_widgets.dart"]
+PD_CUSTOMIZED --> DIMENSION_FORMATTER["dimension_formatter.dart"]
 PD_CONTROLLER --> PD_REPO
 PD_CONTROLLER --> PD_MODEL
 PD_REPO --> GET_NETWORK["GetNetwork"]
 PD_MODEL --> MODEL_CLASSES["ProductDetail, Category, Media, etc."]
+PD_DESCRIPTION --> MODEL_CLASSES
+PD_INFO --> DIMENSION_FORMATTER
 PD_CART --> CUSTOM_TEXT["custom_primary_text.dart"]
 PD_TAB --> CUSTOM_TEXT
 PD_INFO --> CUSTOM_TEXT
@@ -411,6 +510,8 @@ PD_INFO --> COLORS
 PD_SHIPPING --> COLORS
 PD_DELIVERY --> COLORS
 PD_MEMBERSHIP --> COLORS
+PD_CUSTOMIZED --> COLORS
+PD_DESCRIPTION --> COLORS
 ```
 
 **Diagram sources**
@@ -420,6 +521,7 @@ PD_MEMBERSHIP --> COLORS
 - [product_details_controller.dart:14-16](file://lib/features/product_details.dart/controller/product_details_controller.dart#L14-L16)
 - [product_details_repo.dart:8-9](file://lib/features/product_details.dart/repositories/product_details_repo.dart#L8-L9)
 - [product_details_view.dart:19-16](file://lib/features/product_details.dart/views/product_details_view.dart#L19-L16)
+- [dimension_formatter.dart:3](file://lib/shared/extensions/formatters/dimension_formatter.dart#L3)
 
 **Section sources**
 - [routes.dart:206-211](file://lib/core/routes/routes.dart#L206-L211)
@@ -433,6 +535,7 @@ The enhanced feature set includes several performance optimizations:
 - **Lazy Loading**: Dependencies loaded only when needed through ProductDetailsBindings
 - **Proper Disposal**: Controllers and text controllers are properly disposed
 - **Reactive Efficiency**: Selective updates through Obx widgets
+- **Animation Optimization**: Efficient AnimatedSwitcher and AnimatedSize implementations
 
 **Network Performance:**
 - **Single Request**: Repository consolidates all product data in one request
@@ -443,16 +546,19 @@ The enhanced feature set includes several performance optimizations:
 - **Animated Transitions**: Smooth animations with proper duration configuration
 - **Conditional Rendering**: Components only render when data is available
 - **Responsive Design**: Adaptive layouts for different screen sizes
+- **Accordion Optimization**: Efficient state management for expandable panels
 
 **State Management:**
 - **Minimal Rebuilds**: Reactive state changes trigger only necessary UI updates
 - **Memory Cleanup**: Proper disposal of scroll controllers and listeners
 - **Efficient Lists**: Optimized list rendering with proper keys
+- **Animation State**: Proper animation state management for smooth transitions
 
 **Section sources**
 - [product_details_bindings.dart:7-11](file://lib/features/product_details.dart/bindings/product_details_bindings.dart#L7-L11)
 - [product_details_controller.dart:155-160](file://lib/features/product_details.dart/controller/product_details_controller.dart#L155-L160)
 - [product_details_view.dart:71-84](file://lib/features/product_details.dart/views/product_details_view.dart#L71-L84)
+- [product_details_tab.dart:60-68](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_tab.dart#L60-L68)
 
 ## Troubleshooting Guide
 Enhanced troubleshooting for the comprehensive feature set:
@@ -474,16 +580,24 @@ Enhanced troubleshooting for the comprehensive feature set:
 - **Theme Adaptation**: Check dark/light theme switching functionality
 - **Responsive Design**: Test layout on different screen sizes
 - **Animation Performance**: Monitor AnimatedSize and AnimatedSlide performance
+- **Accordion State**: Verify isOpen reactive list synchronization
 
 **Navigation and Routing:**
 - **Route Parameters**: Ensure productID argument is passed correctly
 - **Binding Registration**: Verify ProductDetailsBindings is registered
 - **Component Integration**: Check all widgets integrate properly in ProductDetailsView
 
+**Dimension Formatting Issues:**
+- **Data Parsing**: Verify DimensionFormatter.parseDimensions handles various input types
+- **Error Recovery**: Ensure fallback mechanisms work for invalid data
+- **Unit Detection**: Check automatic unit assignment logic
+- **Animation State**: Verify accordion expansion state management
+
 **Section sources**
 - [product_details_controller.dart:138-160](file://lib/features/product_details.dart/controller/product_details_controller.dart#L138-L160)
 - [product_details_bindings.dart:5-12](file://lib/features/product_details.dart/bindings/product_details_bindings.dart#L5-L12)
 - [product_details_view.dart:25-89](file://lib/features/product_details.dart/views/product_details_view.dart#L25-L89)
+- [dimension_formatter.dart:6-20](file://lib/shared/extensions/formatters/dimension_formatter.dart#L6-L20)
 
 ## Conclusion
-The enhanced Product Details feature represents a complete transformation from a partially functional implementation to a production-ready, architecturally sound solution. The addition of the repository layer, comprehensive data model, dynamic loading states, and specialized UI components creates a robust and maintainable codebase. The MVVM architecture ensures clean separation of concerns, while the dependency injection system provides flexibility and testability. The feature successfully balances functionality with performance, offering users a comprehensive product exploration experience with professional-grade error handling and responsive design.
+The enhanced Product Details feature represents a complete transformation from a partially functional implementation to a production-ready, architecturally sound solution. The addition of the DimensionFormatter utility, accordion-based customization system, AnimatedSwitcher transitions, and finalPrice pricing logic creates a robust and maintainable codebase. The MVVM architecture ensures clean separation of concerns, while the dependency injection system provides flexibility and testability. The feature successfully balances functionality with performance, offering users a comprehensive product exploration experience with professional-grade error handling, responsive design, and smooth interactive animations.

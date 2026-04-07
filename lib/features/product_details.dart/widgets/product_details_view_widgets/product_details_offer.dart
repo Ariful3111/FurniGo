@@ -22,7 +22,7 @@ class ProductDetailsOffer extends GetWidget<ProductDetailsController> {
               ? _deliveryCard(isDark)
               : ProductDetailsHelper().outOfStock(onTap: () {}, isDark: isDark),
           SizedBox(height: 12.h),
-          _offerCard(isDark),
+          // offerCard(isDark),
         ],
       ),
     );
@@ -60,7 +60,7 @@ class ProductDetailsOffer extends GetWidget<ProductDetailsController> {
     );
   }
 
-  Widget _offerCard(bool isDark) {
+  Widget offerCard(bool isDark) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),

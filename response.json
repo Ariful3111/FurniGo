@@ -1,83 +1,78 @@
 {
-  "data": {
-    "id": 22,
-    "category_id": 3,
-    "category_name": "Queen Beds",
-    "name": "cumque iste esse",
-    "sku": "SKU-9255-EZIL",
-    "description": "Accusamus deleniti et dolores hic pariatur accusantium. Aliquam sit consectetur consequatur praesentium est. Totam aut consectetur eligendi est quia sunt. Blanditiis et ad temporibus aspernatur sint fugiat voluptates.",
-    "price": 1076.779999999999972715158946812152862548828125,
-    "selling_price": 1076.779999999999972715158946812152862548828125,
-    "discount_type": "fixed",
-    "discount_amount": 69,
-    "final_price": 1007.779999999999972715158946812152862548828125,
-    "is_rentable": false,
-    "is_favourite": false,
-    "is_in_stock": true,
-    "status": "active",
-    "dimensions": {
-      "weight": 23.739999999999998436805981327779591083526611328125,
-      "length_cm": 90.9200000000000017053025658242404460906982421875,
-      "width_cm": 27.03999999999999914734871708787977695465087890625,
-      "height_cm": 80.409999999999996589394868351519107818603515625,
-      "weight_kg": 68.6280000000000001136868377216160297393798828125
+  "data": [
+    {
+      "product_attribute_id": 1,
+      "attribute_id": 1,
+      "name": "Color",
+      "options": [
+        {
+          "product_attribute_option_id": 1,
+          "option_id": 1,
+          "name": "Red",
+          "image": "https://jbdesign.sepiabd.com/storage/attribute-options/option_1_red.jpg",
+          "product_image": "https://jbdesign.sepiabd.com/storage/product-attribute-options/product_1_attr_1_opt_1.jpg",
+          "price": 10,
+          "stock": 100,
+          "is_default": true
+        },
+        {
+          "product_attribute_option_id": 2,
+          "option_id": 2,
+          "name": "Blue",
+          "image": "https://jbdesign.sepiabd.com/storage/attribute-options/option_2_blue.jpg",
+          "product_image": "https://jbdesign.sepiabd.com/storage/product-attribute-options/product_1_attr_1_opt_2.jpg",
+          "price": 5,
+          "stock": 100,
+          "is_default": false
+        },
+        {
+          "product_attribute_option_id": 3,
+          "option_id": 3,
+          "name": "Green",
+          "image": null,
+          "product_image": "https://jbdesign.sepiabd.com/storage/product-attribute-options/product_1_attr_1_opt_3.jpg",
+          "price": 5,
+          "stock": 100,
+          "is_default": false
+        }
+      ]
     },
-    "category": {
-      "id": 3,
-      "name": "Queen Beds",
-      "slug": "beds-queen-beds",
-      "parent_id": null,
-      "image_url": null,
-      "status": null,
-      "order": null,
-      "created_at": null,
-      "updated_at": null
-    },
-    "furniture_type": {
-      "id": 1,
-      "name": "Sofa"
-    },
-    "rooms": [
-      {
-        "id": 3,
-        "name": "Dining Room"
-      },
-      {
-        "id": 7,
-        "name": "Bathroom"
-      }
-    ],
-    "media": [
-      {
-        "id": 33,
-        "product_id": 22,
-        "type": "image",
-        "url": "https://jbdesign.sepiabd.com/storage/products/product_22_Zzibh.jpg",
-        "is_primary": true,
-        "created_at": "2026-04-02T07:17:15.000000Z",
-        "updated_at": "2026-04-02T07:17:15.000000Z"
-      }
-    ],
-    "default_option_ids": [
-      {
-        "product_attribute_option_id": 150,
-        "attribute_id": 1,
-        "option_id": 1
-      },
-      {
-        "product_attribute_option_id": 153,
-        "attribute_id": 2,
-        "option_id": 4
-      },
-      {
-        "product_attribute_option_id": 156,
-        "attribute_id": 3,
-        "option_id": 7
-      }
-    ],
-    "total_reviews": 0,
-    "reviews": [],
-    "created_at": "2026-04-02T07:16:58.000000Z",
-    "updated_at": "2026-04-02T07:16:58.000000Z"
-  }
+    {
+      "product_attribute_id": 2,
+      "attribute_id": 2,
+      "name": "Size",
+      "options": [
+        {
+          "product_attribute_option_id": 4,
+          "option_id": 4,
+          "name": "Small",
+          "image": "https://jbdesign.sepiabd.com/storage/attribute-options/option_4_small.jpg",
+          "product_image": "https://jbdesign.sepiabd.com/storage/product-attribute-options/product_1_attr_2_opt_4.jpg",
+          "price": 0,
+          "stock": 100,
+          "is_default": true
+        },
+        {
+          "product_attribute_option_id": 5,
+          "option_id": 5,
+          "name": "Medium",
+          "image": "https://jbdesign.sepiabd.com/storage/attribute-options/option_5_medium.jpg",
+          "product_image": "https://jbdesign.sepiabd.com/storage/product-attribute-options/product_1_attr_2_opt_5.jpg",
+          "price": 5,
+          "stock": 100,
+          "is_default": false
+        },
+        {
+          "product_attribute_option_id": 6,
+          "option_id": 6,
+          "name": "Large",
+          "image": "https://jbdesign.sepiabd.com/storage/attribute-options/option_6_large.jpg",
+          "product_image": "https://jbdesign.sepiabd.com/storage/product-attribute-options/product_1_attr_2_opt_6.jpg",
+          "price": 5,
+          "stock": 100,
+          "is_default": false
+        }
+      ]
+    }
+  ]
 }

@@ -39,8 +39,9 @@ class ProductDetail {
   final List<Room> rooms;
   final List<Media> media;
   final List<DefaultOptionId>? defaultOptionIds;
+  final num averageRating;
   final int totalReviews;
-  final List<dynamic> reviews;
+  final List<Review> reviews;
   final DateTime createdAt;
   final dynamic updatedAt;
 
@@ -66,6 +67,7 @@ class ProductDetail {
     this.rooms = const [],
     required this.media,
     this.defaultOptionIds,
+    this.averageRating = 0,
     this.totalReviews = 0,
     this.reviews = const [],
     required this.createdAt,
@@ -102,8 +104,11 @@ class ProductDetail {
             json["default_option_ids"].map((x) => DefaultOptionId.fromJson(x)),
           )
         : [],
+    averageRating: json["average_rating"] ?? 0,
     totalReviews: json["total_reviews"] ?? 0,
-    reviews: json["reviews"] != null ? List<dynamic>.from(json["reviews"]) : [],
+    reviews: json["reviews"] != null
+        ? List<Review>.from(json["reviews"].map((x) => Review.fromJson(x)))
+        : [],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"],
   );
@@ -132,8 +137,9 @@ class ProductDetail {
     "default_option_ids": defaultOptionIds != null
         ? List<dynamic>.from(defaultOptionIds!.map((x) => x.toJson()))
         : [],
+    "average_rating": averageRating,
     "total_reviews": totalReviews,
-    "reviews": List<dynamic>.from(reviews),
+    "reviews": List<dynamic>.from(reviews.map((x) => x.toJson())),
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt,
   };
@@ -273,5 +279,61 @@ class DefaultOptionId {
     "product_attribute_option_id": productAttributeOptionId,
     "attribute_id": attributeId,
     "option_id": optionId,
+  };
+}
+
+class Review {
+  final num id;
+  final num productId;
+  final String reviewerName;
+  final dynamic reviewerImage;
+  final num rating;
+  final String title;
+  final String review;
+  final bool isVerifiedPurchase;
+  final num helpfulCount;
+  final String status;
+  final DateTime createdAt;
+
+  Review({
+    required this.id,
+    required this.productId,
+    required this.reviewerName,
+    this.reviewerImage,
+    required this.rating,
+    required this.title,
+    required this.review,
+    required this.isVerifiedPurchase,
+    required this.helpfulCount,
+    required this.status,
+    required this.createdAt,
+  });
+
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+    id: json["id"],
+    productId: json["product_id"],
+    reviewerName: json["reviewer_name"],
+    reviewerImage: json["reviewer_image"],
+    rating: json["rating"],
+    title: json["title"],
+    review: json["review"],
+    isVerifiedPurchase: json["is_verified_purchase"],
+    helpfulCount: json["helpful_count"],
+    status: json["status"],
+    createdAt: DateTime.parse(json["created_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "product_id": productId,
+    "reviewer_name": reviewerName,
+    "reviewer_image": reviewerImage,
+    "rating": rating,
+    "title": title,
+    "review": review,
+    "is_verified_purchase": isVerifiedPurchase,
+    "helpful_count": helpfulCount,
+    "status": status,
+    "created_at": createdAt.toIso8601String(),
   };
 }

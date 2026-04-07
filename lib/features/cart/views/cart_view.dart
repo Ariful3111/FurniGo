@@ -19,32 +19,26 @@ class CartView extends GetView<CartController> {
         children: [
           CustomAppbar(title: 'Cart', onDrawerTap: () {}, isIcon: false),
           SizedBox(height: 32.h),
-           CartSelectItem(),
-
-        SizedBox(height: 16),
-
-        ////////////////////////////////////////////////////////////
-        /// LIST
-        ////////////////////////////////////////////////////////////
-
-        Obx(() => ListView.separated(
+          CartSelectItem(),
+          SizedBox(height: 16),
+          Obx(
+            () => ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemCount: controller.cartList.length,
-              separatorBuilder: (_, __) => Divider(
-                color: AppColors.borderColor,
-              ),
+              separatorBuilder: (_, _) => Divider(color: AppColors.borderColor),
               itemBuilder: (context, index) {
                 final item = controller.cartList[index];
 
-                return  CartItem(
-                      item: item,
-                      index: index,
-                      controller: controller,
-                      isDark: isDark,
-                    );
+                return CartItem(
+                  item: item,
+                  index: index,
+                  controller: controller,
+                  isDark: isDark,
+                );
               },
-            )),
+            ),
+          ),
         ],
       ),
     );

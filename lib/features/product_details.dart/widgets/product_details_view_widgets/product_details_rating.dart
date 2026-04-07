@@ -1,23 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/product_details.dart/controller/product_details_controller.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_info.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_percent.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class ProductDetailsRating extends StatelessWidget {
+class ProductDetailsRating extends GetWidget<ProductDetailsController> {
   const ProductDetailsRating({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final ratings = [
-      {"star": 5, "value": 0.9},
-      {"star": 4, "value": 0.75},
-      {"star": 3, "value": 0.55},
-      {"star": 2, "value": 0.3},
-      {"star": 1, "value": 0.15},
-    ];
+
+    final productData = controller.productDetails.value!.data;
+    final reviews = productData.reviews;
+    final totalReviews = reviews.length;
+
+    // Calculate rating distribution dynamically
+    final Map<int, int> starCounts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0};
+
+    for (var review in reviews) {
+      final star = review.rating.round();
+      if (star >= 1 && star <= 5) {
+        starCounts[star] = (starCounts[star] ?? 0) + 1;
+      }
+    }
+
+    // Convert counts to percentages
+    final ratings = starCounts.entries.map((entry) {
+      return {
+        "star": entry.key,
+        "value": totalReviews > 0 ? entry.value / totalReviews : 0.0,
+        "count": entry.value,
+      };
+    }).toList();
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
@@ -29,19 +48,23 @@ class ProductDetailsRating extends StatelessWidget {
               CustomPrimaryText(
                 text: "Rating & Reviews",
                 fontWeight: FontWeight.w600,
-                color: isDark
-                    ? AppColors.whiteColor
-                    : AppColors.darkTextColor,
+                color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
               ),
               CustomPrimaryText(
-                text: "(18 New Reviews)",
+                text: "($totalReviews Reviews)",
                 fontSize: 12.sp,
-                color: isDark?AppColors.primaryBorderColor:Color(0xFF212121),
+                color: isDark
+                    ? AppColors.primaryBorderColor
+                    : Color(0xFF212121),
               ),
             ],
           ),
           SizedBox(height: 20.h),
-          ProductDetailsRatingInfo(),
+          ProductDetailsRatingInfo(
+            isDark: isDark,
+            averageRating: productData.averageRating.toDouble(),
+            totalReviews: productData.totalReviews,
+          ),
           SizedBox(height: 20.h),
           Divider(
             color: isDark
@@ -51,19 +74,20 @@ class ProductDetailsRating extends StatelessWidget {
           SizedBox(height: 20.h),
           Column(
             children: ratings
-                .map((e) => Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
-                      child: ProductDetailsRatingPercent(
-                        star: e["star"] as int,
-                        percent: e["value"] as double,
-                        isDark: isDark,
-                      ),
-                    ))
+                .map(
+                  (e) => Padding(
+                    padding: EdgeInsets.only(bottom: 12.h),
+                    child: ProductDetailsRatingPercent(
+                      star: e["star"] as int,
+                      percent: e["value"] as double,
+                      isDark: isDark,
+                    ),
+                  ),
+                )
                 .toList(),
           ),
         ],
       ),
     );
   }
-  
 }
