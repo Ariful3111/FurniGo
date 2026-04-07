@@ -1,17 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
+import 'package:zb_dezign/features/home/models/products_model.dart';
+import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class RelatedProductCard extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final Product product;
   final bool isDark;
 
   const RelatedProductCard({
     super.key,
-    required this.data,
+    required this.product,
     required this.isDark,
   });
 
@@ -25,65 +30,91 @@ class RelatedProductCard extends StatelessWidget {
           SharedContainer(
             color: AppColors.fieldColor,
             radius: 8.r,
-            padding: EdgeInsets.all(10.r),
+            padding: EdgeInsets.zero,
             child: Stack(
               children: [
-                Center(
-                  child: Image.asset(
-                    data['image'],
-                    height: 130.h,
-                    width: 130.w,
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.productDetailsView,
+                      arguments: product.id.toInt(),
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: CachedNetworkImage(
+                      imageUrl: product.media
+                          .firstWhere((media) => media.type == 'image')
+                          .url,
+                      height: 170.h,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) {
+                        return const ButtonLoading();
+                      },
+                    ),
                   ),
                 ),
+
                 Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8.w,
-                          vertical: 4.h,
+                  top: 8.h,
+                  left: 8.w,
+                  right: 8.w,
+                  child: IgnorePointer(
+                    ignoring: true,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 4.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? AppColors.darkColor.withValues(alpha: 0.8)
+                                : AppColors.whiteColor.withValues(alpha: 0.9),
+                            borderRadius: BorderRadius.circular(48.r),
+                          ),
+                          child: CustomPrimaryText(
+                            text: product.isRentable
+                                ? "Rent Product"
+                                : "New Arrival",
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                            color: isDark
+                                ? AppColors.whiteColor
+                                : AppColors.darkTextColor,
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? AppColors.darkColor
-                              : AppColors.whiteColor,
-                          borderRadius: BorderRadius.circular(48.r),
-                        ),
-                        child: CustomPrimaryText(
-                          text: data['tag'],
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w500,
-                          color: isDark
-                              ? AppColors.whiteColor
-                              : AppColors.darkTextColor,
-                        ),
-                      ),
-                      button(icon: IconsPath.favorite, onTap: () {}),
-                    ],
+                        button(icon: IconsPath.favorite, onTap: () {}),
+                      ],
+                    ),
                   ),
                 ),
+
+                // ✅ Cart ও IgnorePointer এ wrapped
                 Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: button(icon: IconsPath.cart, onTap: () {}),
+                  bottom: 8.h,
+                  right: 8.w,
+                  child: IgnorePointer(
+                    ignoring: true,
+                    child: button(icon: IconsPath.cart, onTap: () {}),
+                  ),
                 ),
               ],
             ),
           ),
           SizedBox(height: 12.h),
           CustomPrimaryText(
-            text: data['title'],
+            text: product.name,
             fontSize: 14.sp,
             textOverflow: TextOverflow.ellipsis,
             color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
           ),
           SizedBox(height: 4.h),
           CustomPrimaryText(
-            text: data['price'],
+            text: product.finalPrice.toString(),
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.whiteColor : AppColors.darkColor,

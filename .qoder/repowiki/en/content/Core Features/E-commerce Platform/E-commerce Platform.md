@@ -13,12 +13,21 @@
 - [order_bindings.dart](file://lib/features/order/bindings/order_bindings.dart)
 - [order_controller.dart](file://lib/features/order/controllers/order_controller.dart)
 - [product_details_controller.dart](file://lib/features/product_details.dart/controller/product_details_controller.dart)
+- [product_attributes_model.dart](file://lib/features/product_details.dart/models/product_attributes_model.dart)
+- [products_attributes_controller.dart](file://lib/features/product_details.dart/controller/products_attributes_controller.dart)
+- [product_attributes_repo.dart](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart)
+- [product_details_model.dart](file://lib/features/product_details.dart/models/product_details_model.dart)
 - [payment_controller.dart](file://lib/features/payment/controller/payment_controller.dart)
 - [home_our_products.dart](file://lib/features/home/widgets/home_widgets/home_our_products.dart)
 - [home_product_design.dart](file://lib/features/home/widgets/home_widgets/home_product_design.dart)
 - [global_search_suggestion_box.dart](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart)
 - [product_details_view_image.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart)
 - [product_details_view.dart](file://lib/features/product_details.dart/views/product_details_view.dart)
+- [product_details_rating.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart)
+- [product_details_rating_info.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_info.dart)
+- [product_details_rating_percent.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_percent.dart)
+- [product_details_review.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_review.dart)
+- [order_review_controller.dart](file://lib/features/order/controllers/order_review_controller.dart)
 - [error_model.dart](file://lib/core/data/global_models/error_model.dart)
 - [get_network.dart](file://lib/core/data/networks/get_network.dart)
 - [post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
@@ -36,6 +45,12 @@
 
 ## Update Summary
 **Changes Made**
+- Added comprehensive product attributes system with dynamic attribute options and default selections
+- Enhanced product review and rating functionality with detailed rating distribution visualization
+- Implemented separate controllers for product details and product attributes management
+- Added new rating components including rating info display and percentage bars
+- Enhanced product details view with integrated rating and review sections
+- Improved product customization system with expandable attribute sections
 - Added comprehensive UI safety checks documentation for product image loading with null and empty list validation
 - Documented media URL validation patterns across product catalog, search suggestions, and product details views
 - Enhanced error handling documentation for image loading failures and fallback mechanisms
@@ -48,18 +63,20 @@
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Enhanced UI Components](#enhanced-ui-components)
-7. [Form Field Components](#form-field-components)
-8. [Rating System Components](#rating-system-components)
-9. [Validation Extensions](#validation-extensions)
-10. [UI Safety Checks for Product Image Loading](#ui-safety-checks-for-product-image-loading)
-11. [Dependency Analysis](#dependency-analysis)
-12. [Performance Considerations](#performance-considerations)
-13. [Troubleshooting Guide](#troubleshooting-guide)
-14. [Conclusion](#conclusion)
+6. [Enhanced Product Attributes System](#enhanced-product-attributes-system)
+7. [Improved Rating and Review System](#improved-rating-and-review-system)
+8. [Enhanced UI Components](#enhanced-ui-components)
+9. [Form Field Components](#form-field-components)
+10. [Rating System Components](#rating-system-components)
+11. [Validation Extensions](#validation-extensions)
+12. [UI Safety Checks for Product Image Loading](#ui-safety-checks-for-product-image-loading)
+13. [Dependency Analysis](#dependency-analysis)
+14. [Performance Considerations](#performance-considerations)
+15. [Troubleshooting Guide](#troubleshooting-guide)
+16. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the e-commerce platform feature set implemented in the Flutter application. It focuses on the product catalog system, product details view, order management, payment processing, category management, filtering mechanisms, and the integrated lifecycle from browsing to order fulfillment. The platform leverages a modular feature-based architecture using GetX for state management and dependency injection, with network repositories abstracted via core networking utilities. Recent enhancements include improved form field components, custom phone field validation, rating bar widgets, comprehensive UI safety checks for product image loading, and various UI improvements across product catalog, shopping cart, and order management systems.
+This document describes the e-commerce platform feature set implemented in the Flutter application. It focuses on the product catalog system, product details view, order management, payment processing, category management, filtering mechanisms, and the integrated lifecycle from browsing to order fulfillment. The platform leverages a modular feature-based architecture using GetX for state management and dependency injection, with network repositories abstracted via core networking utilities. Recent enhancements include a comprehensive product attributes system with dynamic attribute options, improved product review and rating functionality with detailed visualization, enhanced form field components, custom phone field validation, rating bar widgets, comprehensive UI safety checks for product image loading, and various UI improvements across product catalog, shopping cart, and order management systems.
 
 ## Project Structure
 The application initializes through a central entry point that sets up dependency injection, theme, routing, and navigation bindings. Features are organized under the features directory, with dedicated modules for product catalog, product details, orders, payments, categories, and more. Core infrastructure resides under core, including DI, routes, theme, and network utilities. Enhanced UI components are organized under shared/widgets with specialized components for forms, ratings, dialogs, and containers.
@@ -74,6 +91,10 @@ RT["routes.dart"]
 end
 subgraph "Features"
 PC["product_details_controller.dart"]
+PAC["products_attributes_controller.dart"]
+PAM["product_attributes_model.dart"]
+PDR["product_details_rating.dart"]
+PDMI["product_details_model.dart"]
 OC["order_controller.dart"]
 OR["order_review_repo.dart"]
 GR["get_orders_repo.dart"]
@@ -84,6 +105,7 @@ HPD["home_product_design.dart"]
 GSSB["global_search_suggestion_box.dart"]
 HOUP["home_our_products.dart"]
 PDVI["product_details_view_image.dart"]
+PDV["product_details_view.dart"]
 end
 subgraph "Core"
 GN["get_network.dart"]
@@ -104,6 +126,10 @@ M --> DI
 M --> AR
 M --> RT
 M --> PC
+M --> PAC
+M --> PAM
+M --> PDR
+M --> PDMI
 M --> OC
 M --> PM
 OC --> GR
@@ -116,11 +142,15 @@ OR --> HM
 OR --> EM
 PC --> CM
 PC --> CRD
+PC --> PDR
+PC --> PDMI
 OC --> CRD
 PC --> HPD
 PC --> GSSB
 PC --> HOUP
 PC --> PDVI
+PAC --> PAM
+PAC --> GN
 ```
 
 **Diagram sources**
@@ -128,7 +158,11 @@ PC --> PDVI
 - [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
 - [app_routes.dart](file://lib/core/routes/app_routes.dart)
 - [routes.dart](file://lib/core/routes/routes.dart)
-- [product_details_controller.dart:1-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L36)
+- [product_details_controller.dart:1-162](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L162)
+- [products_attributes_controller.dart:1-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_model.dart:1-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L100)
+- [product_details_rating.dart:1-94](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L1-L94)
+- [product_details_model.dart:1-340](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L340)
 - [order_controller.dart:1-41](file://lib/features/order/controllers/order_controller.dart#L1-L41)
 - [order_review_repo.dart:1-29](file://lib/features/order/repositories/order_review_repo.dart#L1-L29)
 - [get_orders_repo.dart:1-20](file://lib/features/order/repositories/get_orders_repo.dart#L1-L20)
@@ -137,7 +171,8 @@ PC --> PDVI
 - [home_product_design.dart:1-99](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L99)
 - [global_search_suggestion_box.dart:150-226](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L150-L226)
 - [home_our_products.dart:54-82](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L54-L82)
-- [product_details_view_image.dart:1-91](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L1-L91)
+- [product_details_view_image.dart:1-97](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L1-L97)
+- [product_details_view.dart:1-91](file://lib/features/product_details.dart/views/product_details_view.dart#L1-L91)
 - [get_network.dart](file://lib/core/data/networks/get_network.dart)
 - [post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
 - [headers_manager.dart](file://lib/core/data/networks/headers_manager.dart)
@@ -158,20 +193,26 @@ PC --> PDVI
 
 ## Core Components
 - Product Catalog Model: Defines product entities, categories, furniture types, rooms, media, and default options used across the catalog.
+- Product Attributes Model: Comprehensive attribute system with product attributes, options, pricing, stock levels, and default selections for dynamic product customization.
+- Product Details Model: Enhanced product details with comprehensive metadata, reviews, ratings, media, and attribute configurations.
 - Orders Model: Encapsulates order data, items, addresses, status history, and payment metadata including Airwallex integration fields.
 - Order Repository: Fetches paginated order lists from the backend using typed JSON deserialization.
 - Order Review Repository: Posts product reviews with ratings and messages to the backend.
 - Order Controller: Manages loading states, search, and displays orders with error handling via snackbars.
-- Product Details Controller: Manages carousel navigation and AI toggle state for product media presentation.
+- Product Details Controller: Manages carousel navigation, AI toggle state, customization options, and review management for product media presentation.
+- Product Attributes Controller: Manages dynamic attribute loading, expandable sections, and attribute option selection for product customization.
 - Payment Controller: Holds form field controllers for payment inputs and manages lifecycle cleanup.
 
 **Section sources**
 - [products_model.dart:23-129](file://lib/features/home/models/products_model.dart#L23-L129)
+- [product_attributes_model.dart:1-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L100)
+- [product_details_model.dart:20-146](file://lib/features/product_details.dart/models/product_details_model.dart#L20-L146)
 - [orders_model.dart:1-139](file://lib/features/order/models/orders_model.dart#L1-L139)
 - [get_orders_repo.dart:1-20](file://lib/features/order/repositories/get_orders_repo.dart#L1-L20)
 - [order_review_repo.dart:1-29](file://lib/features/order/repositories/order_review_repo.dart#L1-L29)
 - [order_controller.dart:1-41](file://lib/features/order/controllers/order_controller.dart#L1-L41)
-- [product_details_controller.dart:1-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L36)
+- [product_details_controller.dart:14-162](file://lib/features/product_details.dart/controller/product_details_controller.dart#L14-L162)
+- [products_attributes_controller.dart:6-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L6-L40)
 - [payment_controller.dart:1-23](file://lib/features/payment/controller/payment_controller.dart#L1-L23)
 
 ## Architecture Overview
@@ -185,10 +226,10 @@ The e-commerce feature architecture follows a layered pattern:
 ```mermaid
 graph TB
 UI["Feature Views<br/>Order View, Product Details View, Payment View"]
-CTRL["Controllers<br/>OrderController, ProductDetailsController, PaymentController"]
-REPO["Repositories<br/>GetOrdersRepository, OrderReviewRepository"]
+CTRL["Controllers<br/>OrderController, ProductDetailsController, ProductAttributesController, PaymentController"]
+REPO["Repositories<br/>GetOrdersRepository, OrderReviewRepository, ProductAttributesRepository"]
 NET["Network Utilities<br/>GetNetwork, PostWithoutResponse, HeadersManager"]
-MODELS["Data Models<br/>ProductsModel, OrdersModel"]
+MODELS["Data Models<br/>ProductsModel, ProductAttributesModel, ProductDetailsModel, OrdersModel"]
 ERR["Error Model & Snackbar"]
 UI --> CTRL
 CTRL --> REPO
@@ -201,22 +242,30 @@ RATING["Rating Components<br/>CustomRatingBar, CustomRatingBuilder"]
 DIALOG["Dialog Components<br/>CustomRatingDialog"]
 CONTAINER["Container Components<br/>SharedContainer"]
 IMG["Image Loading Safety<br/>Media Validation, Fallback Handling"]
+ATTR["Product Attributes<br/>Dynamic Options, Pricing, Stock"]
+REV["Rating & Reviews<br/>Distribution, Visualization"]
 END
 UI --> FORM
 UI --> RATING
 UI --> DIALOG
 UI --> CONTAINER
 UI --> IMG
+UI --> ATTR
+UI --> REV
 ```
 
 **Diagram sources**
 - [order_controller.dart:1-41](file://lib/features/order/controllers/order_controller.dart#L1-L41)
 - [get_orders_repo.dart:1-20](file://lib/features/order/repositories/get_orders_repo.dart#L1-L20)
 - [order_review_repo.dart:1-29](file://lib/features/order/repositories/order_review_repo.dart#L1-L29)
+- [products_attributes_controller.dart:1-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_repo.dart:1-21](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
 - [get_network.dart](file://lib/core/data/networks/get_network.dart)
 - [post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
 - [headers_manager.dart](file://lib/core/data/networks/headers_manager.dart)
 - [products_model.dart:1-267](file://lib/features/home/models/products_model.dart#L1-L267)
+- [product_attributes_model.dart:1-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L100)
+- [product_details_model.dart:1-340](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L340)
 - [orders_model.dart:1-308](file://lib/features/order/models/orders_model.dart#L1-L308)
 - [error_model.dart](file://lib/core/data/global_models/error_model.dart)
 - [error_snackbar.dart](file://lib/shared/widgets/snackbars/error_snackbar.dart)
@@ -300,15 +349,134 @@ Product --> Media : "has many"
 **Section sources**
 - [products_model.dart:23-129](file://lib/features/home/models/products_model.dart#L23-L129)
 
+### Enhanced Product Attributes System
+- Purpose: Manage dynamic product attributes with options, pricing, stock levels, and default selections for comprehensive product customization.
+- Data Model: ProductAttributesModel contains product attributes with nested options including pricing, stock, images, and default flags.
+- Implementation: Separate controller and repository handle attribute loading with expandable sections and default option management.
+- **Architecture Enhancement**: New dedicated system for managing product customization options beyond basic media and details.
+
+```mermaid
+classDiagram
+class ProductAttributesModel {
++ProductAttribute[] data
++fromJson(json)
++toJson()
+}
+class ProductAttribute {
++int productAttributeId
++int attributeId
++String name
++AttributeOption[] options
++fromJson(json)
++toJson()
+}
+class AttributeOption {
++int productAttributeOptionId
++int optionId
++String name
++dynamic image
++String productImage
++int price
++int stock
++bool isDefault
++fromJson(json)
++toJson()
+}
+ProductAttributesModel --> ProductAttribute : "contains"
+ProductAttribute --> AttributeOption : "has many"
+```
+
+**Diagram sources**
+- [product_attributes_model.dart:9-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L9-L100)
+
+**Section sources**
+- [product_attributes_model.dart:1-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L100)
+- [products_attributes_controller.dart:1-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_repo.dart:1-21](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+
+### Improved Rating and Review System
+- Purpose: Provide comprehensive product rating and review functionality with detailed distribution visualization and interactive rating submission.
+- Data Model: ProductDetailsModel includes reviews with reviewer information, ratings, timestamps, and verification status.
+- Implementation: Dedicated rating components with dynamic star distribution calculation and interactive review submission.
+- **Enhancement**: Complete overhaul of rating system with detailed visualization and improved user interaction patterns.
+
+```mermaid
+classDiagram
+class ProductDetailsModel {
++ProductDetail data
++fromJson(json)
++toJson()
+}
+class ProductDetail {
++int id
++int categoryId
++String categoryName
++String name
++String sku
++String description
++int price
++int sellingPrice
++String discountType
++int discountAmount
++int finalPrice
++bool isRentable
++bool isFavourite
++bool isInStock
++String status
++dynamic dimensions
++Category category
++FurnitureType furnitureType
++Room[] rooms
++Media[] media
++DefaultOptionId[] defaultOptionIds
++double averageRating
++int totalReviews
++Review[] reviews
++DateTime createdAt
++dynamic updatedAt
++fromJson(json)
++toJson()
+}
+class Review {
++int id
++int productId
++String reviewerName
++dynamic reviewerImage
++int rating
++String title
++String review
++bool isVerifiedPurchase
++int helpfulCount
++String status
++DateTime createdAt
++fromJson(json)
++toJson()
+}
+ProductDetailsModel --> ProductDetail : "contains"
+ProductDetail --> Review : "has many"
+```
+
+**Diagram sources**
+- [product_details_model.dart:9-146](file://lib/features/product_details.dart/models/product_details_model.dart#L9-L146)
+
+**Section sources**
+- [product_details_model.dart:20-340](file://lib/features/product_details.dart/models/product_details_model.dart#L20-L340)
+- [product_details_rating.dart:1-94](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L1-L94)
+- [product_details_rating_info.dart:1-104](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_info.dart#L1-L104)
+- [product_details_rating_percent.dart:1-55](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_percent.dart#L1-L55)
+- [product_details_review.dart:1-135](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_review.dart#L1-L135)
+
 ### Product Details View
-- Purpose: Present product media via carousel, handle navigation, and expose AI toggle state.
+- Purpose: Present product media via carousel, handle navigation, expose AI toggle state, and integrate rating/review components.
 - Implementation: Uses a carousel controller to manage page transitions and reactive index tracking.
+- **Enhancement**: Integrated comprehensive rating and review system with dynamic visualization and interactive submission.
 - **UI Safety Checks**: Implements robust image loading with fallback mechanisms and placeholder handling.
 
 ```mermaid
 sequenceDiagram
 participant View as "Product Details View"
 participant Ctrl as "ProductDetailsController"
+participant AttrCtrl as "ProductAttributesController"
 participant Carousel as "CarouselSliderController"
 View->>Ctrl : "changeIndex(i)"
 Ctrl->>Ctrl : "currentIndex = i"
@@ -319,13 +487,20 @@ Ctrl->>Carousel : "animateToPage(currentIndex)"
 View->>Ctrl : "previous()"
 Ctrl->>Ctrl : "currentIndex-- if within bounds"
 Ctrl->>Carousel : "animateToPage(currentIndex)"
+View->>AttrCtrl : "getProductsAttributes(productID)"
+AttrCtrl->>AttrCtrl : "isLoading = true"
+AttrCtrl->>AttrCtrl : "Fetch attributes from repository"
+AttrCtrl->>AttrCtrl : "isLoading = false"
+AttrCtrl->>AttrCtrl : "Set isOpen array for expandable sections"
 ```
 
 **Diagram sources**
-- [product_details_controller.dart:1-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L36)
+- [product_details_controller.dart:92-107](file://lib/features/product_details.dart/controller/product_details_controller.dart#L92-L107)
+- [products_attributes_controller.dart:14-29](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L14-L29)
 
 **Section sources**
-- [product_details_controller.dart:1-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L36)
+- [product_details_controller.dart:14-162](file://lib/features/product_details.dart/controller/product_details_controller.dart#L14-L162)
+- [product_details_view.dart:19-91](file://lib/features/product_details.dart/views/product_details_view.dart#L19-L91)
 
 ### Shopping Cart Functionality
 - Current Status: No dedicated cart controller or repository was identified in the analyzed files.
@@ -424,6 +599,155 @@ Orders->>User : "Order visible in order list"
 - Product Catalog ↔ Orders: OrdersModel includes items with product identifiers and metadata; UI can link order items to product details.
 - Cart ↔ Orders: Cart state should serialize to order payload; ensure product availability and pricing snapshot.
 - Payments ↔ Orders: Use Airwallex fields (client secret, intent ID) from OrdersModel to finalize payment and update order status.
+- Product Attributes ↔ Orders: Product attributes should be captured during purchase for accurate order fulfillment.
+- Rating System ↔ Orders: Order review system complements product rating system for comprehensive feedback collection.
+
+## Enhanced Product Attributes System
+
+### Overview
+The enhanced product attributes system provides comprehensive dynamic customization options for products, enabling customers to select from various attributes such as materials, colors, sizes, and finishes. This system represents a significant architectural addition to the product details feature, allowing for complex product configurations beyond simple media and basic details.
+
+### Data Model Architecture
+The product attributes system consists of three main components:
+
+1. **ProductAttributesModel**: Top-level container for attribute data
+2. **ProductAttribute**: Individual attribute groups (e.g., "Wood Finish", "Color")
+3. **AttributeOption**: Specific options within attributes with pricing and stock information
+
+```mermaid
+classDiagram
+class ProductAttributesModel {
++ProductAttribute[] data
++ProductAttributesModel.fromJson(json)
++toJson()
+}
+class ProductAttribute {
++int productAttributeId
++int attributeId
++String name
++AttributeOption[] options
++ProductAttribute.fromJson(json)
++toJson()
+}
+class AttributeOption {
++int productAttributeOptionId
++int optionId
++String name
++dynamic image
++String productImage
++int price
++int stock
++bool isDefault
++AttributeOption.fromJson(json)
++toJson()
+}
+ProductAttributesModel --> ProductAttribute : "contains"
+ProductAttribute --> AttributeOption : "has many"
+```
+
+**Diagram sources**
+- [product_attributes_model.dart:9-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L9-L100)
+
+### Controller Implementation
+The ProductAttributesController manages the loading and display of product attributes with expandable sections and default option handling:
+
+**Key Features:**
+- Asynchronous attribute loading with loading state management
+- Expandable/collapsible attribute sections
+- Default option selection for each attribute group
+- Error handling with user-friendly snackbars
+
+**Section sources**
+- [products_attributes_controller.dart:1-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_repo.dart:1-21](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+
+### UI Integration
+The product attributes system integrates seamlessly with the product details view through dedicated UI components that handle:
+- Dynamic attribute section expansion/collapse
+- Option selection with visual feedback
+- Price and stock level display
+- Default option highlighting
+
+## Improved Rating and Review System
+
+### Overview
+The enhanced rating and review system provides comprehensive product feedback mechanisms with detailed visualization and interactive submission capabilities. This system represents a significant improvement over basic rating implementations, offering detailed star distribution analysis and user-friendly review management.
+
+### Rating Distribution Visualization
+The system calculates and displays detailed rating distributions with dynamic star count analysis:
+
+```mermaid
+flowchart TD
+A["Load Product Reviews"] --> B["Initialize Star Counts"]
+B --> C["Iterate Through Reviews"]
+C --> D{"Valid Star Rating?"}
+D --> |Yes| E["Increment Star Count"]
+D --> |No| F["Skip Review"]
+E --> G{"More Reviews?"}
+F --> G
+G --> |Yes| C
+G --> |No| H["Calculate Percentages"]
+H --> I["Display Rating Distribution"]
+```
+
+**Diagram sources**
+- [product_details_rating.dart:21-38](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L21-L38)
+
+### Rating Components Architecture
+The rating system consists of several specialized components:
+
+1. **ProductDetailsRating**: Main container component handling overall rating display
+2. **ProductDetailsRatingInfo**: Displays average rating and review statistics
+3. **ProductDetailsRatingPercent**: Shows individual star rating distribution with progress bars
+4. **ProductDetailsReview**: Manages review display and submission interface
+
+```mermaid
+classDiagram
+class ProductDetailsRating {
++build(context) Widget
++calculateStarDistribution() List
+}
+class ProductDetailsRatingInfo {
++double averageRating
++int totalReviews
++bool isDark
++build(context) Widget
+}
+class ProductDetailsRatingPercent {
++int star
++double percent
++bool isDark
++build(context) Widget
+}
+class ProductDetailsReview {
++Map[] reviews
++int reviewIndex
++build(context) Widget
+}
+ProductDetailsRating --> ProductDetailsRatingInfo : "contains"
+ProductDetailsRating --> ProductDetailsRatingPercent : "contains many"
+ProductDetailsReview --> CustomRatingDialog : "uses"
+```
+
+**Diagram sources**
+- [product_details_rating.dart:10-94](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L10-L94)
+- [product_details_rating_info.dart:7-104](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_info.dart#L7-L104)
+- [product_details_rating_percent.dart:7-55](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_percent.dart#L7-L55)
+- [product_details_review.dart:13-135](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_review.dart#L13-L135)
+
+### Review Submission Integration
+The rating system integrates with the existing order review system through the CustomRatingDialog component, providing:
+- Interactive star rating selection
+- Text review submission
+- Loading states and error handling
+- Success feedback upon submission
+
+**Section sources**
+- [product_details_rating.dart:1-94](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L1-L94)
+- [product_details_rating_info.dart:1-104](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_info.dart#L1-L104)
+- [product_details_rating_percent.dart:1-55](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_percent.dart#L1-L55)
+- [product_details_review.dart:1-135](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_review.dart#L1-L135)
+- [order_review_controller.dart:1-42](file://lib/features/order/controllers/order_review_controller.dart#L1-L42)
 
 ## Enhanced UI Components
 
@@ -627,9 +951,9 @@ Implements safe image navigation with fallback mechanisms:
 - **Null URLs**: Provide default empty string for safe rendering
 
 #### Placeholder Components
-- Chair outline icons for empty product images
-- Loading indicators during image fetch operations
-- Graceful degradation when image loading fails
+- **Chair outline icons for empty product images**
+- **Loading indicators during image fetch operations**
+- **Graceful degradation when image loading fails**
 
 **Section sources**
 - [global_search_suggestion_box.dart:184-192](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L184-L192)
@@ -641,10 +965,17 @@ Implements safe image navigation with fallback mechanisms:
 - Models encapsulate JSON serialization/deserialization and are consumed by Repositories and Controllers.
 - Error handling is centralized via ErrorModel and ErrorSnackbar.
 - Enhanced UI components provide reusable building blocks for consistent user experience.
+- **Product Attributes System**: New dedicated controllers and repositories for attribute management.
+- **Rating System**: Integrated rating components with dynamic visualization and review submission.
 - **UI Safety Checks**: Comprehensive validation patterns ensure robust image loading across all components.
 
 ```mermaid
 graph LR
+PC["ProductDetailsController"] --> PDR["ProductDetailsRating"]
+PC --> PDMI["ProductDetailsModel"]
+PC --> CM["ProductsModel"]
+PAC["ProductAttributesController"] --> PAM["ProductAttributesModel"]
+PAC --> PAR["ProductAttributesRepository"]
 OC["OrderController"] --> GR["GetOrdersRepository"]
 GR --> GN["GetNetwork"]
 GR --> HM["HeadersManager"]
@@ -652,15 +983,14 @@ GR --> EM["ErrorModel"]
 OR["OrderReviewRepository"] --> PWR["PostWithoutResponse"]
 OR --> HM
 OR --> EM
-PC["ProductDetailsController"] --> CM["ProductsModel"]
-OC --> OM["OrdersModel"]
-OC --> ES["ErrorSnackbar"]
-OC --> CRD["CustomRatingDialog"]
-PC --> CRD
+PC --> ES["ErrorSnackbar"]
+PC --> CRD["CustomRatingDialog"]
+OC --> CRD
 PC --> HPD["HomeProductDesign"]
 PC --> GSSB["GlobalSearchSuggestionBox"]
 PC --> HOUP["HomeOurProducts"]
 PC --> PDVI["ProductDetailsViewImage"]
+PAC --> GN
 subgraph "Enhanced UI Dependencies"
 CTFF["CustomTextFormField"] --> CTFF
 CPHF["CustomPhoneField"] --> CPHF
@@ -668,10 +998,16 @@ CRB["CustomRatingBuilder"] --> CRB
 CRBAR["CustomRatingBar"] --> CRBAR
 SC["SharedContainer"] --> SC
 IMG["Image Safety Checks"] --> IMG
+ATTR["Product Attributes"] --> ATTR
+REV["Rating & Reviews"] --> REV
 END
 ```
 
 **Diagram sources**
+- [product_details_controller.dart:1-162](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L162)
+- [products_attributes_controller.dart:1-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_model.dart:1-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L100)
+- [product_details_rating.dart:1-94](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L1-L94)
 - [order_controller.dart:1-41](file://lib/features/order/controllers/order_controller.dart#L1-L41)
 - [get_orders_repo.dart:1-20](file://lib/features/order/repositories/get_orders_repo.dart#L1-L20)
 - [order_review_repo.dart:1-29](file://lib/features/order/repositories/order_review_repo.dart#L1-L29)
@@ -680,13 +1016,12 @@ END
 - [headers_manager.dart](file://lib/core/data/networks/headers_manager.dart)
 - [error_model.dart](file://lib/core/data/global_models/error_model.dart)
 - [error_snackbar.dart](file://lib/shared/widgets/snackbars/error_snackbar.dart)
-- [product_details_controller.dart:1-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L36)
 - [products_model.dart:1-267](file://lib/features/home/models/products_model.dart#L1-L267)
-- [orders_model.dart:1-308](file://lib/features/order/models/orders_model.dart#L1-L308)
+- [product_details_model.dart:1-340](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L340)
 - [home_product_design.dart:1-99](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L99)
 - [global_search_suggestion_box.dart:150-226](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L150-L226)
 - [home_our_products.dart:54-82](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L54-L82)
-- [product_details_view_image.dart:1-91](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L1-L91)
+- [product_details_view_image.dart:1-97](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L1-L97)
 - [custom_text_form_field.dart:1-191](file://lib/shared/widgets/custom_form_field/custom_text_form_field.dart#L1-L191)
 - [custom_phone_field.dart:1-116](file://lib/shared/widgets/custom_form_field/custom_phone_field.dart#L1-L116)
 - [custom_rating_builder.dart:1-35](file://lib/shared/widgets/custom_rating/custom_rating_builder.dart#L1-L35)
@@ -704,6 +1039,8 @@ END
 - Reactive Updates: Keep controllers reactive to avoid unnecessary rebuilds; use granular observables.
 - UI Component Optimization: Enhanced form fields and rating components use efficient rendering patterns with proper widget caching.
 - **Image Loading Optimization**: CachedNetworkImage implementation reduces memory usage and improves performance for repeated image loads.
+- **Attribute Loading**: Product attributes are loaded asynchronously to prevent blocking the main UI thread.
+- **Rating Calculation**: Star distribution calculations are performed efficiently with minimal computational overhead.
 
 ## Troubleshooting Guide
 - Network Failures: Errors are returned as Either<ErrorModel, T>; ensure controllers handle failures gracefully and display user-friendly messages via ErrorSnackbar.
@@ -713,6 +1050,8 @@ END
 - Rating System: Ensure proper initialization of rating components and handle edge cases in rating updates.
 - **Image Loading Issues**: Verify media validation patterns are correctly implemented; check for null URL handling and fallback mechanisms.
 - **Empty Product States**: Ensure fallback placeholders are displayed when product media is unavailable.
+- **Attribute Loading**: Verify ProductAttributesController properly handles loading states and error conditions.
+- **Rating Distribution**: Ensure star count calculations handle edge cases like empty review lists or invalid rating values.
 
 **Section sources**
 - [order_controller.dart:16-27](file://lib/features/order/controllers/order_controller.dart#L16-L27)
@@ -720,6 +1059,25 @@ END
 - [error_snackbar.dart](file://lib/shared/widgets/snackbars/error_snackbar.dart)
 - [headers_manager.dart](file://lib/core/data/networks/headers_manager.dart)
 - [phone_validator.dart:1-15](file://lib/shared/extensions/validators/phone_validator.dart#L1-L15)
+- [products_attributes_controller.dart:20-28](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L20-L28)
+- [product_details_rating.dart:21-38](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L21-L38)
 
 ## Conclusion
-The e-commerce platform establishes a solid foundation with product catalogs, order retrieval, and UI controllers. Recent enhancements significantly improve the user experience through comprehensive form field components, custom phone field validation, rating bar widgets, robust UI safety checks for product image loading, and various UI improvements. The platform now includes comprehensive validation systems, interactive rating capabilities, enhanced form components, and critical safety mechanisms that prevent crashes when products have no associated images. Missing pieces include a cart module, checkout flow, payment gateway integration, category filtering, and inventory management. Extending the existing architecture with repositories and controllers for these features will complete the end-to-end shopping experience while maintaining modularity, testability, and robust error handling across all image loading scenarios.
+The e-commerce platform establishes a solid foundation with product catalogs, order retrieval, and UI controllers. Recent enhancements significantly improve the user experience through comprehensive form field components, custom phone field validation, rating bar widgets, robust UI safety checks for product image loading, and **major architectural additions** including:
+
+### Major Enhancements
+- **Comprehensive Product Attributes System**: Dynamic attribute management with pricing, stock, and default options for complex product customization
+- **Enhanced Rating and Review System**: Detailed star distribution visualization, interactive rating submission, and comprehensive review management
+- **Improved Product Details Architecture**: Integrated rating/review components with dynamic attribute sections
+- **Expanded UI Component Library**: Specialized rating components with progress indicators and detailed visualization
+
+### Architectural Improvements
+- **Separate Controllers**: Dedicated ProductAttributesController for attribute management alongside ProductDetailsController
+- **Modular Rating System**: Standalone rating components with reusable visualization patterns
+- **Enhanced Data Models**: Comprehensive ProductDetailsModel with rich metadata and review information
+- **Improved User Experience**: Interactive rating submission, detailed feedback visualization, and seamless attribute selection
+
+### Missing Components
+The platform still requires cart functionality, checkout flow, payment gateway integration, category filtering, and inventory management. Extending the existing architecture with repositories and controllers for these features will complete the end-to-end shopping experience while maintaining modularity, testability, and robust error handling across all image loading scenarios and enhanced rating systems.
+
+The recent enhancements represent a significant step forward in creating a comprehensive e-commerce platform that provides rich product information, detailed customer feedback mechanisms, and robust image handling capabilities essential for modern e-commerce applications.

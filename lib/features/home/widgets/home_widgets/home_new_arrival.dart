@@ -64,7 +64,8 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
                         HomeProductText(
                           color: color,
                           title:
-                              controller.newArrivals.value?.data[index].name ??
+                              controller.newArrivals.value?.data[index].name
+                                  .toString() ??
                               '',
                           price:
                               '\$${controller.newArrivals.value?.data[index].price.toDouble().toPrecision(2) ?? 0.0}',
