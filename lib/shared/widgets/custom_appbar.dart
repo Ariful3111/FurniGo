@@ -26,22 +26,29 @@ class CustomAppbar extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
-        isIcon?InkWell(
-          onTap: onDrawerTap,
-          child:Image.asset(
-            icon ?? IconsPath.drawer,
-            height: 24.h,
-            width: 24.w,
-            color: isDark ? AppColors.whiteColor : null,
-          ),
-        ):SizedBox.shrink(),
+        isIcon
+            ? InkWell(
+                onTap: onDrawerTap,
+                child: Image.asset(
+                  icon ?? IconsPath.drawer,
+                  height: 24.h,
+                  width: 24.w,
+                  color: isDark ? AppColors.whiteColor : null,
+                ),
+              )
+            : SizedBox.shrink(),
         SizedBox(width: 8.w),
         CustomPrimaryText(
           text: title,
           color: isDark ? AppColors.whiteColor : null,
         ),
         Spacer(),
-        ActionButton(icon: IconsPath.favorite, onTap: () {}),
+        ActionButton(
+          icon: IconsPath.favorite,
+          onTap: () {
+            Get.toNamed(AppRoutes.favoritesView);
+          },
+        ),
         SizedBox(width: 8.w),
         badges.Badge(
           badgeStyle: badges.BadgeStyle(

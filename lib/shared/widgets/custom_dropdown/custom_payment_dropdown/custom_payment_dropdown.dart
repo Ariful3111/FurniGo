@@ -37,7 +37,7 @@ class CustomPaymentDropdownMenu extends StatelessWidget {
   final double? selectedTrailingIconWidth;
   final Color? selectedTrailingIconColor;
   final String brandIconPath;
-
+  final Color? borderColor;
   const CustomPaymentDropdownMenu({
     super.key,
     required this.cardList,
@@ -67,7 +67,7 @@ class CustomPaymentDropdownMenu extends StatelessWidget {
     this.selectedTrailingIconHeight,
     this.selectedTrailingIconWidth,
     this.selectedTrailingIconColor,
-    this.brandIconPath = IconsPath.visa,
+    this.brandIconPath = IconsPath.visa, this.borderColor,
   });
 
   @override
@@ -107,9 +107,7 @@ class CustomPaymentDropdownMenu extends StatelessWidget {
             borderWidth: borderWidth,
             borderRadius: borderRadius,
             focusBorderRadius: focusBorderRadius,
-            contentPadding:
-                contentPadding ??
-                EdgeInsets.all(12.r),
+            contentPadding: contentPadding ?? EdgeInsets.all(12.r), borderColor: borderColor,
           ),
           leadingIcon: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -156,7 +154,7 @@ class CustomPaymentDropdownMenu extends StatelessWidget {
             context: context,
             brandIconPath: brandIconPath,
             menuFontSize: menuFontSize,
-            entryPadding: entryPadding
+            entryPadding: entryPadding,
           ),
         ),
       ),

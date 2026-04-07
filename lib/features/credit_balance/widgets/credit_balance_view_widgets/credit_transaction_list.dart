@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/credit_balance/controller/credit_balance_controller.dart';
 import 'package:zb_dezign/features/credit_balance/models/credit_transaction_model.dart';
 import 'package:zb_dezign/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_item.dart';
+import 'package:zb_dezign/shared/widgets/custom_scrollbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class CreditTransactionList extends StatelessWidget {
+class CreditTransactionList extends GetWidget<CreditBalanceController> {
   const CreditTransactionList({super.key});
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    ScrollController scrollController = ScrollController();
+
     final List<CreditTransaction> items = [
       CreditTransaction(
         title: "Room interior design",
@@ -93,19 +96,12 @@ class CreditTransactionList extends StatelessWidget {
         SizedBox(height: 10.h),
         SizedBox(
           height: 220.h,
-          child: RawScrollbar(
-            controller: scrollController,
-            thumbVisibility: true,
-            trackVisibility: true,
-            thumbColor:isDark? AppColors.whiteColor:AppColors.primaryColor,
-            trackRadius: Radius.circular(12.r),
-            trackColor:isDark? AppColors.primaryColor:AppColors.buttonBorderColor,
-            thickness: 3.83.w,
-            radius: Radius.circular(8.r),
+          child: CustomScrollbar(
+            scrollController: controller.scrollController,
             child: Padding(
               padding: EdgeInsets.only(right: 8.w),
               child: ListView.builder(
-                controller: scrollController,
+                controller: controller.scrollController,
                 itemCount: items.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
 
 class CheckoutController extends GetxController {
   TextEditingController firstName = TextEditingController();
@@ -15,7 +16,7 @@ class CheckoutController extends GetxController {
   TextEditingController nameOnCard = TextEditingController();
   TextEditingController paypalEmailController = TextEditingController();
   TextEditingController promoController = TextEditingController();
- RxInt selectedIndex = 0.obs;
+  RxInt selectedIndex = 0.obs;
 
   final List<Map<String, dynamic>> addressList = [
     {
@@ -33,6 +34,27 @@ class CheckoutController extends GetxController {
       "address2": "Melbourne, VIC 3000",
       "country": "Australia",
       "isDefault": false,
+    },
+  ];
+  RxInt selectedCardIndex = 0.obs;
+  final List<Map<String, String>> cardList = [
+    {
+      "image": IconsPath.visa,
+      "number": "41xx xxxx xxxx 5399",
+      "name": "John Doe",
+      "expiry": "12/2025",
+    },
+    {
+      "image": IconsPath.visa,
+      "number": "41xx xxxx xxxx 5499",
+      "name": "John Doe",
+      "expiry": "12/2025",
+    },
+    {
+      "image": IconsPath.masterCard,
+      "number": "41xx xxxx xxxx 5499",
+      "name": "John Doe",
+      "expiry": "12/2025",
     },
   ];
   RxBool saveInfo = false.obs;

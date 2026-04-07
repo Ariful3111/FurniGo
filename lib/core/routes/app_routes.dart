@@ -32,4 +32,6 @@ class AppRoutes {
   static const String productDetailsView = '/productDetailsView';
   static const String cartView = '/cartView';
   static const String checkoutView = '/checkoutView';
+  static const String shopView = '/shopView';
+  static const String favoritesView = '/favoritesView';
 }

@@ -6,6 +6,7 @@ class DropdownInputDecoration {
   InputDecorationTheme inputDecoration({
     required BuildContext context,
     required Color? fillColor,
+    required Color? borderColor,
     required InputBorder? enableBorder,
     required InputBorder? focusBorder,
     required double? focusBorderWidth,
@@ -17,9 +18,7 @@ class DropdownInputDecoration {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return InputDecorationTheme(
       filled: true,
-      fillColor: isDark
-          ? fillColor ?? AppColors.labelColor
-          : fillColor ?? AppColors.whiteColor,
+      fillColor: isDark ? AppColors.labelColor : AppColors.whiteColor,
       contentPadding: contentPadding,
       focusColor: Colors.transparent,
       enabledBorder:
@@ -28,9 +27,11 @@ class DropdownInputDecoration {
             borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
             borderSide: BorderSide(
               width: borderWidth ?? 1.2.r,
-              color: isDark
-                  ? AppColors.darkBorderColor
-                  : AppColors.fieldBorderColorLight,
+              color:
+                  borderColor ??
+                  (isDark
+                      ? AppColors.darkBorderColor
+                      : AppColors.fieldBorderColorLight),
             ),
           ),
       focusedBorder:
@@ -39,9 +40,11 @@ class DropdownInputDecoration {
             borderRadius: BorderRadius.circular(focusBorderRadius ?? 16.r),
             borderSide: BorderSide(
               width: focusBorderWidth ?? 1.2.r,
-              color: isDark
-                  ? AppColors.darkBorderColor
-                  : AppColors.fieldBorderColorLight,
+              color:
+                  borderColor ??
+                  (isDark
+                      ? AppColors.darkBorderColor
+                      : AppColors.fieldBorderColorLight),
             ),
           ),
     );

@@ -11,7 +11,7 @@ class DashboardController extends GetxController {
       'icon': IconsPath.shopProduction,
       'title': 'Shop Products',
       'sub': 'Brand-new pieces with fast delivery and easy setup.',
-      'page': '',
+      'page': AppRoutes.shopView,
     },
     {
       'icon': IconsPath.sellFurniture,

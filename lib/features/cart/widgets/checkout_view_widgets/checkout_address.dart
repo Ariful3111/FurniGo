@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/cart/controller/checkout_controller.dart';
+import 'package:zb_dezign/features/cart/widgets/checkout_view_widgets/checkout_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
@@ -41,45 +45,53 @@ class CheckoutAddress extends GetWidget<CheckoutController> {
                             children: [
                               CustomPrimaryText(
                                 text: data["type"],
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.w600,
                               ),
+                              SizedBox(width: 8.w),
                               if (data["isDefault"])
-                                Container(
-                                  margin: const EdgeInsets.only(left: 8),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.activeBGColor,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: CustomPrimaryText(
-                                    text: "Default",
-                                    fontSize: 12,
-                                    color: AppColors.activeTextColor,
-                                  ),
-                                ),
+                                CustomTableStatus(status: 'Default'),
                             ],
                           ),
-                          SizedBox(height: 6),
-                          CustomPrimaryText(text: data["name"], fontSize: 16),
-                          SizedBox(height: 6),
-                          CustomPrimaryText(text: data["address1"]),
-                          CustomPrimaryText(text: data["address2"]),
-                          CustomPrimaryText(text: data["country"]),
+                          SizedBox(height: 6.h),
+                          CustomPrimaryText(
+                            text: data["name"],
+                            fontSize: 16.sp,
+                            color: AppColors.lightGreyColor,
+                          ),
+                          SizedBox(height: 6.h),
+                          text(text: data["address1"]),
+                          text(text: data["address2"]),
+                          text(text: data["country"]),
                         ],
                       ),
                     ),
-                    CustomRadioButton(
-                      value: 1,
-                      groupValue: controller.selectedAddress.value == index
-                          ? 1
-                          : 0,
-                      onChange: (value) {
-                        controller.selectedAddress.value = value;
-                      },
+                    Column(
+                      children: [
+                        CustomRadioButton(
+                          value: 1,
+                          groupValue: controller.selectedAddress.value == index
+                              ? 1
+                              : 0,
+                          onChange: (value) {
+                            controller.selectedAddress.value = value;
+                          },
+                        ),
+                        SizedBox(height: 50.h),
+                        Row(
+                          children: [
+                            CheckoutHelper().icon(
+                              icon: IconsPath.pen,
+                              onTap: () {},
+                            ),
+                            SizedBox(width: 8.w),
+                            CheckoutHelper().icon(
+                              icon: IconsPath.delete,
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -89,5 +101,14 @@ class CheckoutAddress extends GetWidget<CheckoutController> {
         }),
       );
     });
+  }
+
+  Widget text({required String text}) {
+    return CustomPrimaryText(
+      text: text,
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w400,
+      color: AppColors.secondaryTextColor,
+    );
   }
 }

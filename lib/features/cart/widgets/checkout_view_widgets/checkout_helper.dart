@@ -28,4 +28,21 @@ class CheckoutHelper {
       ],
     );
   }
+  Widget icon({required String icon, required VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: SizedBox(
+        height: 32.h,
+        width: 32.w,
+        child: Center(
+          child: Image.asset(
+            icon,
+            height: 16.h,
+            width: 16.w,
+            color: Color(0xFF99A1AF),
+          ),
+        ),
+      ),
+    );
+  }
 }
