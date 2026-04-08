@@ -10,6 +10,7 @@ class CheckoutHelper {
     required String title,
     required int value,
     required CheckoutController controller,
+    required bool isDark,
   }) {
     return Row(
       children: [
@@ -23,7 +24,7 @@ class CheckoutHelper {
         CustomPrimaryText(
           text: title,
           fontSize: 16.sp,
-          color: AppColors.buttonTextColor,
+          color:isDark? AppColors.whiteColor: AppColors.buttonTextColor,
         ),
       ],
     );

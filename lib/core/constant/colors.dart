@@ -117,4 +117,11 @@ class AppColors {
     end: Alignment.bottomCenter,
     colors: [Color(0xFF1348D2), Color(0xFF1B6ADD), Color(0xFF209DF0)],
   );
+
+ static List<Color> productColorList = [
+      Color(0xFFBCBAC9),
+      Color(0xFFDEC4AF),
+      Color(0xFFD28E8D),
+      Color(0xFF86765B),
+    ];
 }

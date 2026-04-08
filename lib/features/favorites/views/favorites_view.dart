@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/favorites/widgets/favorites_header.dart';
+import 'package:zb_dezign/features/favorites/widgets/favorites_items.dart';
+import 'package:zb_dezign/features/favorites/widgets/favorites_select_item.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 
@@ -29,7 +32,11 @@ class FavoritesView extends StatelessWidget {
             icon: IconsPath.back,
           ),
           SizedBox(height: 20.h,),
-          
+          FavoritesHeader(),
+          SizedBox(height: 16.h,),
+          FavoritesSelectItem(),
+          SizedBox(height: 20.h,),
+          FavoritesItems()
         ],
       ),
     );

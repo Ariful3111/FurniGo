@@ -44,10 +44,11 @@ class CheckoutOrderSummery extends StatelessWidget {
         image: ImagesPath.chair,
       ),
     ];
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
       radius: 16.r,
-      color: Color(0xFFF4F6F8),
+      color:isDark? AppColors.labelColor: Color(0xFFF4F6F8),
       border: Border.all(color: AppColors.borderColor),
       child: Column(
         children: [
@@ -57,7 +58,7 @@ class CheckoutOrderSummery extends StatelessWidget {
               CustomPrimaryText(
                 text: 'Order Summary',
                 fontWeight: FontWeight.w600,
-                color: AppColors.fieldTextColorDark,
+                color:isDark? AppColors.whiteColor: AppColors.fieldTextColorDark,
               ),
               CustomPrimaryButton(
                 text: 'Edit Order',

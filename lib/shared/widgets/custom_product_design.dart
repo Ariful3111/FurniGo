@@ -8,12 +8,11 @@ import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class ShopProductDesign extends StatelessWidget {
+class CustomProductDesign extends StatelessWidget {
   final VoidCallback onFavorite;
-  const ShopProductDesign({
-    super.key,
-    required this.onFavorite,
-  });
+  final String? icon;
+  final Color? color;
+  const CustomProductDesign({super.key, required this.onFavorite, this.icon, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +31,9 @@ class ShopProductDesign extends StatelessWidget {
             alignment: Alignment.topRight,
             child: button(
               onTap: onFavorite,
-              icon: IconsPath.favorite,
+              icon: icon ?? IconsPath.favorite,
               isDark: isDark,
+              color: color,
             ),
           ),
           Align(
@@ -76,6 +76,7 @@ class ShopProductDesign extends StatelessWidget {
     required VoidCallback onTap,
     required String icon,
     required bool isDark,
+    Color? color,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -91,7 +92,9 @@ class ShopProductDesign extends StatelessWidget {
             icon,
             height: 16.h,
             width: 16.w,
-            color: isDark ? AppColors.whiteColor : AppColors.buttonTextColor,
+            color:
+                color ??
+                (isDark ? AppColors.whiteColor : AppColors.buttonTextColor),
           ),
         ),
       ),

@@ -46,8 +46,8 @@ class CheckoutCardInfo extends GetWidget<CheckoutController> {
                       radius: 16.r,
                       border: Border.all(
                         color: isSelected
-                            ? AppColors.primaryColor
-                            : AppColors.fieldBorderColorLight,
+                            ?isDark?AppColors.primaryBorderColor :AppColors.primaryColor
+                            :isDark? AppColors.greyTextColor:AppColors.fieldBorderColorLight,
                         width: 1.2.w,
                       ),
                       child: Row(
@@ -66,21 +66,21 @@ class CheckoutCardInfo extends GetWidget<CheckoutController> {
                                   text: item["number"]!,
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.lightGreyColor,
+                                  color:isDark? AppColors.whiteColor: AppColors.lightGreyColor,
                                 ),
                                 SizedBox(height: 4.h),
                                 CustomPrimaryText(
                                   text: item["name"]!,
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.secondaryTextColor,
+                                  color:isDark? AppColors.primaryBorderColor: AppColors.secondaryTextColor,
                                 ),
                                 SizedBox(height: 2.h),
                                 CustomPrimaryText(
                                   text: item["expiry"]!,
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.secondaryTextColor,
+                                  color:isDark? AppColors.primaryBorderColor: AppColors.secondaryTextColor,
                                 ),
                               ],
                             ),

@@ -4,12 +4,12 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class ShopProductText extends StatelessWidget {
+class CustomProductText extends StatelessWidget {
   final List<Color> color;
   final String title;
   final String price;
 
-  const ShopProductText({
+  const CustomProductText({
     super.key,
     required this.color,
     required this.title,
