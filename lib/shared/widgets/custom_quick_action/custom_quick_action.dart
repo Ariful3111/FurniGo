@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/dashboard/controller/dashboard_controller.dart';
+import 'package:zb_dezign/shared/widgets/custom_quick_action/quick_action_list.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class DashboardQuickAction extends GetWidget<DashboardController> {
+class CustomQuickAction extends StatelessWidget {
   final String? text;
-  const DashboardQuickAction({super.key, this.text});
+  const CustomQuickAction({super.key, this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +32,9 @@ class DashboardQuickAction extends GetWidget<DashboardController> {
           ),
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: controller.quickAction.length,
+          itemCount: QuickActionList().quickAction.length,
           itemBuilder: (context, index) {
-            final element = controller.quickAction[index];
+            final element = QuickActionList().quickAction[index];
             return GestureDetector(
               onTap: () {
                 Get.toNamed(element['page']);

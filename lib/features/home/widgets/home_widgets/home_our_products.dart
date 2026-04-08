@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/home/controller/get_products_by_type_controller.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_helper.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_our_product_filter.dart';
@@ -13,13 +15,6 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> color = [
-      Color(0xFFBCBAC9),
-      Color(0xFFDEC4AF),
-      Color(0xFFD28E8D),
-      Color(0xFF86765B),
-    ];
-
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -27,7 +22,9 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
         children: [
           HomeHelper.categoryTitle(
             title: 'Our Products',
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.shopView);
+            },
             isDark: isDark,
           ),
           SizedBox(height: 16.h),
@@ -76,7 +73,7 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
                               ),
                               SizedBox(height: 14.h),
                               HomeProductText(
-                                color: color,
+                                color: AppColors.productColorList,
                                 title:
                                     controller
                                         .products

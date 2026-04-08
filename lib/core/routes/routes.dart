@@ -1,8 +1,12 @@
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
-import 'package:zb_dezign/features/ai_design/bindings/ai_design_bindings.dart';
-import 'package:zb_dezign/features/ai_design/views/ai_design_details.dart';
-import 'package:zb_dezign/features/ai_design/views/ai_design_view.dart';
+import 'package:zb_dezign/features/ai/bindings/ai_bindings.dart';
+import 'package:zb_dezign/features/ai/views/ai_view.dart';
+import 'package:zb_dezign/features/category/bindings/category_bindings.dart';
+import 'package:zb_dezign/features/category/views/ai_category_view.dart';
+import 'package:zb_dezign/features/dashboard_ai_design/bindings/dashboard_ai_design_bindings.dart';
+import 'package:zb_dezign/features/dashboard_ai_design/views/dashboard_ai_design_details.dart';
+import 'package:zb_dezign/features/dashboard_ai_design/views/dashboard_ai_design_view.dart';
 import 'package:zb_dezign/features/auth/bindings/auth_bindings.dart';
 import 'package:zb_dezign/features/auth/bindings/onboard_bindings.dart';
 import 'package:zb_dezign/features/auth/views/email_verification_view.dart';
@@ -172,14 +176,14 @@ final List<GetPage> appRoutes = [
     binding: SellBindings(),
   ),
   GetPage(
-    name: AppRoutes.aiDesignView,
-    page: () => AiDesignView(),
-    binding: AiDesignBindings(),
+    name: AppRoutes.dashboardAiDesignView,
+    page: () => DashboardAiDesignView(),
+    binding: DashboardAiDesignBindings(),
   ),
   GetPage(
-    name: AppRoutes.aiDesignDetailsView,
-    page: () => AiDesignDetails(),
-    binding: AiDesignBindings(),
+    name: AppRoutes.dashboardAiDesignDetailsView,
+    page: () => DashboardAiDesignDetails(),
+    binding: DashboardAiDesignBindings(),
   ),
   GetPage(
     name: AppRoutes.transactionView,
@@ -235,5 +239,15 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.favoritesView,
     page: () => FavoritesView(),
     binding: FavoritesBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.aiCategoryView,
+    page: () => AiCategoryView(),
+    binding: CategoryBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.aiView,
+    page: () => AiView(),
+    binding: AiBindings(),
   ),
 ];

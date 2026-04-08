@@ -5,8 +5,8 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class AiProductPlacement extends StatelessWidget {
-  const AiProductPlacement({super.key});
+class DashboardAiProductPlacement extends StatelessWidget {
+  const DashboardAiProductPlacement({super.key});
 
   @override
   Widget build(BuildContext context) {
