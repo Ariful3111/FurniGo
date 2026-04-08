@@ -36,21 +36,36 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
                         HomeProductDesign(
                           onFavorite: () {},
                           onCart: () {},
+                          productID: controller
+                              .newArrivals
+                              .value!
+                              .data[index]
+                              .id
+                              .toInt(),
                           image:
                               controller
-                                  .newArrivals
-                                  .value
-                                  ?.data[index]
-                                  .media
-                                  .first
-                                  .url ??
-                              '',
+                                      .newArrivals
+                                      .value
+                                      ?.data[index]
+                                      .media
+                                      .isNotEmpty ==
+                                  true
+                              ? controller
+                                        .newArrivals
+                                        .value
+                                        ?.data[index]
+                                        .media
+                                        .first
+                                        .url ??
+                                    ''
+                              : '',
                         ),
                         SizedBox(height: 14.h),
                         HomeProductText(
                           color: color,
                           title:
-                              controller.newArrivals.value?.data[index].name ??
+                              controller.newArrivals.value?.data[index].name
+                                  .toString() ??
                               '',
                           price:
                               '\$${controller.newArrivals.value?.data[index].price.toDouble().toPrecision(2) ?? 0.0}',

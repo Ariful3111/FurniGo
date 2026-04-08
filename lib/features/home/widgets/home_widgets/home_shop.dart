@@ -25,7 +25,10 @@ class HomeShop extends GetWidget<GetRoomsController> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoutes.productDetailsView);
+                      Get.toNamed(
+                        AppRoutes.productDetailsView,
+                        arguments: controller.rooms.value?.data?[index].id,
+                      );
                     },
                     child: Container(
                       padding: EdgeInsets.only(bottom: 12.h),

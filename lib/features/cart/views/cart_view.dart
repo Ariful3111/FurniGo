@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/cart/controller/cart_controller.dart';
 import 'package:zb_dezign/features/cart/widgets/cart_view_widgets/cart_item.dart';
-import 'package:zb_dezign/features/cart/widgets/cart_view_widgets/cart_order_summery.dart';
 import 'package:zb_dezign/features/cart/widgets/cart_view_widgets/cart_select_item.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
@@ -34,9 +33,10 @@ class CartView extends GetView<CartController> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemCount: controller.cartList.length,
-              separatorBuilder: (_, _) => SizedBox(height: 12.h),
+              separatorBuilder: (_, _) => Divider(color: AppColors.borderColor),
               itemBuilder: (context, index) {
                 final item = controller.cartList[index];
+
                 return CartItem(
                   item: item,
                   index: index,
@@ -46,8 +46,6 @@ class CartView extends GetView<CartController> {
               },
             ),
           ),
-          SizedBox(height: 20.h),
-          CartOrderSummery(),
         ],
       ),
     );

@@ -43,7 +43,7 @@ class ProductDetailsCart extends GetWidget<ProductDetailsController> {
           bottom: 20.h,
           top: 40.h,
         ),
-        child: controller.isStock.value
+        child: controller.productDetails.value?.data.isInStock == true
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,

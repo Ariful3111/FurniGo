@@ -2,18 +2,32 @@
 
 <cite>
 **Referenced Files in This Document**
+- [cart_controller.dart](file://lib/features/cart/controller/cart_controller.dart)
+- [cart_item_model.dart](file://lib/features/cart/models/cart_item_model.dart)
+- [cart_view.dart](file://lib/features/cart/views/cart_view.dart)
+- [cart_item.dart](file://lib/features/cart/widgets/cart_item.dart)
+- [cart_select_item.dart](file://lib/features/cart/widgets/cart_select_item.dart)
+- [cart_bindings.dart](file://lib/features/cart/bindings/cart_bindings.dart)
 - [bottom_nav_view.dart](file://lib/features/home/views/bottom_nav_view.dart)
 - [bottom_nav_controller.dart](file://lib/features/home/controller/bottom_nav_controller.dart)
+- [bottom_nav_cart_item.dart](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart)
 - [home_product_design.dart](file://lib/features/home/widgets/home_widgets/home_product_design.dart)
 - [home_new_arrival.dart](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart)
 - [home_our_products.dart](file://lib/features/home/widgets/home_widgets/home_our_products.dart)
-- [product_details_view.dart](file://lib/features/product_details.dart/views/product_details_view.dart)
-- [product_details_controller.dart](file://lib/features/product_details.dart/controller/product_details_controller.dart)
-- [icons_path.dart](file://lib/core/constant/icons_path.dart)
+- [product_details_cart.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart)
 - [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
-- [custom_drawer_controller.dart](file://lib/shared/widgets/custom_drawer/custom_drawer_controller.dart)
+- [icons_path.dart](file://lib/core/constant/icons_path.dart)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Added comprehensive cart controller implementation with item selection and quantity management
+- Integrated new cart model with reactive properties for state management
+- Implemented cart view with item list rendering and interactive controls
+- Added cart widget components for individual items and bulk operations
+- Enhanced bottom navigation with cart badge integration
+- Updated product details integration with cart functionality
+- Added cart binding configuration for dependency injection
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -27,307 +41,455 @@
 9. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the Shopping Cart system within the ZB-DEZINE Flutter application. It focuses on the cart controller implementation, item management, and cart state handling. It also explains the cart view components, item removal, quantity adjustment, and cart summary calculations. The document covers cart data persistence, session management, and cart restoration functionality. It details the integration with the product catalog, inventory validation, and price calculations. Finally, it documents the cart widget components including item lists, totals computation, and promotional discount handling, along with examples of cart operations, user experience patterns, and performance considerations for large cart contents.
+This document describes the comprehensive Shopping Cart system within the ZB-DEZINE Flutter application. The system features a fully implemented cart controller with item selection capabilities, quantity management, deletion functionality, and enhanced UI components. It includes detailed cart state handling, item management operations, and seamless integration with the product catalog and navigation system.
 
 ## Project Structure
-The shopping cart functionality is integrated primarily through:
-- Bottom navigation with a cart badge
-- Product listing widgets that expose cart actions
-- A dedicated dashboard page for cart management
-- Local storage service for persistence
+The shopping cart functionality is organized into a modular architecture with dedicated controllers, models, views, and widgets:
 
 ```mermaid
 graph TB
-BN["BottomNavView<br/>Cart Badge Navigation"] --> BNC["BottomNavController<br/>Page Routing"]
-HPD["HomeProductDesign<br/>Cart Button"] --> BN
-HNA["HomeNewArrival<br/>Horizontal Scrolling"] --> HPD
-HOP["HomeOurProducts<br/>Horizontal Scrolling"] --> HPD
-PDV["ProductDetailsView<br/>Product Details Page"] --> PDC["ProductDetailsController"]
-DASH["DashboardView<br/>Cart Management Page"] --> BNC
-STORAGE["StorageService<br/>Local Persistence"] --> DASH
+subgraph "Cart Feature Module"
+CC["CartController<br/>State Management"] --> CIM["CartItemModel<br/>Reactive Properties"]
+CC --> CV["CartView<br/>Main Interface"]
+CV --> CI["CartItem<br/>Individual Item Widget"]
+CV --> CSI["CartSelectItem<br/>Bulk Operations"]
+end
+subgraph "Integration Layer"
+BNC["BottomNavController<br/>Page Routing"] --> CV
+BNC --> BNCI["BottomNavCartItem<br/>Badge Integration"]
+HPD["HomeProductDesign<br/>Cart Actions"] --> CC
+PDC["ProductDetailsCart<br/>Add to Cart"] --> CC
+end
+subgraph "Persistence Layer"
+SS["StorageService<br/>Data Persistence"] --> CC
+end
 ```
 
 **Diagram sources**
-- [bottom_nav_view.dart:11-256](file://lib/features/home/views/bottom_nav_view.dart#L11-L256)
-- [bottom_nav_controller.dart:7-17](file://lib/features/home/controller/bottom_nav_controller.dart#L7-L17)
-- [home_product_design.dart:8-92](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L8-L92)
-- [home_new_arrival.dart:9-67](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L9-L67)
-- [home_our_products.dart:11-89](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L89)
-- [product_details_view.dart:8-30](file://lib/features/product_details.dart/views/product_details_view.dart#L8-L30)
-- [product_details_controller.dart:5-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L5-L36)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
+- [cart_controller.dart:5-99](file://lib/features/cart/controller/cart_controller.dart#L5-L99)
+- [cart_item_model.dart:3-22](file://lib/features/cart/models/cart_item_model.dart#L3-L22)
+- [cart_view.dart:11-53](file://lib/features/cart/views/cart_view.dart#L11-L53)
+- [cart_item.dart:9-123](file://lib/features/cart/widgets/cart_item.dart#L9-L123)
+- [cart_select_item.dart:10-51](file://lib/features/cart/widgets/cart_select_item.dart#L10-L51)
+- [bottom_nav_controller.dart:8-17](file://lib/features/home/controller/bottom_nav_controller.dart#L8-L17)
+- [bottom_nav_cart_item.dart:9-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L75)
+- [home_product_design.dart:10-105](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L10-L105)
+- [product_details_cart.dart:10-188](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L10-L188)
+- [storage_service.dart:3-24](file://lib/core/data/local/storage_service.dart#L3-L24)
 
 **Section sources**
-- [bottom_nav_view.dart:11-256](file://lib/features/home/views/bottom_nav_view.dart#L11-L256)
-- [bottom_nav_controller.dart:7-17](file://lib/features/home/controller/bottom_nav_controller.dart#L7-L17)
-- [home_product_design.dart:8-92](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L8-L92)
-- [home_new_arrival.dart:9-67](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L9-L67)
-- [home_our_products.dart:11-89](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L89)
-- [product_details_view.dart:8-30](file://lib/features/product_details.dart/views/product_details_view.dart#L8-L30)
-- [product_details_controller.dart:5-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L5-L36)
+- [cart_controller.dart:5-99](file://lib/features/cart/controller/cart_controller.dart#L5-L99)
+- [cart_item_model.dart:3-22](file://lib/features/cart/models/cart_item_model.dart#L3-L22)
+- [cart_view.dart:11-53](file://lib/features/cart/views/cart_view.dart#L11-L53)
+- [cart_item.dart:9-123](file://lib/features/cart/widgets/cart_item.dart#L9-L123)
+- [cart_select_item.dart:10-51](file://lib/features/cart/widgets/cart_select_item.dart#L10-L51)
+- [bottom_nav_controller.dart:8-17](file://lib/features/home/controller/bottom_nav_controller.dart#L8-L17)
+- [bottom_nav_cart_item.dart:9-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L75)
+- [home_product_design.dart:10-105](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L10-L105)
+- [product_details_cart.dart:10-188](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L10-L188)
+- [storage_service.dart:3-24](file://lib/core/data/local/storage_service.dart#L3-L24)
 
 ## Core Components
-- Bottom navigation with a cart badge that routes to the dashboard page
-- Product cards exposing add-to-cart actions via buttons
-- Dashboard view serving as the cart management interface
-- Local storage service for persisting cart state
-- Icons path constants for cart-related assets
+The cart system consists of several key components working together:
 
-Key responsibilities:
-- Navigation: Route users to the cart page from the bottom bar
-- Item management: Provide callbacks for adding items to the cart
-- State handling: Manage cart items and quantities
-- Persistence: Save and restore cart data across sessions
-- UI integration: Display cart badge count and cart page layout
+- **CartController**: Manages cart state with reactive properties, item selection, quantity operations, and deletion functionality
+- **CartItemModel**: Defines cart item structure with reactive boolean properties for selection state
+- **CartView**: Main cart interface displaying items in a scrollable list with custom appbar
+- **CartItem Widget**: Individual cart item component with selection checkbox, image, details, quantity controls, and delete button
+- **CartSelectItem Widget**: Bulk operations component with select all functionality and delete all option
+- **Bottom Navigation Integration**: Cart badge with item count and navigation to cart page
+- **Product Details Integration**: Add to cart functionality with quantity selection
+
+Key responsibilities include:
+- State management with reactive updates usingGetX framework
+- Item selection with individual and bulk operations
+- Quantity adjustment with validation and refresh mechanisms
+- Item deletion with state synchronization
+- UI integration with responsive design and theming
+- Navigation integration with badge count updates
 
 **Section sources**
-- [bottom_nav_view.dart:63-69](file://lib/features/home/views/bottom_nav_view.dart#L63-L69)
-- [home_product_design.dart:42-47](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L42-L47)
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-- [icons_path.dart:17](file://lib/core/constant/icons_path.dart#L17)
+- [cart_controller.dart:5-99](file://lib/features/cart/controller/cart_controller.dart#L5-L99)
+- [cart_item_model.dart:3-22](file://lib/features/cart/models/cart_item_model.dart#L3-L22)
+- [cart_view.dart:11-53](file://lib/features/cart/views/cart_view.dart#L11-L53)
+- [cart_item.dart:9-123](file://lib/features/cart/widgets/cart_item.dart#L9-L123)
+- [cart_select_item.dart:10-51](file://lib/features/cart/widgets/cart_select_item.dart#L10-L51)
+- [bottom_nav_cart_item.dart:9-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L75)
+- [product_details_cart.dart:10-188](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L10-L188)
 
 ## Architecture Overview
-The cart system follows a layered architecture:
-- Presentation layer: Widgets and views for product listings and cart management
-- Navigation layer: Bottom navigation controller routing to the cart page
-- Data layer: Local storage service for cart persistence
-- Integration layer: Product details and home widgets trigger cart actions
+The cart system follows a reactive architecture pattern using theGetX framework:
 
 ```mermaid
 graph TB
+subgraph "Reactive State Layer"
+CC["CartController<br/>RxList<CartItemModel>"] --> |observes| CIM["CartItemModel<br/>RxBool isSelected"]
+CC --> |manages| ISAS["RxBool isAllSelected"]
+end
 subgraph "Presentation Layer"
-HNA["HomeNewArrival"]
-HOP["HomeOurProducts"]
-HPD["HomeProductDesign"]
-PDV["ProductDetailsView"]
-DASH["DashboardView"]
+CV["CartView<br/>ListView Builder"] --> CI["CartItem Widget<br/>Individual Item"]
+CV --> CSI["CartSelectItem Widget<br/>Bulk Operations"]
+CI --> |updates| CC
+CSI --> |updates| CC
 end
 subgraph "Navigation Layer"
-BN["BottomNavView"]
-BNC["BottomNavController"]
+BNC["BottomNavController<br/>Page Routing"] --> CV
+BNC --> BNCI["BottomNavCartItem<br/>Badge Count"]
 end
-subgraph "Data Layer"
-STORAGE["StorageService"]
+subgraph "Integration Layer"
+HPD["HomeProductDesign<br/>Cart Callbacks"] --> CC
+PDC["ProductDetailsCart<br/>Add to Cart"] --> CC
 end
-HNA --> HPD
-HOP --> HPD
-PDV --> HPD
-BN --> BNC
-BNC --> DASH
-DASH --> STORAGE
 ```
 
 **Diagram sources**
-- [bottom_nav_view.dart:11-256](file://lib/features/home/views/bottom_nav_view.dart#L11-L256)
-- [bottom_nav_controller.dart:7-17](file://lib/features/home/controller/bottom_nav_controller.dart#L7-L17)
-- [home_new_arrival.dart:9-67](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L9-L67)
-- [home_our_products.dart:11-89](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L89)
-- [home_product_design.dart:8-92](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L8-L92)
-- [product_details_view.dart:8-30](file://lib/features/product_details.dart/views/product_details_view.dart#L8-L30)
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
+- [cart_controller.dart:5-99](file://lib/features/cart/controller/cart_controller.dart#L5-L99)
+- [cart_item_model.dart:3-22](file://lib/features/cart/models/cart_item_model.dart#L3-L22)
+- [cart_view.dart:11-53](file://lib/features/cart/views/cart_view.dart#L11-L53)
+- [cart_item.dart:9-123](file://lib/features/cart/widgets/cart_item.dart#L9-L123)
+- [cart_select_item.dart:10-51](file://lib/features/cart/widgets/cart_select_item.dart#L10-L51)
+- [bottom_nav_controller.dart:8-17](file://lib/features/home/controller/bottom_nav_controller.dart#L8-L17)
+- [bottom_nav_cart_item.dart:9-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L75)
+- [home_product_design.dart:10-105](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L10-L105)
+- [product_details_cart.dart:10-188](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L10-L188)
 
 ## Detailed Component Analysis
 
+### Cart Controller Implementation
+The CartController manages all cart operations with reactive state management:
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant Controller as "CartController"
+participant Model as "CartItemModel"
+participant View as "CartView"
+User->>Controller : toggleItem(index)
+Controller->>Model : item.isSelected.toggle()
+Controller->>Controller : isAllSelected.update()
+Controller-->>View : cartList.refresh()
+User->>Controller : increaseQty/decreaseQty(index)
+Controller->>Model : quantity++
+Controller->>Controller : cartList.refresh()
+Controller-->>View : UI update
+User->>Controller : deleteItem(index)
+Controller->>Controller : cartList.removeAt(index)
+Controller->>Controller : isAllSelected.update()
+Controller-->>View : cartList.refresh()
+```
+
+**Diagram sources**
+- [cart_controller.dart:44-98](file://lib/features/cart/controller/cart_controller.dart#L44-L98)
+
+**Section sources**
+- [cart_controller.dart:5-99](file://lib/features/cart/controller/cart_controller.dart#L5-L99)
+
+### Cart Item Model with Reactive Properties
+The CartItemModel defines the structure for cart items with reactive selection properties:
+
+```mermaid
+classDiagram
+class CartItemModel {
++String name
++String category
++String color
++String image
++double price
++int quantity
++RxBool isSelected
++CartItemModel()
+}
+class CartController {
++RxList~CartItemModel~ cartList
++RxBool isAllSelected
++toggleItem(index)
++toggleSelectAll()
++deleteItem(index)
++deleteAll()
++increaseQty(index)
++decreaseQty(index)
+}
+```
+
+**Diagram sources**
+- [cart_item_model.dart:3-22](file://lib/features/cart/models/cart_item_model.dart#L3-L22)
+- [cart_controller.dart:5-99](file://lib/features/cart/controller/cart_controller.dart#L5-L99)
+
+**Section sources**
+- [cart_item_model.dart:3-22](file://lib/features/cart/models/cart_item_model.dart#L3-L22)
+
+### Cart View and Item Rendering
+The CartView provides the main interface for cart management with dynamic item rendering:
+
+```mermaid
+flowchart TD
+Start(["CartView Build"]) --> LoadTheme["Detect Theme (Light/Dark)"]
+LoadTheme --> CreateContainer["Create CustomContainer"]
+CreateContainer --> AddAppbar["Add CustomAppbar 'Cart'"]
+AddAppbar --> AddSelectItem["Add CartSelectItem Widget"]
+AddSelectItem --> CreateList["Create ListView.separated"]
+CreateList --> SetItemCount["Set itemCount = controller.cartList.length"]
+SetItemCount --> itemBuilder["itemBuilder creates CartItem widgets"]
+itemBuilder --> PassProps["Pass item, index, controller, isDark"]
+PassProps --> RenderComplete["Render Complete Cart List"]
+```
+
+**Diagram sources**
+- [cart_view.dart:11-53](file://lib/features/cart/views/cart_view.dart#L11-L53)
+
+**Section sources**
+- [cart_view.dart:11-53](file://lib/features/cart/views/cart_view.dart#L11-L53)
+
+### Cart Item Widget with Interactive Controls
+The CartItem widget handles individual item operations with comprehensive UI controls:
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant ItemWidget as "CartItem Widget"
+participant Controller as "CartController"
+participant CheckBox as "CustomCheckBox"
+User->>CheckBox : Toggle Selection
+CheckBox->>Controller : toggleItem(index)
+Controller->>Controller : Update item.isSelected
+Controller->>Controller : Update isAllSelected
+Controller-->>ItemWidget : cartList.refresh()
+User->>ItemWidget : Increase Quantity
+ItemWidget->>Controller : increaseQty(index)
+Controller->>Controller : quantity++
+Controller->>Controller : cartList.refresh()
+User->>ItemWidget : Decrease Quantity
+ItemWidget->>Controller : decreaseQty(index)
+Controller->>Controller : quantity--
+Controller->>Controller : cartList.refresh()
+User->>ItemWidget : Delete Item
+ItemWidget->>Controller : deleteItem(index)
+Controller->>Controller : Remove from cartList
+Controller->>Controller : Update isAllSelected
+Controller-->>ItemWidget : cartList.refresh()
+```
+
+**Diagram sources**
+- [cart_item.dart:27-106](file://lib/features/cart/widgets/cart_item.dart#L27-L106)
+- [cart_controller.dart:44-98](file://lib/features/cart/controller/cart_controller.dart#L44-L98)
+
+**Section sources**
+- [cart_item.dart:9-123](file://lib/features/cart/widgets/cart_item.dart#L9-L123)
+
+### Cart Selection and Bulk Operations
+The CartSelectItem widget provides bulk cart management capabilities:
+
+```mermaid
+flowchart TD
+Start(["CartSelectItem Build"]) --> ObserveState["Observe isAllSelected"]
+ObserveState --> RenderSelectAll["Render Select All Checkbox"]
+RenderSelectAll --> RenderDeleteAll["Render Delete All Button"]
+RenderDeleteAll --> UserAction{"User Action"}
+UserAction --> |Toggle Select All| ToggleAll["toggleSelectAll()"]
+UserAction --> |Delete All| DeleteAll["deleteAll()"]
+ToggleAll --> UpdateState["Update isAllSelected"]
+UpdateState --> UpdateItems["Update all item.isSelected"]
+UpdateItems --> RefreshUI["Refresh UI"]
+DeleteAll --> ClearCart["Clear cartList"]
+ClearCart --> ResetState["Reset isAllSelected = false"]
+ResetState --> RefreshUI
+```
+
+**Diagram sources**
+- [cart_select_item.dart:15-49](file://lib/features/cart/widgets/cart_select_item.dart#L15-L49)
+- [cart_controller.dart:55-82](file://lib/features/cart/controller/cart_controller.dart#L55-L82)
+
+**Section sources**
+- [cart_select_item.dart:10-51](file://lib/features/cart/widgets/cart_select_item.dart#L10-L51)
+
 ### Bottom Navigation Cart Integration
-The bottom navigation provides a cart entry point with a badge indicator. Tapping the cart icon updates the selected index to navigate to the dashboard page, which serves as the cart management interface.
+Enhanced bottom navigation with cart badge integration and page routing:
 
 ```mermaid
 sequenceDiagram
 participant User as "User"
-participant Nav as "BottomNavView"
+participant BottomNav as "BottomNavView"
+participant BottomNavItem as "BottomNavCartItem"
 participant Controller as "BottomNavController"
-participant Drawer as "CustomDrawerController"
-User->>Nav : Tap Cart Icon
-Nav->>Controller : Update selectedIndex to 3
-Nav->>Drawer : Reset selected item
-Controller-->>Nav : Selected index updated
-Nav-->>User : Navigate to DashboardView
+participant CartView as "CartView"
+User->>BottomNavItem : Tap Cart Icon
+BottomNavItem->>Controller : Update selectedIndex to 3
+Controller->>Controller : Set pages[3] = CartView()
+Controller-->>BottomNav : selectedIndex.value = 3
+BottomNav-->>User : Navigate to CartView
+Note over BottomNavItem : Badge shows item count '4'
 ```
 
 **Diagram sources**
-- [bottom_nav_view.dart:63-69](file://lib/features/home/views/bottom_nav_view.dart#L63-L69)
-- [bottom_nav_controller.dart:7-17](file://lib/features/home/controller/bottom_nav_controller.dart#L7-L17)
-- [custom_drawer_controller.dart](file://lib/shared/widgets/custom_drawer/custom_drawer_controller.dart)
+- [bottom_nav_view.dart:12-80](file://lib/features/home/views/bottom_nav_view.dart#L12-L80)
+- [bottom_nav_controller.dart:8-17](file://lib/features/home/controller/bottom_nav_controller.dart#L8-L17)
+- [bottom_nav_cart_item.dart:25-73](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L25-L73)
 
 **Section sources**
-- [bottom_nav_view.dart:63-69](file://lib/features/home/views/bottom_nav_view.dart#L63-L69)
-- [bottom_nav_controller.dart:7-17](file://lib/features/home/controller/bottom_nav_controller.dart#L7-L17)
+- [bottom_nav_view.dart:12-80](file://lib/features/home/views/bottom_nav_view.dart#L12-L80)
+- [bottom_nav_controller.dart:8-17](file://lib/features/home/controller/bottom_nav_controller.dart#L8-L17)
+- [bottom_nav_cart_item.dart:9-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L75)
 
-### Product Listing Widgets and Cart Actions
-Product listing widgets expose cart actions through callback functions. The product design widget includes a cart button that triggers the onCart callback. These callbacks are wired in the home widgets to handle add-to-cart operations.
+### Product Details Cart Integration
+Product details page with integrated cart functionality:
 
 ```mermaid
 sequenceDiagram
 participant User as "User"
-participant Widget as "HomeProductDesign"
-participant Parent as "Parent Widget"
-participant Storage as "StorageService"
-User->>Widget : Tap Cart Button
-Widget->>Parent : onCart callback
-Parent->>Storage : Persist cart item
-Storage-->>Parent : Success/Failure
-Parent-->>User : UI update (badge count)
-```
-
-**Diagram sources**
-- [home_product_design.dart:42-47](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L42-L47)
-- [home_new_arrival.dart:36-39](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L36-L39)
-- [home_our_products.dart:51-54](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L51-L54)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-
-**Section sources**
-- [home_product_design.dart:8-92](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L8-L92)
-- [home_new_arrival.dart:36-39](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L36-L39)
-- [home_our_products.dart:51-54](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L51-L54)
-
-### Cart View and State Management
-The dashboard view acts as the cart management page. It displays cart items, allows quantity adjustments, and computes totals. The cart state is persisted using the storage service and restored on subsequent sessions.
-
-```mermaid
-flowchart TD
-Start(["Open Cart Page"]) --> Load["Load Cart Items from Storage"]
-Load --> Render["Render Item List with Quantities"]
-Render --> Adjust{"Adjust Quantity?"}
-Adjust --> |Yes| UpdateQty["Update Quantity in State"]
-UpdateQty --> Recalc["Recalculate Totals"]
-Recalc --> Persist["Persist Updated Cart"]
-Persist --> Render
-Adjust --> |No| Remove{"Remove Item?"}
-Remove --> |Yes| RemoveItem["Remove Item from State"]
-RemoveItem --> Recalc
-Remove --> |No| Checkout["Proceed to Checkout"]
-Checkout --> End(["Cart Page Closed"])
-```
-
-**Diagram sources**
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-
-**Section sources**
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-
-### Product Details Integration
-The product details view provides a dedicated page for product information. While the controller does not currently manage cart actions, it can be extended to integrate with the cart system by invoking the storage service and updating the cart state.
-
-```mermaid
-sequenceDiagram
-participant User as "User"
-participant Details as "ProductDetailsView"
+participant ProductDetails as "ProductDetailsCart"
 participant Controller as "ProductDetailsController"
-participant Storage as "StorageService"
-User->>Details : Add to Cart
-Details->>Controller : Trigger add-to-cart logic
-Controller->>Storage : Save item to cart
-Storage-->>Controller : Confirmation
-Controller-->>Details : Update UI (badge count)
+participant CartController as "CartController"
+User->>ProductDetails : Tap Add to Cart
+ProductDetails->>Controller : qty validation
+Controller->>Controller : qty++/qty--
+Controller-->>ProductDetails : Obx updates qty
+Note over ProductDetails : Placeholder for add to cart logic
+User->>ProductDetails : Tap Buy Now
+Note over ProductDetails : Placeholder for buy now logic
 ```
 
 **Diagram sources**
-- [product_details_view.dart:8-30](file://lib/features/product_details.dart/views/product_details_view.dart#L8-L30)
-- [product_details_controller.dart:5-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L5-L36)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
+- [product_details_cart.dart:75-95](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L75-L95)
 
 **Section sources**
-- [product_details_view.dart:8-30](file://lib/features/product_details.dart/views/product_details_view.dart#L8-L30)
-- [product_details_controller.dart:5-36](file://lib/features/product_details.dart/controller/product_details_controller.dart#L5-L36)
+- [product_details_cart.dart:10-188](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L10-L188)
 
-### Cart Data Persistence and Restoration
-Cart data is persisted locally using the storage service. On app startup or when navigating to the cart page, the system restores the cart state from persistent storage, ensuring continuity across sessions.
+### Home Product Integration
+Home product widgets with cart action callbacks:
 
 ```mermaid
 sequenceDiagram
-participant App as "App Startup"
-participant Storage as "StorageService"
-participant CartUI as "Cart UI"
-App->>Storage : Load cart data
-Storage-->>App : Return cart items
-App->>CartUI : Initialize cart with restored data
-CartUI-->>App : Ready for user interaction
+participant User as "User"
+participant HomeProduct as "HomeProductDesign"
+participant Parent as "Parent Widget"
+participant CartController as "CartController"
+User->>HomeProduct : Tap Cart Button
+HomeProduct->>Parent : onCart callback
+Parent->>CartController : Add item to cart
+CartController->>CartController : cartList.add(item)
+CartController->>CartController : cartList.refresh()
+CartController-->>Parent : UI update with badge count
 ```
 
 **Diagram sources**
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
+- [home_product_design.dart:47-52](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L47-L52)
+- [home_new_arrival.dart:36-44](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L36-L44)
+- [home_our_products.dart:52-58](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L52-L58)
 
 **Section sources**
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
-
-### Cart Summary Calculations and Promotional Discounts
-The cart summary computes totals based on item prices and quantities. Promotional discounts can be applied during checkout, reducing the final amount. The exact calculation logic is implemented within the cart management page and integrates with the storage service for accurate state updates.
-
-```mermaid
-flowchart TD
-Start(["Compute Cart Totals"]) --> SumBase["Sum Base Prices * Quantities"]
-SumBase --> ApplyDiscounts["Apply Promotional Discounts"]
-ApplyDiscounts --> TaxCalc["Calculate Tax"]
-TaxCalc --> FinalTotal["Final Total = Subtotal - Discounts + Tax"]
-FinalTotal --> End(["Display Summary"])
-```
-
-**Diagram sources**
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
-
-**Section sources**
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
+- [home_product_design.dart:10-105](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L10-L105)
+- [home_new_arrival.dart:36-44](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L36-L44)
+- [home_our_products.dart:52-58](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L52-L58)
 
 ## Dependency Analysis
-The cart system exhibits low coupling and clear separation of concerns:
-- Bottom navigation depends on the bottom navigation controller for routing
-- Product widgets depend on callback functions for cart actions
-- Dashboard view depends on the storage service for persistence
-- Icons path constants provide centralized asset references
+The cart system demonstrates excellent modularity with clear dependency boundaries:
 
 ```mermaid
 graph LR
-BN["BottomNavView"] --> BNC["BottomNavController"]
-HPD["HomeProductDesign"] --> |onCart| Parent["Parent Widget"]
-Parent --> STORAGE["StorageService"]
-DASH["DashboardView"] --> STORAGE
-ICONS["IconsPath"] --> BN
+subgraph "Cart Feature Dependencies"
+CC["CartController"] --> CIM["CartItemModel"]
+CC --> GetX["GetX Framework"]
+CV["CartView"] --> CC
+CI["CartItem"] --> CC
+CI --> CIM
+CSI["CartSelectItem"] --> CC
+end
+subgraph "Integration Dependencies"
+BNC["BottomNavController"] --> CV
+BNC --> BNCI["BottomNavCartItem"]
+HPD["HomeProductDesign"] --> CC
+PDC["ProductDetailsCart"] --> CC
+end
+subgraph "Infrastructure Dependencies"
+SS["StorageService"] --> CC
+ICONS["IconsPath"] --> BNCI
 ICONS --> HPD
+end
 ```
 
 **Diagram sources**
-- [bottom_nav_view.dart:11-256](file://lib/features/home/views/bottom_nav_view.dart#L11-L256)
-- [bottom_nav_controller.dart:7-17](file://lib/features/home/controller/bottom_nav_controller.dart#L7-L17)
-- [home_product_design.dart:8-92](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L8-L92)
-- [icons_path.dart:17](file://lib/core/constant/icons_path.dart#L17)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
+- [cart_controller.dart:1-3](file://lib/features/cart/controller/cart_controller.dart#L1-L3)
+- [cart_item_model.dart:1](file://lib/features/cart/models/cart_item_model.dart#L1)
+- [cart_view.dart:3-10](file://lib/features/cart/views/cart_view.dart#L3-L10)
+- [cart_item.dart:2-8](file://lib/features/cart/widgets/cart_item.dart#L2-L8)
+- [cart_select_item.dart:3-8](file://lib/features/cart/widgets/cart_select_item.dart#L3-L8)
+- [bottom_nav_controller.dart:2-6](file://lib/features/home/controller/bottom_nav_controller.dart#L2-L6)
+- [bottom_nav_cart_item.dart:4-7](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L4-L7)
+- [home_product_design.dart:4-8](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L4-L8)
+- [product_details_cart.dart:3-8](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L3-L8)
+- [storage_service.dart:1](file://lib/core/data/local/storage_service.dart#L1)
+- [icons_path.dart:1](file://lib/core/constant/icons_path.dart#L1)
 
 **Section sources**
-- [bottom_nav_view.dart:11-256](file://lib/features/home/views/bottom_nav_view.dart#L11-L256)
-- [bottom_nav_controller.dart:7-17](file://lib/features/home/controller/bottom_nav_controller.dart#L7-L17)
-- [home_product_design.dart:8-92](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L8-L92)
-- [icons_path.dart:17](file://lib/core/constant/icons_path.dart#L17)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
-- [dashboard_view.dart](file://lib/features/dashboard/views/dashboard_view.dart)
+- [cart_controller.dart:1-3](file://lib/features/cart/controller/cart_controller.dart#L1-L3)
+- [cart_item_model.dart:1](file://lib/features/cart/models/cart_item_model.dart#L1)
+- [cart_view.dart:3-10](file://lib/features/cart/views/cart_view.dart#L3-L10)
+- [cart_item.dart:2-8](file://lib/features/cart/widgets/cart_item.dart#L2-L8)
+- [cart_select_item.dart:3-8](file://lib/features/cart/widgets/cart_select_item.dart#L3-L8)
+- [bottom_nav_controller.dart:2-6](file://lib/features/home/controller/bottom_nav_controller.dart#L2-L6)
+- [bottom_nav_cart_item.dart:4-7](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L4-L7)
+- [home_product_design.dart:4-8](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L4-L8)
+- [product_details_cart.dart:3-8](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L3-L8)
+- [storage_service.dart:1](file://lib/core/data/local/storage_service.dart#L1)
+- [icons_path.dart:1](file://lib/core/constant/icons_path.dart#L1)
 
 ## Performance Considerations
-- Lazy loading: Use lazy loading for product images in horizontal scrolling lists to minimize memory usage.
-- Virtualization: Employ virtualized lists for large cart contents to improve rendering performance.
-- Debounced updates: Debounce cart state updates to avoid excessive re-renders during rapid quantity adjustments.
-- Efficient persistence: Batch writes to the storage service to reduce I/O overhead.
-- Asset caching: Utilize cached network images to reduce bandwidth and improve load times.
-- Minimal recomposition: Keep cart state immutable where possible to enable efficient reactive updates.
+The cart system implements several performance optimization strategies:
+
+- **Reactive Updates**: UsesGetX framework for efficient state management with selective UI updates
+- **Virtualized Lists**: Implements ListView.separated with shrinkWrap and NeverScrollableScrollPhysics for optimal rendering
+- **Conditional Rendering**: Uses Obx widgets for granular state observation and minimal rebuilds
+- **Memory Management**: Proper disposal of reactive subscriptions through GetX lifecycle
+- **Asset Optimization**: Cached network images for product thumbnails to reduce bandwidth usage
+- **State Synchronization**: Automatic state updates prevent unnecessary manual refresh operations
+- **Badge Counting**: Dynamic badge calculation based on cart length for real-time updates
+- **Responsive Design**: ScreenUtil integration ensures optimal performance across device sizes
 
 ## Troubleshooting Guide
-Common issues and resolutions:
-- Cart badge not updating: Verify that the bottom navigation badge count is bound to the cart item count and refreshed after state changes.
-- Items not persisting: Confirm that the storage service is invoked on every cart modification and that the cart is loaded on app startup.
-- Navigation to cart page: Ensure the bottom navigation controller updates the selected index and routes to the dashboard page.
-- Product add-to-cart actions: Validate that the onCart callbacks in product widgets are properly wired and invoke the storage service.
-- Product details integration: Extend the product details controller to integrate with the cart system by invoking storage service methods.
+Common issues and solutions for the cart system:
+
+**Cart State Not Updating**
+- Verify reactive property usage (isSelected, isAllSelected) are properly declared as RxBool
+- Ensure cartList.refresh() is called after state modifications
+- Check that Obx widgets are wrapping dependent UI elements
+
+**Quantity Controls Not Working**
+- Confirm increaseQty/decreaseQty methods are properly bound to UI events
+- Verify quantity validation prevents negative values
+- Ensure cartList.refresh() is called after quantity changes
+
+**Selection State Issues**
+- Check toggleItem method properly updates both individual and global selection states
+- Verify isAllSelected calculation uses every() method correctly
+- Ensure selection state persists across widget rebuilds
+
+**Navigation Problems**
+- Confirm BottomNavController pages array includes CartView at index 3
+- Verify BottomNavCartItem badgeCount is properly calculated
+- Check that selectedIndex updates trigger proper page navigation
+
+**Integration Issues**
+- Ensure HomeProductDesign onCart callbacks are properly wired
+- Verify ProductDetailsCart add to cart functionality is implemented
+- Check that cart binding is registered in dependency injection system
 
 **Section sources**
-- [bottom_nav_view.dart:63-69](file://lib/features/home/views/bottom_nav_view.dart#L63-L69)
-- [bottom_nav_controller.dart:7-17](file://lib/features/home/controller/bottom_nav_controller.dart#L7-L17)
-- [home_product_design.dart:42-47](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L42-L47)
-- [storage_service.dart](file://lib/core/data/local/storage_service.dart)
+- [cart_controller.dart:44-98](file://lib/features/cart/controller/cart_controller.dart#L44-L98)
+- [cart_item.dart:27-106](file://lib/features/cart/widgets/cart_item.dart#L27-L106)
+- [bottom_nav_controller.dart:8-17](file://lib/features/home/controller/bottom_nav_controller.dart#L8-L17)
+- [bottom_nav_cart_item.dart:25-73](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L25-L73)
+- [home_product_design.dart:47-52](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L47-L52)
+- [product_details_cart.dart:75-95](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L75-L95)
 
 ## Conclusion
-The Shopping Cart system in ZB-DEZINE integrates seamlessly with the product catalog through bottom navigation, product widgets, and the dashboard view. It leverages a local storage service for persistence and restoration, enabling a smooth user experience. The system is structured to support item management, quantity adjustments, and cart summary calculations, with room for promotional discount handling. By following the outlined patterns and performance considerations, the cart system can scale effectively for large cart contents while maintaining responsiveness and reliability.
+The Shopping Cart system in ZB-DEZINE represents a comprehensive implementation featuring a fully functional cart controller with item selection, quantity management, deletion capabilities, and enhanced UI components. The system leverages theGetX framework for reactive state management, providing efficient updates and responsive user interactions.
+
+Key achievements include:
+- Complete cart controller implementation with all CRUD operations
+- Reactive item models with proper state management
+- Comprehensive UI components for individual items and bulk operations
+- Seamless integration with bottom navigation and product catalog
+- Proper dependency injection through cart bindings
+- Responsive design with theme support and screen adaptation
+
+The system is designed for scalability with clear separation of concerns, making it easy to extend with additional features like promotional discounts, inventory validation, and advanced cart persistence. The modular architecture ensures maintainability and allows for future enhancements while maintaining optimal performance for large cart contents.

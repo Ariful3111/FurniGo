@@ -72,7 +72,11 @@ class ProductDetailsRent extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _circleButton(icon: IconsPath.delete, onTap: () {}, iconColor: AppColors.darkColor,),
+          _circleButton(
+            icon: IconsPath.delete,
+            onTap: () {},
+            iconColor: AppColors.darkColor,
+          ),
           SizedBox(width: 20.w),
           _circleButton(
             size: 48,
@@ -155,7 +159,7 @@ class ProductDetailsRent extends StatelessWidget {
     required String icon,
     Border? border,
     required VoidCallback onTap,
-    Color ? iconColor,
+    Color? iconColor,
   }) {
     return InkWell(
       onTap: onTap,
@@ -168,7 +172,7 @@ class ProductDetailsRent extends StatelessWidget {
           border: border ?? Border.all(color: AppColors.whiteColor),
         ),
         child: Center(
-          child: Image.asset(icon, height: 20.h, width: 20.w,color: iconColor,),
+          child: Image.asset(icon, height: 20.h, width: 20.w, color: iconColor),
         ),
       ),
     );

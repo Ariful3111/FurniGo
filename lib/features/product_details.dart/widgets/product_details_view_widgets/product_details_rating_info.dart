@@ -5,28 +5,40 @@ import 'package:zb_dezign/shared/widgets/custom_rating/custom_rating_bar.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class ProductDetailsRatingInfo extends StatelessWidget {
-  const ProductDetailsRatingInfo({super.key});
+  final bool isDark;
+  final double averageRating;
+  final int totalReviews;
+
+  const ProductDetailsRatingInfo({
+    super.key,
+    required this.isDark,
+    required this.averageRating,
+    required this.totalReviews,
+  });
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
-        _ratingSummary(isDark),
+        _ratingSummary(isDark: isDark, averageRating: averageRating),
         SizedBox(width: 16.w),
-        _divider(isDark),
+        _divider(isDark: isDark),
         SizedBox(width: 16.w),
-        _ratingDetails(isDark),
+        _ratingDetails(
+          isDark: isDark,
+          averageRating: averageRating,
+          totalReviews: totalReviews,
+        ),
       ],
     );
   }
 
-  Widget _ratingSummary(bool isDark) {
+  Widget _ratingSummary({required bool isDark, required double averageRating}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         CustomPrimaryText(
-          text: "4.5",
+          text: averageRating.toStringAsFixed(1),
           fontSize: 36.sp,
           fontWeight: FontWeight.w600,
           color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
@@ -41,7 +53,7 @@ class ProductDetailsRatingInfo extends StatelessWidget {
     );
   }
 
-  Widget _divider(bool isDark) {
+  Widget _divider({required bool isDark}) {
     return Container(
       width: 1,
       height: 40.h,
@@ -49,16 +61,20 @@ class ProductDetailsRatingInfo extends StatelessWidget {
     );
   }
 
-  Widget _ratingDetails(bool isDark) {
+  Widget _ratingDetails({
+    required bool isDark,
+    required double averageRating,
+    required int totalReviews,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomRatingBar(rating: 4.5),
+        CustomRatingBar(rating: averageRating),
         SizedBox(height: 6.h),
         Row(
           children: [
             CustomPrimaryText(
-              text: "4.5",
+              text: averageRating.toStringAsFixed(1),
               fontSize: 14.sp,
               color: isDark ? AppColors.primaryBorderColor : Color(0xFF585858),
             ),
@@ -75,7 +91,7 @@ class ProductDetailsRatingInfo extends StatelessWidget {
             ),
             SizedBox(width: 6.w),
             CustomPrimaryText(
-              text: "5.2 Rating",
+              text: "$totalReviews Reviews",
               fontSize: 14.sp,
               color: isDark ? AppColors.primaryBorderColor : Color(0xFF585858),
             ),

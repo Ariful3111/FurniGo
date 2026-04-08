@@ -1,32 +1,23 @@
 import 'dart:convert';
 
-ProductsModel productsResponseModelFromJson(String str) =>
-    ProductsModel.fromJson(json.decode(str));
+ProductDetailsModel productDetailsModelFromJson(String str) =>
+    ProductDetailsModel.fromJson(json.decode(str));
 
-String productsResponseModelToJson(ProductsModel data) =>
+String productDetailsModelToJson(ProductDetailsModel data) =>
     json.encode(data.toJson());
 
-class ProductsModel {
-  final List<Product> data;
-  final Links? links;
-  final Meta? meta;
+class ProductDetailsModel {
+  final ProductDetail data;
 
-  ProductsModel({required this.data, this.links, this.meta});
+  ProductDetailsModel({required this.data});
 
-  factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(
-    data: List<Product>.from(json["data"].map((x) => Product.fromJson(x))),
-    links: json["links"] != null ? Links.fromJson(json["links"]) : null,
-    meta: json["meta"] != null ? Meta.fromJson(json["meta"]) : null,
-  );
+  factory ProductDetailsModel.fromJson(Map<String, dynamic> json) =>
+      ProductDetailsModel(data: ProductDetail.fromJson(json["data"]));
 
-  Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-    "links": links?.toJson(),
-    "meta": meta?.toJson(),
-  };
+  Map<String, dynamic> toJson() => {"data": data.toJson()};
 }
 
-class Product {
+class ProductDetail {
   final num id;
   final num categoryId;
   final String categoryName;
@@ -48,11 +39,13 @@ class Product {
   final List<Room> rooms;
   final List<Media> media;
   final List<DefaultOptionId>? defaultOptionIds;
+  final num averageRating;
   final int totalReviews;
+  final List<Review> reviews;
   final DateTime createdAt;
   final dynamic updatedAt;
 
-  Product({
+  ProductDetail({
     required this.id,
     required this.categoryId,
     required this.categoryName,
@@ -74,12 +67,14 @@ class Product {
     this.rooms = const [],
     required this.media,
     this.defaultOptionIds,
+    this.averageRating = 0,
     this.totalReviews = 0,
+    this.reviews = const [],
     required this.createdAt,
     this.updatedAt,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory ProductDetail.fromJson(Map<String, dynamic> json) => ProductDetail(
     id: json["id"],
     categoryId: json["category_id"],
     categoryName: json["category_name"],
@@ -109,7 +104,11 @@ class Product {
             json["default_option_ids"].map((x) => DefaultOptionId.fromJson(x)),
           )
         : [],
+    averageRating: json["average_rating"] ?? 0,
     totalReviews: json["total_reviews"] ?? 0,
+    reviews: json["reviews"] != null
+        ? List<Review>.from(json["reviews"].map((x) => Review.fromJson(x)))
+        : [],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"],
   );
@@ -138,7 +137,9 @@ class Product {
     "default_option_ids": defaultOptionIds != null
         ? List<dynamic>.from(defaultOptionIds!.map((x) => x.toJson()))
         : [],
+    "average_rating": averageRating,
     "total_reviews": totalReviews,
+    "reviews": List<dynamic>.from(reviews.map((x) => x.toJson())),
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt,
   };
@@ -281,90 +282,58 @@ class DefaultOptionId {
   };
 }
 
-class Links {
-  final String? first;
-  final String? last;
-  final String? prev;
-  final String? next;
+class Review {
+  final num id;
+  final num productId;
+  final String reviewerName;
+  final dynamic reviewerImage;
+  final num rating;
+  final String title;
+  final String review;
+  final bool isVerifiedPurchase;
+  final num helpfulCount;
+  final String status;
+  final DateTime createdAt;
 
-  Links({this.first, this.last, this.prev, this.next});
-
-  factory Links.fromJson(Map<String, dynamic> json) => Links(
-    first: json["first"],
-    last: json["last"],
-    prev: json["prev"],
-    next: json["next"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "first": first,
-    "last": last,
-    "prev": prev,
-    "next": next,
-  };
-}
-
-class Meta {
-  final int currentPage;
-  final int? from;
-  final int lastPage;
-  final List<Link>? links;
-  final String path;
-  final int perPage;
-  final int? to;
-  final int total;
-
-  Meta({
-    required this.currentPage,
-    this.from,
-    required this.lastPage,
-    this.links,
-    required this.path,
-    required this.perPage,
-    this.to,
-    required this.total,
+  Review({
+    required this.id,
+    required this.productId,
+    required this.reviewerName,
+    this.reviewerImage,
+    required this.rating,
+    required this.title,
+    required this.review,
+    required this.isVerifiedPurchase,
+    required this.helpfulCount,
+    required this.status,
+    required this.createdAt,
   });
 
-  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-    currentPage: json["current_page"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    links: json["links"] != null
-        ? List<Link>.from(json["links"].map((x) => Link.fromJson(x)))
-        : null,
-    path: json["path"],
-    perPage: json["per_page"],
-    to: json["to"],
-    total: json["total"],
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+    id: json["id"],
+    productId: json["product_id"],
+    reviewerName: json["reviewer_name"],
+    reviewerImage: json["reviewer_image"],
+    rating: json["rating"],
+    title: json["title"],
+    review: json["review"],
+    isVerifiedPurchase: json["is_verified_purchase"],
+    helpfulCount: json["helpful_count"],
+    status: json["status"],
+    createdAt: DateTime.parse(json["created_at"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "current_page": currentPage,
-    "from": from,
-    "last_page": lastPage,
-    "links": links != null
-        ? List<dynamic>.from(links!.map((x) => x.toJson()))
-        : null,
-    "path": path,
-    "per_page": perPage,
-    "to": to,
-    "total": total,
-  };
-}
-
-class Link {
-  final String? url;
-  final String label;
-  final bool active;
-
-  Link({this.url, required this.label, required this.active});
-
-  factory Link.fromJson(Map<String, dynamic> json) =>
-      Link(url: json["url"], label: json["label"], active: json["active"]);
-
-  Map<String, dynamic> toJson() => {
-    "url": url,
-    "label": label,
-    "active": active,
+    "id": id,
+    "product_id": productId,
+    "reviewer_name": reviewerName,
+    "reviewer_image": reviewerImage,
+    "rating": rating,
+    "title": title,
+    "review": review,
+    "is_verified_purchase": isVerifiedPurchase,
+    "helpful_count": helpfulCount,
+    "status": status,
+    "created_at": createdAt.toIso8601String(),
   };
 }

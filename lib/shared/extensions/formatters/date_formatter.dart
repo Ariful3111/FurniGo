@@ -26,28 +26,48 @@ extension DateFormatter on String {
     }
   }
 
-  /// Formats to relative time (e.g., "2 days ago", "Just now")
+  /// Formats to smart relative time (e.g., "Today", "Yesterday", "5 days ago", "Jan 15, 2024")
   String toRelativeTime() {
     try {
       DateTime dateTime = DateTime.parse(this);
-      final now = DateTime.now();
-      final difference = now.difference(dateTime);
-
-      if (difference.inDays > 365) {
-        return '${(difference.inDays / 365).floor()} year${(difference.inDays / 365).floor() > 1 ? 's' : ''} ago';
-      } else if (difference.inDays > 30) {
-        return '${(difference.inDays / 30).floor()} month${(difference.inDays / 30).floor() > 1 ? 's' : ''} ago';
-      } else if (difference.inDays > 0) {
-        return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
-      } else if (difference.inHours > 0) {
-        return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
-      } else if (difference.inMinutes > 0) {
-        return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
-      } else {
-        return 'Just now';
-      }
+      return dateTime.toSmartRelativeTime();
     } catch (e) {
       return this;
     }
+  }
+}
+
+/// Extension for DateTime objects
+extension DateTimeFormatter on DateTime {
+  /// Formats DateTime to smart relative time
+  /// Examples: "Today", "Yesterday", "5 days ago", "2 weeks ago", "Jan 15, 2024"
+  String toSmartRelativeTime() {
+    final now = DateTime.now();
+    final difference = now.difference(this);
+
+    if (difference.inDays == 0) {
+      return 'Today';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inDays < 30) {
+      final weeks = (difference.inDays / 7).floor();
+      return '$weeks ${weeks == 1 ? 'week' : 'weeks'} ago';
+    } else {
+      return DateFormat('MMM dd, yyyy').format(this);
+    }
+  }
+
+  /// Formats DateTime to "MMM dd, yyyy" format
+  /// Example: DateTime(2024, 1, 15) → "Jan 15, 2024"
+  String toFormattedDate() {
+    return DateFormat('MMM dd, yyyy').format(this);
+  }
+
+  /// Formats DateTime with time
+  /// Example: DateTime(2024, 1, 15, 10, 30) → "Jan 15, 2024 10:30 AM"
+  String toFormattedDateTime() {
+    return DateFormat('MMM dd, yyyy hh:mm a').format(this);
   }
 }

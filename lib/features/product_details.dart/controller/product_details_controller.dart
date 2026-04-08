@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/core/constant/images_path.dart';
+import 'package:zb_dezign/features/product_details.dart/models/product_details_model.dart';
+import 'package:zb_dezign/features/product_details.dart/repositories/product_details_repo.dart';
+import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized.dart';
+import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_info.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_shipping.dart';
-import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart';
 
 class ProductDetailsController extends GetxController {
+  final ProductDetailsRepository productDetailsRepository;
+  ProductDetailsController({required this.productDetailsRepository});
   final CarouselSliderController carouselController =
       CarouselSliderController();
   final ScrollController productScrollController = ScrollController();
@@ -18,6 +22,25 @@ class ProductDetailsController extends GetxController {
   RxInt qty = 1.obs;
   RxInt selectedIndex = 0.obs;
   RxInt selectedColor = 0.obs;
+  RxBool isLoading = true.obs;
+
+  final productDetails = Rxn<ProductDetailsModel>();
+
+  Future<void> getProductDetails({required int productID}) async {
+    isLoading.value = true;
+    final response = await productDetailsRepository.execute(
+      productID: productID,
+    );
+    isLoading.value = false;
+    response.fold(
+      (error) {
+        ErrorSnackbar.show(description: error.message);
+      },
+      (data) {
+        productDetails.value = data;
+      },
+    );
+  }
 
   final List<Map<String, dynamic>> woodColors = [
     {'title': 'Walnut', 'color': Colors.amber},
@@ -34,7 +57,11 @@ class ProductDetailsController extends GetxController {
   RxList<bool> isOpen = <bool>[].obs;
 
   final List<String> tabs = ['Customize', 'Product Details', 'Shipping'];
-  List<Widget> widgets = [ProductFurnitureCustomizedWidgets(),ProductDetailsInfo(),ProductDetailsShipping()];
+  List<Widget> widgets = [
+    ProductFurnitureCustomizedWidgets(),
+    ProductDetailsInfo(),
+    ProductDetailsShipping(),
+  ];
 
   final List<Map<String, dynamic>> items = [
     {
@@ -61,30 +88,24 @@ class ProductDetailsController extends GetxController {
 
   RxInt currentIndex = 0.obs;
   RxBool isAi = false.obs;
-  final List<String> images = [
-    ImagesPath.chair,
-    ImagesPath.chair,
-    ImagesPath.chair,
-    ImagesPath.chair,
-    ImagesPath.chair,
-  ];
 
   void changeIndex(int index) {
     currentIndex.value = index;
     carouselController.animateToPage(index);
   }
 
-  void next() {
-    if (currentIndex.value < images.length - 1) {
-      changeIndex(currentIndex.value + 1);
-    }
+  void next({required int imagesLength}) {
+    if (imagesLength <= 1) return;
+    int nextIndex = (currentIndex.value + 1) % imagesLength;
+    changeIndex(nextIndex);
   }
 
-  void previous() {
-    if (currentIndex.value > 0) {
-      changeIndex(currentIndex.value - 1);
-    }
+  void previous({required int imagesLength}) {
+    if (imagesLength <= 1) return;
+    int prevIndex = (currentIndex.value - 1 + imagesLength) % imagesLength;
+    changeIndex(prevIndex);
   }
+
   RxInt reviewIndex = 0.obs;
   final reviews = [
     {
@@ -113,7 +134,6 @@ class ProductDetailsController extends GetxController {
   ];
   TextEditingController ratingController = TextEditingController();
   RxDouble rating = 0.0.obs;
-  RxBool isLoading = false.obs;
   double lastScrollOffset = 0;
   @override
   void onInit() {
@@ -129,6 +149,7 @@ class ProductDetailsController extends GetxController {
       lastScrollOffset = currentScrollOffset;
     });
     super.onInit();
+    getProductDetails(productID: Get.arguments);
   }
 
   @override

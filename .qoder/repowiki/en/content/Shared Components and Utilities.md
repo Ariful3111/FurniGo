@@ -10,10 +10,18 @@
 - [custom_text_form_field.dart](file://lib/shared/widgets/custom_form_field/custom_text_form_field.dart)
 - [button_loading.dart](file://lib/shared/widgets/custom_loadings/button_loading.dart)
 - [custom_pagination.dart](file://lib/shared/widgets/custom_pagination/custom_pagination.dart)
+- [custom_payment_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart)
+- [shared_container.dart](file://lib/shared/widgets/shared_container.dart)
+- [custom_primary_text.dart](file://lib/shared/widgets/custom_text/custom_primary_text.dart)
+- [attribute_option_chip.dart](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart)
+- [attribute_options_list.dart](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart)
+- [product_accordion_item.dart](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart)
+- [products_attributes_controller.dart](file://lib/features/product_details.dart/controller/products_attributes_controller.dart)
+- [product_attributes_model.dart](file://lib/features/product_details.dart/models/product_attributes_model.dart)
+- [product_attributes_repo.dart](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart)
 - [email_validator.dart](file://lib/shared/extensions/validators/email_validator.dart)
 - [date_formatter.dart](file://lib/shared/extensions/formatters/date_formatter.dart)
 - [estimate_delivery_extractor.dart](file://lib/shared/extensions/extractors/estimate_delivery_extractor.dart)
-- [custom_payment_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart)
 - [rent_request_next.dart](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart)
 - [rent_step_controller.dart](file://lib/features/rent_request/controllers/rent_step_controller.dart)
 - [storage_service.dart](file://lib/core/data/local/storage_service.dart)
@@ -25,11 +33,12 @@
 
 ## Update Summary
 **Changes Made**
-- Added documentation for RentRequestNext widget with enhanced loading state support
-- Updated RentStepController documentation to reflect async step navigation integration
-- Added StorageService documentation with rentRequestUUID constant for persistent rental request identifier storage
-- Updated RentRequestController documentation to show async request submission flow
-- Enhanced component architecture overview with new rental request flow components
+- Added documentation for new Product Attributes widgets: AttributeOptionChip, AttributeOptionsList, and ProductAccordionItem
+- Integrated Product Attributes Controller with GetX reactive state management
+- Added Product Attributes Model with nested ProductAttribute and AttributeOption structures
+- Included Product Attributes Repository with network integration and error handling
+- Enhanced component architecture with accordion-based attribute display system
+- Added comprehensive dependency analysis for product customization components
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -37,16 +46,17 @@
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Dependency Analysis](#dependency-analysis)
-7. [Performance Considerations](#performance-considerations)
-8. [Troubleshooting Guide](#troubleshooting-guide)
-9. [Conclusion](#conclusion)
-10. [Appendices](#appendices)
+6. [Product Attributes System](#product-attributes-system)
+7. [Dependency Analysis](#dependency-analysis)
+8. [Performance Considerations](#performance-considerations)
+9. [Troubleshooting Guide](#troubleshooting-guide)
+10. [Conclusion](#conclusion)
+11. [Appendices](#appendices)
 
 ## Introduction
 This document describes the shared components and utility systems in ZB-DEZINE. It focuses on reusable UI components such as custom buttons, form fields, dialogs, loading indicators, and pagination. It also covers validation and formatting utilities, helper extensions, and extension methods. The guide explains component architecture, prop interfaces, event handling, customization options, composition patterns, accessibility considerations, responsive design, and guidelines for extending existing components and building new shared utilities.
 
-**Updated** Enhanced with documentation for the new rental request flow components including RentRequestNext widget with loading state support and StorageService with persistent rental request identifier storage.
+**Updated** Enhanced with comprehensive documentation for the new Product Attributes system including AttributeOptionChip, AttributeOptionsList, ProductAccordionItem, and supporting controllers and models that enable advanced product customization and interaction capabilities.
 
 ## Project Structure
 The shared components live under the shared directory, organized by feature families:
@@ -55,10 +65,13 @@ The shared components live under the shared directory, organized by feature fami
 - widgets/custom_loadings: Loading indicators tailored for actions.
 - widgets/custom_pagination: Pagination controls with dynamic page rendering.
 - widgets/custom_dialog: Payment and feedback dialogs.
+- widgets/shared_container: Universal container component for consistent styling.
+- widgets/custom_text: Primary text component with theme-aware typography.
+- features/product_details: Product customization system with attributes and options.
+- features/rent_request: Complete rental request flow with step navigation and async operations.
 - extensions/validators: Validation helpers for common inputs.
 - extensions/formatters: Formatting helpers for dates and relative time.
 - extensions/extractors: Domain-specific extractors for order-related data.
-- features/rent_request: Complete rental request flow with step navigation and async operations.
 
 ```mermaid
 graph TB
@@ -69,6 +82,16 @@ CFF["CustomTextFormField"]
 BL["ButtonLoading"]
 CP["CustomPagination"]
 CPD["CustomPaymentDialog"]
+SC["SharedContainer"]
+CPT["CustomPrimaryText"]
+end
+subgraph "Product Attributes System"
+AOC["AttributeOptionChip"]
+AOL["AttributeOptionsList"]
+PAI["ProductAccordionItem"]
+PAC["ProductAttributesController"]
+PAM["ProductAttributesModel"]
+PAR["ProductAttributesRepository"]
 end
 subgraph "Extensions"
 EV["EmailValidator"]
@@ -91,14 +114,16 @@ CB2 --> AC
 CFF --> AC
 BL --> AC
 CPD --> AC
-CFF --> EV
-CPD --> EDE
-RNN --> RSC
-RNN --> BL
-RNN --> RH
-RC --> SS
-RSC --> RC
-RSC --> RSD
+SC --> AC
+CPT --> AC
+AOC --> SC
+AOC --> CPT
+AOL --> AOC
+PAI --> AOC
+PAI --> AOC
+PAC --> PAR
+PAC --> PAM
+PAC --> RNN
 ```
 
 **Diagram sources**
@@ -108,6 +133,14 @@ RSC --> RSD
 - [button_loading.dart:1-36](file://lib/shared/widgets/custom_loadings/button_loading.dart#L1-L36)
 - [custom_pagination.dart:1-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L1-L87)
 - [custom_payment_dialog.dart:1-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L1-L94)
+- [shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [custom_primary_text.dart:1-45](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L45)
+- [attribute_option_chip.dart:1-73](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L1-L73)
+- [attribute_options_list.dart:1-33](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L1-L33)
+- [product_accordion_item.dart:1-123](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L1-L123)
+- [products_attributes_controller.dart:1-41](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L41)
+- [product_attributes_model.dart:1-101](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L101)
+- [product_attributes_repo.dart:1-22](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L1-L22)
 - [email_validator.dart:1-14](file://lib/shared/extensions/validators/email_validator.dart#L1-L14)
 - [date_formatter.dart:1-54](file://lib/shared/extensions/formatters/date_formatter.dart#L1-L54)
 - [estimate_delivery_extractor.dart:1-39](file://lib/shared/extensions/extractors/estimate_delivery_extractor.dart#L1-L39)
@@ -156,12 +189,32 @@ This section summarizes the reusable UI components and their primary responsibil
   - Key props: icon, title, subtitle, button text, card list, selected card (Rx), selection callback.
   - Behavior: Dialog with shadow and theme-aware background; composes payment method component.
 
-**Updated** Added RentRequestNext widget for enhanced step navigation with loading state support and async operation integration.
+- SharedContainer
+  - Purpose: Universal container for consistent styling and layout.
+  - Key props: child, padding, margin, radius, border, color, boxShadow, height, width, gradient, image.
+  - Behavior: Theme-aware container with flexible styling options and responsive sizing.
 
-- RentRequestNext
-  - Purpose: Navigation button for rental request flow with conditional rendering based on step position and loading state.
-  - Key props: None (uses controller state internally).
-  - Behavior: Shows Submit Request button on last step, ButtonLoading during async operations, or Next button with arrow icon otherwise.
+- CustomPrimaryText
+  - Purpose: Primary text component with Google Fonts integration and theme-aware colors.
+  - Key props: text, fontSize, fontWeight, color, textAlign, textOverflow, shadow, decoration, maxLine.
+  - Behavior: Responsive typography with Montserrat font family and automatic theme adaptation.
+
+**Updated** Added Product Attributes components for advanced product customization including interactive chips, accordion-based display, and comprehensive attribute management.
+
+- AttributeOptionChip
+  - Purpose: Individual attribute option display with image support and pricing.
+  - Key props: attributeIndex, optionIndex, option (AttributeOption).
+  - Behavior: Interactive chip with optional image, name, and price display; theme-aware styling.
+
+- AttributeOptionsList
+  - Purpose: Grid layout for displaying multiple attribute options.
+  - Key props: attributeIndex.
+  - Behavior: Wrap-based layout with spacing configuration and responsive design.
+
+- ProductAccordionItem
+  - Purpose: Accordion component for displaying product attributes with expand/collapse functionality.
+  - Key props: index.
+  - Behavior: Animated expansion with smooth transitions and theme-aware styling.
 
 **Section sources**
 - [custom_primary_button.dart:6-74](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L6-L74)
@@ -170,7 +223,11 @@ This section summarizes the reusable UI components and their primary responsibil
 - [button_loading.dart:6-36](file://lib/shared/widgets/custom_loadings/button_loading.dart#L6-L36)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 - [custom_payment_dialog.dart:9-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L9-L94)
-- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
+- [shared_container.dart:5-57](file://lib/shared/widgets/shared_container.dart#L5-L57)
+- [custom_primary_text.dart:8-45](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L8-L45)
+- [attribute_option_chip.dart:9-73](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L9-L73)
+- [attribute_options_list.dart:7-33](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L7-L33)
+- [product_accordion_item.dart:11-123](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L11-L123)
 
 ## Architecture Overview
 The shared components follow a consistent pattern:
@@ -180,7 +237,7 @@ The shared components follow a consistent pattern:
 - Reactive updates: Pagination uses GetX reactive integers for current page.
 - Async operation support: Enhanced with loading states and error handling for network operations.
 
-**Updated** The architecture now includes a comprehensive rental request flow with step-based navigation, async validation, and persistent storage integration.
+**Updated** The architecture now includes a comprehensive Product Attributes system with GetX reactive state management, model-driven data structures, and network integration for dynamic product customization.
 
 ```mermaid
 classDiagram
@@ -274,40 +331,89 @@ class CustomPaymentDialog {
 +RxString selectedCard
 +void Function(String?) onSelect
 }
-class RentRequestNext {
-+controller RentStepController
+class SharedContainer {
++Widget? child
++EdgeInsets? padding
++EdgeInsets? margin
++double? radius
++BoxBorder? border
++Color? color
++BoxShadow[]? boxShadow
++double? height
++double? width
++LinearGradient? gradient
++DecorationImage? image
+}
+class CustomPrimaryText {
++String text
++double? fontSize
++FontWeight? fontWeight
++Color? color
++TextAlign? textAlign
++TextOverflow? textOverflow
++Shadow[]? shadow
++TextDecoration? decoration
++int? maxLine
+}
+class AttributeOptionChip {
++int attributeIndex
++int optionIndex
++AttributeOption option
 +build() Widget
 }
-class RentStepController {
-+RxInt currentIndex
+class AttributeOptionsList {
++int attributeIndex
++build() Widget
+}
+class ProductAccordionItem {
++int index
++build() Widget
+}
+class ProductAttributesController {
++ProductAttributesRepository productAttributesRepository
++Rxn~ProductAttributesModel~ productsAttributes
 +RxBool isLoading
-+Widget[] rentWidgets
-+handleNextStep() Future~void~
-+goToPreviousStep() void
-+_handleFinalStep() void
++RxList~bool~ isOpen
++getProductsAttributes() Future~void~
++togglExpand() void
 }
-class StorageService {
-+String tokenKey
-+String rentRequestUUID
-+read() T?
-+write() Future~void~
-+remove() Future~void~
-+clear() Future~void~
+class ProductAttributesModel {
++ProductAttribute[] data
 }
-class RentRequestController {
-+submitRentRequest() Future~void~
-+initializeData() void
+class ProductAttribute {
++num productAttributeId
++num attributeId
++String name
++AttributeOption[] options
+}
+class AttributeOption {
++num productAttributeOptionId
++num optionId
++String name
++dynamic image
++String productImage
++num price
++num stock
++bool isDefault
+}
+class ProductAttributesRepository {
++GetNetwork getNetwork
++execute() Future~Either~
 }
 CustomPrimaryButton --> AppColors : "uses"
 CustomSecondaryButton --> AppColors : "uses"
 CustomTextFormField --> AppColors : "uses"
 ButtonLoading --> AppColors : "uses"
 CustomPaymentDialog --> AppColors : "uses"
-RentRequestNext --> RentStepController : "uses"
-RentRequestNext --> ButtonLoading : "uses"
-RentRequestNext --> RentHelper : "uses"
-RentStepController --> RentRequestController : "uses"
-RentRequestController --> StorageService : "uses"
+SharedContainer --> AppColors : "uses"
+CustomPrimaryText --> AppColors : "uses"
+AttributeOptionChip --> SharedContainer : "uses"
+AttributeOptionChip --> CustomPrimaryText : "uses"
+AttributeOptionsList --> AttributeOptionChip : "composes"
+ProductAccordionItem --> AttributeOptionsList : "composes"
+ProductAttributesController --> ProductAttributesRepository : "uses"
+ProductAttributesController --> ProductAttributesModel : "manages"
+ProductAttributesRepository --> ProductAttributesModel : "fetches"
 ```
 
 **Diagram sources**
@@ -317,11 +423,15 @@ RentRequestController --> StorageService : "uses"
 - [button_loading.dart:6-36](file://lib/shared/widgets/custom_loadings/button_loading.dart#L6-L36)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 - [custom_payment_dialog.dart:9-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L9-L94)
+- [shared_container.dart:5-57](file://lib/shared/widgets/shared_container.dart#L5-L57)
+- [custom_primary_text.dart:8-45](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L8-L45)
+- [attribute_option_chip.dart:9-73](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L9-L73)
+- [attribute_options_list.dart:7-33](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L7-L33)
+- [product_accordion_item.dart:11-123](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L11-L123)
+- [products_attributes_controller.dart:6-41](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L6-L41)
+- [product_attributes_model.dart:9-101](file://lib/features/product_details.dart/models/product_attributes_model.dart#L9-L101)
+- [product_attributes_repo.dart:7-22](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L7-L22)
 - [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
-- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
-- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
-- [storage_service.dart:3-24](file://lib/core/data/local/storage_service.dart#L3-L24)
-- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
 
 ## Detailed Component Analysis
 
@@ -447,113 +557,195 @@ Usage example pattern
 - [custom_payment_dialog.dart:9-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L9-L94)
 - [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
 
-### RentRequestNext Widget
-**Updated** Enhanced with loading state support and async step navigation integration.
+### SharedContainer
+- Props interface
+  - Content: child (Widget?).
+  - Spacing: padding (EdgeInsets?), margin (EdgeInsets?).
+  - Sizing: height (double?), width (double?).
+  - Styling: radius (double?), border (BoxBorder?), color (Color?).
+  - Effects: boxShadow (List<BoxShadow>?), gradient (LinearGradient?), image (DecorationImage?).
+- Behavior
+  - Theme-aware container with automatic color selection based on brightness.
+  - Flexible layout with responsive sizing using Flutter_ScreenUtil.
+  - Supports both solid colors and gradient backgrounds.
+- Accessibility and responsiveness
+  - Uses screen-aware units for consistent sizing across devices.
+  - Respects theme brightness for color adaptation.
+
+Usage example pattern
+- Use as a base container for cards, chips, and interactive elements.
+
+**Section sources**
+- [shared_container.dart:5-57](file://lib/shared/widgets/shared_container.dart#L5-L57)
+- [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
+
+### CustomPrimaryText
+- Props interface
+  - Text content: text (String), fontSize (double?), fontWeight (FontWeight?).
+  - Styling: color (Color?), textAlign (TextAlign?), textOverflow (TextOverflow?).
+  - Effects: shadow (List<Shadow>?), decoration (TextDecoration?), maxLine (int?).
+- Behavior
+  - Google Fonts integration with Montserrat font family.
+  - Automatic theme adaptation based on brightness detection.
+  - Responsive typography using Flutter_ScreenUtil scaling.
+- Accessibility and responsiveness
+  - Supports text overflow handling and maximum line constraints.
+  - Automatic color adjustment for light/dark themes.
+
+Usage example pattern
+- Use for consistent typography across the application with theme-aware colors.
+
+**Section sources**
+- [custom_primary_text.dart:8-45](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L8-L45)
+- [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
+
+### AttributeOptionChip
+**Updated** New component for individual attribute option display.
 
 - Props interface
-  - None (uses controller state internally via GetWidget).
+  - Positional: attributeIndex (int), optionIndex (int).
+  - Data: option (AttributeOption) containing productAttributeOptionId, optionId, name, image, productImage, price, stock, isDefault.
 - Behavior
-  - Conditional rendering based on step position and loading state.
-  - Shows Submit Request button on the last step with RentSubmitDialog.
-  - Displays ButtonLoading during async operations.
-  - Renders Next button with arrow icon for intermediate steps.
+  - Interactive chip with GestureDetector for tap handling.
+  - Optional image display using CachedNetworkImage for network images.
+  - Price display with currency formatting for positive prices.
+  - Theme-aware styling with SharedContainer and CustomPrimaryText.
+- Visual Elements
+  - Left-aligned image (20x20) when option.image exists.
+  - Name text with 14sp font size and 500 fontWeight.
+  - Optional price badge with +$ prefix and 12sp font size.
+- Accessibility and responsiveness
+  - Uses screen-aware units (w/h) for consistent sizing.
+  - Responsive padding and spacing configuration.
+
+Usage example pattern
+- Render within AttributeOptionsList for each attribute option.
+- Implement onTap handler for selection logic in parent components.
+
+**Section sources**
+- [attribute_option_chip.dart:9-73](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L9-L73)
+- [shared_container.dart:5-57](file://lib/shared/widgets/shared_container.dart#L5-L57)
+- [custom_primary_text.dart:8-45](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L8-L45)
+
+### AttributeOptionsList
+**Updated** New component for grid layout of attribute options.
+
+- Props interface
+  - attributeIndex (int): Index of the parent attribute in the productsAttributes list.
+- Behavior
+  - Dynamic generation of AttributeOptionChip widgets for each option.
+  - Wrap-based layout with configurable spacing (12.w horizontal, 12.h vertical).
+  - Full-width container with infinite width constraint.
+  - Responsive alignment set to WrapAlignment.start for natural flow.
 - Integration
-  - Uses RentStepController for step management and loading state.
-  - Integrates with RentHelper.myButton for consistent button styling.
-  - Utilizes ButtonLoading for async operation feedback.
+  - Accesses ProductAttributesController via GetView mixin.
+  - Retrieves attribute data from controller.productsAttributes.value!.data[attributeIndex].
+  - Generates chips using List.generate with option count.
+- Performance Considerations
+  - Efficient rendering using List.generate for dynamic content.
+  - Minimal widget tree with direct chip composition.
+
+Usage example pattern
+- Use within ProductAccordionItem expanded content area.
+- Pass attribute index from parent ProductAccordionItem.
+
+**Section sources**
+- [attribute_options_list.dart:7-33](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L7-L33)
+
+### ProductAccordionItem
+**Updated** New component for accordion-based attribute display.
+
+- Props interface
+  - index (int): Position of this item in the attributes list.
+- Behavior
+  - Obx wrapper for reactive state management with ProductAttributesController.
+  - Header section with category icon, attribute name, and expand/collapse indicator.
+  - Animated expansion with smooth transitions using AnimatedSize.
+  - Toggle functionality via controller.toggleExpand(index).
+  - Theme-aware styling with automatic brightness detection.
+- Visual Components
+  - Category icon container with 36x36 dimensions and 8.r radius.
+  - Attribute name using CustomPrimaryText with 16sp font and 500 fontWeight.
+  - Animated expand/collapse icon with rotation animation.
+  - Smooth content expansion with 300ms duration and easeInOut curve.
+- Integration
+  - Accesses controller state via GetView<ProductAttributesController>.
+  - Uses controller.productsAttributes.value!.data for attribute data.
+  - Manages isOpen state via controller.isOpen[index] reactive boolean.
+- Animation Details
+  - Header icon rotation: 0.5 turns for expanded state, 0 turns for collapsed.
+  - Content expansion: AnimatedSize with top-left alignment.
+  - Smooth transitions for both header and content areas.
+
+Usage example pattern
+- Render within ProductFurnitureCustomizedWidgets for each attribute.
+- Use as part of the accordion-based attribute display system.
+
+**Section sources**
+- [product_accordion_item.dart:11-123](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L11-L123)
+
+## Product Attributes System
+**Updated** Comprehensive system for product customization and attribute management.
+
+### ProductAttributesController
+- State Management
+  - productsAttributes: Rxn<ProductAttributesModel> for reactive data storage.
+  - isLoading: RxBool for loading state management.
+  - isOpen: RxList<bool> for accordion expansion states, initialized with first item expanded.
+- Data Fetching
+  - getProductsAttributes(): Async method with loading state management.
+  - Integrates with ProductAttributesRepository for network communication.
+  - Handles Either type response with error and success branches.
+  - Sets isLoading flag before and after network request.
+- UI State Management
+  - toggleExpand(int index): Toggles accordion expansion state.
+  - onInit(): Automatically fetches attributes on controller initialization.
+  - Uses Get.arguments for product ID injection.
+
+### ProductAttributesModel
+- Data Structure
+  - ProductAttributesModel: Contains List<ProductAttribute> data array.
+  - ProductAttribute: Represents attribute group with productAttributeId, attributeId, name, and options list.
+  - AttributeOption: Individual option with comprehensive metadata including pricing and stock information.
+- JSON Serialization
+  - Complete fromJson and toJson implementations for network communication.
+  - Support for nested object serialization and deserialization.
+  - Handles optional fields like productImage and image.
+
+### ProductAttributesRepository
+- Network Integration
+  - execute(): Single method for fetching product attributes via GET request.
+  - Uses GetNetwork for HTTP communication with HeadersManager.
+  - Returns Either type for robust error handling.
+  - JSON parsing with ProductAttributesModel.fromJson.
+- Endpoint Configuration
+  - URL: "/api/products/$productID/attributes"
+  - Automatic header injection via HeadersManager.
+  - Type-safe response mapping.
 
 ```mermaid
 flowchart TD
-A[RentRequestNext] --> B{Is Last Step?}
-B --> |Yes| C[Show Submit Button]
-B --> |No| D{Is Loading?}
-D --> |Yes| E[Show ButtonLoading]
-D --> |No| F[Show Next Button]
-C --> G[RentSubmitDialog]
-E --> H[Async Operation]
-F --> I[handleNextStep]
+A[ProductAttributesController] --> B[ProductAttributesRepository]
+B --> C[GetNetwork]
+C --> D[API Endpoint: /api/products/{productID}/attributes]
+D --> E[ProductAttributesModel]
+E --> F[ProductAccordionItem]
+F --> G[AttributeOptionsList]
+G --> H[AttributeOptionChip]
 ```
 
 **Diagram sources**
-- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
+- [products_attributes_controller.dart:6-41](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L6-L41)
+- [product_attributes_repo.dart:7-22](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L7-L22)
+- [product_attributes_model.dart:9-101](file://lib/features/product_details.dart/models/product_attributes_model.dart#L9-L101)
+- [product_accordion_item.dart:11-123](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L11-L123)
+- [attribute_options_list.dart:7-33](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L7-L33)
+- [attribute_option_chip.dart:9-73](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L9-L73)
 
 **Section sources**
-- [rent_request_next.dart:11-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L11-L61)
-
-### RentStepController
-**Updated** Enhanced with async step navigation and loading state management.
-
-- State Management
-  - currentIndex: RxInt for current step position.
-  - isLoading: RxBool for async operation status.
-  - totalSteps: Computed property based on rentWidgets length.
-- Step Navigation
-  - handleNextStep(): Async method with loading state management.
-  - goToPreviousStep(): Simple step decrement.
-  - resetFlow(): Resets to initial step.
-- Async Operations
-  - Manages loading state during async operations.
-  - Integrates with RentRequestController for form submission.
-  - Handles step-specific async operations in switch statement.
-
-**Section sources**
-- [rent_step_controller.dart:15-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L15-L96)
-
-### StorageService
-**Updated** Added rentRequestUUID constant for persistent rental request identifier storage.
-
-- Storage Keys
-  - tokenKey: "token" for authentication tokens.
-  - rentRequestUUID: "rent_request_uuid" for persistent rental request identifiers.
-- Operations
-  - read<T>(): Type-safe key-value retrieval.
-  - write(): Asynchronous key-value storage.
-  - remove(): Key removal from storage.
-  - clear(): Complete storage clearing.
-- Usage Pattern
-  - Used by RentRequestController to persist rental request UUID.
-  - Enables offline access and session persistence.
-
-**Section sources**
-- [storage_service.dart:3-24](file://lib/core/data/local/storage_service.dart#L3-L24)
-
-### RentRequestController
-**Updated** Enhanced with async request submission and storage integration.
-
-- Form Management
-  - Form key for validation coordination.
-  - Initialize user data from authenticated user.
-- Async Submission
-  - submitRentRequest(): Validates form and submits to backend.
-  - Uses StepZeroRepository for network communication.
-  - Persists rental request UUID via StorageService.
-  - Navigates to next step upon successful submission.
-- Error Handling
-  - Uses ErrorSnackbar for error display.
-  - Proper error propagation through Either type.
-
-**Section sources**
-- [rent_request_controller.dart:36-56](file://lib/features/rent_request/controllers/rent_request_controller.dart#L36-L56)
-
-### RentHelper
-- Utility Functions
-  - optionContainer(): Creates styled container with rounded corners and padding.
-  - myButton(): Generic button component with consistent styling and tap handling.
-- Integration
-  - Used by RentRequestNext for consistent button appearance.
-  - Provides reusable button styling across rental request flow.
-
-**Section sources**
-- [rent_helper.dart:7-41](file://lib/features/rent_request/widgets/rent_helper.dart#L7-L41)
-
-### RentSubmitDialog
-- Purpose: Confirmation dialog for rental request submission.
-- Content: Success icon, confirmation message, estimated review time.
-- Integration: Triggered by RentRequestNext on last step.
-- Styling: Uses AppColors for consistent theming.
-
-**Section sources**
-- [rent_submit_dialog.dart:7-66](file://lib/features/rent_request/widgets/rent_submit_dialog.dart#L7-L66)
+- [products_attributes_controller.dart:6-41](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L6-L41)
+- [product_attributes_model.dart:9-101](file://lib/features/product_details.dart/models/product_attributes_model.dart#L9-L101)
+- [product_attributes_repo.dart:7-22](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L7-L22)
 
 ### Validation Utilities
 - EmailValidator
@@ -595,11 +787,13 @@ Usage example pattern
 Shared components depend on:
 - AppColors for theme-aware colors.
 - Flutter SDK and third-party packages for UI and utilities.
-- GetX for reactive state in pagination and rental request flow.
+- GetX for reactive state in pagination, rental request flow, and product attributes.
 - ScreenUtil for responsive sizing.
 - GetStorage for persistent storage in rental request flow.
+- CachedNetworkImage for efficient image loading in product attributes.
+- Google Fonts for typography consistency.
 
-**Updated** Enhanced dependency graph with rental request flow components and storage integration.
+**Updated** Enhanced dependency graph with Product Attributes system components and network integration.
 
 ```mermaid
 graph LR
@@ -608,23 +802,36 @@ AC --> CSB["CustomSecondaryButton"]
 AC --> CTFF["CustomTextFormField"]
 AC --> BL["ButtonLoading"]
 AC --> CPD["CustomPaymentDialog"]
-AC --> RNN["RentRequestNext"]
-G["GetX (RxInt/RxString)"] --> CP["CustomPagination"]
+AC --> SC["SharedContainer"]
+AC --> CPT["CustomPrimaryText"]
+AC --> AOC["AttributeOptionChip"]
+AC --> PAI["ProductAccordionItem"]
+G["GetX (RxInt/RxString/RxBool)"] --> CP["CustomPagination"]
 G --> RSC["RentStepController"]
+G --> PAC["ProductAttributesController"]
 SU["flutter_screenutil"] --> CPB
 SU --> CSB
 SU --> CTFF
 SU --> BL
 SU --> CPD
-SU --> RNN
+SU --> SC
+SU --> CPT
+SU --> AOC
+SU --> AOL["AttributeOptionsList"]
+SU --> PAI
 SP["flutter_spinkit"] --> BL
 GF["google_fonts"] --> CTFF
+GF --> CPT
+CNI["cached_network_image"] --> AOC
 GS["get_storage"] --> SS["StorageService"]
 SS --> RC["RentRequestController"]
 RNN --> RSC
 RNN --> RH["RentHelper"]
 RSC --> RC
 RC --> SS
+PAC --> PAR["ProductAttributesRepository"]
+PAC --> PAM["ProductAttributesModel"]
+PAR --> GN["GetNetwork"]
 ```
 
 **Diagram sources**
@@ -635,6 +842,14 @@ RC --> SS
 - [button_loading.dart:1-36](file://lib/shared/widgets/custom_loadings/button_loading.dart#L1-L36)
 - [custom_pagination.dart:1-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L1-L87)
 - [custom_payment_dialog.dart:1-94](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart#L1-L94)
+- [shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [custom_primary_text.dart:1-45](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L45)
+- [attribute_option_chip.dart:1-73](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L1-L73)
+- [attribute_options_list.dart:1-33](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L1-L33)
+- [product_accordion_item.dart:1-123](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L1-L123)
+- [products_attributes_controller.dart:1-41](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L41)
+- [product_attributes_model.dart:1-101](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L101)
+- [product_attributes_repo.dart:1-22](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L1-L22)
 - [rent_request_next.dart:1-61](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L1-L61)
 - [rent_step_controller.dart:1-96](file://lib/features/rent_request/controllers/rent_step_controller.dart#L1-L96)
 - [storage_service.dart:1-24](file://lib/core/data/local/storage_service.dart#L1-L24)
@@ -652,8 +867,12 @@ RC --> SS
 - Use screen-aware units consistently to avoid layout thrashing on different screen densities.
 - Implement proper loading states during async operations to prevent UI blocking.
 - Use GetStorage for efficient key-value operations in rental request flow.
+- **Updated** Optimize image loading with CachedNetworkImage for better performance in AttributeOptionChip.
+- **Updated** Use List.generate for efficient rendering of dynamic attribute option lists.
+- **Updated** Implement proper error handling with ErrorSnackbar for network failures.
+- **Updated** Leverage reactive state management to minimize unnecessary widget rebuilds.
 
-**Updated** Added performance considerations for async operations and storage management.
+**Updated** Added performance considerations for the new Product Attributes system including image caching, efficient list rendering, and reactive state management.
 
 ## Troubleshooting Guide
 - Buttons appear inverted in dark mode
@@ -670,33 +889,47 @@ RC --> SS
 - Loading indicator not visible
   - Check theme brightness and loadingColor; ensure the widget is rendered during async operations.
 
-**Updated** Added troubleshooting guidance for rental request flow components.
+**Updated** Added troubleshooting guidance for the new Product Attributes system.
 
-- RentRequestNext not showing loading state
-  - Verify RentStepController.isLoading is properly toggled during async operations.
-  - Ensure Obx wrapper is correctly accessing controller state.
+- AttributeOptionChip not displaying images
+  - Verify option.image is not null and contains a valid URL string.
+  - Check CachedNetworkImage configuration and network connectivity.
+  - Ensure image URLs are accessible and properly formatted.
 
-- Storage not persisting rental request UUID
-  - Check StorageService initialization and key naming.
-  - Verify async write operations complete successfully.
+- AttributeOptionsList not rendering options
+  - Confirm controller.productsAttributes.value is not null.
+  - Verify attributeIndex is within bounds of the data array.
+  - Check that options list contains valid AttributeOption objects.
 
-- Step navigation not working
-  - Confirm RentStepController currentIndex is properly managed.
-  - Ensure handleNextStep() is awaited in RentRequestNext.
+- ProductAccordionItem not expanding/collapsing
+  - Ensure controller.toggleExpand is properly bound to the GestureDetector.
+  - Verify isOpen reactive list has correct length matching attribute count.
+  - Check Obx wrapper is correctly accessing controller state.
+
+- ProductAttributesController not fetching data
+  - Confirm productID argument is passed correctly via Get.arguments.
+  - Verify network connectivity and API endpoint accessibility.
+  - Check ErrorSnackbar for error messages in case of failure.
+
+- Loading state not updating
+  - Ensure isLoading reactive variable is properly toggled in getProductsAttributes.
+  - Verify Obx wrapper in ProductFurnitureCustomizedWidgets is monitoring isLoading.
+  - Check for proper error handling in Either response.
 
 **Section sources**
 - [custom_primary_button.dart:39-72](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L39-L72)
 - [custom_text_form_field.dart:103-187](file://lib/shared/widgets/custom_form_field/custom_text_form_field.dart#L103-L187)
 - [custom_pagination.dart:14-78](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L14-L78)
 - [button_loading.dart:20-35](file://lib/shared/widgets/custom_loadings/button_loading.dart#L20-L35)
-- [rent_request_next.dart:16-58](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart#L16-L58)
-- [storage_service.dart:8-22](file://lib/core/data/local/storage_service.dart#L8-L22)
-- [rent_step_controller.dart:41-73](file://lib/features/rent_request/controllers/rent_step_controller.dart#L41-L73)
+- [attribute_option_chip.dart:25-71](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L25-L71)
+- [attribute_options_list.dart:12-31](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L12-L31)
+- [product_accordion_item.dart:31-62](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L31-L62)
+- [products_attributes_controller.dart:14-39](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L14-L39)
 
 ## Conclusion
-The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware foundation for UI development. They emphasize composability, customization, and responsiveness. Validators and formatters enable consistent data handling across the app. The enhanced rental request flow demonstrates advanced patterns for async operations, loading states, and persistent storage integration. Following the patterns described here will help maintain consistency and scalability as new features are added.
+The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware foundation for UI development. They emphasize composability, customization, and responsiveness. Validators and formatters enable consistent data handling across the app. The enhanced rental request flow demonstrates advanced patterns for async operations, loading states, and persistent storage integration. **Updated** The new Product Attributes system showcases modern Flutter development practices with reactive state management, efficient image loading, and comprehensive data modeling. The addition of AttributeOptionChip, AttributeOptionsList, and ProductAccordionItem components significantly enhances the application's customization capabilities while maintaining consistency with existing architectural patterns.
 
-**Updated** The addition of RentRequestNext widget and enhanced RentStepController showcases modern Flutter development practices with proper async handling, reactive state management, and user experience optimization.
+**Updated** The integration of GetX for state management, CachedNetworkImage for performance optimization, and comprehensive error handling demonstrates best practices for scalable and maintainable Flutter applications.
 
 ## Appendices
 
@@ -705,36 +938,51 @@ The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware
 - Use props to externalize behavior and appearance; avoid hardcoding values.
 - Centralize theme colors in AppColors and derive all component colors from it.
 - Implement proper loading states for async operations to maintain UI responsiveness.
+- **Updated** Use GetView mixin for reactive state access in GetX-based components.
+- **Updated** Implement proper error handling with Either type for network operations.
+- **Updated** Leverage List.generate for efficient rendering of dynamic content.
 
-**Updated** Added composition patterns for async operations and state management.
+**Updated** Added composition patterns for the new Product Attributes system including reactive state management and efficient rendering techniques.
 
 ### Accessibility Considerations
 - Ensure sufficient color contrast in theme-aware modes.
 - Provide meaningful labels and hints for form fields.
 - Respect text scaling and use responsive units for paddings and sizes.
 - Implement proper loading states for screen readers and accessibility tools.
+- **Updated** Ensure interactive elements like AttributeOptionChip have proper touch targets.
+- **Updated** Provide semantic feedback for accordion expansion/collapse states.
+- **Updated** Support keyboard navigation for interactive attribute options.
 
-**Updated** Added accessibility considerations for loading states and async operations.
+**Updated** Added accessibility considerations for the new Product Attributes components including touch target sizing and semantic feedback.
 
 ### Responsive Design Implementation
 - Use screen-aware units for sizing and spacing.
 - Avoid fixed widths; prefer flexible layouts with Spacers and centering.
 - Ensure loading indicators are appropriately sized across different screen densities.
+- **Updated** Implement responsive image sizing with CachedNetworkImage.
+- **Updated** Use Wrap widget for adaptive layout of attribute options.
+- **Updated** Ensure proper spacing and alignment across different screen sizes.
 
-**Updated** Added responsive design considerations for loading states.
+**Updated** Added responsive design considerations for the new Product Attributes system including adaptive layouts and image scaling.
 
 ### Extending Existing Components
 - Add new props to constructors with sensible defaults.
 - Keep backward compatibility by making new parameters optional.
 - Update AppColors if introducing new brand colors.
 - Implement proper error handling and loading states for async operations.
+- **Updated** Extend ProductAttributesModel with new fields using fromJson/toJson.
+- **Updated** Add new AttributeOption properties with proper JSON serialization.
+- **Updated** Implement new controller methods for additional functionality.
 
-**Updated** Added guidelines for extending components with async capabilities.
+**Updated** Added guidelines for extending components with async capabilities and data model enhancements.
 
 ### Creating New Shared Utilities
 - Place validators and formatters under extensions with clear method names.
 - Encapsulate domain-specific extractors as extensions on model types.
 - Export utilities from a central library file if needed for broader access.
 - Implement proper error handling and logging for async operations.
+- **Updated** Create new GetX controllers for reactive state management.
+- **Updated** Implement comprehensive model classes with JSON serialization.
+- **Updated** Develop repository classes for network integration and error handling.
 
-**Updated** Added guidelines for creating utilities with async and storage capabilities.
+**Updated** Added guidelines for creating utilities with async and storage capabilities, including the new Product Attributes system architecture.
