@@ -9,7 +9,6 @@ class ShopProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return GridView.builder(
       itemCount: 10,
       physics: NeverScrollableScrollPhysics(),
@@ -24,7 +23,7 @@ class ShopProduct extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomProductDesign(onFavorite: () {}),
+            CustomProductDesign(onFavorite: () {}, favoriteItem: null),
             SizedBox(height: 14.h),
             CustomProductText(
               color: AppColors.productColorList,

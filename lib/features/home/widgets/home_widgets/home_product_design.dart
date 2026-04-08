@@ -29,50 +29,47 @@ class HomeProductDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      height: 200.h,
+      height: 180.h,
       width: 196.w,
-      padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkTitleColor : AppColors.fieldColor,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Stack(
         children: [
-          Align(
-            alignment: Alignment.topRight,
+          // Background Image - Full Container
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12.r),
+            child: GestureDetector(
+              onTap: () {
+                Get.toNamed(AppRoutes.productDetailsView, arguments: productID);
+              },
+              child: CachedNetworkImage(
+                imageUrl: image,
+                height: 200.h,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const ButtonLoading(),
+              ),
+            ),
+          ),
+          // Overlay Elements
+          Positioned(
+            top: 8.h,
+            right: 8.w,
             child: button(
               onTap: onFavorite,
               icon: isFavorite ? IconsPath.favoriteFill : IconsPath.favorite,
               isDark: isDark,
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
+          Positioned(
+            bottom: 8.h,
+            right: 8.w,
             child: button(
               onTap: onCart,
               icon: IconsPath.homeCart,
               isDark: isDark,
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.r),
-              child: GestureDetector(
-                onTap: () {
-                  Get.toNamed(
-                    AppRoutes.productDetailsView,
-                    arguments: productID,
-                  );
-                },
-                child: CachedNetworkImage(
-                  imageUrl: image,
-                  height: 120.h,
-                  width: 136.w,
-                  fit: BoxFit.fill,
-                  placeholder: (context, url) => ButtonLoading(),
-                ),
-              ),
             ),
           ),
         ],

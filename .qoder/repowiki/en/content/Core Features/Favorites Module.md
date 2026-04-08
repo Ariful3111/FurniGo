@@ -16,7 +16,19 @@
 - [custom_product_design.dart](file://lib/shared/widgets/custom_product_design.dart)
 - [custom_check_box.dart](file://lib/shared/widgets/custom_check_box.dart)
 - [custom_text_form_field.dart](file://lib/shared/widgets/custom_form_field/custom_text_form_field.dart)
+- [home_product_design.dart](file://lib/features/home/widgets/home_widgets/home_product_design.dart)
+- [home_new_arrival.dart](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart)
+- [home_our_products.dart](file://lib/features/home/widgets/home_widgets/home_our_products.dart)
+- [get_new_arrivals_controller.dart](file://lib/features/home/controller/get_new_arrivals_controller.dart)
+- [get_products_by_type_controller.dart](file://lib/features/home/controller/get_products_by_type_controller.dart)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Enhanced ToggleFavouriteController with home screen integration methods
+- Added new methods for managing favorites in home screen components
+- Integrated HomeProductDesign widget with favorite button functionality
+- Updated documentation to cover new favorite toggle functionality in home screen components
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -34,6 +46,8 @@
 ## Introduction
 
 The Favorites Module is a core feature of the ZB-DEZINE Flutter application that allows users to manage their favorite products. This module provides functionality for viewing saved items, searching through favorites, sorting products by various criteria, and managing multiple selections for bulk operations. The module follows a clean architecture pattern using GetX for state management and dependency injection.
+
+**Updated** The module now includes enhanced home screen integration, allowing users to toggle favorites directly from the home screen's new arrivals and category product sections.
 
 The module consists of three main layers:
 - **Presentation Layer**: Views and widgets that handle user interface and interactions
@@ -62,12 +76,22 @@ W --> FS["favorites_select_item.dart"]
 W --> FI["favorites_items.dart"]
 B --> FB["favorites_bindings.dart"]
 end
+subgraph "Home Screen Integration"
+HS["features/home/"]
+HS --> HW["widgets/home_widgets/"]
+HS --> HC["controller/"]
+HW --> HPD["home_product_design.dart"]
+HW --> HNA["home_new_arrival.dart"]
+HW --> HOP["home_our_products.dart"]
+HC --> GNAC["get_new_arrivals_controller.dart"]
+HC --> GPB["get_products_by_type_controller.dart"]
+end
 subgraph "Core Integration"
 CORE["core/"]
 CORE --> ROUTES["routes/"]
 CORE --> CONST["constant/"]
-ROUTES --> RT["routes.dart"]
-ROUTES --> AR["app_routes.dart"]
+ROUT --> RT["routes.dart"]
+ROUT --> AR["app_routes.dart"]
 CONST --> IP["icons_path.dart"]
 RT --> FV
 AR --> FV
@@ -78,13 +102,15 @@ end
 **Diagram sources**
 - [favorites_view.dart:1-45](file://lib/features/favorites/views/favorites_view.dart#L1-L45)
 - [favorites_controller.dart:1-22](file://lib/features/favorites/controller/favorites_controller.dart#L1-L22)
-- [routes.dart:234-238](file://lib/core/routes/routes.dart#L234-L238)
-- [app_routes.dart:36-36](file://lib/core/routes/app_routes.dart#L36-L36)
+- [toggle_favourite_controller.dart:1-53](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L1-L53)
+- [home_product_design.dart:1-109](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L109)
+- [home_new_arrival.dart:1-102](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L1-L102)
+- [home_our_products.dart:1-123](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L1-L123)
 
 **Section sources**
 - [favorites_view.dart:1-45](file://lib/features/favorites/views/favorites_view.dart#L1-L45)
 - [favorites_controller.dart:1-22](file://lib/features/favorites/controller/favorites_controller.dart#L1-L22)
-- [routes.dart:234-238](file://lib/core/routes/routes.dart#L234-L238)
+- [toggle_favourite_controller.dart:1-53](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L1-L53)
 
 ## Core Components
 
@@ -96,7 +122,12 @@ The primary view component serves as the container for all favorites-related UI 
 ### Controller Layer
 The controller layer handles state management and business logic for the favorites functionality:
 - **FavoritesController**: Manages search functionality, sorting options, and multi-select state
-- **ToggleFavouriteController**: Handles the toggle favorite operation with loading states and error handling
+- **ToggleFavouriteController**: Handles the toggle favorite operation with loading states, error handling, and home screen integration
+
+**Updated** The ToggleFavouriteController now includes specialized methods for managing favorites in different contexts:
+- `toggleFavourite()`: Main method with `changeIndex` parameter for different contexts
+- `toggleNewArrival()`: Updates favorite status in new arrivals section
+- `toggleCategoryProduct()`: Updates favorite status in category products section
 
 ### Repository Layer
 The repository layer manages data operations and network communication for favorite toggling functionality.
@@ -107,14 +138,19 @@ The widget layer provides reusable UI components for different aspects of the fa
 - **FavoritesSelectItem**: Provides multi-select capability and action buttons
 - **FavoritesItems**: Displays the grid of favorite products
 
+**Updated** Home screen integration components:
+- **HomeProductDesign**: Enhanced product card with favorite button functionality
+- **HomeNewArrival**: New arrivals section with integrated favorite toggling
+- **HomeOurProducts**: Category products section with integrated favorite toggling
+
 **Section sources**
 - [favorites_view.dart:11-45](file://lib/features/favorites/views/favorites_view.dart#L11-L45)
 - [favorites_controller.dart:4-21](file://lib/features/favorites/controller/favorites_controller.dart#L4-L21)
-- [toggle_favourite_controller.dart:5-23](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L5-L23)
+- [toggle_favourite_controller.dart:5-53](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L5-L53)
 
 ## Architecture Overview
 
-The Favorites Module follows a layered architecture pattern with clear separation of concerns:
+The Favorites Module follows a layered architecture pattern with clear separation of concerns and enhanced home screen integration:
 
 ```mermaid
 graph TB
@@ -123,13 +159,18 @@ FV["FavoritesView<br/>Main View Component"]
 FH["FavoritesHeader<br/>Search & Sort"]
 FS["FavoritesSelectItem<br/>Multi-select & Actions"]
 FI["FavoritesItems<br/>Product Grid"]
+HPD["HomeProductDesign<br/>Enhanced Product Card"]
+HNA["HomeNewArrival<br/>New Arrivals Section"]
+HOP["HomeOurProducts<br/>Category Products Section"]
 end
 subgraph "Domain Layer"
 FC["FavoritesController<br/>State Management"]
-TFC["ToggleFavouriteController<br/>Business Logic"]
+TFC["ToggleFavouriteController<br/>Business Logic & Home Integration"]
 end
 subgraph "Data Layer"
 TFR["ToggleFavouriteRepository<br/>Network Operations"]
+GNAC["GetNewArrivalsController<br/>New Arrivals Data"]
+GPB["GetProductsByTypeController<br/>Category Products Data"]
 end
 subgraph "Infrastructure"
 RT["Route Configuration"]
@@ -141,23 +182,32 @@ FV --> TFC
 FH --> FC
 FS --> FC
 FI --> TFC
+HPD --> TFC
+HNA --> TFC
+HOP --> TFC
 TFC --> TFR
 FC --> IP
 FV --> RT
 FV --> CB
+TFC --> GNAC
+TFC --> GPB
 ```
 
 **Diagram sources**
 - [favorites_view.dart:11-45](file://lib/features/favorites/views/favorites_view.dart#L11-L45)
 - [favorites_controller.dart:4-21](file://lib/features/favorites/controller/favorites_controller.dart#L4-L21)
-- [toggle_favourite_controller.dart:5-23](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L5-L23)
+- [toggle_favourite_controller.dart:5-53](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L5-L53)
 - [toggle_favourite_repo.dart:6-18](file://lib/features/favorites/repositories/toggle_favourite_repo.dart#L6-L18)
+- [home_product_design.dart:10-109](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L10-L109)
+- [home_new_arrival.dart:10-102](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L10-L102)
+- [home_our_products.dart:12-123](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L12-L123)
 
 The architecture implements the following design principles:
 - **Separation of Concerns**: Clear division between presentation, domain, and data layers
 - **Dependency Injection**: Using GetX for service location and dependency management
 - **State Management**: Reactive state management with automatic UI updates
 - **Reusability**: Modular components that can be reused across the application
+- **Home Screen Integration**: Seamless favorite management across multiple application sections
 
 ## Detailed Component Analysis
 
@@ -251,18 +301,29 @@ The controller provides:
 
 ### ToggleFavouriteController Analysis
 
-The ToggleFavouriteController handles the business logic for adding and removing items from favorites, including loading states and error handling.
+The ToggleFavouriteController handles the business logic for adding and removing items from favorites, including loading states, error handling, and home screen integration.
+
+**Updated** Enhanced with specialized methods for different contexts:
 
 ```mermaid
 sequenceDiagram
 participant User as "User"
-participant UI as "FavoritesItems"
+participant HomeUI as "HomeProductDesign"
 participant Controller as "ToggleFavouriteController"
+participant NewArrival as "GetNewArrivalsController"
+participant Category as "GetProductsByTypeController"
 participant Repo as "ToggleFavouriteRepository"
 participant Network as "PostWithoutResponse"
 participant Snackbar as "ErrorSnackbar"
-User->>UI : Tap Favorite Button
-UI->>Controller : toggleFavourite(productID, index)
+User->>HomeUI : Tap Favorite Button
+HomeUI->>Controller : toggleFavourite(productID, changeIndex)
+alt changeIndex == 0 (New Arrivals)
+Controller->>Controller : toggleNewArrival(productID)
+Controller->>NewArrival : Update newArrivals list
+else changeIndex == 1 (Category Products)
+Controller->>Controller : toggleCategoryProduct(productID)
+Controller->>Category : Update products list
+end
 Controller->>Controller : isLoading = true
 Controller->>Repo : execute(productID)
 Repo->>Network : postData(url, headers, body)
@@ -270,7 +331,7 @@ Network-->>Repo : Response
 Repo-->>Controller : Either<ErrorModel, bool>
 Controller->>Controller : isLoading = false
 alt Success
-Controller-->>UI : Operation completed
+Controller-->>HomeUI : UI Update
 else Error
 Controller->>Snackbar : show(error.message)
 Snackbar-->>User : Error message displayed
@@ -278,17 +339,21 @@ end
 ```
 
 **Diagram sources**
-- [toggle_favourite_controller.dart:10-22](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L10-L22)
+- [toggle_favourite_controller.dart:12-53](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L12-L53)
 - [toggle_favourite_repo.dart:10-17](file://lib/features/favorites/repositories/toggle_favourite_repo.dart#L10-L17)
+- [home_new_arrival.dart:46-57](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L46-L57)
+- [home_our_products.dart:53-66](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L53-L66)
 
 Key aspects of the controller:
 - **Loading States**: Reactive loading indicator during network operations
 - **Error Handling**: Comprehensive error management with user feedback
 - **Asynchronous Operations**: Non-blocking network requests
 - **State Updates**: Automatic UI updates upon operation completion
+- **Context Awareness**: Different behavior based on `changeIndex` parameter
+- **Home Integration**: Direct updates to home screen data models
 
 **Section sources**
-- [toggle_favourite_controller.dart:5-23](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L5-L23)
+- [toggle_favourite_controller.dart:5-53](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L5-L53)
 
 ### Widget Components Analysis
 
@@ -391,14 +456,50 @@ FavoritesItems --> CustomProductText : "contains"
 - [favorites_items.dart:8-44](file://lib/features/favorites/widgets/favorites_items.dart#L8-L44)
 - [custom_product_design.dart:11-104](file://lib/shared/widgets/custom_product_design.dart#L11-L104)
 
+**Updated** Enhanced HomeProductDesign Component
+The HomeProductDesign widget now includes integrated favorite button functionality with dynamic icon states.
+
+```mermaid
+classDiagram
+class HomeProductDesign {
++VoidCallback onFavorite
++VoidCallback onCart
++String image
++int productID
++bool isFavorite
++bool isCart
++BuildContext context
++build(context) Widget
++button(onTap, icon, isDark) Widget
+}
+class HomeProductDesign {
++VoidCallback onFavorite
++VoidCallback onCart
++String image
++int productID
++bool isFavorite
++bool isCart
++BuildContext context
++build(context) Widget
++button(onTap, icon, isDark) Widget
+}
+HomeProductDesign --> ImageAsset : "uses"
+HomeProductDesign --> CustomLoadings : "contains"
+HomeProductDesign --> AppRoutes : "navigates"
+```
+
+**Diagram sources**
+- [home_product_design.dart:10-109](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L10-L109)
+
 **Section sources**
 - [favorites_header.dart:11-67](file://lib/features/favorites/widgets/favorites_header.dart#L11-L67)
 - [favorites_select_item.dart:10-94](file://lib/features/favorites/widgets/favorites_select_item.dart#L10-L94)
 - [favorites_items.dart:8-44](file://lib/features/favorites/widgets/favorites_items.dart#L8-L44)
+- [home_product_design.dart:10-109](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L10-L109)
 
 ## Data Flow Analysis
 
-The Favorites Module implements a unidirectional data flow pattern that ensures predictable state management and easy debugging:
+The Favorites Module implements a unidirectional data flow pattern that ensures predictable state management and easy debugging, with enhanced home screen integration:
 
 ```mermaid
 flowchart TD
@@ -406,38 +507,43 @@ Start([User Interaction]) --> SearchInput["Search Input"]
 Start --> SortSelect["Sort Selection"]
 Start --> MultiSelect["Multi-Select Toggle"]
 Start --> FavoriteToggle["Favorite Toggle"]
+Start --> HomeFavorite["Home Screen Favorite"]
 SearchInput --> SearchController["FavoritesController<br/>searchController"]
 SortSelect --> SortController["FavoritesController<br/>selectedSort"]
 MultiSelect --> MultiController["FavoritesController<br/>isMultiSelect"]
 FavoriteToggle --> ToggleController["ToggleFavouriteController<br/>isLoading"]
-SearchController --> UIUpdate["UI Update<br/>Search Results"]
-SortController --> UIUpdate
-MultiController --> UIUpdate
+HomeFavorite --> ToggleController
+ToggleController --> ContextCheck{"changeIndex?"}
+ContextCheck --> |0| NewArrival["toggleNewArrival()"]
+ContextCheck --> |1| CategoryProduct["toggleCategoryProduct()"]
+NewArrival --> NewArrivalController["GetNewArrivalsController<br/>newArrivals.refresh()"]
+CategoryProduct --> CategoryController["GetProductsByTypeController<br/>products.refresh()"]
 ToggleController --> NetworkCall["Network Request<br/>/api/favourites/toggle"]
 NetworkCall --> RepoExecute["ToggleFavouriteRepository<br/>execute()"]
 RepoExecute --> PostRequest["PostWithoutResponse<br/>postData()"]
 PostRequest --> ApiResponse["API Response"]
 ApiResponse --> ToggleController
-ToggleController --> UIUpdate
-ToggleController --> ErrorHandling["ErrorSnackbar<br/>show()"]
+ToggleController --> UIUpdate["UI Update<br/>Search Results"]
 UIUpdate --> End([Updated UI])
-ErrorHandling --> End
 ```
 
 **Diagram sources**
 - [favorites_controller.dart:4-21](file://lib/features/favorites/controller/favorites_controller.dart#L4-L21)
-- [toggle_favourite_controller.dart:10-22](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L10-L22)
+- [toggle_favourite_controller.dart:12-53](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L12-L53)
 - [toggle_favourite_repo.dart:10-17](file://lib/features/favorites/repositories/toggle_favourite_repo.dart#L10-L17)
+- [home_new_arrival.dart:46-57](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L46-L57)
+- [home_our_products.dart:53-66](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L53-L66)
 
 The data flow ensures:
 - **Predictable State Changes**: All state modifications go through centralized controllers
 - **Automatic UI Updates**: Reactive state changes trigger immediate UI refreshes
 - **Error Propagation**: Errors are handled consistently across the application
 - **Network Isolation**: Network operations are isolated in dedicated repositories
+- **Home Integration**: Direct updates to home screen data models for seamless experience
 
 **Section sources**
 - [favorites_controller.dart:4-21](file://lib/features/favorites/controller/favorites_controller.dart#L4-L21)
-- [toggle_favourite_controller.dart:10-22](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L10-L22)
+- [toggle_favourite_controller.dart:12-53](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L12-L53)
 
 ## UI Components Analysis
 
@@ -458,11 +564,18 @@ The module leverages a rich ecosystem of custom widgets including:
 - **CustomCheckBox**: Themed checkbox with proper accessibility
 - **CustomProductDesign**: Complete product card with favorite functionality
 - **CustomPrimaryText**: Consistent typography system
+- **HomeProductDesign**: Enhanced product card with favorite button integration
+
+**Updated** Home screen integration provides:
+- **Dynamic Favorite Icons**: Favorite button shows filled or outline icon based on current state
+- **Seamless Navigation**: Product cards navigate to product details view
+- **Consistent Styling**: Home screen components match the overall application theme
 
 **Section sources**
 - [icons_path.dart:22-22](file://lib/core/constant/icons_path.dart#L22-L22)
 - [icons_path.dart:137-137](file://lib/core/constant/icons_path.dart#L137-L137)
 - [custom_product_design.dart:11-104](file://lib/shared/widgets/custom_product_design.dart#L11-L104)
+- [home_product_design.dart:10-109](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L10-L109)
 
 ## Integration Points
 
@@ -480,10 +593,23 @@ The FavoritesView includes a back navigation mechanism that integrates with the 
 ### State Management Integration
 The module participates in the global state management system, allowing other parts of the application to observe and react to favorites changes.
 
+**Updated** Home screen integration provides:
+- **Direct Controller Access**: Home screen components access ToggleFavouriteController directly
+- **Context-aware Updates**: Different home screen sections update their respective data models
+- **Seamless Experience**: Users can toggle favorites from anywhere in the application
+
+### Home Screen Integration
+The module now integrates with home screen components for enhanced user experience:
+- **New Arrivals Section**: Favorites toggle updates the new arrivals data model
+- **Category Products Section**: Favorites toggle updates the category products data model
+- **Real-time Updates**: Home screen reflects favorite status changes immediately
+
 **Section sources**
 - [routes.dart:234-238](file://lib/core/routes/routes.dart#L234-L238)
 - [app_routes.dart:36-36](file://lib/core/routes/app_routes.dart#L36-L36)
 - [favorites_bindings.dart:4-8](file://lib/features/favorites/bindings/favorites_bindings.dart#L4-L8)
+- [home_new_arrival.dart:46-57](file://lib/features/home/widgets/home_widgets/home_new_arrival.dart#L46-L57)
+- [home_our_products.dart:53-66](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L53-L66)
 
 ## Performance Considerations
 
@@ -503,6 +629,11 @@ The toggle favorite functionality includes loading states and error handling to 
 
 ### Grid Optimization
 The product grid uses efficient rendering techniques to handle large numbers of items without performance degradation.
+
+**Updated** Home screen optimization:
+- **Selective Updates**: Only affected data models are refreshed
+- **Efficient List Updates**: Home screen lists update efficiently without full rebuilds
+- **Context-aware Operations**: Different contexts trigger appropriate updates
 
 ## Troubleshooting Guide
 
@@ -528,6 +659,11 @@ Common issues and their solutions when working with the Favorites Module:
 **Problem**: Components not displaying correctly
 **Solution**: Verify theme integration and check for proper widget hierarchy construction
 
+**Updated** Home screen integration issues:
+- **Favorite Button Not Working**: Verify `changeIndex` parameter is correctly set (0 for new arrivals, 1 for category products)
+- **Home Screen Not Updating**: Check that the appropriate controller (`GetNewArrivalsController` or `GetProductsByTypeController`) is being accessed
+- **Favorite Icon Not Changing**: Ensure `isFavorite` property is properly passed to HomeProductDesign widget
+
 **Section sources**
 - [toggle_favourite_controller.dart:19-21](file://lib/features/favorites/controller/toggle_favourite_controller.dart#L19-L21)
 
@@ -535,11 +671,18 @@ Common issues and their solutions when working with the Favorites Module:
 
 The Favorites Module represents a well-architected solution for managing user favorites within the ZB-DEZINE application. The module demonstrates excellent software engineering practices through its clear separation of concerns, reactive state management, and comprehensive error handling.
 
+**Updated** Key enhancements include:
+- **Enhanced Home Screen Integration**: Seamless favorite management across multiple application sections
+- **Context-aware Controller Methods**: Specialized methods for different home screen contexts
+- **Real-time Updates**: Immediate UI updates in home screen components
+- **Improved User Experience**: Direct favorite toggling from any product display area
+
 Key strengths of the implementation include:
 - **Clean Architecture**: Well-defined layers with clear responsibilities
 - **Reactive Programming**: Modern state management with automatic UI updates
 - **Extensibility**: Modular design that facilitates future enhancements
 - **User Experience**: Intuitive interface with thoughtful interactions
 - **Performance**: Optimized for efficiency and scalability
+- **Home Integration**: Seamless experience across application sections
 
 The module serves as a solid foundation for the application's favorite functionality and provides a template for implementing similar features throughout the codebase. Its comprehensive testing coverage and error handling mechanisms ensure reliability and maintainability in production environments.
