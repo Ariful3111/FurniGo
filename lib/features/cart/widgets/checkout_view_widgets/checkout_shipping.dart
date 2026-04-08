@@ -5,7 +5,6 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/cart/controller/checkout_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_radio_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
-import 'package:zb_dezign/shared/widgets/shipping_membership_card.dart';
 
 class CheckoutShipping extends GetWidget<CheckoutController> {
   CheckoutShipping({super.key});
@@ -18,13 +17,14 @@ class CheckoutShipping extends GetWidget<CheckoutController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPrimaryText(
           text: "Shipping Method",
           fontSize: 20.sp,
-          color: AppColors.fieldTextColorDark,
+          color: isDark ? AppColors.whiteColor : AppColors.fieldTextColorDark,
         ),
         SizedBox(height: 16.h),
         Column(
@@ -65,14 +65,18 @@ class CheckoutShipping extends GetWidget<CheckoutController> {
                               CustomPrimaryText(
                                 text: data["title"],
                                 fontSize: 16.sp,
-                                color: AppColors.buttonTextColor,
+                                color: isDark
+                                    ? AppColors.fieldBorderColor
+                                    : AppColors.buttonTextColor,
                               ),
                               SizedBox(height: 6.h),
                               CustomPrimaryText(
                                 text: data["subtitle"],
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w400,
-                                color: AppColors.buttonTextColor,
+                                color: isDark
+                                    ? AppColors.primaryBorderColor
+                                    : AppColors.buttonTextColor,
                               ),
                             ],
                           ),
@@ -90,8 +94,7 @@ class CheckoutShipping extends GetWidget<CheckoutController> {
             );
           }),
         ),
-        SizedBox(height: 16.h),
-        ShippingMembershipCard()
+        
       ],
     );
   }

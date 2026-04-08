@@ -29,7 +29,7 @@ class CheckoutAddress extends GetWidget<CheckoutController> {
                 radius: 16,
                 border: Border.all(
                   color: controller.selectedAddress.value == index
-                      ? AppColors.primaryColor
+                      ?isDark? AppColors.primaryBorderColor:AppColors.primaryColor
                       : (isDark
                             ? AppColors.darkBorderColor
                             : AppColors.grayBorderColor),
@@ -57,12 +57,12 @@ class CheckoutAddress extends GetWidget<CheckoutController> {
                           CustomPrimaryText(
                             text: data["name"],
                             fontSize: 16.sp,
-                            color: AppColors.lightGreyColor,
+                            color:isDark? AppColors.whiteColor: AppColors.lightGreyColor,
                           ),
                           SizedBox(height: 6.h),
-                          text(text: data["address1"]),
-                          text(text: data["address2"]),
-                          text(text: data["country"]),
+                          text(text: data["address1"], isDark: isDark),
+                          text(text: data["address2"], isDark: isDark),
+                          text(text: data["country"], isDark: isDark),
                         ],
                       ),
                     ),
@@ -103,12 +103,12 @@ class CheckoutAddress extends GetWidget<CheckoutController> {
     });
   }
 
-  Widget text({required String text}) {
+  Widget text({required String text,required bool isDark}) {
     return CustomPrimaryText(
       text: text,
       fontSize: 14.sp,
       fontWeight: FontWeight.w400,
-      color: AppColors.secondaryTextColor,
+      color:isDark? AppColors.primaryBorderColor: AppColors.secondaryTextColor,
     );
   }
 }

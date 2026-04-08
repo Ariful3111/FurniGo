@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/cart/widgets/checkout_view_widgets/checkout_address.dart';
+import 'package:zb_dezign/features/cart/widgets/checkout_view_widgets/checkout_card_info.dart';
 import 'package:zb_dezign/features/cart/widgets/checkout_view_widgets/checkout_form.dart';
 import 'package:zb_dezign/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart';
 import 'package:zb_dezign/features/cart/widgets/checkout_view_widgets/checkout_pay_button.dart';
@@ -10,6 +12,7 @@ import 'package:zb_dezign/features/cart/widgets/checkout_view_widgets/checkout_s
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+import 'package:zb_dezign/shared/widgets/shipping_membership_card.dart';
 
 class CheckoutView extends StatelessWidget {
   const CheckoutView({super.key});
@@ -38,15 +41,17 @@ class CheckoutView extends StatelessWidget {
           CustomPrimaryText(
             text: 'Delivery Address',
             fontWeight: FontWeight.w600,
-            color: AppColors.buttonTextColor,
+            color: isDark ? AppColors.whiteColor : AppColors.buttonTextColor,
           ),
           SizedBox(height: 24.h),
           CheckoutForm(),
-          // CheckoutAddress(),
-          // SizedBox(height: 24.h),
-          // CheckoutCardInfo(),
+          CheckoutAddress(),
+          SizedBox(height: 24.h),
+          CheckoutCardInfo(),
           SizedBox(height: 24.h),
           CheckoutShipping(),
+          SizedBox(height: 16.h),
+          ShippingMembershipCard(),
           SizedBox(height: 20.h),
           CheckoutPayment(),
           SizedBox(height: 20.h),

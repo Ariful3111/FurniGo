@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_product_design.dart';
 import 'package:zb_dezign/shared/widgets/custom_product_text.dart';
 
-class ShopProduct extends StatelessWidget {
-  const ShopProduct({super.key});
+class FavoritesItems extends StatelessWidget {
+  const FavoritesItems({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
     return GridView.builder(
       itemCount: 10,
       physics: NeverScrollableScrollPhysics(),
@@ -24,7 +24,11 @@ class ShopProduct extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomProductDesign(onFavorite: () {}),
+            CustomProductDesign(
+              onFavorite: () {},
+              icon: IconsPath.favoriteFill,
+              color: Color(0xFFFF383C),
+            ),
             SizedBox(height: 14.h),
             CustomProductText(
               color: AppColors.productColorList,

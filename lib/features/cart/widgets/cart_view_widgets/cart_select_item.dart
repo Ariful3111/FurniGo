@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
@@ -12,6 +12,7 @@ class CartSelectItem extends GetWidget<CartController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -19,13 +20,14 @@ class CartSelectItem extends GetWidget<CartController> {
           Row(
             children: [
               CustomCheckBox(
+                borderColor: AppColors.primaryBorderColor,
                 isChecked: controller.isAllSelected.value,
                 onChange: (_) => controller.toggleSelectAll(),
               ),
               CustomPrimaryText(
                 text: "Select All",
                 fontSize: 14,
-                color: AppColors.lightTextColor,
+                color:isDark? AppColors.primaryBorderColor:AppColors.lightTextColor,
               ),
             ],
           ),
@@ -38,7 +40,7 @@ class CartSelectItem extends GetWidget<CartController> {
                 CustomPrimaryText(
                   text: "Delete All",
                   fontSize: 14,
-                  color: AppColors.lightTextColor,
+                  color:isDark? AppColors.primaryBorderColor: AppColors.lightTextColor,
                 ),
               ],
             ),

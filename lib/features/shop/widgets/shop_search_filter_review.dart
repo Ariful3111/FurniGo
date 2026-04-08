@@ -23,6 +23,7 @@ class ShopSearchFilterReview extends GetWidget<ShopController> {
             child: Row(
               children: [
                 CustomCheckBox(
+                  borderColor: AppColors.primaryBorderColor,
                   isChecked: controller.selectedRatingList[index],
                   onChange: (value) =>
                       controller.selectedRatingList[index] = value,

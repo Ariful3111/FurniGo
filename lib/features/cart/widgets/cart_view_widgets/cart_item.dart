@@ -5,7 +5,6 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/cart/controller/cart_controller.dart';
 import 'package:zb_dezign/features/cart/models/cart_item_model.dart';
 import 'package:zb_dezign/features/cart/widgets/cart_view_widgets/cart_item_info.dart';
-import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class CartItem extends StatelessWidget {
@@ -28,8 +27,8 @@ class CartItem extends StatelessWidget {
       children: [
         Row(
           children: [
-            CartItemInfo(item: item, controller: controller, index: index,),
-            SizedBox(width: 12.w,),
+            CartItemInfo(item: item, controller: controller, index: index),
+            SizedBox(width: 12.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +40,10 @@ class CartItem extends StatelessWidget {
                       onTap: () => controller.decreaseQty(index),
                     ),
                     SizedBox(width: 8),
-                    CustomPrimaryText(text: item.quantity.toString(), fontSize: 16.sp),
+                    CustomPrimaryText(
+                      text: item.quantity.toString(),
+                      fontSize: 16.sp,
+                    ),
                     SizedBox(width: 8),
                     _qtyButton(
                       icon: Icons.add,
@@ -56,19 +58,26 @@ class CartItem extends StatelessWidget {
                     height: 32.h,
                     width: 32.w,
                     decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      border: Border.all(color: AppColors.fieldBorderColor),
+                      color: isDark
+                          ? AppColors.labelColor
+                          : AppColors.whiteColor,
+                      border: Border.all(color:isDark? AppColors.darkBorderColor: AppColors.fieldBorderColor),
                       shape: BoxShape.circle,
                     ),
-                    child: Center(child: Image.asset(IconsPath.delete, height: 14.h, width: 14.w)),
+                    child: Center(
+                      child: Image.asset(
+                        IconsPath.delete,
+                        height: 14.h,
+                        width: 14.w,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
           ],
         ),
-        SizedBox(height: 12.h,),
-        CustomDivider(),
+        SizedBox(height: 12.h),
       ],
     );
   }
@@ -80,7 +89,7 @@ class CartItem extends StatelessWidget {
         width: 30.h,
         height: 30.w,
         decoration: BoxDecoration(
-          color: AppColors.fieldBorderColor,
+          color: isDark ? AppColors.labelColor : AppColors.fieldBorderColor,
           borderRadius: BorderRadius.circular(4.r),
         ),
         child: Icon(icon, size: 16),

@@ -18,6 +18,7 @@ class CheckoutOrderCalculation extends GetWidget<CheckoutController> {
       {'title': 'Discount', 'value': '\$0'},
       {'title': 'Total', 'value': '\$250'},
     ];
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,7 +28,9 @@ class CheckoutOrderCalculation extends GetWidget<CheckoutController> {
               child: CustomTextFormField(
                 controller: controller.promoController,
                 labelText: 'Promo Code',
-                borderColor: AppColors.grayBorderColor,
+                borderColor: isDark
+                    ? AppColors.primaryBorderColor
+                    : AppColors.grayBorderColor,
                 borderRadius: 12.r,
               ),
             ),
@@ -35,7 +38,9 @@ class CheckoutOrderCalculation extends GetWidget<CheckoutController> {
             CustomPrimaryButton(
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
               borderRadius: BorderRadius.circular(12.r),
-              backgroundColor: AppColors.darkSecondaryColor,
+              backgroundColor: isDark
+                  ? AppColors.whiteColor
+                  : AppColors.darkSecondaryColor,
               text: 'Apply',
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -53,6 +58,7 @@ class CheckoutOrderCalculation extends GetWidget<CheckoutController> {
               isTotal: total[index]['title'] == 'Total',
               title: total[index]['title'],
               value: total[index]['value'],
+              isDark: isDark,
             ),
           );
         }),
@@ -64,6 +70,7 @@ class CheckoutOrderCalculation extends GetWidget<CheckoutController> {
     required String title,
     required String value,
     bool isTotal = false,
+    required bool isDark,
   }) {
     return Row(
       children: [
@@ -71,14 +78,20 @@ class CheckoutOrderCalculation extends GetWidget<CheckoutController> {
           child: CustomPrimaryText(
             text: title,
             fontSize: isTotal ? 20.sp : 18.sp,
-            color:isTotal? AppColors.darkSecondaryColor:AppColors.buttonTextColor,
+            color: isDark
+                ? AppColors.primaryBorderColor
+                : (isTotal
+                      ? AppColors.darkSecondaryColor
+                      : AppColors.buttonTextColor),
             fontWeight: isTotal ? FontWeight.w600 : FontWeight.w500,
           ),
         ),
         CustomPrimaryText(
           text: value,
           fontSize: isTotal ? 20.sp : 18.sp,
-          color: AppColors.darkGreyColor,
+          color: isDark
+              ? AppColors.primaryBorderColor
+              : AppColors.darkGreyColor,
           fontWeight: FontWeight.w600,
         ),
       ],

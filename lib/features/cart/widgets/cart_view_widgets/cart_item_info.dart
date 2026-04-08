@@ -19,6 +19,7 @@ class CartItemInfo extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: Row(
         children: [
@@ -26,7 +27,7 @@ class CartItemInfo extends StatelessWidget {
             width: 90,
             height: 80,
             decoration: BoxDecoration(
-              color: Color(0xFFEFEFEF),
+              color:isDark? AppColors.labelColor: Color(0xFFEFEFEF),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Stack(
@@ -39,6 +40,7 @@ class CartItemInfo extends StatelessWidget {
                   left: 0.w,
                   child: Obx(
                     () => CustomCheckBox(
+                      borderColor: isDark? AppColors.primaryBorderColor:AppColors.darkColor,
                       isChecked: item.isSelected.value,
                       onChange: (_) => controller.toggleItem(index),
                     ),
@@ -55,26 +57,26 @@ class CartItemInfo extends StatelessWidget {
                 CustomPrimaryText(
                   text: item.name,
                   fontSize: 14.sp,
-                  color: AppColors.darkGreyColor,
+                  color:isDark? AppColors.whiteColor: AppColors.darkGreyColor,
                 ),
                 SizedBox(height: 4.h),
                 CustomPrimaryText(
                   text: item.category,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.lightTextColor,
+                  color:isDark? AppColors.primaryBorderColor: AppColors.lightTextColor,
                 ),
                 SizedBox(height: 4.h),
                 CustomPrimaryText(
                   text: "Color: ${item.color}",
                   fontSize: 12.sp,
-                  color: AppColors.lightTextColor,
+                  color:isDark? AppColors.primaryBorderColor: AppColors.lightTextColor,
                 ),
                 SizedBox(height: 4),
                 CustomPrimaryText(
                   text: "\$${item.price}",
                   fontSize: 14.sp,
-                  color: AppColors.darkGreyColor,
+                  color:isDark? AppColors.primaryBorderColor: AppColors.darkGreyColor,
                 ),
               ],
             ),

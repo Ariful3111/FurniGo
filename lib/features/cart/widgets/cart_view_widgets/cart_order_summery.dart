@@ -18,11 +18,12 @@ class CartOrderSummery extends StatelessWidget {
       {'title': 'Discount', 'value': '\$0'},
       {'title': 'Total', 'value': '\$287.00'},
     ];
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      width: double.infinity,
+      width: MediaQuery.widthOf(context),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.primaryBorderColor),
+        border: Border.all(color:isDark? AppColors.darkBorderColor: AppColors.primaryBorderColor),
         borderRadius: BorderRadius.circular(24.r),
       ),
       child: Column(
@@ -32,7 +33,7 @@ class CartOrderSummery extends StatelessWidget {
             text: 'Order Summary',
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.buttonTextColor,
+            color:isDark? AppColors.whiteColor: AppColors.buttonTextColor,
           ),
           SizedBox(height: 16.h),
           CustomDivider(),
@@ -47,6 +48,7 @@ class CartOrderSummery extends StatelessWidget {
                 price[index]['title'],
                 price[index]['value'],
                 isBold: index == price.length - 1,
+                isDark: isDark
               ),
             ),
           ),
@@ -66,22 +68,22 @@ class CartOrderSummery extends StatelessWidget {
     );
   }
 
-  Widget _priceRow(String title, String value, {bool isBold = false}) {
+  Widget _priceRow(String title, String value, {bool isBold = false,required bool isDark}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomPrimaryText(
           text: title,
           fontSize: 16.sp,
-          color: isBold
+          color:isDark? AppColors.primaryBorderColor:( isBold
               ? AppColors.darkSecondaryColor
-              : AppColors.buttonTextColor,
+              : AppColors.buttonTextColor),
           fontWeight: isBold ? FontWeight.w600 : FontWeight.w500,
         ),
         CustomPrimaryText(
           text: value,
           fontSize: isBold ? 20.sp : 18.sp,
-          color: AppColors.darkGreyColor,
+          color:isDark? AppColors.primaryBorderColor: AppColors.darkGreyColor,
           fontWeight: isBold ? FontWeight.w600 : FontWeight.w500,
         ),
       ],

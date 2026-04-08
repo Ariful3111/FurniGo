@@ -92,8 +92,6 @@ class RelatedProductCard extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // ✅ Cart ও IgnorePointer এ wrapped
                 Positioned(
                   bottom: 8.h,
                   right: 8.w,

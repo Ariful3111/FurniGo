@@ -29,7 +29,12 @@ class CustomPhoneField extends StatelessWidget {
     this.onSaved,
     this.initialCountryCode = 'BD',
     this.fillColor,
-    this.isFilled, this.borderRadius, this.borderWidth, this.borderColor, this.validation, this.validator,
+    this.isFilled,
+    this.borderRadius,
+    this.borderWidth,
+    this.borderColor,
+    this.validation,
+    this.validator,
   });
 
   @override
@@ -44,7 +49,7 @@ class CustomPhoneField extends StatelessWidget {
       dropdownIconPosition: IconPosition.trailing,
       dropdownIcon: Icon(
         Icons.keyboard_arrow_down,
-        color:isDark? AppColors.whiteColor:AppColors.fieldTextColor,
+        color: isDark ? AppColors.whiteColor : AppColors.fieldTextColor,
         size: 24.sp,
       ),
       style: GoogleFonts.montserrat(
@@ -62,7 +67,9 @@ class CustomPhoneField extends StatelessWidget {
         isDense: true,
         label: CustomPrimaryText(
           text: labelText,
-          color:isDark? AppColors.primaryBorderColor:AppColors.fieldTextColor,
+          color: isDark
+              ? AppColors.primaryBorderColor
+              : AppColors.fieldTextColor,
           fontSize: 14.sp,
           fontWeight: FontWeight.w400,
         ),
@@ -78,7 +85,7 @@ class CustomPhoneField extends StatelessWidget {
           borderSide: BorderSide(
             width: borderWidth ?? 1.r,
             color: isDark
-                ? borderColor ?? AppColors.darkBorderColor
+                ? borderColor ?? AppColors.primaryBorderColor
                 : borderColor ?? AppColors.fieldBorderColorLight,
           ),
         ),
@@ -87,7 +94,7 @@ class CustomPhoneField extends StatelessWidget {
           borderSide: BorderSide(
             width: borderWidth ?? 1.r,
             color: isDark
-                ? borderColor ?? AppColors.darkBorderColor
+                ? borderColor ?? AppColors.primaryBorderColor
                 : borderColor ?? AppColors.fieldBorderColorLight,
           ),
         ),
@@ -96,7 +103,7 @@ class CustomPhoneField extends StatelessWidget {
           borderSide: BorderSide(
             width: borderWidth ?? 1.r,
             color: isDark
-                ? borderColor ?? AppColors.darkBorderColor
+                ? borderColor ?? AppColors.primaryBorderColor
                 : borderColor ?? AppColors.fieldBorderColorLight,
           ),
         ),
@@ -110,6 +117,7 @@ class CustomPhoneField extends StatelessWidget {
       onChanged: onChanged,
       onSaved: onSaved,
       disableLengthCheck: false,
+      cursorColor: isDark ? AppColors.whiteColor : AppColors.darkColor,
     );
   }
 }

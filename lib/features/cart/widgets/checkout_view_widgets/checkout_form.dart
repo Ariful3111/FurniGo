@@ -13,6 +13,7 @@ class CheckoutForm extends GetWidget<CheckoutController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -20,18 +21,21 @@ class CheckoutForm extends GetWidget<CheckoutController> {
           title: 'First Name',
           hint: 'Enter First Name',
           controller: controller.firstName,
+          isDark: isDark,
         ),
         SizedBox(height: 12.h),
         _buildField(
           title: 'Last Name',
           hint: 'Enter Last Name',
           controller: controller.lastName,
+          isDark: isDark,
         ),
         SizedBox(height: 12.h),
         _buildField(
           title: 'Address',
           hint: 'Enter Delivery Address',
           controller: controller.address,
+          isDark: isDark,
         ),
         SizedBox(height: 12.h),
         Row(
@@ -41,6 +45,7 @@ class CheckoutForm extends GetWidget<CheckoutController> {
                 title: 'City',
                 hint: 'Enter City',
                 controller: controller.city,
+                isDark: isDark,
               ),
             ),
             SizedBox(width: 12.w),
@@ -49,6 +54,7 @@ class CheckoutForm extends GetWidget<CheckoutController> {
                 title: 'State',
                 hint: 'Enter State',
                 controller: controller.state,
+                isDark: isDark,
               ),
             ),
           ],
@@ -58,28 +64,29 @@ class CheckoutForm extends GetWidget<CheckoutController> {
           title: 'Zip Code',
           hint: 'Enter Zip Code',
           controller: controller.zip,
+          isDark: isDark,
         ),
         SizedBox(height: 12.h),
-         CustomPrimaryText(
+        CustomPrimaryText(
           text: 'Phone',
           fontSize: 16.sp,
-          fontWeight: FontWeight.w500,
+          color: isDark
+              ? AppColors.primaryBorderColor
+              : AppColors.fieldTextColorDark,
         ),
         SizedBox(height: 6.h),
-        CustomPhoneField(
-          controller: controller.phone, labelText: 'Phone',
-        ),
+        CustomPhoneField(controller: controller.phone, labelText: 'Phone'),
         SizedBox(height: 12.h),
         Obx(
           () => Row(
             children: [
               CustomCheckBox(
+                borderColor: AppColors.primaryBorderColor,
                 isChecked: controller.saveInfo.value,
                 onChange: (value) {
                   controller.saveInfo.value = value ?? false;
                 },
               ),
-              SizedBox(width: 8.w),
               Expanded(
                 child: CustomPrimaryText(
                   text: 'Save This Information For Next Time',
@@ -98,6 +105,7 @@ class CheckoutForm extends GetWidget<CheckoutController> {
     required String title,
     required String hint,
     required TextEditingController controller,
+    required bool isDark,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +113,9 @@ class CheckoutForm extends GetWidget<CheckoutController> {
         CustomPrimaryText(
           text: title,
           fontSize: 16.sp,
-          color: AppColors.fieldTextColorDark,
+          color: isDark
+              ? AppColors.primaryBorderColor
+              : AppColors.fieldTextColorDark,
         ),
         SizedBox(height: 6.h),
         CustomTextFormField(

@@ -135,6 +135,7 @@ class IconsPath {
   static const String pen = 'assets/icons/pen.png';
   static const String category = 'assets/icons/category.png';
   static const String material = 'assets/icons/material.png';
+  static const String favoriteFill = 'assets/icons/favorite_fill.png';
 
 
 }

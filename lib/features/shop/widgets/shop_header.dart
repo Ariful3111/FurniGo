@@ -26,14 +26,18 @@ class ShopHeader extends GetWidget<ShopController> {
               child: CustomTextFormField(
                 controller: controller.searchController,
                 labelText: "Search Product...",
-                labelColor:isDark? AppColors.primaryBorderColor:AppColors.labelColor,
+                labelColor: isDark
+                    ? AppColors.primaryBorderColor
+                    : AppColors.labelColor,
                 prefixIcon: Padding(
                   padding: EdgeInsets.only(left: 12.w),
                   child: Image.asset(
                     IconsPath.search,
                     width: 20.w,
                     height: 20.h,
-                    color: isDark? AppColors.primaryBorderColor:AppColors.labelColor,
+                    color: isDark
+                        ? AppColors.primaryBorderColor
+                        : AppColors.labelColor,
                   ),
                 ),
                 borderRadius: 15.r,
