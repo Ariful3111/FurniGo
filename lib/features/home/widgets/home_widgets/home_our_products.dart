@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/favorites/controller/toggle_favourite_controller.dart';
 import 'package:zb_dezign/features/home/controller/get_products_by_type_controller.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_helper.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_our_product_filter.dart';
@@ -49,13 +50,33 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               HomeProductDesign(
-                                onFavorite: () {},
+                                onFavorite: () async {
+                                  await Get.find<ToggleFavouriteController>()
+                                      .toggleFavourite(
+                                        productID:
+                                            controller
+                                                .products
+                                                .value
+                                                ?.data[index]
+                                                .id
+                                                .toInt() ??
+                                            0,
+                                        changeIndex: 1,
+                                      );
+                                },
                                 onCart: () {},
+                                isFavorite:
+                                    controller
+                                        .products
+                                        .value
+                                        ?.data[index]
+                                        .isFavourite ??
+                                    false,
+                                isCart: false,
                                 productID:
                                     controller.products.value?.data[index].id
                                         .toInt() ??
                                     0,
-
                                 image:
                                     controller
                                             .products

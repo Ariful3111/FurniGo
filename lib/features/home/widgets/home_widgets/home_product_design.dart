@@ -12,6 +12,8 @@ class HomeProductDesign extends StatelessWidget {
   final VoidCallback onCart;
   final String image;
   final int productID;
+  final bool isFavorite;
+  final bool isCart;
 
   const HomeProductDesign({
     super.key,
@@ -19,6 +21,8 @@ class HomeProductDesign extends StatelessWidget {
     required this.onCart,
     required this.image,
     required this.productID,
+    required this.isFavorite,
+    required this.isCart,
   });
 
   @override
@@ -38,7 +42,7 @@ class HomeProductDesign extends StatelessWidget {
             alignment: Alignment.topRight,
             child: button(
               onTap: onFavorite,
-              icon: IconsPath.favorite,
+              icon: isFavorite ? IconsPath.favoriteFill : IconsPath.favorite,
               isDark: isDark,
             ),
           ),

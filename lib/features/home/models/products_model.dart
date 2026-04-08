@@ -39,7 +39,7 @@ class Product {
   final num discountAmount;
   final num finalPrice;
   final bool isRentable;
-  final bool isFavourite;
+  bool isFavourite;
   final bool isInStock;
   final String status;
   final dynamic dimensions;
