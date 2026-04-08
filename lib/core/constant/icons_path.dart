@@ -63,6 +63,7 @@ class IconsPath {
   static const String drawerTrans = 'assets/icons/drawer_trans.png';
   static const String spent = 'assets/icons/spent.png';
   static const String activeOrder = 'assets/icons/active_order.png';
+  static const String errorOrder = 'assets/icons/error_order.png';
   static const String activeRentals = 'assets/icons/active_rentals.png';
   static const String design = 'assets/icons/design.png';
   static const String shopProduction = 'assets/icons/shop_production.png';
@@ -117,4 +118,23 @@ class IconsPath {
   static const String plus = 'assets/icons/plus.png';
   static const String location = 'assets/icons/location.png';
   static const String navigation = 'assets/icons/navigation.png';
+  static const String wood = 'assets/icons/wood.png';
+  static const String marble = 'assets/icons/marble.png';
+  static const String fabric = 'assets/icons/fabric.png';
+  static const String hammer = 'assets/icons/hammer.png';
+  static const String productCart = 'assets/icons/product_cart.png';
+  static const String tag = 'assets/icons/tag.png';
+  static const String offer = 'assets/icons/offer.png';
+  static const String upload = 'assets/icons/upload.png';
+  static const String speed = 'assets/icons/speed.png';
+  static const String verify = 'assets/icons/verify.png';
+  static const String deliveryVan = 'assets/icons/delivery_van.png';
+  static const String dropOf = 'assets/icons/drop_of.png';
+  static const String fedx = 'assets/icons/fedx.png';
+  static const String paypal = 'assets/icons/paypal.png';
+  static const String pen = 'assets/icons/pen.png';
+  static const String category = 'assets/icons/category.png';
+  static const String material = 'assets/icons/material.png';
+
+
 }

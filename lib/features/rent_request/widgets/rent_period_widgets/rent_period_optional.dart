@@ -13,6 +13,8 @@ class RentPeriodOptional extends GetWidget<RentPeriodController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return SharedContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,46 +23,47 @@ class RentPeriodOptional extends GetWidget<RentPeriodController> {
             text: 'Compliance & Safety (optional) ',
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.titleTextColor,
+            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
           CustomPrimaryText(
             text: 'Fire Safety Compliance Required?',
             fontSize: 14.sp,
-            color: AppColors.titleTextColor,
+            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(controller.option.length, (index) {
-            return SizedBox(
-              width: 171.w,
-              child: Row(
-                children: [
-                  Obx(
-                    () => CustomRadioButton(
-                      value: index,
-                      groupValue: controller.selectedOption.value,
-                      onChange: (value) {
-                        controller.selectedOption.value = value!;
-                      },
+              return SizedBox(
+                width: 171.w,
+                child: Row(
+                  children: [
+                    Obx(
+                      () => CustomRadioButton(
+                        value: index,
+                        groupValue: controller.selectedOption.value,
+                        onChange: (value) {
+                          controller.selectedOption.value = value!;
+                        },
+                      ),
                     ),
-                  ),
-                  CustomPrimaryText(
-                    text: controller.option[index],
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.darkColor,
-                  ),
-                ],
-              ),
-            );
-          }),),
+                    CustomPrimaryText(
+                      text: controller.option[index],
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: isDark? AppColors.whiteColor: AppColors.darkColor,
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
           SizedBox(height: 12.h),
           CustomPrimaryText(
             text: 'Weight/load restrictions',
             fontSize: 14.sp,
-            color: AppColors.titleTextColor,
+            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
           OtherField(
@@ -73,7 +76,7 @@ class RentPeriodOptional extends GetWidget<RentPeriodController> {
           CustomPrimaryText(
             text: 'OH&S requirements',
             fontSize: 14.sp,
-            color: AppColors.titleTextColor,
+            color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
           ),
           SizedBox(height: 12.h),
           OtherField(

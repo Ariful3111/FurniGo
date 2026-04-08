@@ -11,15 +11,17 @@ class RentPeriodDiscountPayment extends GetWidget<RentPeriodController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPrimaryText(
           text: 'How would you like to pay?',
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
-          color: AppColors.darkTextColor,
+          color: isDark? AppColors.whiteColor: AppColors.darkTextColor,
         ),
-        SizedBox(height: 28.h),
         ...List.generate(controller.payment.length, (index) {
           return Row(
             children: [
@@ -36,7 +38,7 @@ class RentPeriodDiscountPayment extends GetWidget<RentPeriodController> {
                 text: controller.payment[index],
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w400,
-                color: AppColors.titleTextColor,
+                color: isDark? AppColors.whiteColor: AppColors.titleTextColor,
               ),
             ],
           );
@@ -45,7 +47,7 @@ class RentPeriodDiscountPayment extends GetWidget<RentPeriodController> {
         Container(
           padding: EdgeInsets.all(16.r),
           decoration: BoxDecoration(
-            color: AppColors.whiteColor,
+            color:isDark? AppColors.darkColor:AppColors.whiteColor,
             border: Border.all(width: 1.r, color: Color(0xFF38C793)),
             borderRadius: BorderRadius.circular(16.r),
           ),
@@ -56,7 +58,7 @@ class RentPeriodDiscountPayment extends GetWidget<RentPeriodController> {
                 text: 'Installment Schedule (Breakdown)',
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
-                color: AppColors.labelColor,
+                color: isDark? AppColors.whiteColor: AppColors.labelColor,
               ),
               SizedBox(height: 15.h),
               ...List.generate(controller.installment.length, (index) {
@@ -67,14 +69,14 @@ class RentPeriodDiscountPayment extends GetWidget<RentPeriodController> {
                     CustomPrimaryText(
                       text: item['title'],
                       fontSize: 14.sp,
-                      color: AppColors.labelColor,
+                      color: isDark? AppColors.whiteColor: AppColors.labelColor,
                     ),
                     SizedBox(height: 8.h),
                     CustomPrimaryText(
                       text: item['subTitle'],
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.greyTextColor,
+                      color:isDark?AppColors.whiteColor: AppColors.greyTextColor,
                     ),
                     SizedBox(
                       height: controller.installment.length - 1 == index

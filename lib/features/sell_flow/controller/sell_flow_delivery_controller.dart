@@ -10,7 +10,6 @@ class SellFlowDeliveryController extends GetxController {
   ];
   TextEditingController homeDateController = TextEditingController();
   TextEditingController selfDateController = TextEditingController();
-  TextEditingController otherController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -18,7 +17,7 @@ class SellFlowDeliveryController extends GetxController {
   TextEditingController stateController = TextEditingController();
   TextEditingController zipController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-
+  RxList<TextEditingController> timeControllers = <TextEditingController>[].obs;
   RxBool isSaveInfo = false.obs;
   RxList<int> timeIndex = <int>[0].obs;
   RxInt selfSelectedTimeIndex = 0.obs;
@@ -31,6 +30,12 @@ class SellFlowDeliveryController extends GetxController {
     'other',
   ];
   @override
+  void onInit() {
+    timeControllers.add(TextEditingController());
+    super.onInit();
+  }
+
+  @override
   void dispose() {
     homeDateController.dispose();
     selfDateController.dispose();
@@ -42,6 +47,9 @@ class SellFlowDeliveryController extends GetxController {
     cityController.dispose();
     zipController.dispose();
     phoneController.dispose();
+    for (var element in timeControllers) {
+      element.dispose();
+    }
     super.dispose();
   }
 }

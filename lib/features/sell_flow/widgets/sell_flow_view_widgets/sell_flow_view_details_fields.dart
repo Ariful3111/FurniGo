@@ -62,7 +62,7 @@ class SellFlowViewDetailsFields extends StatelessWidget {
           labelText:
               "Describe any scratches, stains, missing parts, repairs...",
           maxLines: 3,
-          fillColor: Color(0xFFF1F1F1),
+          fillColor:isDark? AppColors.labelColor:Color(0xFFF1F1F1),
           labelColor: Color(0xFF6B7280),
           isAlignLabelWithHint: true,
         ),

@@ -1,19 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 
 class HomeProductDesign extends StatelessWidget {
   final VoidCallback onFavorite;
   final VoidCallback onCart;
   final String image;
+  final int productID;
+
   const HomeProductDesign({
     super.key,
     required this.onFavorite,
     required this.onCart,
     required this.image,
+    required this.productID,
   });
 
   @override
@@ -24,7 +29,7 @@ class HomeProductDesign extends StatelessWidget {
       width: 196.w,
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
-        color: isDark ? Color(0xFF161616) : AppColors.fieldColor,
+        color: isDark ? AppColors.darkTitleColor : AppColors.fieldColor,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Stack(
@@ -49,12 +54,20 @@ class HomeProductDesign extends StatelessWidget {
             alignment: Alignment.center,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.r),
-              child: CachedNetworkImage(
-                imageUrl: image,
-                height: 120.h,
-                width: 136.w,
-                fit: BoxFit.fill,
-                placeholder: (context, url) => ButtonLoading(),
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.productDetailsView,
+                    arguments: productID,
+                  );
+                },
+                child: CachedNetworkImage(
+                  imageUrl: image,
+                  height: 120.h,
+                  width: 136.w,
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => ButtonLoading(),
+                ),
               ),
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,8 @@ import 'package:zb_dezign/features/product_details.dart/controller/product_detai
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class ProductDetailsViewImage extends GetWidget<ProductDetailsController> {
-  const ProductDetailsViewImage({super.key});
+  final List<String> images;
+  const ProductDetailsViewImage({super.key, required this.images});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class ProductDetailsViewImage extends GetWidget<ProductDetailsController> {
       child: Row(
         children: [
           button(
-            onTap: controller.previous,
+            onTap: () => controller.previous(imagesLength: images.length),
             icon: IconsPath.onboardingBack,
             isDark: isDark,
           ),
@@ -27,8 +29,8 @@ class ProductDetailsViewImage extends GetWidget<ProductDetailsController> {
               height: 60.h,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: controller.images.length,
-                separatorBuilder: (_,_) => SizedBox(width: 8.w),
+                itemCount: images.length,
+                separatorBuilder: (_, _) => SizedBox(width: 8.w),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () => controller.changeIndex(index),
@@ -37,11 +39,13 @@ class ProductDetailsViewImage extends GetWidget<ProductDetailsController> {
                       width: 60.w,
                       height: 60.h,
                       radius: 12.r,
-                      color: isDark ? Color(0xFF161616) : AppColors.fieldColor,
+                      color: isDark
+                          ? AppColors.darkTitleColor
+                          : AppColors.fieldColor,
                       child: Padding(
                         padding: EdgeInsets.all(4.w),
-                        child: Image.asset(
-                          controller.images[index],
+                        child: CachedNetworkImage(
+                          imageUrl: images[index],
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -53,7 +57,9 @@ class ProductDetailsViewImage extends GetWidget<ProductDetailsController> {
           ),
           SizedBox(width: 8.w),
           button(
-            onTap: controller.next,
+            onTap: () {
+              controller.next(imagesLength: images.length);
+            },
             icon: IconsPath.onboardingForward,
             isDark: isDark,
           ),

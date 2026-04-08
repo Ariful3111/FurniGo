@@ -40,7 +40,9 @@ class RentalsQuoteItemDetailsInfo extends StatelessWidget {
                   text: info[index]['label'],
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
-                  color: isDark ? AppColors.whiteColor : Color(0xFF737373),
+                  color: isDark
+                      ? AppColors.whiteColor
+                      : AppColors.lightTextColor,
                 ),
                 CustomPrimaryText(
                   text: info[index]['value'],
@@ -56,7 +58,7 @@ class RentalsQuoteItemDetailsInfo extends StatelessWidget {
         CustomPrimaryText(
           text: 'Why it works for rentals',
           fontSize: 14.sp,
-          color: isDark ? AppColors.whiteColor : Color(0xFF212121),
+          color: isDark ? AppColors.whiteColor : AppColors.darkSecondaryColor,
         ),
         SizedBox(height: 14.h),
         ...List.generate(details.length, (index) {
@@ -69,7 +71,7 @@ class RentalsQuoteItemDetailsInfo extends StatelessWidget {
               text: details[index],
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
-              color: isDark ? AppColors.whiteColor : Color(0xFF737373),
+              color: isDark ? AppColors.whiteColor : AppColors.lightTextColor,
             ),
           );
         }),

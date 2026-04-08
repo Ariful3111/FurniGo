@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/auth/controller/logout_controller.dart';
 import 'package:zb_dezign/features/profile/controllers/profile_controller.dart';
 import 'package:zb_dezign/features/profile/widgets/profile_view_widgets/profile_user_image.dart';
@@ -18,7 +17,6 @@ class ProfileViews extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
-      transparentScaffold: true,
       child: Obx(() {
         return controller.isLoading.value
             ? ButtonLoading()
@@ -39,7 +37,6 @@ class ProfileViews extends GetView<ProfileController> {
                   Get.find<LogoutController>().isLoading.value
                       ? ButtonLoading()
                       : CustomPrimaryButton(
-                          backgroundColor: AppColors.secondaryColor,
                           text: 'Logout',
                           onPressed: () async {
                             await Get.find<LogoutController>().logout();

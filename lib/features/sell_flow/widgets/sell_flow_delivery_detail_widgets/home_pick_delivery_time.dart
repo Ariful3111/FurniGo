@@ -41,26 +41,13 @@ class HomePickDeliveryTime extends GetWidget<SellFlowDeliveryController> {
                         },
                       ),
                       controller.timeSlots[i] == 'other'
-                          ? Container(
+                          ? OtherField(
                               height: 36.h,
                               width: 251.w,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: Offset(0, 1),
-                                    blurRadius: 2,
-                                    color: Color(
-                                      0xFFE4E5E7,
-                                    ).withValues(alpha: 0.24),
-                                  ),
-                                ],
-                              ),
-                              child: OtherField(
-                                controller: controller.otherController,
-                                readOnly: controller.timeIndex[index] == 3
-                                    ? false
-                                    : true,
-                              ),
+                              controller: controller.timeControllers[index],
+                              readOnly: controller.timeIndex[index] == 3
+                                  ? false
+                                  : true,
                             )
                           : CustomPrimaryText(
                               text: controller.timeSlots[i],
@@ -79,6 +66,7 @@ class HomePickDeliveryTime extends GetWidget<SellFlowDeliveryController> {
           SizedBox(height: 15.h),
           GestureDetector(
             onTap: () {
+              controller.timeControllers.add(TextEditingController());
               controller.timeIndex.add(0);
             },
             child: Container(

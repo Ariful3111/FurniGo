@@ -38,6 +38,7 @@ class CustomDropdownMenu extends StatelessWidget {
   final double? trailingIconWidth;
   final double? menuFontSize;
   final AlignmentGeometry? alignmentGeometry;
+  final Color? borderColor;
   const CustomDropdownMenu({
     super.key,
     required this.onSelect,
@@ -65,7 +66,11 @@ class CustomDropdownMenu extends StatelessWidget {
     this.trailingIconWidth,
     this.menuFontSize,
     this.alignmentGeometry,
-    this.textColor, this.labelColor, this.height, this.width,
+    this.textColor,
+    this.labelColor,
+    this.height,
+    this.width,
+    this.borderColor,
   });
 
   @override
@@ -74,7 +79,7 @@ class CustomDropdownMenu extends StatelessWidget {
     return Obx(
       () => SizedBox(
         height: height,
-        width: width??MediaQuery.widthOf(context),
+        width: width ?? MediaQuery.widthOf(context),
         child: DropdownMenu<String>(
           initialSelection: isSelect.value,
           textAlign: textAlign ?? TextAlign.left,
@@ -84,13 +89,15 @@ class CustomDropdownMenu extends StatelessWidget {
                 fontSize: fontSize ?? 14.sp,
                 fontWeight: FontWeight.w500,
                 color: isDark
-                    ? AppColors.labelColor
+                    ? textColor ?? AppColors.whiteColor
                     : textColor ?? AppColors.labelColor,
               ),
           label: CustomPrimaryText(
             text: label,
             fontSize: 14.sp,
-            color:labelColor?? AppColors.labelColor,
+            color: isDark
+                ? labelColor ?? AppColors.whiteColor
+                : labelColor ?? AppColors.labelColor,
           ),
           inputDecorationTheme: DropdownInputDecoration().inputDecoration(
             context: context,
@@ -102,26 +109,33 @@ class CustomDropdownMenu extends StatelessWidget {
             borderRadius: borderRadius,
             focusBorderRadius: focusBorderRadius,
             contentPadding: contentPadding,
+            borderColor: borderColor,
           ),
           expandedInsets: expandedInsets,
           trailingIcon: Image.asset(
             IconsPath.downArrow,
             height: trailingIconHeight ?? 24.h,
             width: trailingIconWidth ?? 24.w,
-            color: trailingIconColor,
+            color: isDark
+                ? trailingIconColor ?? AppColors.primaryBorderColor
+                : null,
           ),
           selectedTrailingIcon: Image.asset(
             IconsPath.upArrow,
             height: selectedTrailingIconHeight ?? 24.h,
             width: selectedTrailingIconWidth ?? 24.w,
-            color: selectedTrailingIconColor,
+            color: isDark
+                ? selectedTrailingIconColor ?? AppColors.primaryBorderColor
+                : Color(0xFF6B7280),
           ),
           width: MediaQuery.widthOf(context),
           menuStyle: MenuStyle(
             maximumSize: WidgetStatePropertyAll(
               Size(320.w, MediaQuery.heightOf(context)),
             ),
-            backgroundColor: WidgetStateProperty.all(AppColors.whiteColor),
+            backgroundColor: WidgetStateProperty.all(
+              isDark ? AppColors.darkColor : AppColors.whiteColor,
+            ),
             shape: WidgetStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
             ),

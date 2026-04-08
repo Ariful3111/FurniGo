@@ -21,11 +21,20 @@ class CreditSection extends GetWidget<CreditBalanceController> {
         SharedContainer(
           radius: 32.r,
           border: Border.all(
-            color: isDark ? AppColors.darkBorderColor : AppColors.whiteColor,
+            color: isDark ? AppColors.labelColor : AppColors.whiteColor,
             width: 4,
           ),
           gradient: isDark
-              ? AppColors.darkAuthBG
+              ? LinearGradient(
+                  end: Alignment.bottomLeft,
+                  begin: Alignment.topRight,
+                  colors: [
+                    Color(0xFF052F50),
+                    Color(0xFF0B1E2E),
+                    Color(0xFF0D0D0D),
+                    AppColors.darkColor,
+                  ],
+                )
               : LinearGradient(
                   end: Alignment.bottomLeft,
                   begin: Alignment.topRight,
@@ -57,7 +66,7 @@ class CreditSection extends GetWidget<CreditBalanceController> {
                 text: "Choose a credit pack that fits your design needs",
                 fontSize: 14.sp,
                 color: isDark
-                    ? AppColors.darkPrimaryTextColor
+                    ? AppColors.primaryBorderColor
                     : AppColors.secondaryTextColor,
               ),
               SizedBox(height: 24.h),
@@ -65,7 +74,6 @@ class CreditSection extends GetWidget<CreditBalanceController> {
               SizedBox(height: 24.h),
               CustomPrimaryButton(
                 text: "Proceed to Payment",
-                backgroundColor: AppColors.primaryColor,
                 onPressed: () {
                   showDialog(
                     context: context,

@@ -6,6 +6,7 @@ import 'package:zb_dezign/features/sell_flow/controller/sell_flow_review_control
 import 'package:zb_dezign/features/sell_flow/widgets/sell_flow_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_check_box.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class SellFlowReviewAi extends GetView<SellFlowReviewController> {
   const SellFlowReviewAi({super.key});
@@ -15,13 +16,10 @@ class SellFlowReviewAi extends GetView<SellFlowReviewController> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
-        Container(
+        SharedContainer(
           padding: EdgeInsets.all(20.r),
-          decoration: BoxDecoration(
-            color: AppColors.whiteColor,
-            borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(color: AppColors.borderColor),
-          ),
+          radius: 16.r,
+          border: Border.all(color:isDark? AppColors.darkBorderColor:AppColors.borderColor),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -36,14 +34,14 @@ class SellFlowReviewAi extends GetView<SellFlowReviewController> {
                 text: "Estimated age (AI)",
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
-                color: AppColors.labelColor,
+                color:isDark? AppColors.primaryBorderColor:AppColors.labelColor,
               ),
               SizedBox(height: 2.h),
               CustomPrimaryText(
                 text: "2-3 years",
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
-                color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
+                color: isDark? AppColors.primaryBorderColor:AppColors.darkTextColor,
               ),
               SizedBox(height: 12.h),
               CustomPrimaryText(
@@ -78,7 +76,7 @@ class SellFlowReviewAi extends GetView<SellFlowReviewController> {
                 onChange: (value) {
                   controller.isConfirmed.value = value!;
                 },
-                color: Color(0xFF00C0E8)
+                color: Color(0xFF00C0E8),
               ),
               SizedBox(width: 8.w),
               Expanded(
@@ -87,7 +85,7 @@ class SellFlowReviewAi extends GetView<SellFlowReviewController> {
                       "I confirm I own this item and can share these images/documents for quoting.",
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xFF364153),
+                  color:isDark? AppColors.primaryBorderColor: AppColors.lightGreyColor,
                 ),
               ),
             ],

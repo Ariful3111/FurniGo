@@ -1,0 +1,1718 @@
+================================================================================
+                    ZB-DEZINE FLUTTER PROJECT - DETAILED ANALYSIS REPORT
+================================================================================
+
+Project Name: ZB-DEZIGN
+Version: 1.0.0+1
+SDK Version: Dart ^3.9.0
+Platform: Multi-platform (Android, iOS, Web, Windows, Linux, macOS)
+State Management: GetX
+Architecture: Feature-First + Clean Architecture Pattern
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+1. PROJECT OVERVIEW
+2. TECHNOLOGY STACK & DEPENDENCIES
+3. ROOT STRUCTURE
+4. CORE MODULE DETAILED ANALYSIS
+   4.1 Constants
+   4.2 Data Layer
+   4.3 Dependency Injection
+   4.4 Routes & Navigation
+   4.5 Services
+   4.6 Theme Management
+   4.7 Utilities
+5. FEATURES MODULE DETAILED ANALYSIS
+   5.1 Authentication Feature
+   5.2 Home Feature
+   5.3 Dashboard Feature
+   5.4 Cart Feature
+   5.5 Order Feature
+   5.6 AI Design Feature
+   5.7 Product Details Feature
+   5.8 Profile Feature
+   5.9 Rental Feature
+   5.10 Transaction Feature
+   5.11 Other Features
+6. SHARED MODULE DETAILED ANALYSIS
+   6.1 Extensions
+   6.2 Widgets
+7. ARCHITECTURAL PATTERNS
+8. KEY IMPLEMENTATION DETAILS
+
+================================================================================
+1. PROJECT OVERVIEW
+================================================================================
+
+ZB-DEZINE is a comprehensive Flutter-based e-commerce and furniture management 
+application with AI-powered design capabilities. The app supports:
+- User authentication (Email, Google, Apple)
+- Furniture shopping (Buy/Rent/Sell)
+- AI-powered interior design services
+- Order management and tracking
+- Credit balance system
+- Transaction history
+- Real-time notifications
+- Dark/Light theme support
+
+The project follows a Feature-First architecture combined with Clean Architecture 
+principles, using GetX for state management, dependency injection, and routing.
+
+================================================================================
+2. TECHNOLOGY STACK & DEPENDENCIES
+================================================================================
+
+Core Dependencies:
+- get: ^4.7.3 - State management, routing, DI
+- flutter_screenutil: ^5.9.3 - Responsive UI
+- google_fonts: ^8.0.0 - Typography
+- glassmorphism: ^3.0.0 - UI effects
+- flutter_spinkit: ^5.2.2 - Loading animations
+- badges: ^3.1.2 - Notification badges
+- animate_do: ^4.2.0 - Animations
+- carousel_slider: ^5.1.2 - Image carousels
+
+Network & Data:
+- http: ^1.6.0 - HTTP client
+- fpdart: ^1.2.0 - Functional programming (Either type)
+- get_storage: ^2.1.1 - Local storage
+
+Firebase:
+- firebase_core: ^3.10.1
+- firebase_auth: ^5.3.1
+- google_sign_in: ^6.2.2
+
+UI Components:
+- flutter_typeahead: ^5.2.0 - Autocomplete
+- flutter_otp_text_field: ^1.5.1+1 - OTP input
+- intl_phone_field: ^3.2.0 - Phone input
+- convex_bottom_bar: ^3.2.0 - Bottom navigation
+- flutter_rating_bar: ^4.0.1 - Rating stars
+- timeline_tile: ^2.0.0 - Timeline UI
+- dotted_line: ^3.2.3 - Dotted lines
+- table_calendar: ^3.2.0 - Calendar widget
+- fl_chart: ^1.2.0 - Charts
+- percent_indicator: ^4.2.5 - Progress indicators
+
+Image Handling:
+- image_picker: ^1.2.1 - Image selection
+- cached_network_image: ^3.4.1 - Cached images
+
+================================================================================
+3. ROOT STRUCTURE
+================================================================================
+
+ZB-DEZINE/
+├── lib/
+│   ├── main.dart                    # App entry point
+│   ├── firebase_options.dart        # Firebase configuration
+│   ├── core/                        # Core infrastructure
+│   ├── features/                    # Feature modules
+│   └── shared/                      # Shared components
+├── assets/
+│   ├── icons/                       # Icon assets
+│   └── images/                      # Image assets
+├── android/                         # Android platform code
+├── ios/                            # iOS platform code
+├── web/                            # Web platform code
+├── windows/                        # Windows platform code
+├── linux/                          # Linux platform code
+├── macos/                          # macOS platform code
+├── test/                           # Unit tests
+├── pubspec.yaml                    # Dependencies configuration
+└── analysis_options.yaml           # Linting rules
+
+Main Entry Point (lib/main.dart):
+```dart
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  String token = await DependencyInjection.init();
+  if (token.isNotEmpty) {
+    debugPrint("Token: $token");
+  }
+  runApp(MyApp(token: token));
+}
+
+class MyApp extends StatelessWidget {
+  final String token;
+  const MyApp({required this.token, super.key});
+  
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      designSize: Size(430, 932),
+      builder: (context, child) {
+        return Obx(() {
+          return GetMaterialApp(
+            title: 'ZB DEZIGN',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: Get.find<ThemeController>().currentTheme,
+            initialBinding: token.isEmpty ? OnboardBindings() : HomeBindings(),
+            initialRoute: token.isEmpty
+                ? AppRoutes.onboardingView
+                : AppRoutes.bottomNav,
+            getPages: appRoutes,
+          );
+        });
+      },
+    );
+  }
+}
+```
+
+================================================================================
+4. CORE MODULE DETAILED ANALYSIS
+================================================================================
+
+The core module contains infrastructure-level code shared across the entire 
+application. It includes constants, data layer, services, routing, theme, 
+and utilities.
+
+Directory: lib/core/
+├── constant/         # App-wide constants
+├── data/            # Data layer (models, networks, storage)
+├── di/              # Dependency injection setup
+├── routes/          # Navigation & routing
+├── services/        # Core services
+├── theme/           # Theme configuration
+└── utils/           # Utility functions
+
+--------------------------------------------------------------------------------
+4.1 CONSTANTS (lib/core/constant/)
+--------------------------------------------------------------------------------
+
+Files:
+- colors.dart          # Color definitions
+- icons_path.dart      # Icon asset paths
+- images_path.dart     # Image asset paths
+- networks_path.dart   # API endpoints
+
+Example - colors.dart:
+```dart
+class AppColors {
+  static const Color primaryColor = Color(0xFF15003B);
+  static const Color secondaryColor = Color(0xFF15003A);
+  static const Color darkColor = Color(0xFF000000);
+  static const Color whiteColor = Color(0xFFFFFFFF);
+  static const Color errorTextColor = Color(0xFF733E0A);
+  static const Color successColor = Color(0xFF38C793);
+  
+  // Dark Mode Colors
+  static const Color darkBorderColor = Color(0xFF434953);
+  static const Color darkPendingBGColor = Color(0xFF6B5A2B);
+  
+  // Gradients
+  static Gradient primaryGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Color(0xFF15003A), Color(0xFF3A00A0)],
+  );
+}
+```
+
+Purpose: Centralized color management for consistent theming across the app.
+
+--------------------------------------------------------------------------------
+4.2 DATA LAYER (lib/core/data/)
+--------------------------------------------------------------------------------
+
+Subdirectories:
+├── global_models/    # Shared data models
+├── local/           # Local storage services
+└── networks/        # HTTP client implementations
+
+4.2.1 Global Models (lib/core/data/global_models/)
+
+Files:
+- error_model.dart           # Error response model
+- google_user_info_model.dart # Google auth user info
+- user_profile_model.dart    # User profile data
+
+Example - user_profile_model.dart:
+```dart
+class UserProfileModel {
+  Data? data;
+
+  UserProfileModel({this.data});
+
+  UserProfileModel.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class Data {
+  int? id;
+  String? name;
+  String? email;
+  String? phone;
+  String? abn;
+  String? type;
+  String? status;
+  
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    // ... more fields
+  }
+}
+```
+
+4.2.2 Local Storage (lib/core/data/local/)
+
+Files:
+- storage_service.dart    # Persistent storage wrapper
+- theme_service.dart      # Theme preference storage
+
+Example - storage_service.dart:
+```dart
+class StorageService {
+  final _box = GetStorage();
+  final String tokenKey = "token";
+  final String rentRequestUUID = "rent_request_uuid";
+
+  T? read<T>({required String key}) {
+    return _box.read(key);
+  }
+
+  Future<void> write({required String key, required dynamic value}) async {
+    await _box.write(key, value);
+  }
+
+  Future<void> remove({required String key}) async {
+    await _box.remove(key);
+  }
+
+  Future<void> clear() async {
+    await _box.erase();
+  }
+}
+```
+
+4.2.3 Network Layer (lib/core/data/networks/)
+
+Files:
+- get_network.dart            # GET requests
+- post_with_response.dart     # POST with response
+- post_without_response.dart  # POST without response
+- delete_network.dart         # DELETE requests
+- headers_manager.dart        # Request headers
+
+Example - get_network.dart:
+```dart
+class GetNetwork {
+  String baseUrl = NetworkLinks.baseUrl;
+  
+  Future<Either<ErrorModel, T>> getData<T>({
+    required String url,
+    required T Function(Map<String, dynamic>) fromJson,
+    Map<String, String>? headers,
+  }) async {
+    try {
+      var response = await http.get(Uri.parse(baseUrl + url), headers: headers);
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 202) {
+        return Right(fromJson(jsonDecode(response.body)));
+      }
+
+      try {
+        return left(
+          ErrorModel.fromHttp(
+            statusCode: response.statusCode,
+            bodyMessage: jsonDecode(response.body)['message'] ?? 'Unknown error',
+          ),
+        );
+      } catch (error) {
+        debugPrint("$error$url");
+        return left(ErrorModel.fromUnknown());
+      }
+    } catch (error) {
+      debugPrint("$error$url");
+      return left(ErrorModel.fromUnknown());
+    }
+  }
+}
+```
+
+Key Features:
+- Uses fpdart's Either type for error handling
+- Generic type support for different response models
+- Centralized error handling
+- HTTP status code validation
+
+--------------------------------------------------------------------------------
+4.3 DEPENDENCY INJECTION (lib/core/di/)
+--------------------------------------------------------------------------------
+
+Files:
+- dependency_injection.dart
+
+Example:
+```dart
+class DependencyInjection {
+  static Future<String> init() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await GetStorage.init();
+    
+    // Permanent services
+    Get.put<StorageService>(StorageService(), permanent: true);
+    Get.put<ThemeService>(ThemeService(), permanent: true);
+    Get.put(ThemeController(), permanent: true);
+    
+    // Network clients
+    Get.put(GetNetwork(), permanent: true);
+    Get.put<PostWithResponse>(PostWithResponse(), permanent: true);
+    Get.put<PostWithoutResponse>(PostWithoutResponse(), permanent: true);
+    Get.put<DeleteNetwork>(DeleteNetwork(), permanent: true);
+    
+    return Get.find<StorageService>().read(
+          key: Get.find<StorageService>().tokenKey,
+        ) ?? "";
+  }
+}
+```
+
+Purpose: Initializes Firebase, storage, and registers singleton services.
+
+--------------------------------------------------------------------------------
+4.4 ROUTES & NAVIGATION (lib/core/routes/)
+--------------------------------------------------------------------------------
+
+Files:
+- app_routes.dart    # Route name constants
+- routes.dart        # Route definitions with bindings
+
+Example - app_routes.dart:
+```dart
+class AppRoutes {
+  static const String onboardingView = '/onboardingView';
+  static const String signInView = '/signInView';
+  static const String signUpView = '/signUpView';
+  static const String dashboardView = '/dashboardView';
+  static const String bottomNav = '/bottomNav';
+  static const String orderView = '/orderView';
+  static const String cartView = '/cartView';
+  static const String aiDesignView = '/aiDesignView';
+  static const String profileView = '/profileView';
+  // ... more routes
+}
+```
+
+Example - routes.dart (partial):
+```dart
+final List<GetPage> appRoutes = [
+  GetPage(
+    name: AppRoutes.onboardingView,
+    page: () => OnboardingView(),
+    binding: OnboardBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.signInView,
+    page: () => SigninView(),
+    binding: AuthBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.bottomNav,
+    page: () => BottomNavView(),
+    bindings: [HomeBindings(), DashboardBindings(), ProfileBindings()],
+  ),
+  // ... more route definitions
+];
+```
+
+Features:
+- Named routes for type-safe navigation
+- Bindings for dependency injection per route
+- Support for multiple bindings per route
+- Centralized route management
+
+--------------------------------------------------------------------------------
+4.5 SERVICES (lib/core/services/)
+--------------------------------------------------------------------------------
+
+Files:
+- firebase_google_auth.dart
+
+Example:
+```dart
+class FirebaseGoogleAuthService {
+  static final FirebaseGoogleAuthService _instance =
+      FirebaseGoogleAuthService._internal();
+  factory FirebaseGoogleAuthService() => _instance;
+  FirebaseGoogleAuthService._internal();
+
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  static Future<GoogleUserInfoModel?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        debugPrint('Google sign-in was cancelled');
+        return null;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential = await _auth.signInWithCredential(
+        credential,
+      );
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        final idToken = await user.getIdToken();
+        final userInfo = GoogleUserInfoModel(
+          name: user.displayName ?? googleUser.displayName ?? '',
+          email: user.email ?? googleUser.email,
+          avatarUrl: user.photoURL ?? googleUser.photoUrl ?? '',
+          idToken: idToken ?? '',
+          uid: user.uid,
+        );
+        return userInfo;
+      }
+      return null;
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Authentication Error: ${e.message}');
+      return null;
+    }
+  }
+}
+```
+
+Features:
+- Singleton pattern
+- Firebase Authentication integration
+- Google Sign-In support
+- ID token retrieval
+
+--------------------------------------------------------------------------------
+4.6 THEME MANAGEMENT (lib/core/theme/)
+--------------------------------------------------------------------------------
+
+Files:
+- app_theme.dart         # Theme definitions
+- theme_controller.dart  # Theme state management
+
+Example - app_theme.dart:
+```dart
+class AppTheme {
+  static final lightTheme = ThemeData(
+    brightness: Brightness.light,
+    useMaterial3: true,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.transparent,
+    )
+  );
+  
+  static final darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    useMaterial3: true,
+    primaryColor: AppColors.darkColor,
+    colorScheme: ColorScheme.dark(
+      primary: AppColors.darkColor,
+      surface: AppColors.darkColor,
+    ),
+    datePickerTheme: DatePickerThemeData()
+  );
+}
+```
+
+Example - theme_controller.dart:
+```dart
+class ThemeController extends GetxController {
+  RxBool isDarkMode = false.obs;
+  late final ThemeService themeService;
+  
+  @override
+  void onInit() {
+    themeService = Get.find<ThemeService>();
+    isDarkMode.value = themeService.getIsDark();
+    super.onInit();
+  }
+
+  void changeTheme(bool value) {
+    isDarkMode.value = value;
+    themeService.saveThemeToStorage(value);
+  }
+
+  ThemeMode get currentTheme =>
+      isDarkMode.value ? ThemeMode.dark : ThemeMode.light;
+}
+```
+
+--------------------------------------------------------------------------------
+4.7 UTILITIES (lib/core/utils/)
+--------------------------------------------------------------------------------
+
+Files:
+- date_picker.dart    # Date selection utilities
+- image_picker.dart   # Image selection utilities
+
+Example - image_picker.dart (partial):
+```dart
+class ImageManager {
+  static Future<XFile?> sendImage({
+    required ImagePicker picker,
+    required Rxn<XFile> pickImage,
+    required BuildContext context,
+  }) async {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final completer = Completer<XFile?>();
+    bool selectionInProgress = false;
+    
+    await Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkColor : AppColors.whiteColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
+        ),
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Camera'),
+              onTap: () async {
+                selectionInProgress = true;
+                Get.back();
+                final XFile? image = await picker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 25,
+                );
+                if (!completer.isCompleted) completer.complete(image);
+                if (image != null) pickImage.value = image;
+              },
+            ),
+            // Gallery option...
+          ],
+        ),
+      ),
+    );
+    return completer.future;
+  }
+
+  static Future<String?> pickImageFromGallery() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 25,
+    );
+    return image?.path;
+  }
+}
+```
+
+Features:
+- Camera and gallery selection
+- Bottom sheet UI
+- Multiple image selection
+- Image quality control
+
+================================================================================
+5. FEATURES MODULE DETAILED ANALYSIS
+================================================================================
+
+The features module follows a feature-first architecture where each feature is 
+self-contained with its own controllers, models, repositories, views, bindings, 
+and widgets.
+
+Standard Feature Structure:
+feature_name/
+├── bindings/       # Dependency injection bindings
+├── controller/     # GetX controllers (state management)
+├── models/         # Feature-specific data models
+├── repositories/   # Data access layer
+├── views/          # UI screens
+└── widgets/        # Feature-specific widgets
+
+All Features:
+├── ai_design/           # AI design services
+├── auth/                # Authentication
+├── cart/                # Shopping cart
+├── category/            # Product categories
+├── credit_balance/      # Credit system
+├── dashboard/           # Main dashboard
+├── home/                # Home screen
+├── notification/        # Notifications
+├── order/               # Order management
+├── payment/             # Payment processing
+├── product_details.dart/ # Product details
+├── profile/             # User profile
+├── rent_request/        # Rent requests
+├── rental/              # Rental management
+├── sell/                # Sell furniture
+├── sell_flow/           # Selling flow
+├── support/             # Customer support
+└── transaction/         # Transaction history
+
+--------------------------------------------------------------------------------
+5.1 AUTHENTICATION FEATURE (lib/features/auth/)
+--------------------------------------------------------------------------------
+
+Structure:
+auth/
+├── bindings/
+│   ├── auth_bindings.dart
+│   └── onboard_bindings.dart
+├── controller/
+│   ├── email_verification_controller.dart
+│   ├── forgot_password_controller.dart
+│   ├── google_login_controller.dart
+│   ├── logout_controller.dart
+│   ├── new_password_controller.dart
+│   ├── onboarding_controller.dart
+│   ├── otp_controller.dart
+│   ├── register_controller.dart
+│   ├── signin_controller.dart
+│   └── user_mode_controller.dart
+├── models/
+│   ├── forgot_password_model.dart
+│   ├── google_login_model.dart
+│   ├── login_model.dart
+│   └── register_model.dart
+├── repositories/
+│   ├── forgot_password_repo.dart
+│   ├── google_login_repo.dart
+│   ├── login_repo.dart
+│   ├── logout_repo.dart
+│   └── register_repo.dart
+├── views/
+│   ├── email_verification_view.dart
+│   ├── forgot_password_view.dart
+│   ├── new_password_view.dart
+│   ├── onboarding_view.dart
+│   ├── otp_view.dart
+│   ├── signin_view.dart
+│   ├── signup_option_view.dart
+│   ├── signup_view.dart
+│   └── user_mode_view.dart
+└── widgets/
+    └── (13 widget files)
+
+Example - signin_controller.dart:
+```dart
+class SigninController extends GetxController {
+  final LoginRepository loginRepository;
+  SigninController({required this.loginRepository});
+  
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  RxBool isLoading = false.obs;
+  final storage = Get.find<StorageService>();
+
+  Future<void> userLogin({required GlobalKey<FormState> formKey}) async {
+    if (formKey.currentState?.validate() ?? false) {
+      isLoading.value = true;
+      final response = await loginRepository.execute(
+        email: email.text,
+        password: password.text,
+      );
+      isLoading.value = false;
+      
+      response.fold(
+        (error) {
+          ErrorSnackbar.show(description: error.message.toString());
+        },
+        (data) async {
+          await storage.write(key: storage.tokenKey, value: data.token);
+          SuccessSnackbar.show(description: 'Login Successful');
+          Get.toNamed(AppRoutes.bottomNav);
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+}
+```
+
+Example - login_repo.dart:
+```dart
+class LoginRepository {
+  final PostWithResponse postWithResponse;
+
+  const LoginRepository({required this.postWithResponse});
+
+  Future<Either<ErrorModel, LoginModel>> execute({
+    required String email,
+    required String password,
+  }) async {
+    final response = await postWithResponse.postData<LoginModel>(
+      url: "/api/auth/login",
+      headers: HeadersManager.getHeaders(isContentType: true),
+      body: jsonEncode({"email": email, "password": password}),
+      fromJson: (json) => LoginModel.fromJson(json),
+    );
+    return response;
+  }
+}
+```
+
+Example - signin_view.dart (partial):
+```dart
+class SigninView extends GetView<SigninController> {
+  const SigninView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final fromKey = GlobalKey<FormState>();
+    
+    return CustomContainer(
+      gradient: isDark ? AppColors.darkAuthBG : AppColors.authBG,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AuthHeader(),
+            CustomPrimaryText(
+              text: 'Sign In',
+              fontSize: 31.sp,
+              fontWeight: FontWeight.w600,
+            ),
+            SigninForm(formKey: fromKey),
+            Obx(() {
+              return controller.isLoading.value
+                  ? ButtonLoading()
+                  : CustomPrimaryButton(
+                      height: 48.h,
+                      text: 'Sign In',
+                      onPressed: () async {
+                        await controller.userLogin(formKey: fromKey);
+                      },
+                    );
+            }),
+            LoginButton(
+              onTap: () async {
+                GoogleUserInfoModel? user = 
+                    await FirebaseGoogleAuthService.signInWithGoogle();
+                await Get.find<GoogleLoginController>().googleLogin(user: user!);
+              },
+              icon: IconsPath.google,
+              title: 'Continue With Google',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+Example - onboard_bindings.dart:
+```dart
+class OnboardBindings implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => GoogleLoginRepository(postWithResponse: Get.find()));
+    Get.lazyPut(() => OnboardingController());
+    Get.lazyPut(() => GoogleLoginController(loginRepository: Get.find()));
+  }
+}
+```
+
+--------------------------------------------------------------------------------
+5.2 HOME FEATURE (lib/features/home/)
+--------------------------------------------------------------------------------
+
+Structure:
+home/
+├── bindings/
+│   └── home_bindings.dart
+├── controller/
+│   ├── home_controller.dart
+│   └── (6 more controllers)
+├── models/
+│   └── (3 model files)
+├── repositories/
+│   └── (5 repository files)
+├── views/
+│   └── (2 view files)
+└── widgets/
+    └── (2 widget files)
+
+Example - home_controller.dart:
+```dart
+class HomeController extends GetxController {
+  RxInt colorIndex = 0.obs;
+  RxDouble position = 0.5.obs;
+
+  void updatePosition(double dx, double width) {
+    double value = (dx / width).clamp(0.0, 1.0);
+    position.value = value;
+  }
+}
+```
+
+--------------------------------------------------------------------------------
+5.3 DASHBOARD FEATURE (lib/features/dashboard/)
+--------------------------------------------------------------------------------
+
+Structure:
+dashboard/
+├── bindings/
+│   └── dashboard_bindings.dart
+├── controller/
+│   ├── dashboard_controller.dart
+│   └── (2 more controllers)
+├── models/
+│   └── (2 model files)
+├── views/
+│   └── (2 view files)
+└── widgets/
+    └── (2 widget files)
+
+Example - dashboard_controller.dart:
+```dart
+class DashboardController extends GetxController {
+  List<String> dashboardTableColumn = ['Order', 'Status', 'Action'];
+  RxList<bool> expandedList = <bool>[].obs;
+  
+  List quickAction = [
+    {
+      'icon': IconsPath.shopProduction,
+      'title': 'Shop Products',
+      'sub': 'Brand-new pieces with fast delivery and easy setup.',
+      'page': '',
+    },
+    {
+      'icon': IconsPath.sellFurniture,
+      'title': 'Sell Furniture',
+      'sub': 'Get a fair offer fast pickup included.',
+      'page': AppRoutes.sellFlowView,
+    },
+    {
+      'icon': IconsPath.rentProduct,
+      'title': 'Rent Products',
+      'sub': 'Brand-new pieces with fast delivery and easy setup.',
+      'page': AppRoutes.rentRequestView,
+    },
+  ];
+  
+  final List<RecentOrderModel> recentOrderModel = [
+    RecentOrderModel(
+      id: 'ORD-2024-001',
+      eta: 'Dec 16, 2024',
+      total: '\$200',
+      status: 'Out for delivery',
+      action: 'Track',
+    ),
+  ];
+  
+  @override
+  void onInit() {
+    expandedList.value = List<bool>.filled(recentOrderModel.length, false);
+    super.onInit();
+  }
+}
+```
+
+--------------------------------------------------------------------------------
+5.4 CART FEATURE (lib/features/cart/)
+--------------------------------------------------------------------------------
+
+Structure:
+cart/
+├── bindings/
+│   └── cart_bindings.dart
+├── controller/
+│   └── cart_controller.dart
+├── models/
+│   └── cart_item_model.dart
+├── views/
+│   └── cart_view.dart
+└── widgets/
+    └── (2 widget files)
+
+Example - cart_controller.dart:
+```dart
+class CartController extends GetxController {
+  RxList<CartItemModel> cartList = <CartItemModel>[].obs;
+  RxBool isAllSelected = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Dummy data
+    cartList.addAll([
+      CartItemModel(
+        name: "ECHO LOUNGE CHAIR",
+        category: "Chair",
+        color: "Blue",
+        image: ImagesPath.chair,
+        price: 320,
+      ),
+    ]);
+  }
+
+  void toggleItem(int index) {
+    cartList[index].isSelected.toggle();
+    isAllSelected.value = cartList.every((item) => item.isSelected.value);
+  }
+
+  void toggleSelectAll() {
+    isAllSelected.toggle();
+    for (var item in cartList) {
+      item.isSelected.value = isAllSelected.value;
+    }
+  }
+
+  void deleteItem(int index) {
+    cartList.removeAt(index);
+    isAllSelected.value = cartList.isNotEmpty &&
+        cartList.every((item) => item.isSelected.value);
+  }
+
+  void increaseQty(int index) {
+    cartList[index].quantity++;
+    cartList.refresh();
+  }
+
+  void decreaseQty(int index) {
+    if (cartList[index].quantity > 1) {
+      cartList[index].quantity--;
+      cartList.refresh();
+    }
+  }
+}
+```
+
+--------------------------------------------------------------------------------
+5.5 ORDER FEATURE (lib/features/order/)
+--------------------------------------------------------------------------------
+
+Structure:
+order/
+├── bindings/
+│   ├── order_bindings.dart
+│   └── order_details_bindings.dart
+├── controllers/
+│   ├── order_controller.dart
+│   └── (2 more controllers)
+├── models/
+│   └── orders_model.dart
+├── repositories/
+│   ├── get_orders_repo.dart
+│   └── (2 more repositories)
+├── views/
+│   ├── order_view.dart
+│   └── order_details_view.dart
+└── widgets/
+    └── (2 widget files)
+
+Example - order_controller.dart:
+```dart
+class OrderController extends GetxController {
+  final GetOrdersRepository getOrdersRepository;
+  OrderController({required this.getOrdersRepository});
+  
+  TextEditingController searchController = TextEditingController();
+  RxBool isSearch = false.obs;
+  RxBool isShowInfo = false.obs;
+  RxBool isLoading = true.obs;
+  final orders = Rxn<OrdersModel>();
+
+  Future<void> getOrders() async {
+    final response = await getOrdersRepository.execute();
+    isLoading.value = false;
+    
+    response.fold(
+      (error) {
+        ErrorSnackbar.show(description: error.message);
+      },
+      (data) {
+        orders.value = data;
+      },
+    );
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    getOrders();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+}
+```
+
+--------------------------------------------------------------------------------
+5.6 AI DESIGN FEATURE (lib/features/ai_design/)
+--------------------------------------------------------------------------------
+
+Structure:
+ai_design/
+├── bindings/
+│   └── ai_design_bindings.dart
+├── controller/
+│   ├── ai_design_controller.dart
+│   └── (1 more controller)
+├── models/
+│   └── ai_design_model.dart
+├── views/
+│   ├── ai_design_view.dart
+│   └── ai_design_details.dart
+└── widgets/
+    └── (2 widget files)
+
+Example - ai_design_controller.dart (partial):
+```dart
+class AiDesignController extends GetxController {
+  List<String> category = ['All', 'AI Product Placement', 'AI Interior Design'];
+  TextEditingController searchController = TextEditingController();
+  RxInt selectedIndex = 0.obs;
+  RxList<bool> expandedList = <bool>[].obs;
+  RxInt currentPage = 1.obs;
+  final int totalPages = 100;
+  List<String> aiTableColumn = ['Generation ID', 'Type', 'Action'];
+  
+  final List<AiDesignModel> ai = [
+    AiDesignModel(
+      id: 'Img123456789',
+      type: 'Product Placement',
+      generateDate: '04, September, 2025',
+    ),
+  ];
+  
+  RxList<AiDesignModel> get filteredAi {
+    if (selectedIndex.value == 0) {
+      return ai.obs;
+    }
+    final selectedStatus = category[selectedIndex.value];
+    return ai.where((ai) {
+      if (selectedStatus == 'AI Product Placement') {
+        return ai.type == 'Product Placement';
+      }
+      return ai.type == selectedStatus;
+    }).toList().obs;
+  }
+}
+```
+
+--------------------------------------------------------------------------------
+5.7 PRODUCT DETAILS FEATURE (lib/features/product_details.dart/)
+--------------------------------------------------------------------------------
+
+Structure:
+product_details.dart/
+├── bindings/
+│   └── product_details_bindings.dart
+├── controller/
+│   ├── products_attributes_controller.dart
+│   └── (1 more controller)
+├── models/
+│   └── (2 model files)
+├── repositories/
+│   └── (2 repository files)
+├── views/
+│   └── product_details_view.dart
+└── widgets/
+    └── (1 widget file)
+
+--------------------------------------------------------------------------------
+5.8 PROFILE FEATURE (lib/features/profile/)
+--------------------------------------------------------------------------------
+
+Structure:
+profile/
+├── bindings/
+│   ├── profile_bindings.dart
+│   └── profile_settings_bindings.dart
+├── controllers/
+│   └── (8 controller files)
+├── models/
+│   └── (1 model file)
+├── repositories/
+│   └── (5 repository files)
+├── views/
+│   ├── profile_views.dart
+│   └── profile_setting_view.dart
+└── widgets/
+    └── (2 widget files)
+
+--------------------------------------------------------------------------------
+5.9 RENTAL FEATURE (lib/features/rental/)
+--------------------------------------------------------------------------------
+
+Structure:
+rental/
+├── bindings/
+│   ├── rental_bindings.dart
+│   └── rental_details_bindings.dart
+├── controllers/
+│   └── (6 controller files)
+├── models/
+│   └── (2 model files)
+├── repositories/
+│   └── (2 repository files)
+├── views/
+│   ├── rental_view.dart
+│   └── rental_details_view.dart
+└── widgets/
+    └── (7 widget files)
+
+--------------------------------------------------------------------------------
+5.10 TRANSACTION FEATURE (lib/features/transaction/)
+--------------------------------------------------------------------------------
+
+Structure:
+transaction/
+├── bindings/
+│   └── transaction_bindings.dart
+├── controller/
+│   └── (3 controller files)
+├── models/
+│   └── (1 model file)
+├── views/
+│   ├── transaction_view.dart
+│   └── transaction_details_view.dart
+└── widgets/
+    └── (2 widget files)
+
+--------------------------------------------------------------------------------
+5.11 OTHER FEATURES
+--------------------------------------------------------------------------------
+
+5.11.1 Category Feature (lib/features/category/)
+- Structure: bindings/, controllers/, views/
+- Purpose: Product category browsing
+
+5.11.2 Credit Balance Feature (lib/features/credit_balance/)
+- Structure: bindings/, controller/, models/, views/, widgets/
+- Purpose: User credit management
+
+5.11.3 Notification Feature (lib/features/notification/)
+- Structure: bindings/, controllers/, models/, views/
+- Purpose: Push notifications display
+
+5.11.4 Payment Feature (lib/features/payment/)
+- Structure: bindings/, controller/, models/, views/
+- Purpose: Payment processing
+
+5.11.5 Rent Request Feature (lib/features/rent_request/)
+- Structure: bindings/, controller/, models/, repositories/, views/, widgets/
+- Purpose: Furniture rental requests
+
+5.11.6 Sell Feature (lib/features/sell/)
+- Structure: bindings/, controller/, models/, repositories/, views/
+- Purpose: Furniture selling
+
+5.11.7 Sell Flow Feature (lib/features/sell_flow/)
+- Structure: bindings/, controllers/, models/, views/
+- Purpose: Multi-step selling process
+
+5.11.8 Support Feature (lib/features/support/)
+- Structure: bindings/, controller/, models/, views/
+- Purpose: Customer support
+
+================================================================================
+6. SHARED MODULE DETAILED ANALYSIS
+================================================================================
+
+The shared module contains reusable components used across multiple features.
+
+Directory: lib/shared/
+├── extensions/    # Extension methods and utilities
+└── widgets/       # Reusable widgets
+
+--------------------------------------------------------------------------------
+6.1 EXTENSIONS (lib/shared/extensions/)
+--------------------------------------------------------------------------------
+
+Subdirectories:
+├── extractors/      # Data extraction utilities
+├── formatters/      # Data formatters
+└── validators/      # Form validators
+
+6.1.1 Validators (lib/shared/extensions/validators/)
+
+Files:
+- abn_validator.dart              # ABN validation
+- confirm_password_validator.dart # Password confirmation
+- email_validator.dart            # Email validation
+- name_validator.dart             # Name validation
+- password_validator.dart         # Password strength
+- phone_validator.dart            # Phone number validation
+
+Example - email_validator.dart:
+```dart
+String? emailValidation(String? value) {
+  final text = (value ?? '').trim();
+  if (text.isEmpty) {
+    return "Email is required";
+  }
+  final RegExp emailReg = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  if (emailReg.hasMatch(text)) {
+    return null;
+  }
+  return "Enter a valid email address";
+}
+```
+
+6.1.2 Formatters (lib/shared/extensions/formatters/)
+
+Files:
+- date_formatter.dart         # Date formatting
+- dimension_formatter.dart    # Dimension formatting
+
+6.1.3 Extractors (lib/shared/extensions/extractors/)
+
+Files:
+- (1 extractor file)
+
+--------------------------------------------------------------------------------
+6.2 WIDGETS (lib/shared/widgets/)
+--------------------------------------------------------------------------------
+
+Files and Directories:
+├── action_button.dart              # Icon button component
+├── custom_appbar.dart              # Custom app bar
+├── custom_banner.dart              # Banner component
+├── custom_button/                  # Button variants
+│   ├── custom_primary_button.dart
+│   └── (3 more button files)
+├── custom_check_box.dart           # Checkbox component
+├── custom_container.dart           # Page container wrapper
+├── custom_dialog/                  # Dialog components
+│   └── (5 dialog files)
+├── custom_divider.dart             # Divider line
+├── custom_drawer/                  # Navigation drawer
+│   └── (2 drawer files)
+├── custom_dropdown/                # Dropdown components
+│   └── (4 dropdown files)
+├── custom_form_field/              # Form input fields
+│   ├── custom_text_form_field.dart
+│   ├── custom_date_fields.dart
+│   ├── custom_phone_field.dart
+│   └── other_field.dart
+├── custom_loadings/                # Loading indicators
+│   └── button_loading.dart
+├── custom_pagination/              # Pagination controls
+│   └── (4 pagination files)
+├── custom_rating/                  # Rating components
+│   └── (2 rating files)
+├── custom_table/                   # Table components
+│   └── (8 table files)
+├── custom_text/                    # Text components
+│   ├── custom_primary_text.dart
+│   ├── custom_span_text.dart
+│   └── custom_white_text.dart
+├── custom_timeline/                # Timeline component
+│   └── (1 timeline file)
+├── details_row_model.dart          # Details row model
+├── flow_widgets/                   # Flow-specific widgets
+│   └── (3 flow widget files)
+├── shared_container.dart           # Shared container
+└── snackbars/                      # Snackbar notifications
+    ├── error_snackbar.dart
+    └── success_snackbar.dart
+
+Example - custom_primary_button.dart:
+```dart
+class CustomPrimaryButton extends StatelessWidget {
+  final double? height;
+  final double? width;
+  final String text;
+  final double? fontSize;
+  final VoidCallback onPressed;
+  final Color? backgroundColor;
+  final Color? textColor;
+  final BorderRadius? borderRadius;
+  final BoxDecoration? boxDecoration;
+  final Widget? child;
+  final FontWeight? fontWeight;
+  final EdgeInsets? padding;
+  final BoxBorder? border;
+  final List<BoxShadow>? boxShadow;
+  
+  const CustomPrimaryButton({
+    super.key,
+    this.height,
+    this.width,
+    required this.text,
+    this.fontSize,
+    required this.onPressed,
+    this.backgroundColor,
+    this.textColor,
+    this.borderRadius,
+    this.child,
+    this.boxDecoration,
+    this.fontWeight,
+    this.padding,
+    this.border,
+    this.boxShadow,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        height: height ?? 40.h,
+        width: width,
+        decoration: boxDecoration ?? BoxDecoration(
+          color: isDark
+              ? backgroundColor ?? AppColors.whiteColor
+              : backgroundColor ?? AppColors.secondaryColor,
+          borderRadius: borderRadius ?? BorderRadius.circular(100.r),
+          border: border,
+          boxShadow: boxShadow
+        ),
+        child: child ?? Center(
+          child: CustomPrimaryText(
+            text: text,
+            color: isDark
+                ? textColor ?? AppColors.darkColor
+                : textColor ?? AppColors.whiteColor,
+            fontSize: fontSize ?? 14.sp,
+            fontWeight: fontWeight,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Example - custom_text_form_field.dart (partial):
+```dart
+class CustomTextFormField extends StatelessWidget {
+  final Widget? hintTextWidget;
+  final String? hintText;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final bool? obscureText;
+  final TextInputType? keyboardType;
+  final Color? textColor;
+  final TextEditingController controller;
+  final String? labelText;
+  final String? errorText;
+  final String? Function(String?)? validator;
+  final ValueChanged<String>? onChanged;
+  final bool? readOnly;
+  final int? maxLength;
+  final int? maxLines;
+  final double? borderRadius;
+  final Color? borderColor;
+  // ... more properties
+
+  const CustomTextFormField({
+    super.key,
+    this.hintText,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.obscureText,
+    this.keyboardType,
+    required this.controller,
+    this.labelText,
+    this.validator,
+    this.onChanged,
+    // ... more parameters
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText ?? false,
+      keyboardType: keyboardType ?? TextInputType.text,
+      validator: validator,
+      style: GoogleFonts.montserrat(
+        color: isDark
+            ? textColor ?? AppColors.whiteColor
+            : textColor ?? AppColors.darkColor,
+        fontSize: fontSize ?? 16.sp,
+        fontWeight: fontWeight ?? FontWeight.w500,
+      ),
+      decoration: InputDecoration(
+        label: CustomPrimaryText(
+          text: labelText ?? "",
+          color: isDark
+              ? AppColors.primaryBorderColor
+              : AppColors.fieldTextColor,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+          borderSide: BorderSide(
+            width: borderWidth ?? 1.r,
+            color: isDark
+                ? borderColor ?? AppColors.darkBorderColor
+                : borderColor ?? AppColors.fieldBorderColorLight,
+          ),
+        ),
+        filled: isFilled ?? true,
+        fillColor: isDark
+            ? fillColor ?? AppColors.labelColor
+            : fillColor ?? AppColors.whiteColor,
+      ),
+    );
+  }
+}
+```
+
+Example - custom_container.dart:
+```dart
+class CustomContainer extends StatelessWidget {
+  final Widget child;
+  final Gradient? gradient;
+  final PreferredSizeWidget? appbar;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
+  final Widget? drawer;
+  final Widget? bottomNav;
+  
+  const CustomContainer({
+    super.key,
+    required this.child,
+    this.gradient,
+    this.appbar,
+    this.padding,
+    this.margin,
+    this.drawer,
+    this.bottomNav,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      appBar: appbar,
+      drawer: drawer,
+      bottomNavigationBar: bottomNav,
+      body: Container(
+        margin: margin,
+        padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
+        height: MediaQuery.heightOf(context),
+        width: MediaQuery.widthOf(context),
+        decoration: BoxDecoration(
+          gradient: isDark
+              ? gradient ?? LinearGradient(
+                  colors: [AppColors.darkColor, AppColors.darkTextColor],
+                )
+              : gradient ?? AppColors.primaryBG,
+        ),
+        child: SafeArea(child: child),
+      ),
+    );
+  }
+}
+```
+
+Example - custom_appbar.dart:
+```dart
+class CustomAppbar extends StatelessWidget {
+  final String title;
+  final String? icon;
+  final VoidCallback onDrawerTap;
+  final bool isIcon;
+  
+  const CustomAppbar({
+    super.key,
+    required this.title,
+    required this.onDrawerTap,
+    this.icon,
+    this.isIcon = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return Row(
+      children: [
+        isIcon ? InkWell(
+          onTap: onDrawerTap,
+          child: Image.asset(
+            icon ?? IconsPath.drawer,
+            height: 24.h,
+            width: 24.w,
+            color: isDark ? AppColors.whiteColor : null,
+          ),
+        ) : SizedBox.shrink(),
+        SizedBox(width: 8.w),
+        CustomPrimaryText(
+          text: title,
+          color: isDark ? AppColors.whiteColor : null,
+        ),
+        Spacer(),
+        ActionButton(icon: IconsPath.favorite, onTap: () {}),
+        SizedBox(width: 8.w),
+        badges.Badge(
+          badgeStyle: badges.BadgeStyle(
+            padding: EdgeInsetsGeometry.all(3.r),
+            badgeGradient: badges.BadgeGradient.linear(
+              colors: [Color(0xFFEF3929), Color(0xFFEF3929)],
+            ),
+          ),
+          position: badges.BadgePosition.custom(start: 16.w, top: 9.h),
+          child: ActionButton(
+            icon: IconsPath.notification,
+            onTap: () {
+              Get.toNamed(AppRoutes.notificationView);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+```
+
+================================================================================
+7. ARCHITECTURAL PATTERNS
+================================================================================
+
+7.1 FEATURE-FIRST ARCHITECTURE
+- Each feature is self-contained in its own directory
+- Features have their own MVC structure (Model-View-Controller)
+- Promotes separation of concerns and maintainability
+
+7.2 CLEAN ARCHITECTURE PRINCIPLES
+- Data Layer: Models, repositories, network clients
+- Domain Layer: Business logic in controllers
+- Presentation Layer: Views and widgets
+
+7.3 DEPENDENCY INJECTION PATTERN
+- Uses GetX's dependency injection
+- Bindings for lazy loading dependencies
+- Permanent services for app-wide singletons
+
+7.4 REPOSITORY PATTERN
+- Repositories abstract data sources
+- Controllers interact with repositories
+- Easy to swap data sources (local/remote)
+
+7.5 REACTIVE PROGRAMMING
+- GetX observables (RxBool, RxInt, RxList, etc.)
+- Obx widgets for reactive UI updates
+- Stream-like behavior without Streams
+
+7.6 MVVM PATTERN (MODEL-VIEW-VIEWMODEL)
+- Models: Data structures
+- Views: UI screens (StatelessWidgets)
+- ViewModels: GetX Controllers
+
+7.7 ROUTING PATTERN
+- Named routes for navigation
+- Route guards via bindings
+- Deep linking support
+
+================================================================================
+8. KEY IMPLEMENTATION DETAILS
+================================================================================
+
+8.1 STATE MANAGEMENT
+- GetX Controllers extend GetxController
+- Reactive variables using .obs extension
+- Automatic disposal of controllers
+- Lifecycle methods: onInit(), onClose(), dispose()
+
+8.2 ERROR HANDLING
+- fpdart Either<ErrorModel, T> type
+- fold() method for handling success/error
+- Centralized error models
+- Snackbar notifications for user feedback
+
+8.3 NETWORK REQUESTS
+- Generic HTTP clients
+- Automatic JSON serialization/deserialization
+- Header management
+- Error response handling
+
+8.4 THEME SUPPORT
+- Light and dark themes
+- Theme persistence via storage
+- Reactive theme switching
+- Theme-aware widgets
+
+8.5 RESPONSIVE UI
+- flutter_screenutil for responsive sizing
+- .sp for font sizes
+- .h for heights
+- .w for widths
+- .r for radius
+
+8.6 FORM VALIDATION
+- Custom validators for different fields
+- Real-time validation feedback
+- Form state management
+- Auto-validation modes
+
+8.7 NAVIGATION
+- Get.toNamed() for named route navigation
+- Get.offNamed() for replacement navigation
+- Get.back() to go back
+- Pass arguments via Get.arguments
+
+8.8 LIFECYCLE MANAGEMENT
+- Controllers auto-disposed when views removed
+- TextEditControllers disposed in controller
+- Resources cleanup in dispose() method
+
+================================================================================
+SUMMARY
+================================================================================
+
+ZB-DEZINE is a well-structured Flutter application following modern best practices:
+
+✓ Feature-First Architecture for scalability
+✓ Clean Architecture principles for maintainability
+✓ GetX for state management, DI, and routing
+✓ Repository pattern for data abstraction
+✓ Reactive programming for responsive UI
+✓ Comprehensive error handling
+✓ Dark/Light theme support
+✓ Responsive design implementation
+✓ Firebase integration for authentication
+✓ RESTful API communication
+✓ Reusable shared components
+✓ Type-safe navigation
+
+The project demonstrates professional-level Flutter development with proper 
+separation of concerns, making it easy to maintain, test, and scale.
+
+Total Features: 18
+Total Shared Widgets: 21+ widget families
+Total Core Modules: 7
+Architecture: Feature-First + Clean Architecture
+State Management: GetX
+Platform Support: Android, iOS, Web, Windows, Linux, macOS
+
+================================================================================
+END OF REPORT
+================================================================================

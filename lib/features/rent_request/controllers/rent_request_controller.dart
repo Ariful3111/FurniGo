@@ -32,8 +32,8 @@ class RentRequestController extends GetxController {
     phoneController.text = user?.phone ?? '';
     abnController.text = user?.abn ?? '';
   }
-
   Future<void> submitRentRequestZero() async {
+    
     if (formKey.currentState?.validate() == true) {
       final response = await stepZeroRepository.execute(
         businessName: businessNameController.text,
@@ -48,8 +48,9 @@ class RentRequestController extends GetxController {
           ErrorSnackbar.show(description: error.message);
         },
         (data) async {
-          await storage.write(key: storage.rentRequestUUID, value: data.uuid);
           Get.find<RentStepController>().currentIndex.value++;
+
+          await storage.write(key: storage.rentRequestUUID, value: data.uuid);
         },
       );
     }

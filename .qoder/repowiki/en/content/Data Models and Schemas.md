@@ -26,12 +26,11 @@
 
 ## Update Summary
 **Changes Made**
-- Updated Product Model section to reflect major restructuring from integer-based to num-based types
-- Added comprehensive documentation for pagination support with Links and Meta classes
-- Enhanced Product data documentation with dimension fields and measurement units
-- Updated response schema documentation to reflect comprehensive data structure changes
-- Added new section covering pagination patterns and API integration for product catalogs
-- Updated controller documentation to include pagination-aware implementations
+- Updated Product Model section to reflect enhanced optional furnitureType field
+- Added documentation for optional rooms field with default empty list implementation
+- Added new totalReviews field documentation with default value 0
+- Enhanced JSON serialization/deserialization logic documentation
+- Updated Product Catalog Data Models section to reflect improved field handling
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -98,7 +97,7 @@ PTCONT --> PCONT
 - [transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
 - [ai_design_model.dart:1-12](file://lib/features/ai_design/models/ai_design_model.dart#L1-L12)
 - [credit_transaction_model.dart:1-12](file://lib/features/credit_balance/models/credit_transaction_model.dart#L1-L12)
-- [products_model.dart:1-363](file://lib/features/home/models/products_model.dart#L1-L363)
+- [products_model.dart:1-371](file://lib/features/home/models/products_model.dart#L1-L371)
 - [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
 - [get_products_by_type_controller.dart:1-27](file://lib/features/home/controller/get_products_by_type_controller.dart#L1-L27)
 - [get_product_types_controller.dart:1-38](file://lib/features/home/controller/get_product_types_controller.dart#L1-L38)
@@ -355,44 +354,51 @@ OC->>OC : "Set isLoading=false"
 
 ## Product Catalog Data Models
 
-### Products Model with Num-Based Types
-The product catalog system has undergone a major restructuring from integer-based to num-based types for enhanced precision in pricing and measurements.
+### Enhanced Product Model with Improved Field Handling
 
-- **ProductsModel Structure**:
-  - data: List<Product> - Array of product items
-  - links: Links? - Pagination links for navigation
-  - meta: Meta? - Pagination metadata
+**Updated** The Product Model has been enhanced with improved optional field handling and default value assignments for better JSON serialization/deserialization logic.
 
-- **Product Entity Enhancements**:
-  - id: num (was int) - Unique product identifier
-  - categoryId: num (was int) - Category association
-  - price: num (was int/num) - Original product price
-  - sellingPrice: num (was int/num) - Current selling price
-  - discountAmount: num (was int) - Discount value
-  - finalPrice: num (was int/num) - Final calculated price
-  - dimensions: dynamic - Enhanced dimensional data
+#### Product Entity Enhancements
 
-- **Category Entity**:
-  - id: num (was int) - Category identifier
-  - parentId: dynamic - Parent category reference
-  - order: dynamic - Display ordering
+- **Enhanced Optional Fields**:
+  - `furnitureType`: Now optional (`FurnitureType?`) with proper null handling in JSON deserialization
+  - `rooms`: Now defaults to empty list (`const []`) with graceful null handling
+  - `totalReviews`: New field with default value 0 using null coalescing operator
 
-- **FurnitureType Entity**:
-  - id: num (was int) - Furniture type identifier
+- **Improved JSON Serialization Logic**:
+  - Optional fields are properly serialized as null when not present
+  - Default values ensure consistent data structure across different API responses
+  - Enhanced null safety prevents runtime errors during deserialization
 
-- **Room Entity**:
-  - id: num (was int) - Room identifier
+#### Product Model Structure
 
-- **Media Entity**:
-  - id: num (was int) - Media identifier
-  - productId: num (was int) - Associated product
-  - createdAt/updatedAt: DateTime - Timestamps
+- **Core Product Fields**:
+  - `id`: num - Unique product identifier
+  - `categoryId`: num - Category association
+  - `categoryName`: string - Category display name
+  - `name`: string - Product name
+  - `sku`: string - Stock Keeping Unit
+  - `description`: string? - Optional product description
+  - `price`: num - Original product price
+  - `sellingPrice`: num - Current selling price
+  - `discountType`: string? - Optional discount type
+  - `discountAmount`: num - Discount value
+  - `finalPrice`: num - Final calculated price
+  - `isRentable`: bool - Rental availability flag
+  - `isFavourite`: bool - User favorite status
+  - `isInStock`: bool - Stock availability flag
+  - `status`: string - Product status
+  - `dimensions`: dynamic - Enhanced dimensional data
+  - `category`: Category - Product category association
+  - `furnitureType`: FurnitureType? - Optional furniture type association
+  - `rooms`: List<Room> - Rooms list with default empty list
+  - `media`: List<Media> - Product media gallery
+  - `defaultOptionIds`: List<DefaultOptionId>? - Optional default options
+  - `totalReviews`: int - Total review count with default 0
+  - `createdAt`: DateTime - Creation timestamp
+  - `updatedAt`: dynamic - Last update timestamp
 
-**Section sources**
-- [products_model.dart:1-363](file://lib/features/home/models/products_model.dart#L1-L363)
-- [response.json:1-1344](file://response.json#L1-L1344)
-
-### Enhanced Dimension Fields
+#### Enhanced Dimension Fields
 The product model now includes comprehensive dimension data with multiple measurement units:
 
 - **Weight Measurements**:
@@ -405,8 +411,8 @@ The product model now includes comprehensive dimension data with multiple measur
   - height_cm: num - Height in centimeters
 
 **Section sources**
-- [products_model.dart:45:45](file://lib/features/home/models/products_model.dart#L45-L45)
-- [response.json:19:25](file://response.json#L19-L25)
+- [products_model.dart:29-145](file://lib/features/home/models/products_model.dart#L29-L145)
+- [response.json:1-1330](file://response.json#L1-L1330)
 
 ### Product Types Model
 - **ProductTypesModel**:
@@ -436,23 +442,23 @@ The Links class provides navigation URLs for paginated responses:
   - next: String? - URL for next page
 
 **Section sources**
-- [products_model.dart:276-297](file://lib/features/home/models/products_model.dart#L276-L297)
+- [products_model.dart:284-305](file://lib/features/home/models/products_model.dart#L284-L305)
 
 ### Meta Class
 The Meta class contains pagination metadata:
 
 - **Properties**:
   - currentPage: int - Current page number
-  - from: int - First item index
+  - from: int? - First item index
   - lastPage: int - Total number of pages
   - links: List<Link>? - Page navigation links
   - path: String - Base API path
   - perPage: int - Items per page
-  - to: int - Last item index
+  - to: int? - Last item index
   - total: int - Total items count
 
 **Section sources**
-- [products_model.dart:299-345](file://lib/features/home/models/products_model.dart#L299-L345)
+- [products_model.dart:307-353](file://lib/features/home/models/products_model.dart#L307-L353)
 
 ### Link Class
 Individual page navigation elements:
@@ -463,7 +469,7 @@ Individual page navigation elements:
   - active: bool - Whether page is current
 
 **Section sources**
-- [products_model.dart:347-362](file://lib/features/home/models/products_model.dart#L347-L362)
+- [products_model.dart:355-370](file://lib/features/home/models/products_model.dart#L355-L370)
 
 ### Repository Implementation
 The product catalog uses enhanced repository pattern with pagination support:
@@ -535,7 +541,7 @@ M --> L2["Link"]
 - [post_with_response.dart:1-45](file://lib/core/data/networks/post_with_response.dart#L1-L45)
 - [get_products_by_type_controller.dart:1-27](file://lib/features/home/controller/get_products_by_type_controller.dart#L1-L27)
 - [get_product_types_controller.dart:1-38](file://lib/features/home/controller/get_product_types_controller.dart#L1-L38)
-- [products_model.dart:276-362](file://lib/features/home/models/products_model.dart#L276-L362)
+- [products_model.dart:284-370](file://lib/features/home/models/products_model.dart#L284-L370)
 
 **Section sources**
 - [pubspec.yaml:30-66](file://pubspec.yaml#L30-L66)
@@ -548,6 +554,7 @@ M --> L2["Link"]
   - Keep fromJson lightweight; avoid unnecessary transformations.
   - Use typed fields to prevent runtime parsing errors.
   - Enhanced num-based types provide better precision for pricing calculations.
+  - Improved optional field handling reduces null pointer exceptions.
 - Reactive state:
   - Prefer Rx fields for minimal UI rebuilds; avoid frequent deep copies.
   - Pagination-aware controllers should implement proper loading state management.
@@ -562,6 +569,9 @@ M --> L2["Link"]
 - Data Precision:
   - Num-based types ensure accurate financial calculations.
   - Dimension fields with decimal precision support precise measurements.
+- Enhanced Field Handling:
+  - Default values eliminate the need for manual null checking in UI components.
+  - Optional fields reduce memory footprint when not present in API responses.
 
 ## Troubleshooting Guide
 - Error handling:
@@ -573,10 +583,12 @@ M --> L2["Link"]
   - UI state inconsistencies: Confirm reactive updates occur after Either.fold completion.
   - Pagination errors: Verify Links and Meta classes match server response structure.
   - Type conversion errors: Ensure num-based fields handle both integer and decimal values correctly.
+  - Optional field errors: The enhanced optional field handling should prevent null pointer exceptions.
 - Product catalog issues:
   - Dimension parsing: Verify dimensional data matches expected format.
   - Pagination navigation: Check that Links URLs are properly formatted.
   - Price calculations: Validate num-based pricing maintains accuracy across operations.
+  - Default value handling: Ensure totalReviews defaults to 0 when not present in API response.
 
 **Section sources**
 - [error_model.dart:1-15](file://lib/core/data/global_models/error_model.dart#L1-L15)
@@ -586,7 +598,7 @@ M --> L2["Link"]
 - [transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
 
 ## Conclusion
-The ZB-DEZINE application employs a clean separation of concerns with well-defined data models, a robust network layer using Either semantics, and reactive controllers. The major restructuring to num-based types enhances precision for pricing and measurements, while the addition of comprehensive pagination support with Links and Meta classes provides robust navigation for large product catalogs. The enhanced dimension fields support precise product specifications, and the improved data models are suitable for JSON serialization/deserialization with clear extension points for validation and transformation. The architecture supports scalable growth across features like AI design, orders, transactions, and the comprehensive product catalog system.
+The ZB-DEZINE application employs a clean separation of concerns with well-defined data models, a robust network layer using Either semantics, and reactive controllers. The major restructuring to num-based types enhances precision for pricing and measurements, while the addition of comprehensive pagination support with Links and Meta classes provides robust navigation for large product catalogs. The enhanced dimension fields support precise product specifications, and the improved data models with enhanced optional field handling and default values provide reliable JSON serialization/deserialization with clear extension points for validation and transformation. The architecture supports scalable growth across features like AI design, orders, transactions, and the comprehensive product catalog system.
 
 ## Appendices
 - API Integration Patterns:
@@ -609,8 +621,10 @@ The ZB-DEZINE application employs a clean separation of concerns with well-defin
   - Introduce breaking changes behind feature flags; maintain backward-compatible fromJson for graceful degradation.
   - Num-based type migration requires careful testing of financial calculations.
   - Pagination implementation should maintain compatibility with existing UI components.
+  - Enhanced optional field handling provides backward compatibility for older API responses.
 - Performance Optimization:
   - Implement pagination-aware loading strategies.
   - Use num-based types for precise financial calculations.
   - Leverage Links and Meta classes for efficient navigation.
   - Cache pagination metadata to reduce network overhead.
+  - Default value assignments reduce conditional logic in UI components.

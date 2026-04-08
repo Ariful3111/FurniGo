@@ -22,7 +22,7 @@ class CreditBalance extends StatelessWidget {
       ),
       boxShadow: [
         BoxShadow(
-          color: AppColors.shadowColor.withValues(alpha: 0.1),
+          color: AppColors.darkColor.withValues(alpha: 0.1),
           blurRadius: 20,
           offset: Offset(1, 6),
         ),
@@ -64,9 +64,8 @@ class CreditBalance extends StatelessWidget {
             icon: IconsPath.arrowRight,
             text: "Purchase Credits",
             fontSize: 14.sp,
-            backgroundColor: AppColors.primaryColor,
-            textColor: AppColors.whiteColor,
-            iconColor: AppColors.whiteColor,
+            textColor:isDark? AppColors.darkColor:AppColors.whiteColor,
+            iconColor: isDark? AppColors.darkColor:AppColors.whiteColor,
             onTap: () {},
             boxShadow: [
               shadow(dy: 98, blurRadius: 28, alpha: 0.0),

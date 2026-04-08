@@ -16,4 +16,5 @@ class ImagesPath {
   static const String rent = 'assets/images/rent.png';
   static const String profileBg = 'assets/images/profile_bg.png';
   static const String chair = 'assets/images/chair.png';
+  static const String product = 'assets/images/product.png';
 }

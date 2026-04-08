@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
+import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
+import 'package:zb_dezign/features/rent_request/widgets/rent_appliance_widgets/rent_appliance_widgets.dart';
+import 'package:zb_dezign/shared/widgets/shared_container.dart';
+
+class RentAppliance extends StatelessWidget {
+  const RentAppliance({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final stepController = Get.find<RentStepController>();
+
+    return Column(
+      children: [
+        SharedContainer(
+           width: MediaQuery.of(context).size.width,
+          child: FlowPageCount(
+            text: 'Appliance',
+            pageCount: (stepController.currentIndex.value).toString(),
+          ),
+        ),
+        SizedBox(height: 20.h),
+        RentApplianceWidgets(),
+      ],
+    );
+  }
+}

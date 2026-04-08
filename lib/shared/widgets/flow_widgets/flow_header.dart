@@ -11,11 +11,12 @@ class FlowHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 56.h,
       width: MediaQuery.widthOf(context),
       decoration: BoxDecoration(
-        color: AppColors.whiteColor,
+        color:isDark? AppColors.labelColor:AppColors.whiteColor,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Stack(

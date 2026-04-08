@@ -29,15 +29,21 @@
 - [auth_bindings.dart](file://features/auth/bindings/auth_bindings.dart)
 - [products_model.dart](file://features/home/models/products_model.dart)
 - [product_types_model.dart](file://features/home/models/product_types_model.dart)
+- [product_attributes_repo.dart](file://features/product_details.dart/repositories/product_attributes_repo.dart)
+- [products_attributes_controller.dart](file://features/product_details.dart/controller/products_attributes_controller.dart)
+- [product_attributes_model.dart](file://features/product_details.dart/models/product_attributes_model.dart)
+- [product_details_bindings.dart](file://features/product_details.dart/bindings/product_details_bindings.dart)
+- [product_furniture_customized_widgets.dart](file://features/product_details.dart/widgets/product_details_view_widgets/product_furniture_customized_widgets.dart)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Added StepZeroRepository implementation demonstrating clean repository pattern with functional error handling via FP Dart's Either type
-- Enhanced PostWithResponse utility for unified HTTP POST interface with improved error handling
-- Expanded repository pattern documentation showing consistent Either-based error handling across all repositories
-- Updated dependency injection examples to show proper repository instantiation with network services
-- Added comprehensive examples of repository-to-controller integration patterns
+- Added ProductAttributesRepository to expand the repository pattern with comprehensive product attribute management capabilities
+- Integrated new ProductAttributesController with reactive state management using GetX
+- Added ProductAttributesModel with nested ProductAttribute and AttributeOption structures
+- Enhanced product details feature with customizable furniture attributes
+- Updated dependency injection to support the new product attributes functionality
+- Expanded repository pattern documentation to include the new ProductAttributesRepository
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -54,10 +60,10 @@
 ## Introduction
 This document describes the ZB-DEZINE data layer architecture with a focus on network services, local storage, and integration patterns. It explains HTTP client configuration, request/response handling, error management, and how repositories and controllers consume these services. It also covers data serialization/deserialization, offline handling via persistent storage, and practical patterns for caching and synchronization.
 
-**Updated** Enhanced error handling with FP Dart's Either type throughout the architecture, demonstrating clean repository patterns with consistent functional error handling across all network operations.
+**Updated** Enhanced error handling with FP Dart's Either type throughout the architecture, demonstrating clean repository patterns with consistent functional error handling across all network operations. Added comprehensive product attribute management capabilities through the new ProductAttributesRepository, expanding the repository pattern with specialized functionality for product customization features.
 
 ## Project Structure
-The data layer is organized under core/data with subfolders for networks and local storage, and global models for domain entities. Dependency injection registers services globally for use across features. Repository implementations demonstrate clean separation of concerns with functional error handling.
+The data layer is organized under core/data with subfolders for networks and local storage, and global models for domain entities. Dependency injection registers services globally for use across features. Repository implementations demonstrate clean separation of concerns with functional error handling. The new product details feature adds specialized repositories and controllers for product attribute management.
 
 ```mermaid
 graph TB
@@ -87,9 +93,17 @@ GPSR["GetProductsByTypeRepository"]
 GPR["GetProfileRepository"]
 UAR["UpdateAddressRepository"]
 DAR["DeleteAddressRepository"]
+PAR["ProductAttributesRepository"]
+end
+subgraph "Product Details Feature"
+PDC["ProductDetailsController"]
+PAC["ProductAttributesController"]
+PDM["ProductDetailsModel"]
+PAM["ProductAttributesModel"]
 end
 subgraph "DI"
 DI["dependency_injection.dart"]
+PDB["product_details_bindings.dart"]
 end
 subgraph "App"
 M["main.dart"]
@@ -116,18 +130,19 @@ GPSR --> G
 GPR --> G
 UAR --> PWO
 DAR --> PWO
-SZR --> H
-LR --> H
-GPSR --> H
-GPR --> H
-UAR --> H
-DAR --> H
-SZR --> EM
-LR --> EM
-GPSR --> EM
-GPR --> EM
-UAR --> EM
-DAR --> EM
+PAR --> G
+PDC --> PDM
+PAC --> PAM
+PAR --> H
+PAC --> H
+PAR --> EM
+PDC --> H
+PAC --> H
+PDC --> EM
+PAC --> EM
+DI --> PDB
+PDB --> PAR
+PDB --> PAC
 ```
 
 **Diagram sources**
@@ -151,6 +166,10 @@ DAR --> EM
 - [get_profile_repo.dart:7-19](file://features/profile/repositories/get_profile_repo.dart#L7-L19)
 - [update_address_repo.dart:8-23](file://features/profile/repositories/update_address_repo.dart#L8-L23)
 - [delete_address_repo.dart:6-18](file://features/profile/repositories/delete_address_repo.dart#L6-L18)
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+- [products_attributes_controller.dart:1-40](file://features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_model.dart:1-101](file://features/product_details.dart/models/product_attributes_model.dart#L1-L101)
+- [product_details_bindings.dart:1-23](file://features/product_details.dart/bindings/product_details_bindings.dart#L1-L23)
 
 **Section sources**
 - [pubspec.yaml:44-46](file://pubspec.yaml#L44-L46)
@@ -166,6 +185,7 @@ DAR --> EM
 - Domain models: typed models for user profile and Google user info with enhanced type safety.
 - Pagination models: Products model includes Links and Meta for pagination support.
 - Repository pattern: clean separation of business logic with functional error handling via Either type.
+- **New**: Product attributes management: specialized repository and controller for product customization features.
 
 Key responsibilities:
 - Network classes encapsulate HTTP calls, status checks, JSON parsing, and error wrapping with enhanced debugging.
@@ -174,8 +194,9 @@ Key responsibilities:
 - Error model standardizes error handling across services.
 - Models use consistent num types for better type safety and numeric precision.
 - Repositories provide clean interfaces for controllers with Either-based error handling.
+- **New**: ProductAttributesRepository handles product attribute retrieval with specialized data structures.
 
-**Updated** All repositories now implement a clean pattern with functional error handling using FP Dart's Either type, ensuring consistent error propagation throughout the application.
+**Updated** All repositories now implement a clean pattern with functional error handling using FP Dart's Either type, ensuring consistent error propagation throughout the application. Added comprehensive product attribute management capabilities through the new ProductAttributesRepository.
 
 **Section sources**
 - [networks_path.dart:1-3](file://core/constant/networks_path.dart#L1-L3)
@@ -191,6 +212,7 @@ Key responsibilities:
 - [products_model.dart:1-274](file://features/home/models/products_model.dart#L1-L274)
 - [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
 - [step_zero_repo.dart:9-36](file://features/rent_request/repositories/step_zero_repo.dart#L9-L36)
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
 
 ## Architecture Overview
 The data layer follows a layered pattern with enhanced functional programming principles:
@@ -199,6 +221,7 @@ The data layer follows a layered pattern with enhanced functional programming pr
 - Network services depend on the base URL constant and the Error model.
 - Headers manager composes headers using the Storage service.
 - All repositories implement clean patterns with Either-based error handling.
+- **New**: Product details feature includes specialized controllers and repositories for product customization.
 
 ```mermaid
 graph TB
@@ -209,6 +232,8 @@ RC["Rental Controllers"]
 RRC["Rent Request Controllers"]
 AC["Auth Controllers"]
 PC["Profile Controllers"]
+PAC["ProductAttributesController"]
+PDC["ProductDetailsController"]
 end
 subgraph "Repositories"
 HR["Home Repositories"]
@@ -220,6 +245,8 @@ GPSR["GetProductsByTypeRepository"]
 GPR["GetProfileRepository"]
 UAR["UpdateAddressRepository"]
 DAR["DeleteAddressRepository"]
+PAR["ProductAttributesRepository"]
+PDR["ProductDetailsRepository"]
 end
 subgraph "Network Services"
 GN["GetNetwork"]
@@ -237,6 +264,8 @@ NP["NetworkLinks.baseUrl"]
 PM["ProductsModel"]
 PTM["ProductTypesModel"]
 SM["StepZeroModel"]
+PAM["ProductAttributesModel"]
+PDM["ProductDetailsModel"]
 end
 HC --> HR
 OC --> OR
@@ -247,6 +276,8 @@ PC --> GPSR
 PC --> GPR
 PC --> UAR
 PC --> DAR
+PAC --> PAR
+PDC --> PDR
 HR --> GN
 OR --> GN
 RR --> GN
@@ -256,6 +287,8 @@ GPSR --> GN
 GPR --> GN
 UAR --> PWO
 DAR --> PWO
+PAR --> GN
+PDR --> GN
 GN --> NP
 PWR --> NP
 PWO --> NP
@@ -272,7 +305,11 @@ DN --> HM
 PM --> EM
 PTM --> EM
 SM --> EM
+PAM --> EM
+PDM --> EM
 SZR --> SM
+PAR --> PAM
+PDR --> PDM
 ```
 
 **Diagram sources**
@@ -298,6 +335,10 @@ SZR --> SM
 - [get_profile_repo.dart:7-19](file://features/profile/repositories/get_profile_repo.dart#L7-L19)
 - [update_address_repo.dart:8-23](file://features/profile/repositories/update_address_repo.dart#L8-L23)
 - [delete_address_repo.dart:6-18](file://features/profile/repositories/delete_address_repo.dart#L6-L18)
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+- [products_attributes_controller.dart:1-40](file://features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_model.dart:1-101](file://features/product_details.dart/models/product_attributes_model.dart#L1-L101)
+- [product_details_bindings.dart:1-23](file://features/product_details.dart/bindings/product_details_bindings.dart#L1-L23)
 
 ## Detailed Component Analysis
 
@@ -430,7 +471,7 @@ ComposeNoAuth --> End
 - [headers_manager.dart:4-22](file://core/data/networks/headers_manager.dart#L4-L22)
 
 ### Repository Pattern Implementation
-**Updated** All repositories now implement a clean pattern with functional error handling using FP Dart's Either type, demonstrating consistent error propagation throughout the application.
+**Updated** All repositories now implement a clean pattern with functional error handling using FP Dart's Either type, demonstrating consistent error propagation throughout the application. Added comprehensive product attribute management capabilities through the new ProductAttributesRepository.
 
 - StepZeroRepository: demonstrates clean repository pattern for rental request creation with comprehensive business logic.
 - LoginRepository: shows authentication flow with Either-based error handling.
@@ -438,6 +479,7 @@ ComposeNoAuth --> End
 - GetProfileRepository: demonstrates user profile retrieval with proper error handling.
 - UpdateAddressRepository: shows POST without response handling.
 - DeleteAddressRepository: demonstrates DELETE operation with Either return type.
+- **New**: ProductAttributesRepository: specialized repository for retrieving product attributes with nested data structures.
 
 Each repository:
 - Accepts network services through constructor injection.
@@ -472,12 +514,17 @@ class DeleteAddressRepository {
 +PostWithoutResponse postWithoutResponse
 +execute(addressID) Future~Either<ErrorModel, bool>~
 }
+class ProductAttributesRepository {
++GetNetwork getNetwork
++execute(productID) Future~Either<ErrorModel, ProductAttributesModel>~
+}
 StepZeroRepository --> PostWithResponse : "uses"
 LoginRepository --> PostWithResponse : "uses"
 GetProductsByTypeRepository --> GetNetwork : "uses"
 GetProfileRepository --> GetNetwork : "uses"
 UpdateAddressRepository --> PostWithoutResponse : "uses"
 DeleteAddressRepository --> PostWithoutResponse : "uses"
+ProductAttributesRepository --> GetNetwork : "uses"
 ```
 
 **Diagram sources**
@@ -487,6 +534,7 @@ DeleteAddressRepository --> PostWithoutResponse : "uses"
 - [get_profile_repo.dart:7-19](file://features/profile/repositories/get_profile_repo.dart#L7-L19)
 - [update_address_repo.dart:8-23](file://features/profile/repositories/update_address_repo.dart#L8-L23)
 - [delete_address_repo.dart:6-18](file://features/profile/repositories/delete_address_repo.dart#L6-L18)
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
 
 **Section sources**
 - [step_zero_repo.dart:9-36](file://features/rent_request/repositories/step_zero_repo.dart#L9-L36)
@@ -495,18 +543,99 @@ DeleteAddressRepository --> PostWithoutResponse : "uses"
 - [get_profile_repo.dart:7-19](file://features/profile/repositories/get_profile_repo.dart#L7-L19)
 - [update_address_repo.dart:8-23](file://features/profile/repositories/update_address_repo.dart#L8-L23)
 - [delete_address_repo.dart:6-18](file://features/profile/repositories/delete_address_repo.dart#L6-L18)
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+
+### Product Attributes Management System
+**New** The ProductAttributesRepository and associated components provide comprehensive product attribute management capabilities for the product customization feature.
+
+#### ProductAttributesRepository
+- Specialized repository for retrieving product attributes with nested data structures.
+- Uses GetNetwork for HTTP GET requests to `/api/products/{productID}/attributes`.
+- Returns Future<Either<ErrorModel, ProductAttributesModel>> for consistent error handling.
+- Integrates with HeadersManager for authentication and content-type headers.
+
+#### ProductAttributesController
+- Reactive controller using GetX for state management.
+- Manages loading states, product attributes data, and accordion expansion states.
+- Implements fold() method for Either-based error handling.
+- Initializes with productID from Get.arguments for automatic data loading.
+
+#### ProductAttributesModel Structure
+- Nested data structures for complex product attribute scenarios.
+- ProductAttribute: contains attributeId, name, and list of AttributeOption.
+- AttributeOption: includes pricing, stock, default selection, and image information.
+- Comprehensive JSON serialization/deserialization support.
+
+```mermaid
+classDiagram
+class ProductAttributesRepository {
++GetNetwork getNetwork
++execute(productID) Future~Either<ErrorModel, ProductAttributesModel>~
+}
+class ProductAttributesController {
++ProductAttributesRepository productAttributesRepository
++Rxn~ProductAttributesModel~ productsAttributes
++RxBool isLoading
++RxList~bool~ isOpen
++getProductsAttributes(productID) void
++togglExpand(index) void
+}
+class ProductAttributesModel {
++ProductAttribute[] data
++ProductAttributesModel.fromJson(json)
++toJson() Map
+}
+class ProductAttribute {
++num productAttributeId
++num attributeId
++String name
++AttributeOption[] options
++ProductAttribute.fromJson(json)
++toJson() Map
+}
+class AttributeOption {
++num productAttributeOptionId
++num optionId
++String name
++dynamic image
++String productImage
++num price
++num stock
++bool isDefault
++AttributeOption.fromJson(json)
++toJson() Map
+}
+ProductAttributesRepository --> GetNetwork : "uses"
+ProductAttributesRepository --> ProductAttributesModel : "returns"
+ProductAttributesController --> ProductAttributesRepository : "uses"
+ProductAttributesController --> ProductAttributesModel : "manages"
+ProductAttributesModel --> ProductAttribute : "contains"
+ProductAttribute --> AttributeOption : "contains"
+```
+
+**Diagram sources**
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+- [products_attributes_controller.dart:1-40](file://features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_model.dart:1-101](file://features/product_details.dart/models/product_attributes_model.dart#L1-L101)
+
+**Section sources**
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+- [products_attributes_controller.dart:1-40](file://features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_model.dart:1-101](file://features/product_details.dart/models/product_attributes_model.dart#L1-L101)
 
 ### Data Serialization/Deserialization Patterns
 - Typed models: models expose fromJson and toJson for encoding/decoding.
 - Network services pass a fromJson function to decode responses into typed models.
 - Enhanced type safety: models now use num type instead of int for better numeric precision.
 - Pagination support: Products model includes Links and Meta classes for pagination handling.
+- **New**: Product attributes models support complex nested structures with comprehensive serialization.
 - Example models:
   - UserProfileModel with nested Data.
   - GoogleUserInfoModel for Google sign-in data.
   - ProductTypesModel for furniture type listings.
   - ProductsModel with pagination support for product listings.
   - StepZeroModel for rental request business information.
+  - **New**: ProductAttributesModel with nested ProductAttribute and AttributeOption structures.
 
 ```mermaid
 classDiagram
@@ -597,12 +726,39 @@ class BusinessInfo {
 +fromJson(json)
 +toJson() Map
 }
+class ProductAttributesModel {
++ProductAttribute[] data
++ProductAttributesModel.fromJson(json)
++toJson() Map
+}
+class ProductAttribute {
++num productAttributeId
++num attributeId
++String name
++AttributeOption[] options
++ProductAttribute.fromJson(json)
++toJson() Map
+}
+class AttributeOption {
++num productAttributeOptionId
++num optionId
++String name
++dynamic image
++String productImage
++num price
++num stock
++bool isDefault
++AttributeOption.fromJson(json)
++toJson() Map
+}
 UserProfileModel --> Data : "contains"
 ProductTypesModel --> ProductType : "contains"
 ProductsModel --> Product : "contains"
 ProductsModel --> Links : "contains"
 ProductsModel --> Meta : "contains"
 StepZeroModel --> BusinessInfo : "contains"
+ProductAttributesModel --> ProductAttribute : "contains"
+ProductAttribute --> AttributeOption : "contains"
 ```
 
 **Diagram sources**
@@ -611,6 +767,7 @@ StepZeroModel --> BusinessInfo : "contains"
 - [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
 - [products_model.dart:1-363](file://features/home/models/products_model.dart#L1-L363)
 - [step_zero_model.dart:1-88](file://features/rent_request/models/step_zero_model.dart#L1-L88)
+- [product_attributes_model.dart:1-101](file://features/product_details.dart/models/product_attributes_model.dart#L1-L101)
 
 **Section sources**
 - [user_profile_model.dart:1-72](file://core/data/global_models/user_profile_model.dart#L1-L72)
@@ -618,11 +775,13 @@ StepZeroModel --> BusinessInfo : "contains"
 - [product_types_model.dart:1-37](file://features/home/models/product_types_model.dart#L1-L37)
 - [products_model.dart:1-363](file://features/home/models/products_model.dart#L1-L363)
 - [step_zero_model.dart:1-88](file://features/rent_request/models/step_zero_model.dart#L1-L88)
+- [product_attributes_model.dart:1-101](file://features/product_details.dart/models/product_attributes_model.dart#L1-L101)
 
 ### Offline Data Handling
 - Persistent token storage enables offline re-authentication when the app restarts.
 - Dependency injection initializes GetStorage and reads the token during startup.
 - Repositories can cache frequently accessed data in memory or use StorageService for small persisted items.
+- **New**: Product attributes data can be cached locally for offline product customization features.
 
 ```mermaid
 sequenceDiagram
@@ -653,8 +812,9 @@ App->>Net : "use services after init"
 - Repositories may use StorageService for caching or offline behavior.
 - Network services return Either<ErrorModel, T>, allowing repositories to handle success and failure uniformly.
 - Enhanced error handling with debugPrint statements for better debugging experience.
+- **New**: Product attributes flow includes reactive state management with GetX for UI updates.
 
-**Updated** All repositories now implement consistent functional error handling using FP Dart's Either type, providing a clean separation of concerns and predictable error propagation.
+**Updated** All repositories now implement consistent functional error handling using FP Dart's Either type, providing a clean separation of concerns and predictable error propagation. Added comprehensive product attribute management with reactive state handling for dynamic UI updates.
 
 ```mermaid
 sequenceDiagram
@@ -689,6 +849,7 @@ end
 - [rental_bindings.dart:5-10](file://features/rental/bindings/rental_bindings.dart#L5-L10)
 - [rent_bindings.dart:16-37](file://features/rent_request/bindings/rent_bindings.dart#L16-L37)
 - [auth_bindings.dart:13-28](file://features/auth/bindings/auth_bindings.dart#L13-L28)
+- [product_details_bindings.dart:1-23](file://features/product_details.dart/bindings/product_details_bindings.dart#L1-L23)
 
 ### Caching Strategies and Data Synchronization Patterns
 - In-memory caching: keep recent data in repository state to reduce network calls.
@@ -696,6 +857,7 @@ end
 - Synchronization: upon successful network updates, update in-memory state and persist changes as needed.
 - Conflict handling: implement optimistic updates with rollback on error; or use server timestamps to reconcile.
 - Pagination support: use Links and Meta classes to handle paginated data efficiently.
+- **New**: Product attributes caching: cache attribute data locally for offline product customization features.
 
 ### Enhanced Type Safety and Numeric Precision
 **Updated** The application now uses consistent num types across models for better numeric precision and type safety:
@@ -704,12 +866,14 @@ end
 - Meta information includes integer pagination fields (currentPage, lastPage, total)
 - DefaultOptionId uses num for numeric identifiers
 - Category and FurnitureType models use num for ID fields
+- **New**: Product attributes models use num for productAttributeId, attributeId, optionId, price, stock, and other numeric fields.
 
 This change improves type safety and prevents potential overflow issues with large numeric values.
 
 **Section sources**
 - [products_model.dart:251-274](file://features/home/models/products_model.dart#L251-L274)
 - [product_types_model.dart:23-37](file://features/home/models/product_types_model.dart#L23-L37)
+- [product_attributes_model.dart:27-65](file://features/product_details.dart/models/product_attributes_model.dart#L27-L65)
 
 ### Pagination Support for Products API
 **Updated** Products model now includes comprehensive pagination support:
@@ -759,12 +923,13 @@ Meta --> Link : "contains"
 - [products_model.dart:276-363](file://features/home/models/products_model.dart#L276-L363)
 
 ### Dependency Injection and Repository Integration
-**Updated** Dependency injection now properly registers all network services and repositories with GetX, enabling clean constructor injection patterns.
+**Updated** Dependency injection now properly registers all network services and repositories with GetX, enabling clean constructor injection patterns. Added comprehensive product details feature integration.
 
 - Network services are registered as singletons with permanent lifecycle.
 - Repositories receive network services through constructor injection.
 - Controllers receive repositories through Get.lazyPut with proper dependency resolution.
 - StepZeroRepository demonstrates the clean repository pattern with PostWithResponse injection.
+- **New**: ProductAttributesRepository and ProductDetailsRepository are integrated through ProductDetailsBindings.
 
 ```mermaid
 flowchart TD
@@ -784,17 +949,26 @@ GN --> GPSR["GetProductsByTypeRepository"]
 GN --> GPR["GetProfileRepository"]
 PWO --> UAR["UpdateAddressRepository"]
 PWO --> DAR["DeleteAddressRepository"]
+DI --> PDB["ProductDetailsBindings"]
+PDB --> PAR["ProductAttributesRepository"]
+PDB --> PDR["ProductDetailsRepository"]
+PDB --> PAC["ProductAttributesController"]
+PDB --> PDC["ProductDetailsController"]
+PAR --> GN
+PAC --> PAR
 ```
 
 **Diagram sources**
 - [dependency_injection.dart:14-30](file://core/di/dependency_injection.dart#L14-L30)
 - [rent_bindings.dart:19-24](file://features/rent_request/bindings/rent_bindings.dart#L19-L24)
 - [auth_bindings.dart:16-22](file://features/auth/bindings/auth_bindings.dart#L16-L22)
+- [product_details_bindings.dart:1-23](file://features/product_details.dart/bindings/product_details_bindings.dart#L1-L23)
 
 **Section sources**
 - [dependency_injection.dart:14-30](file://core/di/dependency_injection.dart#L14-L30)
 - [rent_bindings.dart:16-37](file://features/rent_request/bindings/rent_bindings.dart#L16-L37)
 - [auth_bindings.dart:13-28](file://features/auth/bindings/auth_bindings.dart#L13-L28)
+- [product_details_bindings.dart:1-23](file://features/product_details.dart/bindings/product_details_bindings.dart#L1-L23)
 
 ## Dependency Analysis
 - External libraries:
@@ -808,8 +982,9 @@ PWO --> DAR["DeleteAddressRepository"]
   - Controllers depend on Repositories, which depend on Network services.
   - Models depend on ErrorModel for serialization/deserialization.
   - All repositories depend on network services and implement Either-based error handling.
+  - **New**: Product details feature depends on ProductAttributesRepository and ProductDetailsRepository.
 
-**Updated** Enhanced dependency graph showing the clean repository pattern with functional error handling throughout the architecture.
+**Updated** Enhanced dependency graph showing the clean repository pattern with functional error handling throughout the architecture, including new product attributes management capabilities.
 
 ```mermaid
 graph LR
@@ -836,6 +1011,12 @@ GPSR["get_products_by_type_repo.dart"]
 GPR["get_profile_repo.dart"]
 UAR["update_address_repo.dart"]
 DAR["delete_address_repo.dart"]
+PAR["product_attributes_repo.dart"]
+PAC["products_attributes_controller.dart"]
+PAM["product_attributes_model.dart"]
+PDB["product_details_bindings.dart"]
+PDC["product_details_controller.dart"]
+PDM["product_details_model.dart"]
 end
 DI --> SS
 DI --> HM
@@ -858,18 +1039,26 @@ GPSR --> GN
 GPR --> GN
 UAR --> PWO
 DAR --> PWO
+PAR --> GN
+PAC --> PAR
+PAC --> PAM
+PDC --> PDM
 SZR --> HM
 LR --> HM
 GPSR --> HM
 GPR --> HM
 UAR --> HM
 DAR --> HM
+PAR --> HM
 SZR --> EM
 LR --> EM
 GPSR --> EM
 GPR --> EM
 UAR --> EM
 DAR --> EM
+PAR --> EM
+PAC --> EM
+PDC --> EM
 SZR --> SM
 ```
 
@@ -893,6 +1082,10 @@ SZR --> SM
 - [get_profile_repo.dart:7-19](file://features/profile/repositories/get_profile_repo.dart#L7-L19)
 - [update_address_repo.dart:8-23](file://features/profile/repositories/update_address_repo.dart#L8-L23)
 - [delete_address_repo.dart:6-18](file://features/profile/repositories/delete_address_repo.dart#L6-L18)
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+- [products_attributes_controller.dart:1-40](file://features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
+- [product_attributes_model.dart:1-101](file://features/product_details.dart/models/product_attributes_model.dart#L1-L101)
+- [product_details_bindings.dart:1-23](file://features/product_details.dart/bindings/product_details_bindings.dart#L1-L23)
 
 **Section sources**
 - [pubspec.yaml:44-46](file://pubspec.yaml#L44-L46)
@@ -906,6 +1099,7 @@ SZR --> SM
 - Avoid unnecessary UI rebuilds by structuring state updates efficiently.
 - Enhanced error logging helps identify performance bottlenecks during development.
 - Functional error handling with Either type reduces error handling overhead and improves code clarity.
+- **New**: Product attributes caching reduces network calls for frequently accessed product customization data.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -927,8 +1121,13 @@ Common issues and resolutions:
   - Ensure repositories are properly injected with network services through constructor injection.
   - Verify Either-based error handling is properly implemented in all repositories.
   - Check that dependency injection registers all required services and repositories.
+- **New**: Product attributes issues:
+  - Verify productID parameter is correctly passed to ProductAttributesRepository.
+  - Check that ProductAttributesController properly handles loading states and error messages.
+  - Ensure product attribute data structures match server response format.
+  - Validate that Get.lazyPut properly registers ProductAttributesRepository and ProductAttributesController.
 
-**Updated** Added troubleshooting guidance for repository pattern implementation and functional error handling.
+**Updated** Added troubleshooting guidance for repository pattern implementation and functional error handling, including new product attributes management capabilities.
 
 **Section sources**
 - [headers_manager.dart:9-21](file://core/data/networks/headers_manager.dart#L9-L21)
@@ -940,11 +1139,13 @@ Common issues and resolutions:
 - [delete_network.dart:13-39](file://core/data/networks/delete_network.dart#L13-L39)
 - [products_model.dart:276-363](file://features/home/models/products_model.dart#L276-L363)
 - [step_zero_repo.dart:9-36](file://features/rent_request/repositories/step_zero_repo.dart#L9-L36)
+- [product_attributes_repo.dart:1-21](file://features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
+- [products_attributes_controller.dart:1-40](file://features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
 
 ## Conclusion
-The ZB-DEZINE data layer cleanly separates concerns across network services, local storage, and headers management. It leverages Either for robust error handling, typed models for safe serialization/deserialization, and a DI system for easy integration across features. The enhanced error handling with debugPrint statements, improved type safety through consistent num types usage, and comprehensive pagination support make the architecture more robust, maintainable, and developer-friendly. 
+The ZB-DEZINE data layer cleanly separates concerns across network services, local storage, and headers management. It leverages Either for robust error handling, typed models for safe serialization/deserialization, and a DI system for easy integration across features. The enhanced error handling with debugPrint statements, improved type safety through consistent num types usage, and comprehensive pagination support make the architecture more robust, maintainable, and developer-friendly.
 
-**Updated** The addition of StepZeroRepository and other repositories demonstrates a clean repository pattern with functional error handling via FP Dart's Either type, providing consistent error propagation throughout the application. The enhanced PostWithResponse utility offers a unified HTTP POST interface with improved error handling, supporting the clean architecture principles across all network operations.
+**Updated** The addition of ProductAttributesRepository and related components demonstrates a clean repository pattern with functional error handling via FP Dart's Either type, providing consistent error propagation throughout the application. The enhanced PostWithResponse utility offers a unified HTTP POST interface with improved error handling, supporting the clean architecture principles across all network operations. The new product attributes management system expands the repository pattern with specialized functionality for product customization features, integrating seamlessly with the existing architecture through GetX reactive state management.
 
 By combining in-memory caching, persistent storage, and clear request/response patterns, the architecture supports scalable offline-capable experiences with better debugging capabilities and functional programming paradigms.
 
@@ -955,14 +1156,23 @@ By combining in-memory caching, persistent storage, and clear request/response p
   - Wrap all calls with Either handling to propagate errors consistently.
   - Leverage enhanced error logging for better debugging experience.
   - Implement clean repository pattern with constructor injection for network services.
+  - **New**: Use ProductAttributesRepository for product customization features with proper error handling.
 - Offline handling:
   - Initialize StorageService during app startup and read tokens for seamless re-authentication.
   - Persist small, critical data (e.g., tokens) using StorageService; cache larger datasets in memory.
   - Use pagination models for efficient data loading and caching strategies.
   - Implement Either-based error handling in all repositories for consistent error propagation.
+  - **New**: Cache product attributes data locally for offline product customization features.
 - Type safety best practices:
   - Use num types for numeric values to prevent overflow and improve precision.
   - Implement proper error handling with debugPrint statements for better development experience.
   - Ensure models handle nullable fields gracefully during deserialization.
   - Use FP Dart's Either type for functional error handling across the entire application.
   - Follow clean repository pattern with proper dependency injection and constructor-based service injection.
+  - **New**: Ensure product attributes models use appropriate num types for numeric fields like prices and stock quantities.
+- **New**: Product attributes integration patterns:
+  - Use ProductAttributesController for reactive state management of product customization UI.
+  - Implement proper loading states and error handling for product attribute retrieval.
+  - Cache product attribute data locally for offline product customization experiences.
+  - Follow the established repository pattern with Either-based error handling for consistency.
+  - Integrate with existing dependency injection system through ProductDetailsBindings.

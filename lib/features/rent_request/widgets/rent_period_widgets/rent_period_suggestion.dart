@@ -20,8 +20,7 @@ class RentPeriodSuggestion extends GetWidget<RentPeriodController> {
       itemBuilder: (BuildContext context, Map<String, String> suggestion) {
         return Obx(() {
           final selected =
-              suggestion['title'] ==
-              controller.selectedRentPeriodTitle.value;
+              suggestion['title'] == controller.selectedRentPeriodTitle.value;
           final discount = suggestion['subTitle'] == 'Minimum Duration';
           return suggestion['title'] == 'custom'
               ? RentPeriodSuggestionField(selected: selected)
@@ -77,7 +76,10 @@ class RentPeriodSuggestion extends GetWidget<RentPeriodController> {
       },
       onSelected: (value) {
         final String title = (value['title'] ?? '');
-        controller.searchController.text = title;
+        if (title.isNotEmpty && title != 'custom') {
+          controller.searchController.text = title;
+          controller.selectedRentPeriodTitle.value = title;
+        }
       },
       controller: controller.searchController,
       suggestionsCallback: (String search) {
