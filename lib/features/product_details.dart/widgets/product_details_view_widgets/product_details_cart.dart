@@ -173,7 +173,7 @@ class ProductDetailsCart extends GetWidget<ProductDetailsController> {
   BoxDecoration _boxDecoration() {
     return BoxDecoration(
       color: Colors.white,
-      border: Border.all(color: const Color(0xFFEAEAEA)),
+      border: Border.all(color: AppColors.fieldBorderColor),
       borderRadius: BorderRadius.circular(8.5.r),
       boxShadow: [
         BoxShadow(

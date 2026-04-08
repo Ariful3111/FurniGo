@@ -75,7 +75,9 @@ class HomeAppbar extends GetWidget<ProfileController> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(AppRoutes.favoritesView);
+                  },
                   child: HomeHelper.blurContainer(
                     height: 32.h,
                     width: 32.w,

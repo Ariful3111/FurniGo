@@ -46,7 +46,6 @@ class CreditTransactionItem extends StatelessWidget {
             ],
           ),
           SharedContainer(
-            
             padding: EdgeInsets.symmetric(horizontal: 6.26.w, vertical: 5.22.h),
             color: isDark ? AppColors.labelColor : AppColors.whiteColor,
             radius: 20.r,
@@ -54,7 +53,7 @@ class CreditTransactionItem extends StatelessWidget {
               text: _amountText(isPositive),
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
-              color:isDark? AppColors.whiteColor:AppColors.labelColor,
+              color: isDark ? AppColors.whiteColor : AppColors.labelColor,
             ),
           ),
         ],
@@ -68,7 +67,6 @@ class CreditTransactionItem extends StatelessWidget {
     final String value = isWholeNumber
         ? intValue.toString()
         : transaction.amount.toStringAsFixed(2);
-
     return isPositive ? '+$value' : value;
   }
 }

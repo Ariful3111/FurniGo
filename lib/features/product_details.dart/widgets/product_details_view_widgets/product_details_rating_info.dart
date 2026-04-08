@@ -47,7 +47,7 @@ class ProductDetailsRatingInfo extends StatelessWidget {
         CustomPrimaryText(
           text: "/5",
           fontSize: 16.sp,
-          color: isDark ? AppColors.whiteColor : Color(0xFF212121),
+          color: isDark ? AppColors.whiteColor : AppColors.darkSecondaryColor,
         ),
       ],
     );

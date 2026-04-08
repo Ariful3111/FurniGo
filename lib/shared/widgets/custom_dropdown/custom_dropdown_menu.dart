@@ -38,6 +38,7 @@ class CustomDropdownMenu extends StatelessWidget {
   final double? trailingIconWidth;
   final double? menuFontSize;
   final AlignmentGeometry? alignmentGeometry;
+  final Color? borderColor;
   const CustomDropdownMenu({
     super.key,
     required this.onSelect,
@@ -69,6 +70,7 @@ class CustomDropdownMenu extends StatelessWidget {
     this.labelColor,
     this.height,
     this.width,
+    this.borderColor,
   });
 
   @override
@@ -107,19 +109,24 @@ class CustomDropdownMenu extends StatelessWidget {
             borderRadius: borderRadius,
             focusBorderRadius: focusBorderRadius,
             contentPadding: contentPadding,
+            borderColor: borderColor,
           ),
           expandedInsets: expandedInsets,
           trailingIcon: Image.asset(
             IconsPath.downArrow,
             height: trailingIconHeight ?? 24.h,
             width: trailingIconWidth ?? 24.w,
-            color:isDark? trailingIconColor??AppColors.primaryBorderColor:null,
+            color: isDark
+                ? trailingIconColor ?? AppColors.primaryBorderColor
+                : null,
           ),
           selectedTrailingIcon: Image.asset(
             IconsPath.upArrow,
             height: selectedTrailingIconHeight ?? 24.h,
             width: selectedTrailingIconWidth ?? 24.w,
-            color:isDark? selectedTrailingIconColor??AppColors.primaryBorderColor:Color(0xFF6B7280),
+            color: isDark
+                ? selectedTrailingIconColor ?? AppColors.primaryBorderColor
+                : Color(0xFF6B7280),
           ),
           width: MediaQuery.widthOf(context),
           menuStyle: MenuStyle(

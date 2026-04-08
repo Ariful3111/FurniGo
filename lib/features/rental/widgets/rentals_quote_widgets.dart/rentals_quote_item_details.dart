@@ -115,7 +115,7 @@ class RentalsQuoteItemDetails extends GetWidget<RentalQuotesController> {
         borderRadius: BorderRadius.circular(8.96.r),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF222222).withValues(alpha: 0.12),
+            color: AppColors.darkGreyColor.withValues(alpha: 0.12),
             blurRadius: 15.36,
             offset: Offset(0, 5.12),
           ),

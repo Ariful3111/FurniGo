@@ -129,5 +129,12 @@ class IconsPath {
   static const String speed = 'assets/icons/speed.png';
   static const String verify = 'assets/icons/verify.png';
   static const String deliveryVan = 'assets/icons/delivery_van.png';
+  static const String dropOf = 'assets/icons/drop_of.png';
+  static const String fedx = 'assets/icons/fedx.png';
+  static const String paypal = 'assets/icons/paypal.png';
+  static const String pen = 'assets/icons/pen.png';
+  static const String category = 'assets/icons/category.png';
+  static const String material = 'assets/icons/material.png';
+
 
 }

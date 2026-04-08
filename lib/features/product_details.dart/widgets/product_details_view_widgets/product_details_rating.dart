@@ -55,7 +55,7 @@ class ProductDetailsRating extends GetWidget<ProductDetailsController> {
                 fontSize: 12.sp,
                 color: isDark
                     ? AppColors.primaryBorderColor
-                    : Color(0xFF212121),
+                    : AppColors.darkSecondaryColor,
               ),
             ],
           ),

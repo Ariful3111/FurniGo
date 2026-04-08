@@ -15,12 +15,16 @@ import 'package:zb_dezign/features/auth/views/signup_option_view.dart';
 import 'package:zb_dezign/features/auth/views/signup_view.dart';
 import 'package:zb_dezign/features/auth/views/user_mode_view.dart';
 import 'package:zb_dezign/features/cart/bindings/cart_bindings.dart';
+import 'package:zb_dezign/features/cart/bindings/checkout_bindings.dart';
 import 'package:zb_dezign/features/cart/views/cart_view.dart';
+import 'package:zb_dezign/features/cart/views/checkout_view.dart';
 import 'package:zb_dezign/features/credit_balance/bindings/credit_balance_bindings.dart';
 import 'package:zb_dezign/features/credit_balance/views/credit_balance_view.dart';
 import 'package:zb_dezign/features/dashboard/bindings/dashboard_bindings.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_payment_view.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_view.dart';
+import 'package:zb_dezign/features/favorites/bindings/favorites_bindings.dart';
+import 'package:zb_dezign/features/favorites/views/favorites_view.dart';
 import 'package:zb_dezign/features/order/bindings/order_bindings.dart';
 import 'package:zb_dezign/features/order/bindings/order_details_bindings.dart';
 import 'package:zb_dezign/features/order/views/order_details_view.dart';
@@ -48,6 +52,8 @@ import 'package:zb_dezign/features/sell/views/sell_details.dart';
 import 'package:zb_dezign/features/sell/views/sell_view.dart';
 import 'package:zb_dezign/features/sell_flow/bindings/sell_flow_bindings.dart';
 import 'package:zb_dezign/features/sell_flow/views/sell_flow_views.dart';
+import 'package:zb_dezign/features/shop/bindings/shop_bindings.dart';
+import 'package:zb_dezign/features/shop/views/shop_view.dart';
 import 'package:zb_dezign/features/support/bindings/support_bindings.dart';
 import 'package:zb_dezign/features/support/views/support_view.dart';
 import 'package:zb_dezign/features/transaction/bindings/transaction_bindings.dart';
@@ -214,5 +220,20 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.cartView,
     page: () => CartView(),
     binding: CartBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.checkoutView,
+    page: () => CheckoutView(),
+    binding: CheckoutBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.shopView,
+    page: () => ShopView(),
+    binding: ShopBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.favoritesView,
+    page: () => FavoritesView(),
+    binding: FavoritesBindings(),
   ),
 ];
