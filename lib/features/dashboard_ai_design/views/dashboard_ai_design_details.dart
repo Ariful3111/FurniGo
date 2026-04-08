@@ -4,17 +4,17 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/core/constant/images_path.dart';
-import 'package:zb_dezign/features/ai_design/models/ai_design_model.dart';
-import 'package:zb_dezign/features/ai_design/widgets/ai_design_details_widgets/ai_interior_design.dart';
-import 'package:zb_dezign/features/ai_design/widgets/ai_design_details_widgets/ai_product_placement.dart';
+import 'package:zb_dezign/features/dashboard_ai_design/models/ai_design_model.dart';
+import 'package:zb_dezign/features/dashboard_ai_design/widgets/dashboard_ai_design_details_widgets/dashboard_ai_interior_design.dart';
+import 'package:zb_dezign/features/dashboard_ai_design/widgets/dashboard_ai_design_details_widgets/dashboard_ai_product_placement.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class AiDesignDetails extends StatelessWidget {
-  const AiDesignDetails({super.key});
+class DashboardAiDesignDetails extends StatelessWidget {
+  const DashboardAiDesignDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +56,9 @@ class AiDesignDetails extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 if (aiDesignModel.type == 'Product Placement')
-                  AiProductPlacement(),
+                  DashboardAiProductPlacement(),
                 if (aiDesignModel.type == 'AI Interior Design')
-                  AiInteriorDesign(),
+                  DashboardAiInteriorDesign(),
                 SizedBox(height: 20.h),
                 SharedContainer(
                   height: 291.h,

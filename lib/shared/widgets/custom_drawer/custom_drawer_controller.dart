@@ -28,7 +28,7 @@ class CustomDrawerController extends GetxController {
     {
       'icon': IconsPath.drawerAi,
       'title': 'AI Designs',
-      'page': AppRoutes.aiDesignView,
+      'page': AppRoutes.dashboardAiDesignView,
     },
     {
       'icon': IconsPath.drawerCredit,

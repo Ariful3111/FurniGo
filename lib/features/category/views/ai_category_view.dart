@@ -1,44 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/state_manager.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/category/controller/category_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
-import 'package:zb_dezign/shared/widgets/custom_quick_action/quick_action_list.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class CategoryView extends StatelessWidget {
-  const CategoryView({super.key});
+class AiCategoryView extends GetWidget<CategoryController> {
+  const AiCategoryView({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomContainer(
-      child: ListView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomAppbar(title: 'Category', isIcon: false, onDrawerTap: () {}),
+          CustomAppbar(
+            title: 'AI Category',
+            onDrawerTap: () => Navigator.pop(context),
+            icon: IconsPath.back,
+          ),
           SizedBox(height: 20.h),
           SharedContainer(
             radius: 16.r,
             padding: EdgeInsets.all(16.r),
             child: Column(
-              children: List.generate(QuickActionList().quickAction.length, (
-                index,
-              ) {
-                final item = QuickActionList().quickAction[index];
+              children: List.generate(controller.aiOption.length, (index) {
+                final item = controller.aiOption[index];
                 return GestureDetector(
                   onTap: () {
-                    Get.toNamed(item['page']);
+                    Get.toNamed(
+                      item['page'],
+                      arguments: {'title': item['title'], 'sub': item['sub']},
+                    );
                   },
                   child: SharedContainer(
                     width: MediaQuery.widthOf(context),
                     margin: EdgeInsets.only(
-                      bottom:
-                          QuickActionList().quickAction.length - 1 == index
-                          ? 0
-                          : 8.h,
+                      bottom: controller.aiOption.length - 1 == index ? 0 : 8.h,
                     ),
                     radius: 12.r,
                     padding: EdgeInsets.all(12.r),

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_active_rentals.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_info.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_membership_notice.dart';
-import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_quick_action.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_reminders.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_sell_quote.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_table.dart';
@@ -12,6 +11,7 @@ import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_banner.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
+import 'package:zb_dezign/shared/widgets/custom_quick_action/custom_quick_action.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class DashboardView extends StatelessWidget {
@@ -41,7 +41,7 @@ class DashboardView extends StatelessWidget {
             SizedBox(height: 16.h),
             DashboardInfo(),
             SizedBox(height: 12.h),
-            SharedContainer(child: DashboardQuickAction()),
+            SharedContainer(child: CustomQuickAction()),
             SizedBox(height: 12.h),
             DashboardTable(),
             SizedBox(height: 12.h),

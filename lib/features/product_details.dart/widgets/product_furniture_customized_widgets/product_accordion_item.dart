@@ -33,7 +33,7 @@ class ProductAccordionItem extends GetView<ProductAttributesController> {
             child: SharedContainer(
               radius: 12.r,
               border: Border.all(
-                color: isDark ? AppColors.darkBorderColor : Color(0xFFE8E6EB),
+                color: isDark ? AppColors.darkBorderColor : AppColors.boxColor,
               ),
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(

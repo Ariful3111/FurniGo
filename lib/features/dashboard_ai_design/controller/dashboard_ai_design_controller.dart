@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zb_dezign/features/ai_design/models/ai_design_model.dart';
+import 'package:zb_dezign/features/dashboard_ai_design/models/ai_design_model.dart';
 
-class AiDesignController extends GetxController {
+class DashboardAiDesignController extends GetxController {
   List<String> category = ['All', 'AI Product Placement', 'AI Interior Design'];
   TextEditingController searchController = TextEditingController();
   RxInt selectedIndex = 0.obs;
