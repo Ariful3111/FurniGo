@@ -10,17 +10,19 @@ class AiUserCredit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        bool isDark = Theme.of(context).brightness == Brightness.dark;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomSecondaryButton(
-          padding: EdgeInsets.symmetric(vertical: 9.09.h,horizontal: 14.55.w),
+          padding: EdgeInsets.symmetric(vertical: 9.09.h, horizontal: 14.55.w),
           text: "Back",
-          textColor:isDark?AppColors.darkColor :AppColors.whiteColor,
-          iconColor:isDark?AppColors.darkColor: AppColors.whiteColor,
+          textColor: isDark ? AppColors.darkColor : AppColors.whiteColor,
+          iconColor: isDark ? AppColors.darkColor : AppColors.whiteColor,
           icon: IconsPath.arrowLeft,
-          backgroundColor:isDark?AppColors.boxColor: AppColors.secondaryColor,
+          backgroundColor: isDark
+              ? AppColors.boxColor
+              : AppColors.secondaryColor,
           onPressed: () => Navigator.pop(context),
         ),
         AiDropdown(),
