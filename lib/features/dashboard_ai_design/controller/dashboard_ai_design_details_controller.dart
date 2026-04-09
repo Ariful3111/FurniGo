@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class AiDesignDetailsController extends GetxController {
+class DashboardAiDesignDetailsController extends GetxController {
   List roomDetails = [
     [
       {'title': 'Select Your Room', 'value': 'Living Room'},

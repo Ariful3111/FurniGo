@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/favorites/controller/toggle_favourite_controller.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/home/controller/get_new_arrivals_controller.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_product_design.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_product_text.dart';
@@ -12,13 +13,6 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> color = [
-      Color(0xFFBCBAC9),
-      Color(0xFFDEC4AF),
-      Color(0xFFD28E8D),
-      Color(0xFF86765B),
-    ];
-
     return Obx(() {
       return controller.isLoading.value
           ? ButtonLoading()
@@ -82,7 +76,7 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
                         ),
                         SizedBox(height: 14.h),
                         HomeProductText(
-                          color: color,
+                          color: AppColors.productColorList,
                           title:
                               controller.newArrivals.value?.data[index].name
                                   .toString() ??

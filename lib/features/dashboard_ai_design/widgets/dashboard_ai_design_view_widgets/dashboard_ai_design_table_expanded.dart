@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
-import 'package:zb_dezign/features/ai_design/models/ai_design_model.dart';
+import 'package:zb_dezign/features/dashboard_ai_design/models/ai_design_model.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_expanded.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
-class AiDesignTableExpanded extends StatelessWidget {
+class DashboardAiDesignTableExpanded extends StatelessWidget {
   final AiDesignModel aiDesignModel;
-  const AiDesignTableExpanded({super.key, required this.aiDesignModel});
+  const DashboardAiDesignTableExpanded({super.key, required this.aiDesignModel});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class AiDesignTableExpanded extends StatelessWidget {
           icon: IconsPath.view,
           onPressed: () {
             Get.toNamed(
-              AppRoutes.aiDesignDetailsView,
+              AppRoutes.dashboardAiDesignDetailsView,
               arguments: aiDesignModel,
             );
           },

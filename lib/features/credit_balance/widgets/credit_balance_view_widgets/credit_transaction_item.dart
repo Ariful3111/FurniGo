@@ -7,9 +7,7 @@ import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class CreditTransactionItem extends StatelessWidget {
   final CreditTransaction transaction;
-
   const CreditTransactionItem({super.key, required this.transaction});
-
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
