@@ -26,8 +26,7 @@ class PostWithoutResponse {
           response.statusCode == 202) {
         return Right(true);
       }
-      // ignore: avoid_print
-      print(response.body);
+      debugPrint(response.body);
       try {
         return left(
           ErrorModel.fromHttp(
@@ -37,9 +36,11 @@ class PostWithoutResponse {
           ),
         );
       } catch (error) {
+        debugPrint(error.toString());
         return left(ErrorModel.fromUnknown());
       }
     } catch (error) {
+      debugPrint(error.toString());
       return left(error as ErrorModel);
     }
   }

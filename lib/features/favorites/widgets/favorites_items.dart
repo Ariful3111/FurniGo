@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/favorites/controller/toggle_favourite_controller.dart';
+import 'package:zb_dezign/features/favorites/models/favourite_model.dart';
 import 'package:zb_dezign/shared/widgets/custom_product_design.dart';
 import 'package:zb_dezign/shared/widgets/custom_product_text.dart';
 
 class FavoritesItems extends StatelessWidget {
-  const FavoritesItems({super.key});
+  final List<FavoriteItem> favorites;
+  const FavoritesItems({required this.favorites, super.key});
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      itemCount: 10,
+      itemCount: favorites.length,
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -25,15 +29,22 @@ class FavoritesItems extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomProductDesign(
-              onFavorite: () {},
+              onFavorite: () async {
+                await Get.find<ToggleFavouriteController>().toggleFavourite(
+                  productID: favorites[index].product.id.toInt(),
+                  changeIndex: 2,
+                );
+              },
               icon: IconsPath.favoriteFill,
               color: Color(0xFFFF383C),
+              favoriteItem: favorites[index],
             ),
             SizedBox(height: 14.h),
             CustomProductText(
               color: AppColors.productColorList,
-              title: 'Modern Velvet Sofa',
-              price: '\$299',
+              title: favorites[index].product.name,
+              price:
+                  '\$${favorites[index].product.finalPrice.toDouble().toPrecision(2)}',
             ),
           ],
         );

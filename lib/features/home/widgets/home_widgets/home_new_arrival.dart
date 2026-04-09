@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/favorites/controller/toggle_favourite_controller.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/home/controller/get_new_arrivals_controller.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_product_design.dart';
@@ -28,7 +29,26 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         HomeProductDesign(
-                          onFavorite: () {},
+                          isFavorite:
+                              controller
+                                  .newArrivals
+                                  .value
+                                  ?.data[index]
+                                  .isFavourite ??
+                              false,
+                          isCart: true,
+                          onFavorite: () async {
+                            await Get.find<ToggleFavouriteController>()
+                                .toggleFavourite(
+                                  productID: controller
+                                      .newArrivals
+                                      .value!
+                                      .data[index]
+                                      .id
+                                      .toInt(),
+                                  changeIndex: 0,
+                                );
+                          },
                           onCart: () {},
                           productID: controller
                               .newArrivals
