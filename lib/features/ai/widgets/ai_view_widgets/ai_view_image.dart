@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
+import 'package:zb_dezign/core/utils/image_picker.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -48,7 +51,27 @@ class AiViewImage extends StatelessWidget {
                     child: CustomSecondaryButton(
                       radius: 32.r,
                       boxShadow: multiDropShadow(),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final args = Get.arguments ?? {};
+                        final String rawTitle = args['title'] ?? '';
+                        final String title = rawTitle.toString().toLowerCase();
+                        final String? imagePath =
+                            await ImageManager.pickImageFromGallery();
+                        if (imagePath == null) {
+                          return;
+                        }
+                        if (title == 'interior design') {
+                          Get.toNamed(
+                            AppRoutes.aiInteriorDesignView,
+                            arguments: {...args, 'imagePath': imagePath},
+                          );
+                        } else if (title == 'product placement') {
+                          Get.toNamed(
+                            AppRoutes.aiProductPlacementView,
+                            arguments: {...args, 'imagePath': imagePath},
+                          );
+                        }
+                      },
                       text: 'Upload Room',
                       icon: IconsPath.gallery,
                       fontSize: 14.sp,
@@ -56,15 +79,32 @@ class AiViewImage extends StatelessWidget {
                       iconColor: AppColors.primaryColor,
                     ),
                   ),
-
                   SizedBox(width: 16.w),
-
-                  /// Camera Button
                   Expanded(
                     child: CustomSecondaryButton(
                       radius: 32.r,
                       boxShadow: multiDropShadow(),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final args = Get.arguments ?? {};
+                        final String rawTitle = args['title'] ?? '';
+                        final String title = rawTitle.toString().toLowerCase();
+                        final String? imagePath =
+                            await ImageManager.captureImageViaCamera();
+                        if (imagePath == null) {
+                          return;
+                        }
+                        if (title == 'interior design') {
+                          Get.toNamed(
+                            AppRoutes.aiInteriorDesignView,
+                            arguments: {...args, 'imagePath': imagePath},
+                          );
+                        } else if (title == 'product placement') {
+                          Get.toNamed(
+                            AppRoutes.aiProductPlacementView,
+                            arguments: {...args, 'imagePath': imagePath},
+                          );
+                        }
+                      },
                       text: 'Take Photo',
                       icon: IconsPath.camera,
                       fontSize: 14.sp,

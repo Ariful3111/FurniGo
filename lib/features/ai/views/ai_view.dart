@@ -17,7 +17,6 @@ class AiView extends StatelessWidget {
           AiHeader(),
           SizedBox(height: 60.h,),
           AiViewImage(),
-
         ],
       ),
     );

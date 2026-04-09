@@ -1,6 +1,10 @@
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/ai/bindings/ai_bindings.dart';
+import 'package:zb_dezign/features/ai/bindings/ai_interior_design_bindings.dart';
+import 'package:zb_dezign/features/ai/bindings/ai_product_placement_bindings.dart';
+import 'package:zb_dezign/features/ai/views/ai_interior_design_view.dart';
+import 'package:zb_dezign/features/ai/views/ai_product_placement_view.dart';
 import 'package:zb_dezign/features/ai/views/ai_view.dart';
 import 'package:zb_dezign/features/category/bindings/category_bindings.dart';
 import 'package:zb_dezign/features/category/views/ai_category_view.dart';
@@ -245,9 +249,15 @@ final List<GetPage> appRoutes = [
     page: () => AiCategoryView(),
     binding: CategoryBindings(),
   ),
+  GetPage(name: AppRoutes.aiView, page: () => AiView(), binding: AiBindings()),
   GetPage(
-    name: AppRoutes.aiView,
-    page: () => AiView(),
-    binding: AiBindings(),
+    name: AppRoutes.aiProductPlacementView,
+    page: () => AiProductPlacementView(),
+    binding: AiProductPlacementBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.aiInteriorDesignView,
+    page: () => AiInteriorDesignView(),
+    binding: AiInteriorDesignBindings(),
   ),
 ];

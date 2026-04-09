@@ -81,7 +81,7 @@ class AiController extends GetxController {
             width: 300.w,
             child: CompositedTransformFollower(
               link: layerLink,
-              offset: Offset(-100, 50.h),
+              offset: Offset(-120, 50.h),
               showWhenUnlinked: false,
               child:AiDropdownCredit(),
             ),

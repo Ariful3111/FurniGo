@@ -137,5 +137,9 @@ class IconsPath {
   static const String material = 'assets/icons/material.png';
   static const String favoriteFill = 'assets/icons/favorite_fill.png';
   static const String aiDesign = 'assets/icons/ai_design.png';
+  static const String aiShop = 'assets/icons/ai_shop.png';
+  static const String aiFavorite = 'assets/icons/ai_favorite.png';
+  static const String aiCart = 'assets/icons/ai_cart.png';
+  static const String aiSearch = 'assets/icons/ai_search.png';
 
 }
