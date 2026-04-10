@@ -56,7 +56,7 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
                                                 .value
                                                 ?.data[index]
                                                 .id
-                                                .toInt() ??
+                                                ?.toInt() ??
                                             0,
                                         changeIndex: 1,
                                       );
@@ -72,7 +72,7 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
                                 isCart: false,
                                 productID:
                                     controller.products.value?.data[index].id
-                                        .toInt() ??
+                                        ?.toInt() ??
                                     0,
                                 image:
                                     controller
@@ -80,14 +80,14 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
                                             .value
                                             ?.data[index]
                                             .media
-                                            .isNotEmpty ==
+                                            ?.isNotEmpty ==
                                         true
                                     ? controller
                                               .products
                                               .value
                                               ?.data[index]
                                               .media
-                                              .first
+                                              ?.first
                                               .url ??
                                           ''
                                     : '',
@@ -103,7 +103,7 @@ class HomeOurProducts extends GetWidget<GetProductsByTypeController> {
                                         .name ??
                                     '',
                                 price:
-                                    '\$${controller.products.value?.data[index].price.toDouble().toPrecision(2) ?? '0.00'}',
+                                    '\$${(controller.products.value?.data[index].price?.toDouble() ?? 0.0).toStringAsFixed(2)}',
                               ),
                             ],
                           ),

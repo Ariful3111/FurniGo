@@ -80,7 +80,7 @@ class CreditChart extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: CustomPrimaryText(
-                      text: data[index].month,
+                      text: data[index].month ?? '',
                       fontSize: 8,
                       color: isSelected
                           ? AppColors.secondaryColor
@@ -102,7 +102,7 @@ class CreditChart extends StatelessWidget {
                   barsSpace: 0,
                   barRods: [
                     BarChartRodData(
-                      toY: entry.value.value.toDouble(),
+                      toY: (entry.value.value ?? 0).toDouble(),
                       width: 22,
                       color: entry.key == data.length - 1
                           ? const Color(0x1A000000)

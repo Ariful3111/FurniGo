@@ -24,7 +24,7 @@ class CheckoutOrderItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.r),
             border: Border.all(color: AppColors.fieldBorderColor),
           ),
-          child: Image.asset(item.image, fit: BoxFit.contain),
+          child: Image.asset(item.image ?? '', fit: BoxFit.contain),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -32,7 +32,7 @@ class CheckoutOrderItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomPrimaryText(
-                text: item.title,
+                text: item.title ?? '',
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
                 color: isDark ? AppColors.whiteColor : AppColors.darkGreyColor,
@@ -41,7 +41,7 @@ class CheckoutOrderItem extends StatelessWidget {
               Row(
                 children: [
                   CustomPrimaryText(
-                    text: item.category,
+                    text: item.category ?? '',
                     fontSize: 14.sp,
                     color: isDark
                         ? AppColors.primaryBorderColor
@@ -57,7 +57,7 @@ class CheckoutOrderItem extends StatelessWidget {
                   ),
                   SizedBox(width: 8.w),
                   CustomPrimaryText(
-                    text: 'Color: ${item.color}',
+                    text: 'Color: ${item.color ?? ''}',
                     fontSize: 14.sp,
                     color: isDark
                         ? AppColors.primaryBorderColor
@@ -69,7 +69,7 @@ class CheckoutOrderItem extends StatelessWidget {
           ),
         ),
         CustomPrimaryText(
-          text: item.price,
+          text: item.price ?? '',
           fontSize: 16.sp,
           color: isDark
               ? AppColors.primaryBorderColor

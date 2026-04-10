@@ -16,6 +16,8 @@ class RelatedProductsSection extends GetWidget<RelatedProductsController> {
     return Obx(() {
       return controller.isLoading.value
           ? ButtonLoading()
+          : controller.relatedProducts.value!.data.isEmpty
+          ? SizedBox()
           : Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(

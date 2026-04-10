@@ -37,15 +37,17 @@ class RelatedProductCard extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(
                       AppRoutes.productDetailsView,
-                      arguments: product.id.toInt(),
+                      arguments: product.id?.toInt() ?? 0,
                     );
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.r),
                     child: CachedNetworkImage(
-                      imageUrl: product.media
-                          .firstWhere((media) => media.type == 'image')
-                          .url,
+                      imageUrl:
+                          product.media
+                              ?.firstWhere((media) => media.type == 'image')
+                              .url ??
+                          '',
                       height: 170.h,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -77,7 +79,7 @@ class RelatedProductCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(48.r),
                           ),
                           child: CustomPrimaryText(
-                            text: product.isRentable
+                            text: (product.isRentable ?? false)
                                 ? "Rent Product"
                                 : "New Arrival",
                             fontSize: 10.sp,
@@ -105,14 +107,14 @@ class RelatedProductCard extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           CustomPrimaryText(
-            text: product.name,
+            text: product.name ?? '',
             fontSize: 14.sp,
             textOverflow: TextOverflow.ellipsis,
             color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
           ),
           SizedBox(height: 4.h),
           CustomPrimaryText(
-            text: product.finalPrice.toString(),
+            text: (product.finalPrice ?? 0).toString(),
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.whiteColor : AppColors.darkColor,

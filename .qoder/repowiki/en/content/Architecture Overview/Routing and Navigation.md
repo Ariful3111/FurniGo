@@ -16,16 +16,23 @@
 - [favorites_bindings.dart](file://lib/features/favorites/bindings/favorites_bindings.dart)
 - [shop_bindings.dart](file://lib/features/shop/bindings/shop_bindings.dart)
 - [checkout_bindings.dart](file://lib/features/cart/bindings/checkout_bindings.dart)
+- [ai_view.dart](file://lib/features/ai/views/ai_view.dart)
+- [ai_bindings.dart](file://lib/features/ai/bindings/ai_bindings.dart)
+- [ai_controller.dart](file://lib/features/ai/controller/ai_controller.dart)
+- [ai_category_view.dart](file://lib/features/category/views/ai_category_view.dart)
+- [dashboard_ai_design_view.dart](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart)
+- [dashboard_ai_design_details.dart](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Added comprehensive documentation for new favorites, shop, and checkout route systems
-- Updated route constants section to include new shopping and e-commerce features
-- Enhanced route definitions section with detailed coverage of the expanded routing system
-- Added new sections covering favorites management, shop browsing, and checkout processes
-- Updated architecture diagrams to reflect the expanded feature set
-- Enhanced navigation flow documentation with e-commerce integration patterns
+- Added comprehensive documentation for new AI category and AI view routes
+- Updated route constants section to include AI design routes: aiCategoryView, aiView, aiProductPlacementView, aiInteriorDesignView
+- Enhanced route definitions section with detailed coverage of AI feature integration
+- Added new sections covering AI category navigation, AI design dashboard, and AI service routes
+- Updated architecture diagrams to reflect the expanded AI feature set
+- Enhanced navigation flow documentation with AI integration patterns
+- Replaced old AI design routes with new dashboard AI design routes
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -34,17 +41,18 @@
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
 6. [Expanded Feature Routes](#expanded-feature-routes)
-7. [E-commerce Integration](#e-commerce-integration)
-8. [Dependency Analysis](#dependency-analysis)
-9. [Performance Considerations](#performance-considerations)
-10. [Troubleshooting Guide](#troubleshooting-guide)
-11. [Conclusion](#conclusion)
+7. [AI Integration](#ai-integration)
+8. [E-commerce Integration](#e-commerce-integration)
+9. [Dependency Analysis](#dependency-analysis)
+10. [Performance Considerations](#performance-considerations)
+11. [Troubleshooting Guide](#troubleshooting-guide)
+12. [Conclusion](#conclusion)
 
 ## Introduction
-This document explains the routing and navigation system of the ZB-DEZINE application. It focuses on route definition patterns, navigation logic, page transitions, and how the system integrates with the MVVM pattern and controller-based navigation. The documentation covers the AppRoutes class, route constants, navigation helpers, programmatic navigation, deep linking considerations, and navigation state management. The system now includes comprehensive e-commerce functionality with favorites management, shop browsing, and checkout processes.
+This document explains the routing and navigation system of the ZB-DEZINE application. It focuses on route definition patterns, navigation logic, page transitions, and how the system integrates with the MVVM pattern and controller-based navigation. The documentation covers the AppRoutes class, route constants, navigation helpers, programmatic navigation, deep linking considerations, and navigation state management. The system now includes comprehensive AI integration with category-based navigation, dashboard AI design management, and specialized AI service routes.
 
 ## Project Structure
-The routing system is implemented using the GetX package and organized under the core routes module. The application initializes routes via a central list of pages and route constants. Controllers orchestrate navigation after business logic completion. The expanded system now includes dedicated routes for favorites, shop browsing, and checkout processes.
+The routing system is implemented using the GetX package and organized under the core routes module. The application initializes routes via a central list of pages and route constants. Controllers orchestrate navigation after business logic completion. The expanded system now includes dedicated routes for AI category navigation, AI design dashboard, and specialized AI service implementations.
 
 ```mermaid
 graph TB
@@ -53,8 +61,8 @@ MAIN["main.dart<br/>Initialize DI, set initialRoute, configure GetMaterialApp"]
 DI["dependency_injection.dart<br/>Initialize storage and services"]
 end
 subgraph "Routing Layer"
-APPRT["app_routes.dart<br/>Route constants<br/>+35 new routes"]
-ROUTES["routes.dart<br/>GetPage list<br/>+35 new GetPage entries"]
+APPRT["app_routes.dart<br/>Route constants<br/>+4 new AI routes"]
+ROUTES["routes.dart<br/>GetPage list<br/>+4 new GetPage entries"]
 end
 subgraph "Feature Views"
 AUTHV["Auth Views<br/>e.g., SigninView, OnboardingView"]
@@ -62,6 +70,9 @@ HOMEV["Home Views<br/>e.g., BottomNavView, HomeView"]
 FAVORITES["Favorites Views<br/>FavoritesView, FavoritesController"]
 SHOP["Shop Views<br/>ShopView, ShopController"]
 CHECKOUT["Checkout Views<br/>CheckoutView, CheckoutController"]
+AICAT["AI Category Views<br/>AiCategoryView, CategoryController"]
+AIDASHBOARD["AI Dashboard Views<br/>DashboardAiDesignView, DashboardAiDesignController"]
+AISERVICES["AI Service Views<br/>AiView, AiProductPlacementView, AiInteriorDesignView"]
 end
 MAIN --> DI
 MAIN --> APPRT
@@ -71,43 +82,46 @@ ROUTES --> HOMEV
 ROUTES --> FAVORITES
 ROUTES --> SHOP
 ROUTES --> CHECKOUT
+ROUTES --> AICAT
+ROUTES --> AIDASHBOARD
+ROUTES --> AISERVICES
 ```
 
 **Diagram sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
 - [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-38](file://lib/core/routes/app_routes.dart#L1-L38)
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
+- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
 
 **Section sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
 - [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-38](file://lib/core/routes/app_routes.dart#L1-L38)
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
+- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
 
 ## Core Components
-- AppRoutes: Centralized route constants used for programmatic navigation and deep linking, now expanded with 35 new routes for e-commerce features.
+- AppRoutes: Centralized route constants used for programmatic navigation and deep linking, now expanded with 4 new AI routes for AI category navigation and AI service management.
 - routes.dart: Defines all named routes using GetPage entries, each mapping a route constant to a view and its associated binding(s).
 - main.dart: Initializes the app with GetMaterialApp, sets the initial route based on authentication state, and registers all pages.
 
 Key responsibilities:
-- Route constants: Provide a single source of truth for route names, including favorites, shop, and checkout routes.
+- Route constants: Provide a single source of truth for route names, including AI category, AI dashboard, and AI service routes.
 - GetPage list: Declares all pages, their constructors, and bindings for dependency injection.
 - Initial route selection: Chooses onboarding or bottom navigation based on token presence.
-- E-commerce integration: Supports seamless navigation between shopping, favorites, and checkout flows.
+- AI integration: Supports seamless navigation between AI category selection, AI design dashboard, and specialized AI services.
 
 **Section sources**
-- [app_routes.dart:1-38](file://lib/core/routes/app_routes.dart#L1-L38)
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
+- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
 - [main.dart:36-40](file://lib/main.dart#L36-L40)
 
 ## Architecture Overview
-The routing architecture follows MVVM with GetX and now includes comprehensive e-commerce capabilities:
+The routing architecture follows MVVM with GetX and now includes comprehensive AI capabilities:
 - Views are thin and delegate UI logic to controllers.
 - Controllers perform navigation after completing business operations.
 - Bindings connect controllers and models to the view lifecycle.
 - Route constants and GetPage definitions decouple navigation from view code.
-- E-commerce routes support favorites management, product browsing, and secure checkout processes.
+- AI routes support category-based navigation, dashboard management, and specialized AI service implementations.
 
 ```mermaid
 graph TB
@@ -116,15 +130,21 @@ CTRL_HOME["Home Controllers<br/>e.g., BottomNavController"]
 CTRL_FAVORITES["Favorites Controllers<br/>FavoritesController"]
 CTRL_SHOP["Shop Controllers<br/>ShopController"]
 CTRL_CHECKOUT["Checkout Controllers<br/>CheckoutController"]
-VIEWS["Feature Views<br/>e.g., BottomNavView, SigninView,<br/>FavoritesView, ShopView, CheckoutView"]
-BINDINGS["Feature Bindings<br/>e.g., AuthBindings, HomeBindings,<br/>FavoritesBindings, ShopBindings, CheckoutBindings"]
-ROUTES["routes.dart<br/>GetPage list<br/>+35 new routes"]
-CONST["app_routes.dart<br/>Route constants<br/>+35 new routes"]
+CTRL_AICAT["AI Category Controllers<br/>CategoryController"]
+CTRL_AIDASH["AI Dashboard Controllers<br/>DashboardAiDesignController"]
+CTRL_AI["AI Service Controllers<br/>AiController"]
+VIEWS["Feature Views<br/>e.g., BottomNavView, SigninView,<br/>FavoritesView, ShopView, CheckoutView,<br/>AiCategoryView, DashboardAiDesignView, AiView"]
+BINDINGS["Feature Bindings<br/>e.g., AuthBindings, HomeBindings,<br/>FavoritesBindings, ShopBindings, CheckoutBindings,<br/>AiBindings, CategoryBindings, DashboardAiDesignBindings"]
+ROUTES["routes.dart<br/>GetPage list<br/>+4 new AI routes"]
+CONST["app_routes.dart<br/>Route constants<br/>+4 new AI routes"]
 CTRL_AUTH --> CONST
 CTRL_HOME --> CONST
 CTRL_FAVORITES --> CONST
 CTRL_SHOP --> CONST
 CTRL_CHECKOUT --> CONST
+CTRL_AICAT --> CONST
+CTRL_AIDASH --> CONST
+CTRL_AI --> CONST
 CONST --> ROUTES
 ROUTES --> VIEWS
 ROUTES --> BINDINGS
@@ -133,6 +153,9 @@ VIEWS --> CTRL_AUTH
 VIEWS --> CTRL_FAVORITES
 VIEWS --> CTRL_SHOP
 VIEWS --> CTRL_CHECKOUT
+VIEWS --> CTRL_AICAT
+VIEWS --> CTRL_AIDASH
+VIEWS --> CTRL_AI
 ```
 
 **Diagram sources**
@@ -142,57 +165,61 @@ VIEWS --> CTRL_CHECKOUT
 - [favorites_bindings.dart:4-9](file://lib/features/favorites/bindings/favorites_bindings.dart#L4-L9)
 - [shop_bindings.dart:4-9](file://lib/features/shop/bindings/shop_bindings.dart#L4-L9)
 - [checkout_bindings.dart:4-9](file://lib/features/cart/bindings/checkout_bindings.dart#L4-L9)
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
-- [app_routes.dart:1-38](file://lib/core/routes/app_routes.dart#L1-L38)
+- [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
+- [ai_controller.dart:7-94](file://lib/features/ai/controller/ai_controller.dart#L7-L94)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
 
 ## Detailed Component Analysis
 
 ### AppRoutes and Route Constants
-- Purpose: Define all route names as static constants for type-safe navigation, now including 35 new routes for e-commerce features.
+- Purpose: Define all route names as static constants for type-safe navigation, now including 4 new AI routes for AI category navigation and AI service management.
 - Usage: Controllers call Get.toNamed(AppRoutes.<name>) to navigate programmatically.
 - Benefits: Centralization reduces typos and simplifies refactoring.
-- New e-commerce routes: favoritesView, shopView, checkoutView, productDetailsView, cartView.
+- New AI routes: aiCategoryView, aiView, aiProductPlacementView, aiInteriorDesignView.
 
 Examples of usage:
 - Programmatic navigation after successful login.
 - Navigating from onboarding to authentication modes.
-- E-commerce flow: shop → product details → cart → checkout → payment.
+- AI flow: aiCategoryView → aiView → dashboardAiDesignView → dashboardAiDesignDetailsView.
 
 **Section sources**
-- [app_routes.dart:1-38](file://lib/core/routes/app_routes.dart#L1-L38)
+- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
 - [signin_controller.dart:32](file://lib/features/auth/controller/signin_controller.dart#L32)
 
 ### Navigation Flow and Page Transitions
 - Programmatic navigation: Controllers call Get.toNamed(routeName) to switch screens.
 - Bottom navigation: BottomNavView renders the selected page from BottomNavController.
 - Initial route: Set based on token availability during app startup.
-- E-commerce navigation: Seamless flow between shop browsing, favorites management, and checkout processes.
+- AI navigation: Seamless flow between AI category selection, AI service implementation, and dashboard management.
 
 ```mermaid
 sequenceDiagram
 participant User as "User"
-participant View as "ShopView"
-participant Ctrl as "ShopController"
-participant Favorites as "FavoritesController"
-participant Checkout as "CheckoutController"
+participant AICategory as "AiCategoryView"
+participant AICtrl as "CategoryController"
+participant AIView as "AiView"
+participant AIDashboard as "DashboardAiDesignView"
+participant AIDetails as "DashboardAiDesignDetails"
 participant Router as "GetMaterialApp(routes.dart)"
-User->>View : Browse products
-View->>Ctrl : Navigate to product details
-Ctrl->>Router : Get.toNamed(AppRoutes.productDetailsView)
-Router-->>User : Show product details
-User->>Favorites : Add to favorites
-Favorites->>Router : Get.toNamed(AppRoutes.favoritesView)
-Router-->>User : Show favorites list
-User->>Checkout : Proceed to checkout
-Checkout->>Router : Get.toNamed(AppRoutes.checkoutView)
-Router-->>User : Show checkout form
+User->>AICategory : Browse AI categories
+AICategory->>AICtrl : Navigate to AI service
+AICtrl->>Router : Get.toNamed(AppRoutes.aiView)
+Router-->>User : Show AI service interface
+User->>AIView : Generate AI design
+AIView->>Router : Get.toNamed(AppRoutes.dashboardAiDesignView)
+Router-->>User : Show AI designs dashboard
+User->>AIDashboard : View design details
+AIDashboard->>Router : Get.toNamed(AppRoutes.dashboardAiDesignDetailsView)
+Router-->>User : Show design details with arguments
 ```
 
 **Diagram sources**
-- [shop_view.dart:11-45](file://lib/features/shop/views/shop_view.dart#L11-L45)
-- [favorites_view.dart:11-45](file://lib/features/favorites/views/favorites_view.dart#L11-L45)
-- [checkout_view.dart:17-67](file://lib/features/cart/views/checkout_view.dart#L17-L67)
-- [routes.dart:224-238](file://lib/core/routes/routes.dart#L224-L238)
+- [ai_category_view.dart:37-40](file://lib/features/category/views/ai_category_view.dart#L37-L40)
+- [ai_view.dart:1-26](file://lib/features/ai/views/ai_view.dart#L1-26)
+- [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-L55)
+- [dashboard_ai_design_details.dart:16-78](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L16-L78)
+- [routes.dart:243-252](file://lib/core/routes/routes.dart#L243-L252)
 
 **Section sources**
 - [signin_controller.dart:17-36](file://lib/features/auth/controller/signin_controller.dart#L17-L36)
@@ -205,7 +232,7 @@ Router-->>User : Show checkout form
   - page: Constructor for the view widget.
   - binding/bindings: One or more bindings for dependency injection and controller lifecycle.
 - Bindings connect controllers and models to the view lifecycle.
-- New e-commerce bindings: FavoritesBindings, ShopBindings, CheckoutBindings.
+- New AI bindings: AiBindings, CategoryBindings, DashboardAiDesignBindings.
 
 ```mermaid
 classDiagram
@@ -223,8 +250,12 @@ class AppRoutes {
 +string favoritesView
 +string shopView
 +string checkoutView
-+string productDetailsView
-+string cartView
++string aiCategoryView
++string aiView
++string aiProductPlacementView
++string aiInteriorDesignView
++string dashboardAiDesignView
++string dashboardAiDesignDetailsView
 +...
 }
 class AuthBindings
@@ -232,49 +263,52 @@ class HomeBindings
 class FavoritesBindings
 class ShopBindings
 class CheckoutBindings
+class AiBindings
+class CategoryBindings
+class DashboardAiDesignBindings
 GetPage --> AppRoutes : "uses name"
 GetPage --> AuthBindings : "optional"
 GetPage --> HomeBindings : "optional"
 GetPage --> FavoritesBindings : "optional"
 GetPage --> ShopBindings : "optional"
 GetPage --> CheckoutBindings : "optional"
+GetPage --> AiBindings : "optional"
+GetPage --> CategoryBindings : "optional"
+GetPage --> DashboardAiDesignBindings : "optional"
 ```
 
 **Diagram sources**
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
-- [app_routes.dart:1-38](file://lib/core/routes/app_routes.dart#L1-L38)
-- [favorites_bindings.dart:4-9](file://lib/features/favorites/bindings/favorites_bindings.dart#L4-L9)
-- [shop_bindings.dart:4-9](file://lib/features/shop/bindings/shop_bindings.dart#L4-L9)
-- [checkout_bindings.dart:4-9](file://lib/features/cart/bindings/checkout_bindings.dart#L4-L9)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
+- [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
+- [routes.dart:243-252](file://lib/core/routes/routes.dart#L243-L252)
 
 **Section sources**
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
 
 ### Navigation State Management
 - Bottom navigation state: Managed by BottomNavController, which holds the current selected index and page stack.
 - UI updates: BottomNavView observes controller state and rebuilds the visible page.
 - Local gestures: OnboardingController demonstrates gesture-driven navigation within a view.
-- E-commerce state: Controllers manage shopping cart, favorites list, and checkout progress.
+- AI state: Controllers manage AI category selection, AI service execution, and AI design dashboard navigation.
 
 ```mermaid
 flowchart TD
-Start(["User navigates to shop"]) --> BrowseProducts["ShopView displays products"]
-BrowseProducts --> SelectProduct["User selects product"]
-SelectProduct --> ViewDetails["ProductDetailsView shows item info"]
-ViewDetails --> AddToFavorites["User adds to favorites"]
-AddToFavorites --> FavoritesView["FavoritesView displays saved items"]
-FavoritesView --> RemoveFromFavorites["User removes item"]
-RemoveFromFavorites --> FavoritesView
-FavoritesView --> ProceedToCheckout["User proceeds to checkout"]
-ProceedToCheckout --> CheckoutView["CheckoutView shows order summary"]
-CheckoutView --> CompletePurchase["User completes purchase"]
-CompletePurchase --> End(["Transaction complete"])
+Start(["User navigates to AI category"]) --> BrowseCategories["AiCategoryView displays AI options"]
+BrowseCategories --> SelectCategory["User selects AI service"]
+SelectCategory --> ViewAIInterface["AiView shows AI service interface"]
+ViewAIInterface --> GenerateDesign["User generates AI design"]
+GenerateDesign --> ViewDashboard["DashboardAiDesignView shows AI designs"]
+ViewDashboard --> SelectDesign["User selects specific design"]
+SelectDesign --> ViewDesignDetails["DashboardAiDesignDetails shows design with arguments"]
+ViewDesignDetails --> End(["AI workflow complete"])
 ```
 
 **Diagram sources**
-- [shop_view.dart:11-45](file://lib/features/shop/views/shop_view.dart#L11-L45)
-- [favorites_view.dart:11-45](file://lib/features/favorites/views/favorites_view.dart#L11-L45)
-- [checkout_view.dart:17-67](file://lib/features/cart/views/checkout_view.dart#L17-L67)
+- [ai_category_view.dart:33-96](file://lib/features/category/views/ai_category_view.dart#L33-L96)
+- [ai_view.dart:7-25](file://lib/features/ai/views/ai_view.dart#L7-25)
+- [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-55)
+- [dashboard_ai_design_details.dart:21-77](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L21-77)
 
 **Section sources**
 - [bottom_nav_view.dart:17-21](file://lib/features/home/views/bottom_nav_view.dart#L17-L21)
@@ -285,19 +319,20 @@ CompletePurchase --> End(["Transaction complete"])
 - Programmatic navigation: Controllers use Get.toNamed(AppRoutes.<name>) to navigate without parameters.
 - Parameter passing: Use Get.toNamed(routeName, arguments: payload) to pass data between screens.
 - Deep linking: Configure initialRoute and handle external URLs by setting initialRoute to a dynamic route and resolving parameters in the target view.
-- E-commerce parameters: Product IDs, quantities, and user preferences can be passed between shop, favorites, and checkout views.
+- AI parameters: Category titles, sub-titles, and AI design model objects can be passed between AI category, AI service, and dashboard views.
 
-Note: The current implementation primarily uses named navigation without explicit argument handling. To enable deep linking, define routes that accept parameters and initialize state accordingly.
+Note: The current implementation uses argument passing for AI design details view to receive AiDesignModel objects. To enable deep linking for AI features, define routes that accept parameters and initialize state accordingly.
 
 **Section sources**
 - [signin_controller.dart:32](file://lib/features/auth/controller/signin_controller.dart#L32)
 - [main.dart:37-39](file://lib/main.dart#L37-L39)
+- [dashboard_ai_design_details.dart:21](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L21)
 
 ### Route Guards and Authentication Flow
 - Initial route guard: The app chooses onboarding or bottomNav based on token presence.
 - Post-login guard: After storing credentials, controllers redirect to bottomNav.
 - Future enhancements: Add guards to protect protected routes by checking token validity before rendering.
-- E-commerce access control: Ensure users can only access favorites and checkout after authentication.
+- AI access control: Ensure users can only access AI features after authentication and proper credit balance validation.
 
 ```mermaid
 flowchart TD
@@ -305,11 +340,11 @@ Start(["App starts"]) --> CheckToken["Read token from storage"]
 CheckToken --> HasToken{"Token present?"}
 HasToken --> |Yes| SetBottomNav["initialRoute = bottomNav"]
 HasToken --> |No| SetOnboarding["initialRoute = onboardingView"]
-SetBottomNav --> CheckAccess["Check e-commerce access"]
-CheckAccess --> AccessGranted["Allow favorites/shop/checkout"]
-CheckAccess --> AccessDenied["Restrict e-commerce features"]
-AccessGranted --> End(["Render full app"])
-AccessDenied --> End
+SetBottomNav --> CheckAI["Check AI feature access"]
+CheckAI --> AIGranted["Allow AI category/dashboard/services"]
+CheckAI --> AIDenied["Restrict AI features"]
+AIGranted --> End(["Render full app"])
+AIDenied --> End
 SetOnboarding --> End
 ```
 
@@ -325,66 +360,159 @@ SetOnboarding --> End
 
 ## Expanded Feature Routes
 
-### Favorites Management System
-The favorites system provides users with the ability to save and manage their favorite products:
+### AI Category Navigation System
+The AI category system provides users with structured access to different AI services:
 
-- **Route**: favoritesView (`/favoritesView`)
-- **Controller**: FavoritesController manages favorite items and user interactions
-- **View**: FavoritesView displays saved products with remove functionality
-- **Binding**: FavoritesBindings handles lazy initialization of the favorites controller
-
-Key features:
-- Add/remove products from favorites
-- Browse favorite items in a dedicated view
-- Sync favorites with user account across devices
-- Integration with product details view for quick favorite toggling
-
-**Section sources**
-- [app_routes.dart:36](file://lib/core/routes/app_routes.dart#L36)
-- [routes.dart:234-238](file://lib/core/routes/routes.dart#L234-L238)
-- [favorites_bindings.dart:4-9](file://lib/features/favorites/bindings/favorites_bindings.dart#L4-L9)
-- [favorites_view.dart:11-45](file://lib/features/favorites/views/favorites_view.dart#L11-L45)
-
-### Shop Browsing System
-The shop system enables users to browse, search, and discover products:
-
-- **Route**: shopView (`/shopView`)
-- **Controller**: ShopController manages product listings, filters, and search functionality
-- **View**: ShopView presents products with category sorting and filtering options
-- **Binding**: ShopBindings handles lazy initialization of the shop controller
+- **Route**: aiCategoryView (`/aiCategoryView`)
+- **Controller**: CategoryController manages AI service options and user selections
+- **View**: AiCategoryView displays AI service categories with interactive cards
+- **Binding**: CategoryBindings handles lazy initialization of the category controller
 
 Key features:
-- Category-based product filtering
-- Price range and material filters
-- Search functionality with real-time results
-- Product discovery through various filter combinations
+- Category-based AI service filtering
+- Interactive card-based navigation
+- Dynamic AI option generation
+- Argument passing for service details
 
 **Section sources**
-- [app_routes.dart:35](file://lib/core/routes/app_routes.dart#L35)
-- [routes.dart:229-233](file://lib/core/routes/routes.dart#L229-L233)
-- [shop_bindings.dart:4-9](file://lib/features/shop/bindings/shop_bindings.dart#L4-L9)
-- [shop_view.dart:11-45](file://lib/features/shop/views/shop_view.dart#L11-L45)
+- [app_routes.dart:37](file://lib/core/routes/app_routes.dart#L37)
+- [routes.dart:243-247](file://lib/core/routes/routes.dart#L243-L247)
+- [ai_category_view.dart:13-104](file://lib/features/category/views/ai_category_view.dart#L13-L104)
 
-### Checkout Process System
-The checkout system provides a comprehensive e-commerce purchasing flow:
+### AI Service Implementation System
+The AI service system provides specialized AI functionality for interior design and product placement:
 
-- **Route**: checkoutView (`/checkoutView`)
-- **Controller**: CheckoutController manages order processing, payment, and shipping information
-- **View**: CheckoutView presents delivery address, payment methods, and order summary
-- **Binding**: CheckoutBindings handles lazy initialization of the checkout controller
+- **Route**: aiView (`/aiView`)
+- **Controller**: AiController manages AI service execution and credit balance
+- **View**: AiView provides the main AI service interface with header and image components
+- **Binding**: AiBindings handles lazy initialization of the AI controller
 
 Key features:
-- Multi-step checkout process
-- Delivery address management
-- Payment method selection
-- Order summary and calculation
-- Shipping membership integration
+- Credit balance integration
+- Dropdown credit selection
+- Overlay-based UI components
+- AI service execution management
 
 **Section sources**
-- [app_routes.dart:34](file://lib/core/routes/app_routes.dart#L34)
-- [routes.dart:224-228](file://lib/core/routes/routes.dart#L224-L228)
-- [checkout_bindings.dart:4-9](file://lib/features/cart/bindings/checkout_bindings.dart#L4-L9)
-- [checkout_view.dart:17-67](file://lib/features/cart/views/checkout_view.dart#L17-L67)
+- [app_routes.dart:38](file://lib/core/routes/app_routes.dart#L38)
+- [routes.dart:248-252](file://lib/core/routes/routes.dart#L248-L252)
+- [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
+- [ai_controller.dart:7-94](file://lib/features/ai/controller/ai_controller.dart#L7-L94)
+
+### AI Product Placement System
+The AI product placement system specializes in virtual product placement within interior spaces:
+
+- **Route**: aiProductPlacementView (`/aiProductPlacementView`)
+- **Controller**: AiProductPlacementController manages product placement algorithms
+- **View**: AiProductPlacementView provides the product placement interface
+- **Binding**: AiProductPlacementBindings handles controller initialization
+
+Key features:
+- Virtual product placement visualization
+- Room layout integration
+- Product positioning algorithms
+- Real-time preview capabilities
+
+**Section sources**
+- [app_routes.dart:39](file://lib/core/routes/app_routes.dart#L39)
+- [routes.dart:248-252](file://lib/core/routes/routes.dart#L248-L252)
+
+### AI Interior Design System
+The AI interior design system provides comprehensive room design and decoration services:
+
+- **Route**: aiInteriorDesignView (`/aiInteriorDesignView`)
+- **Controller**: AiInteriorDesignController manages interior design algorithms
+- **View**: AiInteriorDesignView provides the interior design interface
+- **Binding**: AiInteriorDesignBindings handles controller initialization
+
+Key features:
+- Room design algorithms
+- Color scheme recommendations
+- Furniture arrangement suggestions
+- Style-based design generation
+
+**Section sources**
+- [app_routes.dart:40](file://lib/core/routes/app_routes.dart#L40)
+- [routes.dart:248-252](file://lib/core/routes/routes.dart#L248-L252)
+
+### Dashboard AI Design Management System
+The dashboard AI design system provides centralized management of generated AI designs:
+
+- **Route**: dashboardAiDesignView (`/dashboardAiDesignView`)
+- **Controller**: DashboardAiDesignController manages AI design listing and pagination
+- **View**: DashboardAiDesignView displays AI designs in a table format with pagination
+- **Binding**: DashboardAiDesignBindings handles controller initialization
+
+Key features:
+- AI design listing and management
+- Pagination support
+- Design table visualization
+- Drawer integration for navigation
+
+**Section sources**
+- [app_routes.dart:24](file://lib/core/routes/app_routes.dart#L24)
+- [routes.dart:178-187](file://lib/core/routes/routes.dart#L178-L187)
+- [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-L55)
+
+### AI Design Details Management System
+The AI design details system provides comprehensive viewing and management of individual AI designs:
+
+- **Route**: dashboardAiDesignDetailsView (`/dashboardAiDesignDetailsView`)
+- **Controller**: DashboardAiDesignController manages individual design details
+- **View**: DashboardAiDesignDetails displays design information with conditional rendering
+- **Binding**: DashboardAiDesignBindings handles controller initialization
+
+Key features:
+- Individual design detail viewing
+- Conditional UI rendering based on design type
+- Back navigation support
+- Design image visualization
+
+**Section sources**
+- [app_routes.dart:25](file://lib/core/routes/app_routes.dart#L25)
+- [routes.dart:188-197](file://lib/core/routes/routes.dart#L188-L197)
+- [dashboard_ai_design_details.dart:16-78](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L16-L78)
+
+## AI Integration
+
+### Comprehensive AI Workflow
+The expanded routing system creates a complete AI service experience:
+
+```mermaid
+flowchart LR
+AICategory["AiCategoryView<br/>Select AI Service"] --> AIView["AiView<br/>AI Service Interface"]
+AIView --> Dashboard["DashboardAiDesignView<br/>AI Designs Dashboard"]
+Dashboard --> Details["DashboardAiDesignDetails<br/>Design Details with Arguments"]
+AICategory --> ProductPlacement["AiProductPlacementView<br/>Product Placement Service"]
+AICategory --> InteriorDesign["AiInteriorDesignView<br/>Interior Design Service"]
+AIView --> Credit["Credit Balance Integration"]
+Dashboard --> Pagination["Pagination & Filtering"]
+Details --> ConditionalUI["Conditional UI Rendering"]
+```
+
+**Diagram sources**
+- [routes.dart:243-252](file://lib/core/routes/routes.dart#L243-L252)
+- [app_routes.dart:24-40](file://lib/core/routes/app_routes.dart#L24-L40)
+
+### Data Flow Between AI Features
+The routing system facilitates smooth data transfer between AI features:
+
+- **Category Information**: Passed as arguments from AiCategoryView to AiView
+- **AI Design Models**: Shared between DashboardAiDesignView and DashboardAiDesignDetails
+- **Credit Balance**: Integrated across AI service views and dashboard
+- **Service Selection**: Managed through CategoryController state
+
+### Navigation Patterns
+Common navigation patterns in the AI workflow:
+- Back navigation using standard Flutter Navigator.pop()
+- Deep linking to specific AI services via category selection
+- Direct access to dashboard from AI service completion
+- Conditional navigation based on AI design type
+
+**Section sources**
+- [ai_category_view.dart:37-40](file://lib/features/category/views/ai_category_view.dart#L37-L40)
+- [dashboard_ai_design_view.dart:46-49](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L46-L49)
+- [dashboard_ai_design_details.dart:58-61](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L58-L61)
 
 ## E-commerce Integration
 
@@ -432,7 +560,7 @@ Common navigation patterns in the e-commerce flow:
 - Coupling: Controllers depend on AppRoutes for navigation and on repositories/services for business logic.
 - Cohesion: Each feature's bindings encapsulate its controllers and models.
 - External dependencies: GetX provides routing, state, and dependency injection.
-- E-commerce dependencies: New features integrate with existing auth, cart, and product systems.
+- AI dependencies: New AI features integrate with existing auth, dashboard, and credit balance systems.
 
 ```mermaid
 graph LR
@@ -442,12 +570,18 @@ BOTTOMNAV["BottomNavView"] --> CTRL["BottomNavController"]
 FAVORITES["FavoritesController"] --> FAVBIND["FavoritesBindings"]
 SHOP["ShopController"] --> SHOBBIND["ShopBindings"]
 CHECKOUT["CheckoutController"] --> CHECKBIND["CheckoutBindings"]
+AICATEGORY["CategoryController"] --> AICATBIND["CategoryBindings"]
+AIDASHBOARD["DashboardAiDesignController"] --> AIDASHBIND["DashboardAiDesignBindings"]
+AI["AiController"] --> AIBIND["AiBindings"]
 MAIN["MyApp(main.dart)"] --> APPRT
 MAIN --> ROUTES["routes.dart"]
 ROUTES --> VIEWS["Feature Views"]
 ROUTES --> FAVORITES
 ROUTES --> SHOP
 ROUTES --> CHECKOUT
+ROUTES --> AICATEGORY
+ROUTES --> AIDASHBOARD
+ROUTES --> AI
 ```
 
 **Diagram sources**
@@ -456,22 +590,24 @@ ROUTES --> CHECKOUT
 - [favorites_bindings.dart:4-9](file://lib/features/favorites/bindings/favorites_bindings.dart#L4-L9)
 - [shop_bindings.dart:4-9](file://lib/features/shop/bindings/shop_bindings.dart#L4-L9)
 - [checkout_bindings.dart:4-9](file://lib/features/cart/bindings/checkout_bindings.dart#L4-L9)
+- [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
 - [main.dart:30-41](file://lib/main.dart#L30-L41)
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
 
 **Section sources**
 - [signin_controller.dart:9-52](file://lib/features/auth/controller/signin_controller.dart#L9-L52)
 - [bottom_nav_view.dart:11-256](file://lib/features/home/views/bottom_nav_view.dart#L11-L256)
 - [main.dart:30-41](file://lib/main.dart#L30-L41)
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
 
 ## Performance Considerations
 - Prefer named navigation with AppRoutes to avoid string duplication and reduce runtime overhead.
 - Use bindings to lazily initialize controllers and models only when a route is accessed.
 - Minimize rebuilds by observing only necessary state in views (e.g., Obx around minimal UI regions).
 - Avoid heavy work in constructors; defer to onInit or first use.
-- E-commerce optimization: Implement pagination for shop browsing and lazy loading for product lists.
+- AI optimization: Implement lazy loading for AI service components and optimize credit balance queries.
 - Favorites caching: Store frequently accessed favorites locally to improve performance.
+- Dashboard pagination: Use pagination for AI design lists to prevent memory issues.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -479,14 +615,16 @@ Common issues and resolutions:
 - Navigation not triggering: Verify controllers call Get.toNamed with the correct AppRoutes constant.
 - State not updating: Confirm controllers update observable state and views observe the state via GetView/Obx.
 - Initial route incorrect: Check token retrieval and initialRoute assignment in main.dart.
-- E-commerce routes failing: Verify new GetPage entries include proper bindings and view imports.
+- AI routes failing: Verify new GetPage entries include proper bindings and view imports.
+- AI parameter passing: Ensure arguments are properly typed when passing AiDesignModel objects.
+- Dashboard navigation: Verify dashboard routes are properly configured with appropriate bindings.
 - Favorites not persisting: Ensure favorites controller has proper persistence setup.
 - Checkout errors: Check that checkout controller validates required fields before navigation.
 
 **Section sources**
-- [app_routes.dart:1-38](file://lib/core/routes/app_routes.dart#L1-L38)
-- [routes.dart:63-239](file://lib/core/routes/routes.dart#L63-L239)
+- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
+- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
 - [main.dart:36-40](file://lib/main.dart#L36-L40)
 
 ## Conclusion
-The ZB-DEZINE routing and navigation system leverages GetX to provide a clean separation of concerns with comprehensive e-commerce capabilities. AppRoutes centralizes route names, routes.dart defines pages and bindings, and controllers orchestrate navigation after business logic. The expanded system now includes favorites management, shop browsing, and checkout processes, creating a seamless shopping experience. The system supports programmatic navigation, bottom navigation state management, and initial route selection based on authentication state. The addition of e-commerce routes enhances user engagement and provides a complete shopping journey from browsing to purchase completion. Extending the system with parameter passing, deep linking, and route guards will further enhance robustness and user experience.
+The ZB-DEZINE routing and navigation system leverages GetX to provide a clean separation of concerns with comprehensive AI capabilities. AppRoutes centralizes route names, routes.dart defines pages and bindings, and controllers orchestrate navigation after business logic. The expanded system now includes AI category navigation, AI service implementations, dashboard AI design management, and comprehensive e-commerce features, creating a seamless integrated experience. The system supports programmatic navigation, bottom navigation state management, AI workflow navigation, and initial route selection based on authentication state. The addition of AI routes enhances user engagement by providing specialized AI services alongside traditional e-commerce functionality. Extending the system with parameter passing, deep linking, and route guards will further enhance robustness and user experience across both AI and e-commerce features.

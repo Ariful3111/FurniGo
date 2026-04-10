@@ -11,7 +11,10 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class DashboardAiDesignTableExpanded extends StatelessWidget {
   final AiDesignModel aiDesignModel;
-  const DashboardAiDesignTableExpanded({super.key, required this.aiDesignModel});
+  const DashboardAiDesignTableExpanded({
+    super.key,
+    required this.aiDesignModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +22,11 @@ class DashboardAiDesignTableExpanded extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildDetailRow('Type', aiDesignModel.type, isDark: isDark),
+        buildDetailRow('Type', aiDesignModel.type ?? '', isDark: isDark),
         SizedBox(height: 8.h),
         buildDetailRow(
           'Design Generation date',
-          aiDesignModel.generateDate,
+          aiDesignModel.generateDate ?? '',
           isDark: isDark,
         ),
         SizedBox(height: 8.h),

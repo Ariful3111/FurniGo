@@ -31,7 +31,7 @@ class FavoritesItems extends StatelessWidget {
             CustomProductDesign(
               onFavorite: () async {
                 await Get.find<ToggleFavouriteController>().toggleFavourite(
-                  productID: favorites[index].product.id.toInt(),
+                  productID: favorites[index].product?.id?.toInt() ?? 0,
                   changeIndex: 2,
                 );
               },
@@ -42,9 +42,9 @@ class FavoritesItems extends StatelessWidget {
             SizedBox(height: 14.h),
             CustomProductText(
               color: AppColors.productColorList,
-              title: favorites[index].product.name,
+              title: favorites[index].product?.name ?? '',
               price:
-                  '\$${favorites[index].product.finalPrice.toDouble().toPrecision(2)}',
+                  '\$${(favorites[index].product?.finalPrice ?? 0).toDouble().toStringAsFixed(2)}',
             ),
           ],
         );

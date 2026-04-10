@@ -32,7 +32,7 @@ class HomeOurProductFilter extends GetWidget<GetProductTypesController> {
                       onTap: () async {
                         controller.selectedProductType.value =
                             controller.productTypes.value?.data[index].id
-                                .toInt() ??
+                                ?.toInt() ??
                             0;
 
                         await Get.find<GetProductsByTypeController>()

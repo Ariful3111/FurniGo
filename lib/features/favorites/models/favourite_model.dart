@@ -77,30 +77,36 @@ class FavouriteModel {
 }
 
 class FavoriteItem {
-  final num id;
-  final num userId;
-  final num productId;
-  final Product product;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final num? id;
+  final num? userId;
+  final num? productId;
+  final Product? product;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   FavoriteItem({
-    required this.id,
-    required this.userId,
-    required this.productId,
-    required this.product,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.userId,
+    this.productId,
+    this.product,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory FavoriteItem.fromJson(Map<String, dynamic> json) {
     return FavoriteItem(
-      id: json['id'] as num,
-      userId: json['user_id'] as num,
-      productId: json['product_id'] as num,
-      product: Product.fromJson(json['product'] as Map<String, dynamic>),
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
+      id: json['id'] as num?,
+      userId: json['user_id'] as num?,
+      productId: json['product_id'] as num?,
+      product: json['product'] != null
+          ? Product.fromJson(json['product'] as Map<String, dynamic>)
+          : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'] as String)
+          : null,
     );
   }
 
@@ -109,9 +115,9 @@ class FavoriteItem {
       'id': id,
       'user_id': userId,
       'product_id': productId,
-      'product': product.toJson(),
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
+      'product': product?.toJson(),
+      'created_at': createdAt?.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
     };
   }
 }

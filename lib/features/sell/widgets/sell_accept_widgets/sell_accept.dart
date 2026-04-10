@@ -25,7 +25,7 @@ class SellAccept extends StatelessWidget {
               status(
                 title1: 'Delivery method',
                 title2: 'Home Pickup',
-                status: sellModel.shipment,
+                status: sellModel.shipment ?? '',
                 isDark: isDark,
               ),
               SizedBox(height: 12.h),
@@ -57,8 +57,8 @@ class SellAccept extends StatelessWidget {
             children: [
               status(
                 title1: 'Offer Amount',
-                title2: sellModel.offer,
-                status: sellModel.payment,
+                title2: sellModel.offer ?? '',
+                status: sellModel.payment ?? '',
                 isDark: isDark,
               ),
               SizedBox(height: 12.h),

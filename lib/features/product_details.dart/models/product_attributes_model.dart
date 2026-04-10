@@ -24,16 +24,16 @@ class ProductAttributesModel {
 }
 
 class ProductAttribute {
-  final num productAttributeId;
-  final num attributeId;
-  final String name;
-  final List<AttributeOption> options;
+  final num? productAttributeId;
+  final num? attributeId;
+  final String? name;
+  final List<AttributeOption>? options;
 
   ProductAttribute({
-    required this.productAttributeId,
-    required this.attributeId,
-    required this.name,
-    required this.options,
+    this.productAttributeId,
+    this.attributeId,
+    this.name,
+    this.options,
   });
 
   factory ProductAttribute.fromJson(Map<String, dynamic> json) =>
@@ -41,38 +41,42 @@ class ProductAttribute {
         productAttributeId: json["product_attribute_id"],
         attributeId: json["attribute_id"],
         name: json["name"],
-        options: List<AttributeOption>.from(
-          json["options"].map((x) => AttributeOption.fromJson(x)),
-        ),
+        options: json["options"] != null
+            ? List<AttributeOption>.from(
+                json["options"].map((x) => AttributeOption.fromJson(x)),
+              )
+            : [],
       );
 
   Map<String, dynamic> toJson() => {
     "product_attribute_id": productAttributeId,
     "attribute_id": attributeId,
     "name": name,
-    "options": List<dynamic>.from(options.map((x) => x.toJson())),
+    "options": options != null
+        ? List<dynamic>.from(options!.map((x) => x.toJson()))
+        : [],
   };
 }
 
 class AttributeOption {
-  final num productAttributeOptionId;
-  final num optionId;
-  final String name;
+  final num? productAttributeOptionId;
+  final num? optionId;
+  final String? name;
   final dynamic image;
   final String? productImage;
-  final num price;
-  final num stock;
-  final bool isDefault;
+  final num? price;
+  final num? stock;
+  final bool? isDefault;
 
   AttributeOption({
-    required this.productAttributeOptionId,
-    required this.optionId,
-    required this.name,
+    this.productAttributeOptionId,
+    this.optionId,
+    this.name,
     this.image,
     this.productImage,
-    required this.price,
-    required this.stock,
-    required this.isDefault,
+    this.price,
+    this.stock,
+    this.isDefault,
   });
 
   factory AttributeOption.fromJson(Map<String, dynamic> json) =>

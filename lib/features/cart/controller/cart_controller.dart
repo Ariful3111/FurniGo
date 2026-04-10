@@ -1,70 +1,50 @@
 import 'package:get/get.dart';
-import 'package:zb_dezign/core/constant/images_path.dart';
-import 'package:zb_dezign/features/cart/models/cart_item_model.dart';
+import 'package:zb_dezign/features/cart/models/cart_model.dart';
+import 'package:zb_dezign/features/cart/repositories/get_cart_repo.dart';
+import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
 class CartController extends GetxController {
-  RxList<CartItemModel> cartList = <CartItemModel>[].obs;
+  final GetCartRepository getCartRepository;
+  CartController({required this.getCartRepository});
+  RxBool isLoading = false.obs;
   RxBool isAllSelected = false.obs;
+  final carts = Rxn<CartModel>();
   @override
   void onInit() {
     super.onInit();
-    cartList.addAll([
-      CartItemModel(
-        name: "ECHO LOUNGE CHAIR",
-        category: "Chair",
-        color: "Blue",
-        image: ImagesPath.chair,
-        price: 320,
-      ),
-      CartItemModel(
-        name: "LUXE CUP SOFA",
-        category: "Chair",
-        color: "Blue",
-        image: ImagesPath.chair,
-        price: 320,
-      ),
-      CartItemModel(
-        name: "MODERN CHAIR",
-        category: "Chair",
-        color: "Blue",
-        image: ImagesPath.chair,
-        price: 320,
-      ),
-    ]);
+    getCart();
   }
 
-  void toggleItem(int index) {
-    cartList[index].isSelected.toggle();
-    isAllSelected.value =
-        cartList.every((item) => item.isSelected.value);
+  Future<void> getCart() async {
+    isLoading.value = true;
+    final response = await getCartRepository.execute();
+    isLoading.value = false;
+    response.fold(
+      (error) {
+        ErrorSnackbar.show(description: error.message);
+      },
+      (data) {
+        carts.value = data;
+      },
+    );
   }
-  void toggleSelectAll() {
-    isAllSelected.toggle();
 
-    for (var item in cartList) {
-      item.isSelected.value = isAllSelected.value;
+  void toggleItem({required int id}) {
+    for (var element in carts.value?.items ?? []) {
+      if (element.id == id) {
+        element.isSelected = !element.isSelected;
+        break;
+      }
     }
   }
-  void deleteItem(int index) {
-    cartList.removeAt(index);
 
-    isAllSelected.value =
-        cartList.isNotEmpty &&
-        cartList.every((item) => item.isSelected.value);
-  }
-  void deleteAll() {
-    cartList.clear();
-    isAllSelected.value = false;
-  }
-  void increaseQty(int index) {
-    cartList[index].quantity++;
-    cartList.refresh();
-  }
+  void toggleSelectAll() {}
 
-  void decreaseQty(int index) {
-    if (cartList[index].quantity > 1) {
-      cartList[index].quantity--;
-      cartList.refresh();
-    }
-  }
+  void deleteItem({required int id}) {}
+
+  void deleteAll() {}
+
+  void increaseQty({required int id}) {}
+
+  void decreaseQty({required int id}) {}
 }

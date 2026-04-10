@@ -13,7 +13,6 @@ class DashboardReminders extends GetWidget<ReminderController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Obx(() {
       final reminders = controller.reminderList;
       if (reminders.isEmpty) {
@@ -37,12 +36,11 @@ class DashboardReminders extends GetWidget<ReminderController> {
                     controller.reminderList.removeAt(index);
                   },
                   child: DashboardCard(
-                    title: item.title,
-                    sub: item.sub,
-                    time: item.time,
-                    icon: item.icon,
-                    isLastIndex:
-                        controller.reminderList.length - 1 == index,
+                    title: item.title ?? '',
+                    sub: item.sub ?? '',
+                    time: item.time ?? '',
+                    icon: item.icon ?? '',
+                    isLastIndex: controller.reminderList.length - 1 == index,
                     button: Align(
                       alignment: Alignment.centerRight,
                       child: CustomPrimaryButton(
