@@ -14,6 +14,7 @@ class AiProductPlacementProductFavoriteSelect
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,6 +30,7 @@ class AiProductPlacementProductFavoriteSelect
               onTap: controller.favoriteScrollLeft,
               child: AiProductPlacementProductHelper().arrowButton(
                 Icons.arrow_back_ios,
+                isDark,
               ),
             ),
             SizedBox(width: 8.w),
@@ -36,6 +38,7 @@ class AiProductPlacementProductFavoriteSelect
               onTap: controller.favoriteScrollRight,
               child: AiProductPlacementProductHelper().arrowButton(
                 Icons.arrow_forward_ios,
+                isDark,
               ),
             ),
           ],
@@ -55,7 +58,9 @@ class AiProductPlacementProductFavoriteSelect
                     width: 40.w,
                     height: 40.h,
                     radius: 6.r,
-                    color: AppColors.fieldColor,
+                    color: isDark
+                        ? AppColors.darkTitleColor
+                        : AppColors.fieldColor,
                     image: DecorationImage(image: AssetImage(ImagesPath.chair)),
                   ),
                 );

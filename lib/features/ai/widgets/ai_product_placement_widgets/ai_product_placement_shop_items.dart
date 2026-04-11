@@ -13,9 +13,10 @@ class AiProductPlacementShopItems
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       padding: EdgeInsets.all(16.w),
-      color: AppColors.whiteColor,
+      color:isDark? AppColors.darkColor:AppColors.whiteColor,
       radius: 22.r,
       child: SizedBox(
         height: 366.h,
@@ -40,7 +41,7 @@ class AiProductPlacementShopItems
                     child: SharedContainer(
                       color: isSelected
                           ? AppColors.primaryColor
-                          : AppColors.fieldColor,
+                          :isDark? AppColors.labelColor:AppColors.fieldColor,
                       radius: 10.r,
                       child: Center(
                         child: Image.asset(

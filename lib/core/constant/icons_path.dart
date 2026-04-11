@@ -141,5 +141,7 @@ class IconsPath {
   static const String aiFavorite = 'assets/icons/ai_favorite.png';
   static const String aiCart = 'assets/icons/ai_cart.png';
   static const String aiSearch = 'assets/icons/ai_search.png';
+  static const String save = 'assets/icons/save.png';
+  static const String export = 'assets/icons/export.png';
 
 }

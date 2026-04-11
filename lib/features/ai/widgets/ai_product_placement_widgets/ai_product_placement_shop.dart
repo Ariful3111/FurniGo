@@ -13,6 +13,7 @@ class AiProductPlacementShop extends GetWidget<AiProductPlacementController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,14 +35,14 @@ class AiProductPlacementShop extends GetWidget<AiProductPlacementController> {
                   ),
                   radius: 40.r,
                   color: isSelected
-                      ? AppColors.primaryColor
-                      : AppColors.whiteColor,
+                      ?isDark? AppColors.boxColor:AppColors.primaryColor
+                      :isDark? AppColors.primaryColor:AppColors.whiteColor,
                   child: CustomPrimaryText(
                     text: controller.roomList[index],
                     fontSize: 10.sp,
                     color: isSelected
-                        ? AppColors.whiteColor
-                        : AppColors.primaryColor,
+                        ?isDark?AppColors.primaryColor :AppColors.whiteColor
+                        :isDark? AppColors.boxColor:AppColors.primaryColor,
                   ),
                 ),
               );

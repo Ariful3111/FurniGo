@@ -22,7 +22,8 @@ class AppRoutes {
   static const String sellView = '/sellView';
   static const String sellDetails = '/sellDetails';
   static const String dashboardAiDesignView = '/dashboardAiDesignView';
-  static const String dashboardAiDesignDetailsView = '/dashboardAiDesignDetailsView';
+  static const String dashboardAiDesignDetailsView =
+      '/dashboardAiDesignDetailsView';
   static const String transactionView = '/transactionView';
   static const String transactionDetailView = '/transactionDetailView';
   static const String creditBalanceView = '/creditBalanceView';
@@ -38,4 +39,6 @@ class AppRoutes {
   static const String aiView = '/aiView';
   static const String aiProductPlacementView = '/aiProductPlacementView';
   static const String aiInteriorDesignView = '/aiInteriorDesignView';
+  static const String aiProductPlacementRegenerateView =
+      '/aiProductPlacementRegenerateView';
 }
