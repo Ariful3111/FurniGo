@@ -3,7 +3,9 @@ import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/ai/bindings/ai_bindings.dart';
 import 'package:zb_dezign/features/ai/bindings/ai_interior_design_bindings.dart';
 import 'package:zb_dezign/features/ai/bindings/ai_product_placement_bindings.dart';
+import 'package:zb_dezign/features/ai/bindings/ai_product_placement_regenerate_bindings.dart';
 import 'package:zb_dezign/features/ai/views/ai_interior_design_view.dart';
+import 'package:zb_dezign/features/ai/views/ai_product_placement_regenerate_view.dart';
 import 'package:zb_dezign/features/ai/views/ai_product_placement_view.dart';
 import 'package:zb_dezign/features/ai/views/ai_view.dart';
 import 'package:zb_dezign/features/category/bindings/category_bindings.dart';
@@ -259,5 +261,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.aiInteriorDesignView,
     page: () => AiInteriorDesignView(),
     binding: AiInteriorDesignBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.aiProductPlacementRegenerateView,
+    page: () => AiProductPlacementRegenerateView(),
+    binding: AiProductPlacementRegenerateBindings(),
   ),
 ];

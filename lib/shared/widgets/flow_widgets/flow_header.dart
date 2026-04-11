@@ -16,7 +16,7 @@ class FlowHeader extends StatelessWidget {
       height: 56.h,
       width: MediaQuery.widthOf(context),
       decoration: BoxDecoration(
-        color:isDark? AppColors.labelColor:AppColors.whiteColor,
+        color: isDark ? AppColors.labelColor : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Stack(
@@ -24,12 +24,22 @@ class FlowHeader extends StatelessWidget {
           Positioned(
             top: -5.h,
             left: -0.w,
-            child: Image.asset(IconsPath.vector, height: 40.h, width: 40.w),
+            child: Image.asset(
+              IconsPath.vector,
+              height: 40.h,
+              width: 40.w,
+              color: isDark ? AppColors.darkTitleColor : null,
+            ),
           ),
           Positioned(
             bottom: -3.h,
             right: -0.w,
-            child: Image.asset(IconsPath.vector1, height: 40.h, width: 40.w),
+            child: Image.asset(
+              IconsPath.vector1,
+              height: 40.h,
+              width: 40.w,
+              color: isDark ? AppColors.darkTitleColor : null,
+            ),
           ),
           Center(
             child: Column(
@@ -38,7 +48,9 @@ class FlowHeader extends StatelessWidget {
                 SizedBox(height: 8.h),
                 CustomPrimaryText(
                   text: sub,
-                  color: AppColors.secondaryTextColor,
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.secondaryTextColor,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
                 ),

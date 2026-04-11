@@ -32,6 +32,7 @@ class AppColors {
   static const Color fieldBorderColor = Color(0xFFEAEAEA);
   static const Color fieldBorderColorLight = Color(0xFFE5E7EB);
   static const Color primaryBorderColor = Color(0xFFE9E9E9);
+  static const Color whiteBorderColor = Color(0xFFB6B0C2);
   static const Color fieldColor = Color(0xFFF2F2F2);
   static const Color labelColor = Color(0xFF1F1F1F);
   static const Color shadowColor = Color(0xFF14142B);

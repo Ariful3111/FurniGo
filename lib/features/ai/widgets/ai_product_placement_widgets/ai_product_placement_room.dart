@@ -13,6 +13,7 @@ class AiProductPlacementRoom extends GetWidget<AiProductPlacementController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(
       () => AnimatedSize(
         duration: Duration(milliseconds: 300),
@@ -23,8 +24,12 @@ class AiProductPlacementRoom extends GetWidget<AiProductPlacementController> {
                   SharedContainer(
                     width: MediaQuery.widthOf(context),
                     padding: EdgeInsets.all(16.w),
-                    color: AppColors.boxColor,
-                    border: Border.all(color: Color(0xFFB6B0C2)),
+                    color: isDark ? AppColors.labelColor : AppColors.boxColor,
+                    border: Border.all(
+                      color: isDark
+                          ? AppColors.darkBorderColor
+                          : AppColors.whiteBorderColor,
+                    ),
                     radius: 20.r,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,13 +59,21 @@ class AiProductPlacementRoom extends GetWidget<AiProductPlacementController> {
                                 ),
                                 radius: 40.r,
                                 color: isSelected
+                                    ? isDark
+                                          ? AppColors.boxColor
+                                          : AppColors.primaryColor
+                                    : isDark
                                     ? AppColors.primaryColor
                                     : AppColors.whiteColor,
                                 child: CustomPrimaryText(
                                   text: controller.roomList[index],
                                   fontSize: 10.sp,
                                   color: isSelected
-                                      ? AppColors.whiteColor
+                                      ? isDark
+                                            ? AppColors.darkColor
+                                            : AppColors.whiteColor
+                                      : isDark
+                                      ? AppColors.boxColor
                                       : AppColors.primaryColor,
                                 ),
                               ),
@@ -82,7 +95,7 @@ class AiProductPlacementRoom extends GetWidget<AiProductPlacementController> {
                       radius: 62.r,
                       color: controller.selectedIndex.value != -1
                           ? AppColors.primaryColor
-                          : Color(0xFFB6B0C2),
+                          : AppColors.whiteBorderColor,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

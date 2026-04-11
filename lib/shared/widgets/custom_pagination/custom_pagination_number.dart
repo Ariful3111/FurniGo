@@ -24,7 +24,9 @@ class CustomPaginationNumber extends StatelessWidget {
         width: 32.w,
         margin: EdgeInsets.symmetric(horizontal: 6.73.w),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor : Color(0xFFB6B0C2),
+          color: isSelected
+              ? AppColors.primaryColor
+              : AppColors.whiteBorderColor,
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Center(

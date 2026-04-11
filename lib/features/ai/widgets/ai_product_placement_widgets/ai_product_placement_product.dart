@@ -19,13 +19,14 @@ class AiProductPlacementProduct
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Align(
       alignment: Alignment.centerLeft,
       child: Obx(
         () => SharedContainer(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-          color: Color(0xFFE8E6EB),
-          border: Border.all(color: Color(0xFFB6B0C2)),
+          color: isDark ? AppColors.labelColor : AppColors.boxColor,
+          border: Border.all(color: AppColors.whiteBorderColor),
           radius: 20.r,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +57,9 @@ class AiProductPlacementProduct
                           vertical: 7.81.h,
                         ),
                         radius: 33.33.r,
-                        color: AppColors.whiteColor,
+                        color: isDark
+                            ? AppColors.primaryColor
+                            : AppColors.whiteColor,
                         child: AnimatedSize(
                           duration: Duration(milliseconds: 300),
                           child: selected
@@ -65,6 +68,7 @@ class AiProductPlacementProduct
                                           .aiPlacementField(
                                             controller:
                                                 controller.searchController,
+                                            isDark: isDark,
                                           )
                                     : Row(
                                         children: [
@@ -77,6 +81,9 @@ class AiProductPlacementProduct
                                             item['icon'],
                                             width: 20.w,
                                             height: 20.h,
+                                            color: isDark
+                                                ? AppColors.whiteColor
+                                                : null,
                                           ),
                                         ],
                                       )
@@ -85,6 +92,7 @@ class AiProductPlacementProduct
                                     item['icon'],
                                     width: 20.w,
                                     height: 20.h,
+                                    color: isDark ? AppColors.whiteColor : null,
                                   ),
                                 ),
                         ),
@@ -114,7 +122,11 @@ class AiProductPlacementProduct
                   ],
                 ),
               SizedBox(height: 16.h),
-              AiProductPlacementShopButtons(),
+              if (controller.isProductExpand.value >= 0 &&
+                      controller.shopSelectedItems.isNotEmpty ||
+                  controller.favoriteSelectedItems.isNotEmpty ||
+                  controller.cartSelectedItems.isNotEmpty)
+                AiProductPlacementShopButtons(),
             ],
           ),
         ),
