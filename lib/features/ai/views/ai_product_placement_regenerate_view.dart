@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:zb_dezign/core/constant/images_path.dart';
+import 'package:zb_dezign/features/ai/controller/ai_product_placement_regenerate_controller.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_generate_button.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_header.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_button.dart';
@@ -8,7 +10,8 @@ import 'package:zb_dezign/features/ai/widgets/ai_product_placement_widgets/ai_pr
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class AiProductPlacementRegenerateView extends StatelessWidget {
+class AiProductPlacementRegenerateView
+    extends GetView<AiProductPlacementRegenerateController> {
   const AiProductPlacementRegenerateView({super.key});
 
   @override
@@ -32,15 +35,25 @@ class AiProductPlacementRegenerateView extends StatelessWidget {
                 Positioned(
                   top: 12.h,
                   right: 12.w,
-                  child: AiProductPlacementRegenerateButton()
+                  child: AiProductPlacementRegenerateButton(),
                 ),
               ],
             ),
           ),
           SizedBox(height: 24.h),
-          AiProductPlacementRegenerateImage(),
-          SizedBox(height: 12.h,),
-          AiGenerateButton(onTap: () {}, title: 'Regenerate'),
+         Obx(()=> AnimatedSize(
+            duration: Duration(milliseconds: 300),
+            child: controller.isRegenerate.value
+                ? AiProductPlacementRegenerateImage()
+                : SizedBox(),
+          )),
+          SizedBox(height: 12.h),
+          AiGenerateButton(
+            onTap: () {
+              controller.isRegenerate.value = true;
+            },
+            title: 'Regenerate',
+          ),
         ],
       ),
     );

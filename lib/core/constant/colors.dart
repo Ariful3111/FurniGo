@@ -18,6 +18,7 @@ class AppColors {
   static const Color lightGreyColor = Color(0xFF364153);
   static const Color lightTextColor = Color(0xFF737373);
   static const Color boxColor = Color(0xFFE8E6EB);
+  static const Color errorColor = Color(0xFFEC1010);
   static const Color containerColor = Color(0xFFF3F3F3);
   static const Color secondaryTextColor = Color(0xFF4A5565);
   static const Color errorTextColor = Color(0xFF733E0A);

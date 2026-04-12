@@ -143,5 +143,11 @@ class IconsPath {
   static const String aiSearch = 'assets/icons/ai_search.png';
   static const String save = 'assets/icons/save.png';
   static const String export = 'assets/icons/export.png';
+  static const String check = 'assets/icons/check.png';
+  static const String fire = 'assets/icons/fire.png';
+  static const String subsStar = 'assets/icons/subs_star.png';
+  static const String van = 'assets/icons/van.png';
+  static const String gear = 'assets/icons/gear.png';
+  static const String stopwatch = 'assets/icons/stopwatch.png';
 
 }

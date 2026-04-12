@@ -14,6 +14,7 @@ class AiDropdownCredit extends GetWidget<AiController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
       elevation: 10,
       borderRadius: BorderRadius.circular(16.r),
@@ -26,7 +27,7 @@ class AiDropdownCredit extends GetWidget<AiController> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 1.0],
-            colors: [AppColors.fieldBorderColor, AppColors.whiteColor],
+            colors:isDark? [AppColors.labelColor,AppColors.labelColor]:[AppColors.fieldBorderColor, AppColors.whiteColor],
           ),
           borderRadius: BorderRadius.circular(16.r),
         ),
@@ -40,18 +41,21 @@ class AiDropdownCredit extends GetWidget<AiController> {
                       text: "Credit Usage",
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
+                      color: isDark?AppColors.whiteColor:AppColors.darkColor,
                     ),
                     Spacer(),
                     Image.asset(
                       IconsPath.creditCoin,
                       height: 10.h,
                       width: 10.w,
+                      color: isDark?AppColors.whiteColor:AppColors.darkColor,
                     ),
                     SizedBox(width: 4.w),
                     CustomPrimaryText(
                       text: "Balance: 1250",
                       fontSize: 8.sp,
                       fontWeight: FontWeight.w400,
+                      color: isDark?AppColors.whiteColor:AppColors.darkColor,
                     ),
                   ],
                 ),

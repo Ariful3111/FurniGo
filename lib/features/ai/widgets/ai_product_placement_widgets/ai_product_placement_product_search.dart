@@ -13,8 +13,7 @@ class AiProductPlacementProductSearch {
       height: 30.h,
       child: TextFormField(
         controller: controller,
-        cursorColor: isDark ? AppColors.whiteColor : AppColors.whiteColor,
-        
+        cursorColor: isDark ? AppColors.whiteColor : AppColors.darkColor,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(12.r),
           suffixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0),
