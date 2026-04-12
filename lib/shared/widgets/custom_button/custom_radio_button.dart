@@ -10,7 +10,8 @@ class CustomRadioButton extends StatelessWidget {
   const CustomRadioButton({
     super.key,
     required this.value,
-    required this.groupValue, required this.onChange,
+    required this.groupValue,
+    required this.onChange,
   });
 
   @override
@@ -22,7 +23,7 @@ class CustomRadioButton extends StatelessWidget {
       groupValue: groupValue,
       onChanged: onChange,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      activeColor:isDark?AppColors.boxColor: AppColors.primaryColor,
+      activeColor: isDark ? AppColors.boxColor : AppColors.primaryColor,
     );
   }
 }

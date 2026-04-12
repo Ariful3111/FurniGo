@@ -13,7 +13,6 @@ class FlowHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      height: 56.h,
       width: MediaQuery.widthOf(context),
       decoration: BoxDecoration(
         color: isDark ? AppColors.labelColor : AppColors.whiteColor,
@@ -41,20 +40,24 @@ class FlowHeader extends StatelessWidget {
               color: isDark ? AppColors.darkTitleColor : null,
             ),
           ),
-          Center(
-            child: Column(
-              children: [
-                CustomPrimaryText(text: title),
-                SizedBox(height: 8.h),
-                CustomPrimaryText(
-                  text: sub,
-                  color: isDark
-                      ? AppColors.primaryBorderColor
-                      : AppColors.secondaryTextColor,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ],
+          Padding(
+            padding: EdgeInsets.all(8.r),
+            child: Center(
+              child: Column(
+                children: [
+                  CustomPrimaryText(text: title,textAlign: TextAlign.center,),
+                  SizedBox(height: 8.h),
+                  CustomPrimaryText(
+                    text: sub,
+                    color: isDark
+                        ? AppColors.primaryBorderColor
+                        : AppColors.secondaryTextColor,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -11,6 +11,7 @@ class AiProductPlacementController extends GetxController {
   RxInt selectedShop = (-1).obs;
   RxBool isProduct = false.obs;
   RxInt isProductExpand = (-1).obs;
+  RxInt isReplace = 0.obs;
   final roomList = [
     'Living Room',
     'Dining Room',

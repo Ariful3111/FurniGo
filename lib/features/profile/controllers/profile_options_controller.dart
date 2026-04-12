@@ -4,10 +4,7 @@ import 'package:zb_dezign/core/routes/app_routes.dart';
 
 class ProfileOptionsController extends GetxController {
   List profileList = [
-    {
-      'icon': IconsPath.profileCategory,
-      'title': 'Dashboard',
-    },
+    {'icon': IconsPath.profileCategory, 'title': 'Dashboard'},
     {
       'icon': IconsPath.profile,
       'title': 'Profile & Settings',
@@ -29,7 +26,11 @@ class ProfileOptionsController extends GetxController {
       'title': 'My Orders',
       'route': AppRoutes.orderView,
     },
-    {'icon': IconsPath.profileSubs, 'title': 'Subscription and Membership'},
+    {
+      'icon': IconsPath.profileSubs,
+      'title': 'Subscription and Membership',
+      'route': AppRoutes.subscriptionView,
+    },
     {'icon': IconsPath.profileContact, 'title': 'Contact Us'},
     {
       'icon': IconsPath.profileSupport,

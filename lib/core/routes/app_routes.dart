@@ -41,4 +41,5 @@ class AppRoutes {
   static const String aiInteriorDesignView = '/aiInteriorDesignView';
   static const String aiProductPlacementRegenerateView =
       '/aiProductPlacementRegenerateView';
+  static const String subscriptionView = '/subscriptionView';
 }

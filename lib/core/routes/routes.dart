@@ -35,6 +35,8 @@ import 'package:zb_dezign/features/dashboard/views/dashboard_payment_view.dart';
 import 'package:zb_dezign/features/dashboard/views/dashboard_view.dart';
 import 'package:zb_dezign/features/favorites/bindings/favorites_bindings.dart';
 import 'package:zb_dezign/features/favorites/views/favorites_view.dart';
+import 'package:zb_dezign/features/membership/bindings/subscription_bindings.dart';
+import 'package:zb_dezign/features/membership/views/subscription_view.dart';
 import 'package:zb_dezign/features/order/bindings/order_bindings.dart';
 import 'package:zb_dezign/features/order/bindings/order_details_bindings.dart';
 import 'package:zb_dezign/features/order/views/order_details_view.dart';
@@ -266,5 +268,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.aiProductPlacementRegenerateView,
     page: () => AiProductPlacementRegenerateView(),
     binding: AiProductPlacementRegenerateBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.subscriptionView,
+    page: () => SubscriptionView(),
+    binding: SubscriptionBindings(),
   ),
 ];

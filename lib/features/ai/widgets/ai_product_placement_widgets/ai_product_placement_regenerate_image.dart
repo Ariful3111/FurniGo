@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/ai/controller/ai_product_placement_regenerate_controller.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class AiProductPlacementRegenerateImage extends StatelessWidget {
+class AiProductPlacementRegenerateImage
+    extends GetWidget<AiProductPlacementRegenerateController> {
   const AiProductPlacementRegenerateImage({super.key});
 
   @override
@@ -97,7 +100,9 @@ class AiProductPlacementRegenerateImage extends StatelessWidget {
             text: 'Cancel',
             textColor: AppColors.darkColor,
             fontSize: 20.sp,
-            onPressed: () {},
+            onPressed: () {
+              controller.isRegenerate.value = false;
+            },
           ),
         ],
       ),

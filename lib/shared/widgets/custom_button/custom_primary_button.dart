@@ -67,6 +67,7 @@ class CustomPrimaryButton extends StatelessWidget {
                 fontSize: fontSize ?? 14.sp,
                 fontWeight: fontWeight,
                 textAlign: TextAlign.center,
+                textOverflow: TextOverflow.ellipsis,
               ),
             ),
       ),
