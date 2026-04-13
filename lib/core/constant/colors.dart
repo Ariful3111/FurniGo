@@ -57,6 +57,7 @@ class AppColors {
 
   static const Color darkBorderColor = Color(0xFF434953);
   static const Color darkPrimaryTextColor = Color(0xFFBABABA);
+  static const Color darkGreyTextColor = Color(0xFF585858);
   static const Color darkPendingBGColor = Color(0xFF6B5A2B);
   static const Color darkPendingTextColor = Color(0xFFFFFBF0);
   static const Color darkQuoteBGColor = Color(0xFF6155F5);

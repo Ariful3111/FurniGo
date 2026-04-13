@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 
 class SubscriptionController extends GetxController {
+  RxString selectedCard = ''.obs;
+  RxBool isActive = false.obs;
   final List<Map<String, dynamic>> plans = [
     {
       "title": "Earlybird Plan",
@@ -9,6 +11,7 @@ class SubscriptionController extends GetxController {
       "buttonText": "Start Now",
       "isPrimary": false,
       "isPremium": false,
+      "isActive": false,
       "features": [
         "Free furniture collection pickup",
         "Member-only discounts on rentals",
@@ -22,6 +25,7 @@ class SubscriptionController extends GetxController {
       "buttonText": "Subscribe Now",
       "isPrimary": true,
       "isPremium": false,
+      "isActive": false,
       "badge": "Most Popular",
       "features": [
         "AI room design & interior concepts",
@@ -36,6 +40,7 @@ class SubscriptionController extends GetxController {
       "buttonText": "Go Premium",
       "isPrimary": false,
       "isPremium": true,
+      "isActive": true,
       "features": [
         "Everything in Design Pro",
         "Free furniture collection & pickup",

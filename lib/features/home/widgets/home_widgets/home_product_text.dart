@@ -32,7 +32,7 @@ class HomeProductText extends StatelessWidget {
                   fontSize: 12.sp,
                   color: isDark
                       ? AppColors.darkPrimaryTextColor
-                      : Color(0xFF585858),
+                      : AppColors.darkGreyTextColor,
 
                   textOverflow: TextOverflow.ellipsis,
                 ),

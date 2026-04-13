@@ -149,5 +149,4 @@ class IconsPath {
   static const String van = 'assets/icons/van.png';
   static const String gear = 'assets/icons/gear.png';
   static const String stopwatch = 'assets/icons/stopwatch.png';
-
 }
