@@ -76,7 +76,9 @@ class ProductDetailsRatingInfo extends StatelessWidget {
             CustomPrimaryText(
               text: averageRating.toStringAsFixed(1),
               fontSize: 14.sp,
-              color: isDark ? AppColors.primaryBorderColor : Color(0xFF585858),
+              color: isDark
+                  ? AppColors.primaryBorderColor
+                  : AppColors.darkGreyTextColor,
             ),
             SizedBox(width: 6.w),
             Container(
@@ -85,7 +87,7 @@ class ProductDetailsRatingInfo extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isDark
                     ? AppColors.primaryBorderColor
-                    : Color(0xFF585858),
+                    : AppColors.darkGreyTextColor,
                 shape: BoxShape.circle,
               ),
             ),
@@ -93,7 +95,9 @@ class ProductDetailsRatingInfo extends StatelessWidget {
             CustomPrimaryText(
               text: "$totalReviews Reviews",
               fontSize: 14.sp,
-              color: isDark ? AppColors.primaryBorderColor : Color(0xFF585858),
+              color: isDark
+                  ? AppColors.primaryBorderColor
+                  : AppColors.darkGreyTextColor,
             ),
           ],
         ),

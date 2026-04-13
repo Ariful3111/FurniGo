@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 
-class CustomRadioButton extends StatelessWidget {
-  final int value;
-  final int groupValue;
+class CustomRadioButton<T> extends StatelessWidget {
+  final T value;
+  final T groupValue;
   final ValueChanged onChange;
   const CustomRadioButton({
     super.key,
@@ -18,7 +18,7 @@ class CustomRadioButton extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Radio(
+    return Radio<T>(
       value: value,
       groupValue: groupValue,
       onChanged: onChange,

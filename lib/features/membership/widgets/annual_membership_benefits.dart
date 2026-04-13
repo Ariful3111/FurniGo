@@ -33,7 +33,7 @@ class AnnualMembershipBenefits extends StatelessWidget {
               child: Image.asset(icon,height: 24.h,width: 24.w,),
             ),
           ),
-          SizedBox(width: 12.w),
+          SizedBox(width: 20.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +48,8 @@ class AnnualMembershipBenefits extends StatelessWidget {
                 CustomPrimaryText(
                   text: desc,
                   fontSize: 12.sp,
-                  color: AppColors.greyColor,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.darkGreyColor,
                 ),
               ],
             ),

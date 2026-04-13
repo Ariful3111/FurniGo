@@ -54,7 +54,7 @@ class SubscriptionView extends GetView<SubscriptionController> {
                       'Flexible subscriptions designed for renting, buying, and designing furniture—upgrade, switch, or cancel anytime.',
                   color: isDark
                       ? AppColors.primaryBorderColor
-                      : Color(0xFF585858),
+                      : AppColors.darkGreyTextColor,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
                   textAlign: TextAlign.center,
