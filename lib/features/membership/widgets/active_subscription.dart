@@ -11,6 +11,7 @@ class ActiveSubscription extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomSecondaryButton(
       text: 'Active',
+      border: Border.all(color: Colors.transparent),
       icon: IconsPath.mark,
       onPressed: () {},
       backgroundColor: AppColors.successColor,

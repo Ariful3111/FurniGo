@@ -12,7 +12,8 @@ class AnnualMembershipBenefits extends StatelessWidget {
   const AnnualMembershipBenefits({
     super.key,
     required this.title,
-    required this.desc, required this.icon,
+    required this.desc,
+    required this.icon,
   });
 
   @override
@@ -28,9 +29,14 @@ class AnnualMembershipBenefits extends StatelessWidget {
             width: 40.w,
             radius: 20.r,
             padding: EdgeInsets.zero,
-            color: AppColors.primaryColor,
+            color: isDark ? AppColors.whiteColor : AppColors.primaryColor,
             child: Center(
-              child: Image.asset(icon,height: 24.h,width: 24.w,),
+              child: Image.asset(
+                icon,
+                height: 24.h,
+                width: 24.w,
+                color: isDark ? AppColors.darkColor : null,
+              ),
             ),
           ),
           SizedBox(width: 20.w),
@@ -49,7 +55,7 @@ class AnnualMembershipBenefits extends StatelessWidget {
                   text: desc,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.darkGreyColor,
+                  color:isDark? AppColors.darkPrimaryTextColor:AppColors.darkGreyColor,
                 ),
               ],
             ),
