@@ -42,7 +42,7 @@ class AnnualMembershipPlan extends GetWidget<SubscriptionController> {
               ],
       ),
       border: Border.all(
-        color: isDark ? AppColors.darkBorderColor : AppColors.whiteColor,
+        color: isDark ? AppColors.labelColor : AppColors.whiteColor,
         width: 8.87.r,
       ),
       boxShadow: [

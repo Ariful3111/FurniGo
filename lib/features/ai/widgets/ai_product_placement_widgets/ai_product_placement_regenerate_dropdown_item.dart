@@ -17,9 +17,7 @@ class AiProductPlacementRegenerateDropdownItem
       width: 140.w,
       padding: EdgeInsets.all(12.w),
       radius: 12.r,
-      color: isDark
-          ? Color(0xFF1B1B1B).withValues(alpha: 0.5)
-          : Colors.black.withValues(alpha: 0.5),
+      color:  Colors.black.withValues(alpha: 0.5),
       child: Obx(() {
         return Column(
           mainAxisSize: MainAxisSize.min,

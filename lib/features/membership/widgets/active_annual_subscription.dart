@@ -29,7 +29,7 @@ class ActiveAnnualSubscription extends StatelessWidget {
                 child: CustomPrimaryText(
                   text: data[index]["title"]!,
                   fontSize: 14.sp,
-                  color: AppColors.greyTextColor,
+                  color:isDark? AppColors.darkPrimaryTextColor:AppColors.greyTextColor,
                 ),
               ),
             ),

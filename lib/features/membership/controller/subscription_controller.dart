@@ -3,7 +3,7 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 
 class SubscriptionController extends GetxController {
   RxString selectedCard = ''.obs;
-  RxBool isActive = false.obs;
+  RxBool isActive = true.obs;
   final List<Map<String, dynamic>> plans = [
     {
       "title": "Earlybird Plan",

@@ -18,9 +18,10 @@ class AnnualMembershipButton extends GetWidget<SubscriptionController> {
       children: [
         CustomPrimaryButton(
           backgroundColor: controller.isActive.value
-              ? AppColors.darkPrimaryTextColor
+              ?isDark? AppColors.greyTextColor:AppColors.darkPrimaryTextColor
               : null,
           text: controller.isActive.value ? 'Renew Now' : "Join Membership Now",
+          textColor:AppColors.whiteColor,
           onPressed: controller.isActive.value
               ? () {}
               : () {
@@ -59,7 +60,7 @@ class AnnualMembershipButton extends GetWidget<SubscriptionController> {
                 : "Cancel anytime. No hidden fees.",
             fontSize: 14.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.darkGreyTextColor,
+            color:isDark? AppColors.darkPrimaryTextColor:AppColors.darkGreyTextColor,
           ),
         ),
       ],
