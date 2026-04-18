@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_add_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_success_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart';
@@ -15,7 +16,30 @@ class CustomPaymentDialogMethod extends StatelessWidget {
   final List<String> cardList;
   final RxString selectedCard;
   final void Function(String?) onSelect;
-  const CustomPaymentDialogMethod({super.key, this.icon, this.buttonText, required this.cardList, required this.selectedCard, required this.onSelect});
+  final TextEditingController cardController;
+  final TextEditingController expiryDateController;
+  final TextEditingController cvvController;
+  final VoidCallback onTap;
+  final String? title;
+  final String? sub;
+  final Widget? widget;
+  final double? height;
+  const CustomPaymentDialogMethod({
+    super.key,
+    this.icon,
+    this.buttonText,
+    required this.cardList,
+    required this.selectedCard,
+    required this.onSelect,
+    required this.cardController,
+    required this.expiryDateController,
+    required this.cvvController,
+    required this.onTap,
+    this.title,
+    this.sub,
+    this.widget,
+    this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +62,20 @@ class CustomPaymentDialogMethod extends StatelessWidget {
               radius: 8.r,
               text: 'Add Method',
               icon: IconsPath.add,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CustomAddPaymentDialog(
+                      cardController: cardController,
+                      expiryDateController: expiryDateController,
+                      cvvController: cvvController,
+                      onTap: onTap,
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -59,7 +96,13 @@ class CustomPaymentDialogMethod extends StatelessWidget {
                   : null,
               context: context,
               builder: (context) {
-                return CustomPaymentSuccessDialog(icon: icon);
+                return CustomPaymentSuccessDialog(
+                  icon: icon,
+                  title: title,
+                  sub: sub,
+                  widget: widget,
+                  height: height,
+                );
               },
             );
           },

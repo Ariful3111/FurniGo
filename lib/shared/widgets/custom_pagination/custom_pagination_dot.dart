@@ -13,7 +13,7 @@ class CustomPaginationDot extends StatelessWidget {
       width: 32.w,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Color(0xFFB6B0C2),
+        color: AppColors.whiteBorderColor,
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: CustomPrimaryText(

@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart';
 import 'package:zb_dezign/features/credit_balance/models/credit_transaction_model.dart';
 
-class AiController extends GetxController {
+class AiController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   final List<CreditTransaction> creditItems = [
     CreditTransaction(
       title: "Room interior design",
@@ -52,7 +53,7 @@ class AiController extends GetxController {
       amount: -20,
     ),
   ];
-   OverlayEntry? overlayEntry;
+  OverlayEntry? overlayEntry;
   final LayerLink layerLink = LayerLink();
 
   void toggleDropdown(BuildContext context) {
@@ -81,13 +82,39 @@ class AiController extends GetxController {
             width: 300.w,
             child: CompositedTransformFollower(
               link: layerLink,
-              offset: Offset(-100, 50.h),
+              offset: Offset(-120, 50.h),
               showWhenUnlinked: false,
-              child:AiDropdownCredit(),
+              child: AiDropdownCredit(),
             ),
           ),
         ],
       ),
     );
+  }
+
+  late AnimationController animationController;
+
+  RxDouble progress = 0.0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
+
+    animationController.addListener(() {
+      progress.value = animationController.value;
+    });
+
+    animationController.repeat();
+  }
+
+  @override
+  void onClose() {
+    animationController.dispose();
+    super.onClose();
   }
 }

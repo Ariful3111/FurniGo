@@ -2,8 +2,6 @@
 
 <cite>
 **Referenced Files in This Document**
-- [pubspec.yaml](file://pubspec.yaml)
-- [README.md](file://README.md)
 - [lib/main.dart](file://lib/main.dart)
 - [lib/core/routes/app_routes.dart](file://lib/core/routes/app_routes.dart)
 - [lib/core/routes/routes.dart](file://lib/core/routes/routes.dart)
@@ -24,16 +22,20 @@
 - [lib/features/transaction/widgets/transaction_view_widgets/calendar_dialog/selected_day.dart](file://lib/features/transaction/widgets/transaction_view_widgets/calendar_dialog/selected_day.dart)
 - [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart)
 - [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart)
+- [lib/shared/widgets/custom_container.dart](file://lib/shared/widgets/custom_container.dart)
+- [lib/shared/widgets/shared_container.dart](file://lib/shared/widgets/shared_container.dart)
 - [lib/shared/widgets/custom_table/custom_table.dart](file://lib/shared/widgets/custom_table/custom_table.dart)
 - [lib/shared/widgets/custom_table/custom_table_header.dart](file://lib/shared/widgets/custom_table/custom_table_header.dart)
 - [lib/shared/widgets/custom_table/custom_table_row.dart](file://lib/shared/widgets/custom_table/custom_table_row.dart)
 - [lib/shared/widgets/custom_table/custom_table_status.dart](file://lib/shared/widgets/custom_table/custom_table_status.dart)
 - [lib/shared/widgets/custom_timeline/custom_payment_timeline.dart](file://lib/shared/widgets/custom_timeline/custom_payment_timeline.dart)
-- [lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart)
-- [lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart)
+- [lib/shared/widgets/custom_dropdown/custom_payment_dropdown.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown.dart)
+- [lib/shared/widgets/custom_dropdown/custom_payment_dropdown_item.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown_item.dart)
 - [lib/shared/widgets/custom_dialog/custom_payment_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart)
 - [lib/shared/widgets/custom_dialog/custom_payment_dialog_method.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog_method.dart)
 - [lib/shared/widgets/custom_dialog/custom_payment_success_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_success_dialog.dart)
+- [lib/shared/widgets/custom_button/custom_primary_button.dart](file://lib/shared/widgets/custom_button/custom_primary_button.dart)
+- [lib/shared/widgets/custom_text/custom_primary_text.dart](file://lib/shared/widgets/custom_text/custom_primary_text.dart)
 - [lib/core/data/networks/get_network.dart](file://lib/core/data/networks/get_network.dart)
 - [lib/core/data/networks/post_with_response.dart](file://lib/core/data/networks/post_with_response.dart)
 - [lib/core/data/networks/post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
@@ -44,7 +46,17 @@
 - [lib/core/data/local/theme_service.dart](file://lib/core/data/local/theme_service.dart)
 - [lib/core/utils/date_picker.dart](file://lib/core/utils/date_picker.dart)
 - [lib/core/services/firebase_google_auth.dart](file://lib/core/services/firebase_google_auth.dart)
+- [lib/core/constant/colors.dart](file://lib/core/constant/colors.dart)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Enhanced transaction details interface with improved visual presentation and user experience
+- Added new button components with customizable styling and responsive design
+- Implemented enhanced card-based layout with proper spacing and theming
+- Improved typography system with consistent font weights and sizes
+- Added payment method visualization with card imagery and masked number display
+- Enhanced status indicator with dynamic color theming based on transaction states
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -52,14 +64,17 @@
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Dependency Analysis](#dependency-analysis)
-7. [Performance Considerations](#performance-considerations)
-8. [Troubleshooting Guide](#troubleshooting-guide)
-9. [Conclusion](#conclusion)
-10. [Appendices](#appendices)
+6. [UI Enhancement Analysis](#ui-enhancement-analysis)
+7. [Dependency Analysis](#dependency-analysis)
+8. [Performance Considerations](#performance-considerations)
+9. [Troubleshooting Guide](#troubleshooting-guide)
+10. [Conclusion](#conclusion)
+11. [Appendices](#appendices)
 
 ## Introduction
 This document describes the Transaction Management system for tracking business transactions across multiple services such as rent payments, furniture sales, and service fees. It covers the controller architecture, transaction model, view components for history display and reporting, reusable widget libraries for status indicators and payment interfaces, business logic for categorization and analytics, and integration touchpoints with payment gateways and accounting systems. It also addresses security, audit trails, and compliance considerations for end-to-end user workflows.
+
+**Updated** Enhanced with comprehensive UI improvements focusing on transaction details interface presentation and user experience optimization.
 
 ## Project Structure
 The Transaction Management feature is organized under the features/transaction module with clear separation of concerns:
@@ -79,12 +94,7 @@ TCaldCtrl["transaction_calender_controller.dart"]
 TModel["transaction_model.dart"]
 TView["transaction_view.dart"]
 TDetView["transaction_details_view.dart"]
-subgraph "Widgets"
-TVT["transaction_view_table.dart"]
-TVTF["transaction_view_table_filter.dart"]
-TVC["transaction_calender.dart"]
-TVE["transaction_table_expanded.dart"]
-CalDlg["calender_filter.dart<br/>custom_table_calender.dart<br/>selected_day.dart"]
+subgraph "Enhanced Details Widgets"
 TDI["transaction_details_info.dart"]
 TDIB["transaction_details_info_button.dart"]
 end
@@ -99,6 +109,10 @@ CPDD["custom_payment_dropdown.dart<br/>custom_payment_dropdown_item.dart"]
 CPD["custom_payment_dialog.dart"]
 CPDM["custom_payment_dialog_method.dart"]
 CPSD["custom_payment_success_dialog.dart"]
+CBC["custom_primary_button.dart"]
+CCT["custom_container.dart"]
+CSC["shared_container.dart"]
+CPTXT["custom_primary_text.dart"]
 end
 subgraph "Core"
 Routes["app_routes.dart<br/>routes.dart"]
@@ -111,25 +125,27 @@ Storage["storage_service.dart"]
 Theme["theme_service.dart"]
 DatePick["date_picker.dart"]
 Auth["firebase_google_auth.dart"]
+Colors["colors.dart"]
 end
 TBind --> TCtrl
 TBind --> TDCtrl
 TBind --> TCaldCtrl
 TCtrl --> TModel
 TDCtrl --> TModel
-TView --> TVT
-TView --> TVTF
-TView --> TVC
-TView --> TVE
+TView --> CT
+TView --> CPT
+TView --> CPDD
 TDetView --> TDI
 TDetView --> TDIB
-TVT --> CT
-TVTF --> CPDD
-TVC --> CalDlg
-TVE --> CPT
-CPDD --> CPD
-CPDD --> CPDM
-CPDD --> CPSD
+TDetView --> CCT
+TDetView --> CSC
+TDetView --> CPTXT
+TDetView --> CBC
+TDetView --> CTS
+TDetView --> CPDD
+TDetView --> CPD
+TDetView --> CPDM
+TDetView --> CPSD
 TCtrl --> NetGet
 TCtrl --> NetPost
 TCtrl --> NetDel
@@ -147,53 +163,31 @@ TCtrl --> Auth
 - [lib/features/transaction/controller/transaction_calender_controller.dart:1-181](file://lib/features/transaction/controller/transaction_calender_controller.dart#L1-L181)
 - [lib/features/transaction/models/transaction_model.dart:1-18](file://lib/features/transaction/models/transaction_model.dart#L1-L18)
 - [lib/features/transaction/views/transaction_view.dart](file://lib/features/transaction/views/transaction_view.dart)
-- [lib/features/transaction/views/transaction_details_view.dart](file://lib/features/transaction/views/transaction_details_view.dart)
-- [lib/features/transaction/widgets/transaction_view_widgets/transaction_view_table.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_view_table.dart)
-- [lib/features/transaction/widgets/transaction_view_widgets/transaction_view_table_filter.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_view_table_filter.dart)
-- [lib/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart)
-- [lib/features/transaction/widgets/transaction_view_widgets/transaction_table_expanded.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_table_expanded.dart)
-- [lib/features/transaction/widgets/transaction_view_widgets/calendar_dialog/calender_filter.dart](file://lib/features/transaction/widgets/transaction_view_widgets/calendar_dialog/calender_filter.dart)
-- [lib/features/transaction/widgets/transaction_view_widgets/calendar_dialog/custom_table_calender.dart](file://lib/features/transaction/widgets/transaction_view_widgets/calendar_dialog/custom_table_calender.dart)
-- [lib/features/transaction/widgets/transaction_view_widgets/calendar_dialog/selected_day.dart](file://lib/features/transaction/widgets/transaction_view_widgets/calendar_dialog/selected_day.dart)
-- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart)
-- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart)
-- [lib/shared/widgets/custom_table/custom_table.dart](file://lib/shared/widgets/custom_table/custom_table.dart)
-- [lib/shared/widgets/custom_table/custom_table_header.dart](file://lib/shared/widgets/custom_table/custom_table_header.dart)
-- [lib/shared/widgets/custom_table/custom_table_row.dart](file://lib/shared/widgets/custom_table/custom_table_row.dart)
-- [lib/shared/widgets/custom_table/custom_table_status.dart](file://lib/shared/widgets/custom_table/custom_table_status.dart)
-- [lib/shared/widgets/custom_timeline/custom_payment_timeline.dart](file://lib/shared/widgets/custom_timeline/custom_payment_timeline.dart)
-- [lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart)
-- [lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart)
-- [lib/shared/widgets/custom_dialog/custom_payment_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart)
-- [lib/shared/widgets/custom_dialog/custom_payment_dialog_method.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog_method.dart)
-- [lib/shared/widgets/custom_dialog/custom_payment_success_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_success_dialog.dart)
-- [lib/core/routes/app_routes.dart](file://lib/core/routes/app_routes.dart)
-- [lib/core/routes/routes.dart](file://lib/core/routes/routes.dart)
-- [lib/core/di/dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
-- [lib/core/data/networks/get_network.dart](file://lib/core/data/networks/get_network.dart)
-- [lib/core/data/networks/post_with_response.dart](file://lib/core/data/networks/post_with_response.dart)
-- [lib/core/data/networks/post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
-- [lib/core/data/networks/delete_network.dart](file://lib/core/data/networks/delete_network.dart)
-- [lib/core/data/networks/headers_manager.dart](file://lib/core/data/networks/headers_manager.dart)
-- [lib/core/data/local/storage_service.dart](file://lib/core/data/local/storage_service.dart)
-- [lib/core/data/local/theme_service.dart](file://lib/core/data/local/theme_service.dart)
-- [lib/core/utils/date_picker.dart](file://lib/core/utils/date_picker.dart)
-- [lib/core/services/firebase_google_auth.dart](file://lib/core/services/firebase_google_auth.dart)
+- [lib/features/transaction/views/transaction_details_view.dart:1-43](file://lib/features/transaction/views/transaction_details_view.dart#L1-L43)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart:1-150](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart#L1-L150)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart:1-32](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart#L1-L32)
+- [lib/shared/widgets/custom_container.dart:1-49](file://lib/shared/widgets/custom_container.dart#L1-L49)
+- [lib/shared/widgets/shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [lib/shared/widgets/custom_button/custom_primary_button.dart:1-76](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L1-L76)
+- [lib/shared/widgets/custom_table/custom_table_status.dart:1-99](file://lib/shared/widgets/custom_table/custom_table_status.dart#L1-L99)
+- [lib/core/constant/colors.dart:1-128](file://lib/core/constant/colors.dart#L1-L128)
 
 **Section sources**
 - [lib/features/transaction/bindings/transaction_bindings.dart:1-12](file://lib/features/transaction/bindings/transaction_bindings.dart#L1-L12)
 - [lib/features/transaction/controller/transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
 - [lib/features/transaction/models/transaction_model.dart:1-18](file://lib/features/transaction/models/transaction_model.dart#L1-L18)
 - [lib/features/transaction/views/transaction_view.dart](file://lib/features/transaction/views/transaction_view.dart)
-- [lib/features/transaction/views/transaction_details_view.dart](file://lib/features/transaction/views/transaction_details_view.dart)
+- [lib/features/transaction/views/transaction_details_view.dart:1-43](file://lib/features/transaction/views/transaction_details_view.dart#L1-L43)
 
 ## Core Components
 - TransactionController: Manages transaction list state, pagination, expansion state, and search input. Provides a fixed list of sample transactions for demonstration.
-- TransactionDetailsController: Receives a TransactionModel argument and exposes structured transaction info for display.
+- TransactionDetailsController: Receives a TransactionModel argument and exposes structured transaction info for display with enhanced formatting.
 - TransactionModel: Immutable data class representing a single transaction with identifiers, type, date, status, amount, and payment method.
 - Transaction Calendar Controller: Defines a commented-out calendar controller intended for date-range selection and filtering.
-- Transaction Views: Provide screens for listing transactions and viewing transaction details.
-- Shared Widgets: Reusable components for tables, status badges, payment timelines, dropdowns, and dialogs.
+- Transaction Views: Provide screens for listing transactions and viewing transaction details with improved visual hierarchy.
+- Shared Widgets: Reusable components for tables, status badges, payment timelines, dropdowns, dialogs, containers, and enhanced button components.
+
+**Updated** Enhanced with improved container components, typography system, and button styling for better visual presentation.
 
 **Section sources**
 - [lib/features/transaction/controller/transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
@@ -201,22 +195,22 @@ TCtrl --> Auth
 - [lib/features/transaction/models/transaction_model.dart:1-18](file://lib/features/transaction/models/transaction_model.dart#L1-L18)
 - [lib/features/transaction/controller/transaction_calender_controller.dart:1-181](file://lib/features/transaction/controller/transaction_calender_controller.dart#L1-L181)
 - [lib/features/transaction/views/transaction_view.dart](file://lib/features/transaction/views/transaction_view.dart)
-- [lib/features/transaction/views/transaction_details_view.dart](file://lib/features/transaction/views/transaction_details_view.dart)
+- [lib/features/transaction/views/transaction_details_view.dart:1-43](file://lib/features/transaction/views/transaction_details_view.dart#L1-L43)
 
 ## Architecture Overview
 The Transaction Management system follows a layered architecture:
-- Presentation Layer: Views and widgets render transaction data and collect user interactions.
+- Presentation Layer: Views and widgets render transaction data and collect user interactions with enhanced visual components.
 - Business Logic Layer: Controllers orchestrate state, handle filters, and prepare data for display.
 - Data Access Layer: Network utilities encapsulate HTTP operations; local storage and theme services support persistence and UI state.
-- Shared Layer: Reusable UI components promote consistency across the app.
+- Shared Layer: Reusable UI components with improved styling and responsive design promote consistency across the app.
 
 ```mermaid
 graph TB
-UI["Views & Widgets"] --> Ctrl["Controllers"]
+UI["Enhanced Views & Widgets"] --> Ctrl["Controllers"]
 Ctrl --> Model["TransactionModel"]
 Ctrl --> Net["Network Utilities"]
 Ctrl --> Local["Local Storage & Theme"]
-Ctrl --> Shared["Shared Widgets"]
+Ctrl --> Shared["Enhanced Shared Widgets"]
 Net --> API["Payment Gateways / Accounting APIs"]
 Local --> Auth["Firebase Auth"]
 ```
@@ -231,8 +225,10 @@ Local --> Auth["Firebase Auth"]
 - [lib/core/data/local/storage_service.dart](file://lib/core/data/local/storage_service.dart)
 - [lib/core/data/local/theme_service.dart](file://lib/core/data/local/theme_service.dart)
 - [lib/core/services/firebase_google_auth.dart](file://lib/core/services/firebase_google_auth.dart)
-- [lib/shared/widgets/custom_table/custom_table.dart](file://lib/shared/widgets/custom_table/custom_table.dart)
-- [lib/shared/widgets/custom_timeline/custom_payment_timeline.dart](file://lib/shared/widgets/custom_timeline/custom_payment_timeline.dart)
+- [lib/shared/widgets/custom_container.dart:1-49](file://lib/shared/widgets/custom_container.dart#L1-L49)
+- [lib/shared/widgets/shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [lib/shared/widgets/custom_button/custom_primary_button.dart:1-76](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L1-L76)
+- [lib/shared/widgets/custom_table/custom_table_status.dart:1-99](file://lib/shared/widgets/custom_table/custom_table_status.dart#L1-L99)
 
 ## Detailed Component Analysis
 
@@ -287,7 +283,7 @@ The transaction list screen integrates:
 - A filter widget for payment method selection
 - A calendar widget for date range selection
 - An expandable row component for detailed info
-- A details screen for individual transactions
+- An enhanced details screen for individual transactions with improved visual presentation
 
 ```mermaid
 sequenceDiagram
@@ -296,7 +292,7 @@ participant View as "TransactionView"
 participant Table as "TransactionViewTable"
 participant Filter as "TransactionViewTableFilter"
 participant Calendar as "TransactionCalendar"
-participant Details as "TransactionDetailsView"
+participant Details as "EnhancedTransactionDetailsView"
 User->>View : Open Transactions
 View->>Table : Render transaction rows
 User->>Filter : Select payment method filter
@@ -307,7 +303,7 @@ User->>Table : Tap row to expand
 Table-->>User : Show expanded details
 User->>Table : Tap row to view details
 Table->>Details : Navigate with TransactionModel
-Details-->>User : Display transaction details
+Details-->>User : Display enhanced transaction details
 ```
 
 **Diagram sources**
@@ -316,7 +312,7 @@ Details-->>User : Display transaction details
 - [lib/features/transaction/widgets/transaction_view_widgets/transaction_view_table_filter.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_view_table_filter.dart)
 - [lib/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart)
 - [lib/features/transaction/widgets/transaction_view_widgets/transaction_table_expanded.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_table_expanded.dart)
-- [lib/features/transaction/views/transaction_details_view.dart](file://lib/features/transaction/views/transaction_details_view.dart)
+- [lib/features/transaction/views/transaction_details_view.dart:1-43](file://lib/features/transaction/views/transaction_details_view.dart#L1-L43)
 
 **Section sources**
 - [lib/features/transaction/views/transaction_view.dart](file://lib/features/transaction/views/transaction_view.dart)
@@ -324,7 +320,7 @@ Details-->>User : Display transaction details
 - [lib/features/transaction/widgets/transaction_view_widgets/transaction_view_table_filter.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_view_table_filter.dart)
 - [lib/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart)
 - [lib/features/transaction/widgets/transaction_view_widgets/transaction_table_expanded.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_table_expanded.dart)
-- [lib/features/transaction/views/transaction_details_view.dart](file://lib/features/transaction/views/transaction_details_view.dart)
+- [lib/features/transaction/views/transaction_details_view.dart:1-43](file://lib/features/transaction/views/transaction_details_view.dart#L1-L43)
 
 ### Widget Libraries for Transactions
 Reusable components include:
@@ -332,6 +328,9 @@ Reusable components include:
 - Payment Timeline: Visual timeline for payment stages
 - Payment Dropdown: Dropdowns for selecting payment methods
 - Payment Dialogs: Dialogs for initiating and confirming payments
+- Enhanced Containers: Custom container with gradient backgrounds and shared container with flexible styling
+- Typography System: Custom primary text with responsive design and consistent theming
+- Button Components: Primary buttons with customizable styling, responsive sizing, and shadow effects
 
 ```mermaid
 graph TB
@@ -343,6 +342,10 @@ CPDD --> CPD["custom_payment_dialog.dart"]
 CPDD --> CPDM["custom_payment_dialog_method.dart"]
 CPDD --> CPSD["custom_payment_success_dialog.dart"]
 CPT["custom_payment_timeline.dart"]
+CCT["custom_container.dart"] --> CSC["shared_container.dart"]
+CCT --> CPTXT["custom_primary_text.dart"]
+CBC["custom_primary_button.dart"]
+CPTXT --> Colors["colors.dart"]
 ```
 
 **Diagram sources**
@@ -356,18 +359,28 @@ CPT["custom_payment_timeline.dart"]
 - [lib/shared/widgets/custom_dialog/custom_payment_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart)
 - [lib/shared/widgets/custom_dialog/custom_payment_dialog_method.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog_method.dart)
 - [lib/shared/widgets/custom_dialog/custom_payment_success_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_success_dialog.dart)
+- [lib/shared/widgets/custom_container.dart:1-49](file://lib/shared/widgets/custom_container.dart#L1-L49)
+- [lib/shared/widgets/shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [lib/shared/widgets/custom_button/custom_primary_button.dart:1-76](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L1-L76)
+- [lib/shared/widgets/custom_text/custom_primary_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L43)
+- [lib/core/constant/colors.dart:1-128](file://lib/core/constant/colors.dart#L1-L128)
 
 **Section sources**
 - [lib/shared/widgets/custom_table/custom_table.dart](file://lib/shared/widgets/custom_table/custom_table.dart)
 - [lib/shared/widgets/custom_table/custom_table_header.dart](file://lib/shared/widgets/custom_table/custom_table_header.dart)
 - [lib/shared/widgets/custom_table/custom_table_row.dart](file://lib/shared/widgets/custom_table/custom_table_row.dart)
-- [lib/shared/widgets/custom_table/custom_table_status.dart](file://lib/shared/widgets/custom_table/custom_table_status.dart)
+- [lib/shared/widgets/custom_table/custom_table_status.dart:1-99](file://lib/shared/widgets/custom_table/custom_table_status.dart#L1-L99)
 - [lib/shared/widgets/custom_timeline/custom_payment_timeline.dart](file://lib/shared/widgets/custom_timeline/custom_payment_timeline.dart)
 - [lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart)
 - [lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart)
 - [lib/shared/widgets/custom_dialog/custom_payment_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart)
 - [lib/shared/widgets/custom_dialog/custom_payment_dialog_method.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog_method.dart)
 - [lib/shared/widgets/custom_dialog/custom_payment_success_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_success_dialog.dart)
+- [lib/shared/widgets/custom_container.dart:1-49](file://lib/shared/widgets/custom_container.dart#L1-L49)
+- [lib/shared/widgets/shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [lib/shared/widgets/custom_button/custom_primary_button.dart:1-76](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L1-L76)
+- [lib/shared/widgets/custom_text/custom_primary_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L43)
+- [lib/core/constant/colors.dart:1-128](file://lib/core/constant/colors.dart#L1-L128)
 
 ### Business Logic: Categorization, Revenue/Expense Tracking, Analytics
 - Categorization: The transaction type field supports categorizing entries such as "Order" for sales-related transactions.
@@ -488,6 +501,72 @@ ViewDetails --> [*]
 - [lib/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart](file://lib/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart)
 - [lib/features/transaction/views/transaction_details_view.dart](file://lib/features/transaction/views/transaction_details_view.dart)
 
+## UI Enhancement Analysis
+
+### Enhanced Transaction Details Interface
+The transaction details interface has been significantly improved with a modern card-based design system:
+
+#### Layout and Spacing
+- **Custom Container System**: Enhanced container components with gradient backgrounds and responsive sizing
+- **Shared Container**: Flexible container with customizable borders, shadows, and rounded corners
+- **Responsive Spacing**: Consistent spacing using Flutter ScreenUtil for adaptive layouts across devices
+
+#### Typography System
+- **Custom Primary Text**: Comprehensive typography component with Google Fonts integration
+- **Consistent Sizing**: Responsive font sizes using screen-relative units (sp, w, h)
+- **Theming Support**: Automatic dark/light mode color adaptation
+
+#### Visual Elements
+- **Card-Based Design**: Elevated content containers with proper shadows and rounded corners
+- **Status Indicators**: Dynamic status badges with color-coded theming based on transaction states
+- **Payment Visualization**: Enhanced payment method display with card imagery and masked number formatting
+
+#### Button Enhancements
+- **Custom Primary Button**: Fully customizable button component with responsive design
+- **Gradient Support**: Optional gradient backgrounds and custom border radii
+- **Shadow Effects**: Configurable box shadows for depth perception
+- **Responsive Sizing**: Adaptive dimensions based on screen size
+
+```mermaid
+graph TB
+subgraph "Enhanced UI Components"
+EDV["Enhanced TransactionDetailsView"] --> CC["CustomContainer"]
+EDV --> SC["SharedContainer"]
+EDV --> CPT["CustomPrimaryText"]
+EDV --> TDI["TransactionDetailsInfo"]
+EDV --> TDB["TransactionDetailsInfoButton"]
+end
+subgraph "Visual Enhancements"
+CC --> BG["Gradient Backgrounds"]
+SC --> Border["Custom Borders"]
+SC --> Shadow["Box Shadows"]
+CPT --> Theme["Dark/Light Theming"]
+TDI --> Status["Dynamic Status Badges"]
+TDI --> Payment["Card Visualization"]
+TDB --> ButtonStyle["Custom Button Styling"]
+end
+```
+
+**Diagram sources**
+- [lib/features/transaction/views/transaction_details_view.dart:1-43](file://lib/features/transaction/views/transaction_details_view.dart#L1-L43)
+- [lib/shared/widgets/custom_container.dart:1-49](file://lib/shared/widgets/custom_container.dart#L1-L49)
+- [lib/shared/widgets/shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [lib/shared/widgets/custom_text/custom_primary_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L43)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart:1-150](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart#L1-L150)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart:1-32](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart#L1-L32)
+- [lib/shared/widgets/custom_button/custom_primary_button.dart:1-76](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L1-L76)
+- [lib/shared/widgets/custom_table/custom_table_status.dart:1-99](file://lib/shared/widgets/custom_table/custom_table_status.dart#L1-L99)
+
+**Section sources**
+- [lib/features/transaction/views/transaction_details_view.dart:1-43](file://lib/features/transaction/views/transaction_details_view.dart#L1-L43)
+- [lib/shared/widgets/custom_container.dart:1-49](file://lib/shared/widgets/custom_container.dart#L1-L49)
+- [lib/shared/widgets/shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [lib/shared/widgets/custom_text/custom_primary_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L43)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart:1-150](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart#L1-L150)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart:1-32](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart#L1-L32)
+- [lib/shared/widgets/custom_button/custom_primary_button.dart:1-76](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L1-L76)
+- [lib/shared/widgets/custom_table/custom_table_status.dart:1-99](file://lib/shared/widgets/custom_table/custom_table_status.dart#L1-L99)
+
 ## Dependency Analysis
 The Transaction feature depends on shared widgets and core utilities for consistent UI and reliable network operations.
 
@@ -507,11 +586,19 @@ TCtrl --> Storage["storage_service.dart"]
 TCtrl --> Theme["theme_service.dart"]
 TCtrl --> DatePick["date_picker.dart"]
 TCtrl --> Auth["firebase_google_auth.dart"]
+TDCtrl --> TDI["transaction_details_info.dart"]
+TDCtrl --> TDB["transaction_details_info_button.dart"]
+TDI --> CPTXT["custom_primary_text.dart"]
+TDI --> CTS["custom_table_status.dart"]
+TDI --> SC["shared_container.dart"]
+TDI --> Colors["colors.dart"]
+TDB --> CBC["custom_primary_button.dart"]
 ```
 
 **Diagram sources**
 - [lib/features/transaction/bindings/transaction_bindings.dart:1-12](file://lib/features/transaction/bindings/transaction_bindings.dart#L1-L12)
 - [lib/features/transaction/controller/transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
+- [lib/features/transaction/controller/transaction_details_controller.dart:1-17](file://lib/features/transaction/controller/transaction_details_controller.dart#L1-L17)
 - [lib/features/transaction/models/transaction_model.dart:1-18](file://lib/features/transaction/models/transaction_model.dart#L1-L18)
 - [lib/shared/widgets/custom_table/custom_table.dart](file://lib/shared/widgets/custom_table/custom_table.dart)
 - [lib/shared/widgets/custom_timeline/custom_payment_timeline.dart](file://lib/shared/widgets/custom_timeline/custom_payment_timeline.dart)
@@ -525,10 +612,17 @@ TCtrl --> Auth["firebase_google_auth.dart"]
 - [lib/core/data/local/theme_service.dart](file://lib/core/data/local/theme_service.dart)
 - [lib/core/utils/date_picker.dart](file://lib/core/utils/date_picker.dart)
 - [lib/core/services/firebase_google_auth.dart](file://lib/core/services/firebase_google_auth.dart)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart:1-150](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart#L1-L150)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart:1-32](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart#L1-L32)
+- [lib/shared/widgets/custom_text/custom_primary_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L43)
+- [lib/shared/widgets/custom_table/custom_table_status.dart:1-99](file://lib/shared/widgets/custom_table/custom_table_status.dart#L1-L99)
+- [lib/shared/widgets/shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [lib/core/constant/colors.dart:1-128](file://lib/core/constant/colors.dart#L1-L128)
 
 **Section sources**
 - [lib/features/transaction/bindings/transaction_bindings.dart:1-12](file://lib/features/transaction/bindings/transaction_bindings.dart#L1-L12)
 - [lib/features/transaction/controller/transaction_controller.dart:1-66](file://lib/features/transaction/controller/transaction_controller.dart#L1-L66)
+- [lib/features/transaction/controller/transaction_details_controller.dart:1-17](file://lib/features/transaction/controller/transaction_details_controller.dart#L1-L17)
 - [lib/features/transaction/models/transaction_model.dart:1-18](file://lib/features/transaction/models/transaction_model.dart#L1-L18)
 - [lib/shared/widgets/custom_table/custom_table.dart](file://lib/shared/widgets/custom_table/custom_table.dart)
 - [lib/shared/widgets/custom_timeline/custom_payment_timeline.dart](file://lib/shared/widgets/custom_timeline/custom_payment_timeline.dart)
@@ -542,6 +636,12 @@ TCtrl --> Auth["firebase_google_auth.dart"]
 - [lib/core/data/local/theme_service.dart](file://lib/core/data/local/theme_service.dart)
 - [lib/core/utils/date_picker.dart](file://lib/core/utils/date_picker.dart)
 - [lib/core/services/firebase_google_auth.dart](file://lib/core/services/firebase_google_auth.dart)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart:1-150](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info.dart#L1-L150)
+- [lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart:1-32](file://lib/features/transaction/widgets/transaction_details_widgets/transaction_details_info_button.dart#L1-L32)
+- [lib/shared/widgets/custom_text/custom_primary_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L43)
+- [lib/shared/widgets/custom_table/custom_table_status.dart:1-99](file://lib/shared/widgets/custom_table/custom_table_status.dart#L1-L99)
+- [lib/shared/widgets/shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [lib/core/constant/colors.dart:1-128](file://lib/core/constant/colors.dart#L1-L128)
 
 ## Performance Considerations
 - Virtualization: Use virtualized lists for large transaction datasets to reduce memory and improve scrolling performance.
@@ -549,12 +649,14 @@ TCtrl --> Auth["firebase_google_auth.dart"]
 - Lazy Loading: Paginate transaction lists and load data incrementally.
 - Image Optimization: Cache and resize images in transaction details where applicable.
 - Network Efficiency: Batch API calls and reuse connections; implement exponential backoff for retries.
+- **Enhanced UI Performance**: Utilize efficient container components and avoid unnecessary widget rebuilds through proper state management.
 
 ## Troubleshooting Guide
 - Empty Transaction List: Verify network connectivity and authentication state; check headers manager for missing tokens.
 - Filter Not Working: Confirm dropdown items and event handlers are wired correctly; ensure state updates trigger rebuilds.
 - Calendar Range Issues: Validate date parsing and timezone handling; ensure selected range boundaries are inclusive.
 - Payment Dialog Failures: Inspect dialog callbacks and gateway responses; log error messages via the global error model.
+- **Enhanced UI Issues**: Check container component properties and ensure proper theming; verify responsive sizing calculations.
 
 **Section sources**
 - [lib/core/data/networks/headers_manager.dart](file://lib/core/data/networks/headers_manager.dart)
@@ -563,11 +665,12 @@ TCtrl --> Auth["firebase_google_auth.dart"]
 - [lib/shared/widgets/custom_dialog/custom_payment_dialog.dart](file://lib/shared/widgets/custom_dialog/custom_payment_dialog.dart)
 
 ## Conclusion
-The Transaction Management system provides a modular foundation for tracking, filtering, and reporting business transactions. Its controller-driven architecture, reusable widget libraries, and integration points enable scalable enhancements for rent payments, furniture sales, and service fees. Future improvements should focus on real-time data synchronization, advanced analytics, and robust compliance tooling.
+The Transaction Management system provides a modular foundation for tracking, filtering, and reporting business transactions. Its controller-driven architecture, reusable widget libraries, and integration points enable scalable enhancements for rent payments, furniture sales, and service fees. The recent UI enhancements significantly improve the transaction details interface with modern card-based design, responsive typography, and enhanced visual presentation. Future improvements should focus on real-time data synchronization, advanced analytics, and robust compliance tooling.
 
 ## Appendices
 - Dependencies Overview: The project leverages Flutter SDK, GetX for state management, and Firebase for authentication. Shared widgets and charts enhance UI consistency and interactivity.
 
 **Section sources**
-- [pubspec.yaml:30-66](file://pubspec.yaml#L30-L66)
-- [README.md:1-17](file://README.md#L1-L17)
+- [lib/core/constant/colors.dart:1-128](file://lib/core/constant/colors.dart#L1-L128)
+- [lib/shared/widgets/custom_button/custom_primary_button.dart:1-76](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L1-L76)
+- [lib/shared/widgets/custom_table/custom_table_status.dart:1-99](file://lib/shared/widgets/custom_table/custom_table_status.dart#L1-L99)

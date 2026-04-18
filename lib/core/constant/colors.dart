@@ -18,6 +18,7 @@ class AppColors {
   static const Color lightGreyColor = Color(0xFF364153);
   static const Color lightTextColor = Color(0xFF737373);
   static const Color boxColor = Color(0xFFE8E6EB);
+  static const Color errorColor = Color(0xFFEC1010);
   static const Color containerColor = Color(0xFFF3F3F3);
   static const Color secondaryTextColor = Color(0xFF4A5565);
   static const Color errorTextColor = Color(0xFF733E0A);
@@ -32,6 +33,7 @@ class AppColors {
   static const Color fieldBorderColor = Color(0xFFEAEAEA);
   static const Color fieldBorderColorLight = Color(0xFFE5E7EB);
   static const Color primaryBorderColor = Color(0xFFE9E9E9);
+  static const Color whiteBorderColor = Color(0xFFB6B0C2);
   static const Color fieldColor = Color(0xFFF2F2F2);
   static const Color labelColor = Color(0xFF1F1F1F);
   static const Color shadowColor = Color(0xFF14142B);
@@ -55,6 +57,7 @@ class AppColors {
 
   static const Color darkBorderColor = Color(0xFF434953);
   static const Color darkPrimaryTextColor = Color(0xFFBABABA);
+  static const Color darkGreyTextColor = Color(0xFF585858);
   static const Color darkPendingBGColor = Color(0xFF6B5A2B);
   static const Color darkPendingTextColor = Color(0xFFFFFBF0);
   static const Color darkQuoteBGColor = Color(0xFF6155F5);

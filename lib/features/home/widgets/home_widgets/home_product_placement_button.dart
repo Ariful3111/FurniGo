@@ -64,7 +64,7 @@ class HomeProductPlacementButton extends GetWidget<HomeController> {
           width: 30.w,
           padding: EdgeInsets.all(3.50.r),
           radius: 20.r,
-          border: Border.all(width: 0.44.r, color: Color(0xFFB6B0C2)),
+          border: Border.all(width: 0.44.r, color: AppColors.whiteBorderColor),
           child: Column(
             children: List.generate(icon.length, (index) {
               return Container(

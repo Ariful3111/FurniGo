@@ -30,7 +30,7 @@ class CustomProductText extends StatelessWidget {
               fontSize: 12.sp,
               color: isDark
                   ? AppColors.darkPrimaryTextColor
-                  : Color(0xFF585858),
+                  : AppColors.darkGreyTextColor,
             ),
             SizedBox(width: 8.w),
             Flexible(

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 
-class HeaderButton extends StatelessWidget {
+class GlassButton extends StatelessWidget {
   final double height;
   final double width;
   final double radius;
   final VoidCallback onTap;
   final Widget child;
-  const HeaderButton({
+  const GlassButton({
     super.key,
     required this.height,
     required this.width,
