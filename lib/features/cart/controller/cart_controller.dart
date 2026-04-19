@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/cart/controller/select_all_cart_item_controller.dart';
 import 'package:zb_dezign/features/cart/controller/select_cart_item_controller.dart';
 import 'package:zb_dezign/features/cart/models/cart_model.dart';
 import 'package:zb_dezign/features/cart/repositories/get_cart_repo.dart';
@@ -7,9 +8,11 @@ import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 class CartController extends GetxController {
   final GetCartRepository getCartRepository;
   final SelectCartItemController selectCartItemController;
+  final SelectAllCartItemsController selectAllCartItemsController;
   CartController({
     required this.getCartRepository,
     required this.selectCartItemController,
+    required this.selectAllCartItemsController,
   });
   RxBool isLoading = false.obs;
   RxBool isAllSelected = false.obs;
@@ -57,7 +60,7 @@ class CartController extends GetxController {
     );
   }
 
-  void toggleSelectAll() {
+  void toggleSelectAll() async {
     if (isAllSelected.value) {
       selectedItems.clear();
       isAllSelected.value = false;
@@ -65,6 +68,10 @@ class CartController extends GetxController {
       selectedItems.addAll(carts.value?.items?.map((e) => e.id ?? 0) ?? []);
       isAllSelected.value = true;
     }
+    await selectAllCartItemsController.toggleItems(
+      cartID: carts.value?.id ?? "0",
+      selected: isAllSelected.value,
+    );
   }
 
   void deleteItem({required int id}) {}
