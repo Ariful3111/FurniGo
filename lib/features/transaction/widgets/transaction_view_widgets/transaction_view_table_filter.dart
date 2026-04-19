@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/transaction/controller/transaction_calender_controller.dart';
 import 'package:zb_dezign/features/transaction/controller/transaction_controller.dart';
 import 'package:zb_dezign/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
@@ -17,9 +18,12 @@ class TransactionViewTableFilter extends GetWidget<TransactionController> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
-        showDialog(context: context, builder: (context){
-          return TransactionCalender();
-        });
+        showDialog(
+          context: context,
+          builder: (context) {
+            return TransactionCalender();
+          },
+        );
       },
       child: Row(
         children: [
@@ -53,7 +57,7 @@ class TransactionViewTableFilter extends GetWidget<TransactionController> {
                     decoration: BoxDecoration(
                       color: isDark
                           ? AppColors.darkPrimaryTextColor
-                          : Color(0xFF989898),
+                          : AppColors.darkSecondaryTextColor,
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -90,7 +94,9 @@ class TransactionViewTableFilter extends GetWidget<TransactionController> {
       text: text,
       fontSize: 12.sp,
       fontWeight: FontWeight.w400,
-      color: isDark ? AppColors.darkPrimaryTextColor : Color(0xFF989898),
+      color: isDark
+          ? AppColors.darkPrimaryTextColor
+          : AppColors.darkSecondaryTextColor,
     );
   }
 
@@ -101,7 +107,9 @@ class TransactionViewTableFilter extends GetWidget<TransactionController> {
         IconsPath.downArrow,
         height: 12.h,
         width: 12.w,
-        color: isDark ? AppColors.darkPrimaryTextColor : Color(0xFF989898),
+        color: isDark
+            ? AppColors.darkPrimaryTextColor
+            : AppColors.darkSecondaryTextColor,
       ),
     );
   }
