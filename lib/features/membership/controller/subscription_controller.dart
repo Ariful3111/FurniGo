@@ -12,6 +12,8 @@ class SubscriptionController extends GetxController {
       "isPrimary": false,
       "isPremium": false,
       "isActive": false,
+      "isExpire": true,
+      "isExpireSoon": false,
       "features": [
         "Free furniture collection pickup",
         "Member-only discounts on rentals",
@@ -26,6 +28,8 @@ class SubscriptionController extends GetxController {
       "isPrimary": true,
       "isPremium": false,
       "isActive": false,
+      "isExpire": false,
+      "isExpireSoon": false,
       "badge": "Most Popular",
       "features": [
         "AI room design & interior concepts",
@@ -40,7 +44,9 @@ class SubscriptionController extends GetxController {
       "buttonText": "Go Premium",
       "isPrimary": false,
       "isPremium": true,
+      "isExpire": false,
       "isActive": true,
+      "isExpireSoon": false,
       "features": [
         "Everything in Design Pro",
         "Free furniture collection & pickup",
