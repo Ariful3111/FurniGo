@@ -36,7 +36,9 @@ class BottomNavProfileItem extends GetWidget<BottomNavController> {
             SizedBox(height: 4.h),
             CustomPrimaryText(
               text: 'Profile',
-              color:isDark?AppColors.primaryBorderColor: controller.selectedIndex.value == index
+              color: isDark
+                  ? AppColors.primaryBorderColor
+                  : controller.selectedIndex.value == index
                   ? AppColors.secondaryColor
                   : AppColors.labelColor,
               fontSize: 12.sp,

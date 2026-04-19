@@ -3,6 +3,7 @@
 <cite>
 **Referenced Files in This Document**
 - [cart_controller.dart](file://lib/features/cart/controller/cart_controller.dart)
+- [delete_cart_item_controller.dart](file://lib/features/cart/controller/delete_cart_item_controller.dart)
 - [select_cart_item_controller.dart](file://lib/features/cart/controller/select_cart_item_controller.dart)
 - [select_all_cart_item_controller.dart](file://lib/features/cart/controller/select_all_cart_item_controller.dart)
 - [add_to_cart_controller.dart](file://lib/features/cart/controller/add_to_cart_controller.dart)
@@ -13,6 +14,7 @@
 - [add_to_cart_repo.dart](file://lib/features/cart/repositories/add_to_cart_repo.dart)
 - [select_cart_item_repo.dart](file://lib/features/cart/repositories/select_cart_item_repo.dart)
 - [select_all_cart_items_repo.dart](file://lib/features/cart/repositories/select_all_cart_items_repo.dart)
+- [delete_cart_item_repo.dart](file://lib/features/cart/repositories/delete_cart_item_repo.dart)
 - [cart_bindings.dart](file://lib/features/cart/bindings/cart_bindings.dart)
 - [cart_view.dart](file://lib/features/cart/views/cart_view.dart)
 - [checkout_view.dart](file://lib/features/cart/views/checkout_view.dart)
@@ -34,12 +36,12 @@
 
 ## Update Summary
 **Changes Made**
-- **Enhanced Cart Selection System**: Added granular item selection capabilities with new SelectCartItemController and SelectAllCartItemsController
-- **Comprehensive Selection Management**: Implemented reactive state management for individual and bulk cart item selection
-- **Improved UI Components**: Enhanced cart item widgets with integrated selection checkboxes and improved user interaction
-- **Advanced Repository Pattern**: Added new repositories for individual item toggling and bulk selection operations
-- **Enhanced Cart State Handling**: Improved cart controller with selection tracking and bulk operation support
-- **Expanded Binding Architecture**: Updated cart bindings to include new selection controllers and repositories
+- **Added Comprehensive Cart Item Deletion Functionality**: Introduced new DeleteCartItemController and DeleteCartItemRepository for individual item removal
+- **Enhanced CartController with deleteItem Method**: Integrated client-side state management and server synchronization for item deletion
+- **UI Improvements for Empty Cart State**: Enhanced cart view with better empty cart detection and display
+- **Delete Button Integration**: Added delete button functionality in cart item widgets and delete all functionality in cart header
+- **Complete Repository Pattern Integration**: Full integration of deletion endpoints through repository pattern implementation
+- **Improved User Experience**: Streamlined cart management with intuitive delete operations and visual feedback
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -50,70 +52,80 @@
 6. [Enhanced Selection System Implementation](#enhanced-selection-system-implementation)
 7. [Granular Item Selection Capabilities](#granular-item-selection-capabilities)
 8. [Bulk Selection Operations](#bulk-selection-operations)
-9. [Reactive State Management](#reactive-state-management)
-10. [Enhanced Repository Pattern Implementation](#enhanced-repository-pattern-implementation)
-11. [Improved UI Components with Selection Features](#improved-ui-components-with-selection-features)
-12. [Cart State Persistence and Synchronization](#cart-state-persistence-and-synchronization)
-13. [Performance Considerations](#performance-considerations)
-14. [Troubleshooting Guide](#troubleshooting-guide)
-15. [Conclusion](#conclusion)
+9. [Comprehensive Item Deletion System](#comprehensive-item-deletion-system)
+10. [Individual Item Deletion Implementation](#individual-item-deletion-implementation)
+11. [Delete All Functionality](#delete-all-functionality)
+12. [Reactive State Management](#reactive-state-management)
+13. [Enhanced Repository Pattern Implementation](#enhanced-repository-pattern-implementation)
+14. [Improved UI Components with Deletion Features](#improved-ui-components-with-deletion-features)
+15. [Cart State Persistence and Synchronization](#cart-state-persistence-and-synchronization)
+16. [Performance Considerations](#performance-considerations)
+17. [Troubleshooting Guide](#troubleshooting-guide)
+18. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the comprehensive Shopping Cart system within the ZB-DEZINE Flutter application. The system has undergone significant enhancements including granular item selection capabilities, bulk selection operations, reactive state management, and improved UI components. The system maintains its modernized API-driven architecture with repository pattern implementation while adding robust selection management and performance optimizations.
+This document describes the comprehensive Shopping Cart system within the ZB-DEZINE Flutter application. The system has undergone significant enhancements including granular item selection capabilities, bulk selection operations, reactive state management, comprehensive item deletion functionality, and improved UI components. The system maintains its modernized API-driven architecture with repository pattern implementation while adding robust selection management, performance optimizations, and streamlined cart deletion operations.
 
-**Updated** The cart system has been enhanced with granular item selection capabilities through new SelectCartItemController and SelectAllCartItemsController, comprehensive selection management with reactive state handling, improved UI components with integrated selection checkboxes, expanded repository pattern implementation with dedicated selection endpoints, and enhanced cart state synchronization across selection operations.
+**Updated** The cart system has been enhanced with comprehensive item deletion capabilities through new DeleteCartItemController and DeleteCartItemRepository, granular item selection through SelectCartItemController and SelectAllCartItemsController, comprehensive selection management with reactive state handling, improved UI components with integrated selection and deletion features, expanded repository pattern implementation with dedicated selection and deletion endpoints, enhanced cart state synchronization across selection and deletion operations, and comprehensive debugging capabilities for cart management operations.
 
 ## Project Structure
-The shopping cart functionality is organized into an enhanced API-driven architecture with improved repository pattern implementation, granular selection capabilities, and redesigned UI components:
+The shopping cart functionality is organized into an enhanced API-driven architecture with improved repository pattern implementation, granular selection capabilities, comprehensive deletion system, and redesigned UI components:
 
 ```mermaid
 graph TB
-subgraph "Enhanced Selection Management Architecture"
+subgraph "Enhanced Selection and Deletion Management Architecture"
 CC["CartController<br/>Enhanced State Management"] --> GCR["GetCartRepository<br/>Improved API Parsing"]
 CC --> SCI["SelectCartItemController<br/>Individual Item Selection"]
 CC --> SAC["SelectAllCartItemsController<br/>Bulk Selection Operations"]
+CC --> DCI["DeleteCartItemController<br/>Individual Item Deletion"]
 CC --> CM["CartModel<br/>Enhanced Serialization"]
 GCR --> GN["GetNetwork<br/>HTTP Client"]
 SCI --> SCIR["SelectCartItemRepository<br/>Item Toggle Endpoint"]
 SAC --> SACR["SelectAllCartItemsRepository<br/>Bulk Toggle Endpoint"]
+DCI --> DCR["DeleteCartItemRepository<br/>Item Remove Endpoint"]
 end
-subgraph "Enhanced UI Components"
+subgraph "Enhanced UI Components with Deletion Features"
 CIB["CartItemBox<br/>Enhanced Item Widget"] --> CII["CartItemInfo<br/>Selection-Aware Image Handling"]
 CII --> CNI["CachedNetworkImage<br/>Better Product Images"]
 CII --> CBC["CustomCheckBox<br/>Integrated Selection Control"]
+CIB --> DELETEBTN["Delete Button<br/>Circle Design with Icon"]
 CIB --> QTY["Quantity Controls<br/>Improved Layout"]
 CSI["CartSelectItem<br/>Bulk Selection Header"] --> BULK["Select All Checkbox"]
-CSI --> DELETE["Delete All Button"]
+CSI --> DELETEALL["Delete All Button<br/>Bulk Operation"]
 end
 subgraph "Reactive Order Summary"
 COS["CartOrderSummery<br/>Dynamic Pricing"] --> RX["Reactive Calculations"]
 COS --> PRECISION["toPrecision(2)<br/>Decimal Formatting"]
 end
-subgraph "Selection State Management"
+subgraph "Selection and Deletion State Management"
 SELECTED["selectedItems Observable<br/>Track Selected Items"] --> STATE["Reactive State Updates"]
 STATE --> SYNC["State Synchronization<br/>With Server"]
-SYNC --> ERROR["Enhanced Error Handling<br/>Selection Failures"]
+SYNC --> ERROR["Enhanced Error Handling<br/>Selection/Deletion Failures"]
 end
 ```
 
 **Diagram sources**
-- [cart_controller.dart:1-85](file://lib/features/cart/controller/cart_controller.dart#L1-L85)
+- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
-- [cart_item_info.dart:35-49](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L35-L49)
-- [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
 
 **Section sources**
-- [cart_controller.dart:1-85](file://lib/features/cart/controller/cart_controller.dart#L1-L85)
+- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
-- [cart_item_info.dart:1-99](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L99)
-- [cart_select_item.dart:1-53](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L53)
+- [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
+- [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
 
 ## Core Components
-The cart system consists of enhanced components with improved functionality, granular selection capabilities, and modernized architecture:
+The cart system consists of enhanced components with improved functionality, granular selection capabilities, comprehensive deletion system, and modernized architecture:
 
-- **CartController**: Enhanced state management with selection tracking, debugging capabilities, and improved API integration
+- **CartController**: Enhanced state management with selection tracking, deletion handling, debugging capabilities, and improved API integration
+- **DeleteCartItemController**: New controller for individual item deletion with loading states and error handling
+- **DeleteCartItemRepository**: New repository for item removal API communication with proper error handling
 - **SelectCartItemController**: New controller for individual item selection toggling with loading states and error handling
 - **SelectAllCartItemsController**: New controller for bulk selection operations with comprehensive state management
 - **GetCartRepository**: Improved API response parsing with nested data structure handling and better error management
@@ -121,88 +133,101 @@ The cart system consists of enhanced components with improved functionality, gra
 - **SelectAllCartItemsRepository**: New repository for bulk selection API operations
 - **CartModel**: Enhanced serialization support with comprehensive JSON parsing for cart items, options, and selection state
 - **CartItem**: Enhanced item model with isSelected boolean property and selection tracking
-- **CartItemBox**: Redesigned item component with improved layout and better quantity control positioning
+- **CartItemBox**: Redesigned item component with improved layout, better quantity control positioning, and integrated delete button
 - **CartItemInfo**: Enhanced item information component with CachedNetworkImage for better image handling and integrated selection checkbox
-- **CartSelectItem**: Enhanced header component with bulk selection controls and delete all functionality
+- **CartSelectItem**: Enhanced header component with bulk selection controls, delete all functionality, and improved visual design
 - **CartOrderSummery**: Reactive order summary with dynamic pricing calculations and decimal precision formatting
 - **CheckoutOrderCalculation**: Enhanced checkout pricing with promotional discount handling
-- **Debugging Integration**: Real-time cart length monitoring and enhanced error logging for selection operations
+- **Debugging Integration**: Real-time cart length monitoring and enhanced error logging for selection and deletion operations
 
 Key enhancements include:
 - **Granular Selection Management**: Individual item selection with server synchronization and client-side state tracking
 - **Bulk Selection Operations**: Comprehensive bulk selection capabilities with optimized API communication
-- **Enhanced State Synchronization**: Real-time state updates between client and server for selection changes
+- **Comprehensive Item Deletion**: Individual item removal with client-side state updates and server synchronization
+- **Delete All Functionality**: Bulk deletion operations with improved user interface integration
+- **Enhanced State Synchronization**: Real-time state updates between client and server for selection and deletion changes
 - **Improved API Response Parsing**: Repository now handles nested "data" structure from API responses
 - **Enhanced Image Handling**: CachedNetworkImage provides better performance and fallback handling
 - **Better Checkbox Positioning**: CustomCheckBox positioned correctly in top-left corner of product image with reactive state binding
+- **Delete Button Integration**: Circular delete button with visual feedback and proper icon integration
 - **Reactive Pricing Calculations**: Dynamic price updates based on cart state changes
-- **Debugging Support**: Real-time cart length monitoring and enhanced error logging for selection operations
+- **Debugging Support**: Real-time cart length monitoring and enhanced error logging for selection and deletion operations
 - **Decimal Precision**: Consistent two-decimal formatting for all monetary values
-- **Improved Layout**: Better spacing and alignment in cart item components with selection integration
+- **Improved Layout**: Better spacing and alignment in cart item components with selection and deletion integration
+- **Empty Cart State Handling**: Enhanced empty cart detection and display with improved user experience
 
 **Section sources**
-- [cart_controller.dart:1-85](file://lib/features/cart/controller/cart_controller.dart#L1-L85)
+- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
+- [delete_cart_item_repo.dart:1-23](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L1-L23)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 - [cart_model.dart:68-120](file://lib/features/cart/models/cart_model.dart#L68-L120)
-- [cart_item_info.dart:35-49](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L35-L49)
-- [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
 
 ## Architecture Overview
-The cart system follows an enhanced API-driven architecture with improved repository pattern implementation, granular selection capabilities, and debugging integration:
+The cart system follows an enhanced API-driven architecture with improved repository pattern implementation, granular selection capabilities, comprehensive deletion system, and debugging integration:
 
 ```mermaid
 graph TB
-subgraph "Enhanced Selection Management Layer"
+subgraph "Enhanced Selection and Deletion Management Layer"
 CC["CartController<br/>Enhanced Reactive State"] --> DEBUG["debugPrint<br/>Cart Monitoring"]
 CC --> GCR["GetCartRepository<br/>Improved API Parsing"]
 CC --> SCI["SelectCartItemController<br/>Individual Selection"]
 CC --> SAC["SelectAllCartItemsController<br/>Bulk Selection"]
+CC --> DCI["DeleteCartItemController<br/>Individual Deletion"]
 CC --> CM["CartModel<br/>Enhanced Serialization"]
 CC --> SELECTED["selectedItems Observable<br/>Selection Tracking"]
+CC --> DELETEITEM["deleteItem Method<br/>Client-State Management"]
 end
 subgraph "Enhanced Repository Layer"
 GCR --> GN["GetNetwork<br/>HTTP Client"]
 SCI --> SCIR["SelectCartItemRepository<br/>Item Toggle Endpoint"]
 SAC --> SACR["SelectAllCartItemsRepository<br/>Bulk Toggle Endpoint"]
+DCI --> DCR["DeleteCartItemRepository<br/>Item Remove Endpoint"]
 GCR --> PARSE["Nested Data Parsing<br/>json['data'] wrapper"]
 GCR --> ERROR["Enhanced Error Handling<br/>Better Error Messages"]
 SCIR --> ITEM_API["/api/cart/item/{id}/toggle<br/>Individual Item Toggle"]
 SACR --> BULK_API["/api/cart/select-all<br/>Bulk Selection Endpoint"]
+DCR --> DELETE_API["/api/cart/item/{id}/remove<br/>Individual Item Removal"]
 end
-subgraph "Enhanced UI Components"
+subgraph "Enhanced UI Components with Deletion Features"
 CIB["CartItemBox<br/>Improved Layout"] --> CII["CartItemInfo<br/>CachedNetworkImage"]
 CII --> CNI["CachedNetworkImage<br/>Better Performance"]
 CII --> CBC["CustomCheckBox<br/>Top-Left Positioning<br/>Reactive Selection Binding"]
+CIB --> DELETEBTN["Delete Button<br/>Circle Design<br/>Visual Feedback"]
 CIB --> QTY["Quantity Controls<br/>Better Spacing"]
 CSI["CartSelectItem<br/>Bulk Selection Header"] --> BULK_CB["Select All Checkbox<br/>Reactive State Binding"]
-CSI --> DELETE_BTN["Delete All Button<br/>Bulk Operation"]
+CSI --> DELETE_ALL_BTN["Delete All Button<br/>Bulk Operation<br/>Visual Design"]
 COS["CartOrderSummery<br/>Reactive Calculations"] --> RX["toPrecision(2)<br/>Decimal Formatting"]
 end
-subgraph "Selection State Management"
+subgraph "Selection and Deletion State Management"
 SELECTED --> STATE_SYNC["State Synchronization<br/>Client-Server Sync"]
-STATE_SYNC --> SERVER_UPDATE["Server API Calls<br/>Selection Updates"]
-SERVER_UPDATE --> ERROR_HANDLING["Enhanced Error Handling<br/>Selection Failures"]
+STATE_SYNC --> SERVER_UPDATE["Server API Calls<br/>Selection/Deletion Updates"]
+SERVER_UPDATE --> ERROR_HANDLING["Enhanced Error Handling<br/>Selection/Deletion Failures"]
 ERROR_HANDLING --> USER_FEEDBACK["Error Snackbar<br/>User Feedback"]
 END
 ```
 
 **Diagram sources**
-- [cart_controller.dart:1-85](file://lib/features/cart/controller/cart_controller.dart#L1-L85)
+- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
-- [cart_item_info.dart:35-49](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L35-L49)
-- [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
 
 ## Detailed Component Analysis
 
 ### Enhanced Cart Controller Implementation
-The CartController now includes comprehensive selection management capabilities with improved debugging and state synchronization:
+The CartController now includes comprehensive selection management capabilities, deletion handling, and improved debugging and state synchronization:
 
 ```mermaid
 sequenceDiagram
 participant User as "User"
 participant Controller as "CartController"
+participant DeleteController as "DeleteCartItemController"
 participant SelectItemController as "SelectCartItemController"
 participant SelectAllController as "SelectAllCartItemsController"
 participant Repository as "GetCartRepository"
@@ -232,17 +257,26 @@ SelectItemController->>SelectItemController : Execute repository call
 SelectItemController->>SelectItemController : isLoading.value = false
 SelectItemController-->>Controller : Response success/failure
 Controller-->>User : UI Update with selection feedback
+User->>Controller : deleteItem(id)
+Controller->>Controller : Remove item from carts.value.items
+Controller->>Controller : Update selectedItems observable
+Controller->>Controller : Update isAllSelected.value
+Controller->>DeleteController : deleteCartItem(cartItemID, cartID)
+DeleteController->>DeleteController : Execute repository call
+DeleteController-->>Controller : Response success/failure
+Controller-->>User : UI Update with deletion feedback
 ```
 
 **Diagram sources**
-- [cart_controller.dart:27-85](file://lib/features/cart/controller/cart_controller.dart#L27-L85)
+- [cart_controller.dart:31-104](file://lib/features/cart/controller/cart_controller.dart#L31-L104)
+- [delete_cart_item_controller.dart:9-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L9-L25)
 - [select_cart_item_controller.dart:11-31](file://lib/features/cart/controller/select_cart_item_controller.dart#L11-L31)
 
 **Section sources**
-- [cart_controller.dart:1-85](file://lib/features/cart/controller/cart_controller.dart#L1-L85)
+- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
 
 ### Enhanced Selection System Implementation
-The new selection system provides granular and bulk selection capabilities with comprehensive state management:
+The new selection system provides granular and bulk selection capabilities with comprehensive state management and deletion integration:
 
 ```mermaid
 classDiagram
@@ -258,6 +292,10 @@ class CartController {
 +deleteAll()
 +increaseQty(id)
 +decreaseQty(id)
+}
+class DeleteCartItemController {
++RxBool isLoading
++deleteCartItem(cartItemID, cartID)
 }
 class SelectCartItemController {
 +RxBool isLoading
@@ -278,30 +316,160 @@ class CartItem {
 +num? subtotal
 +CartOption[]? options
 }
+class DeleteCartItemRepository {
++PostWithoutResponse postWithoutResponse
++execute(cartItemID, cartID) Either~ErrorModel, bool~
+}
 class SelectCartItemRepository {
++PostWithoutResponse postWithoutResponse
 +execute(cartItemID, cartID, selected) Either~ErrorModel, bool~
 }
 class SelectAllCartItemsRepository {
++PostWithoutResponse postWithoutResponse
 +execute(cartID, selected) Either~ErrorModel, bool~
 }
+CartController --> DeleteCartItemController
 CartController --> SelectCartItemController
 CartController --> SelectAllCartItemsController
 CartController --> CartItem
+DeleteCartItemController --> DeleteCartItemRepository
 SelectCartItemController --> SelectCartItemRepository
 SelectAllCartItemsController --> SelectAllCartItemsRepository
 ```
 
 **Diagram sources**
-- [cart_controller.dart:8-21](file://lib/features/cart/controller/cart_controller.dart#L8-L21)
+- [cart_controller.dart:8-20](file://lib/features/cart/controller/cart_controller.dart#L8-L20)
+- [delete_cart_item_controller.dart:6-8](file://lib/features/cart/controller/delete_cart_item_controller.dart#L6-L8)
 - [select_cart_item_controller.dart:6-9](file://lib/features/cart/controller/select_cart_item_controller.dart#L6-L9)
 - [select_all_cart_item_controller.dart:6-9](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L6-L9)
 - [cart_model.dart:68-89](file://lib/features/cart/models/cart_model.dart#L68-L89)
 
 **Section sources**
-- [cart_controller.dart:1-85](file://lib/features/cart/controller/cart_controller.dart#L1-L85)
+- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 - [cart_model.dart:68-120](file://lib/features/cart/models/cart_model.dart#L68-L120)
+
+### Comprehensive Item Deletion System
+The cart system now provides comprehensive item deletion capabilities with client-side state management and server synchronization:
+
+```mermaid
+classDiagram
+class DeleteCartItemController {
++DeleteCartItemRepository deleteCartItemRepository
++Future<void> deleteCartItem({cartItemID, cartID})
++Error handling with ErrorSnackbar
++Debug logging for successful deletions
+}
+class DeleteCartItemRepository {
++PostWithoutResponse postWithoutResponse
++Future<Either<ErrorModel, bool>> execute({cartItemID, cartID})
++DELETE endpoint : /api/cart/item/{id}/remove
++JSON body : {"cart_id" : cartID}
++Proper error handling and response parsing
+}
+class CartController {
++deleteItem(id) - Enhanced with client-side state management
++Removes item from carts.value.items
++Updates selectedItems observable
++Refreshes cart state
++Calls DeleteCartItemController for server sync
+}
+class CartItemBox {
++GestureDetector for delete button
++Circular delete button with trash icon
++Visual feedback on tap
++Integration with CartController.deleteItem
+}
+class CartView {
++Empty cart state detection
++Improved empty cart display
++Better user experience for empty carts
+}
+```
+
+**Diagram sources**
+- [delete_cart_item_controller.dart:6-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L6-L25)
+- [delete_cart_item_repo.dart:8-22](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L8-L22)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_view.dart:29-33](file://lib/features/cart/views/cart_view.dart#L29-L33)
+
+**Section sources**
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
+- [delete_cart_item_repo.dart:1-23](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L1-L23)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_view.dart:29-33](file://lib/features/cart/views/cart_view.dart#L29-L33)
+
+### Individual Item Deletion Implementation
+The individual item deletion system provides precise control over cart items with comprehensive state management and visual feedback:
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant DeleteButton as "Delete Button"
+participant Controller as "CartController"
+participant DeleteController as "DeleteCartItemController"
+participant DeleteRepo as "DeleteCartItemRepository"
+participant API as "Cart API"
+User->>DeleteButton : Tap Delete Button
+DeleteButton->>Controller : deleteItem(id)
+Controller->>Controller : Remove item from carts.value.items
+Controller->>Controller : Update selectedItems observable
+Controller->>Controller : Update isAllSelected.value
+Controller->>Controller : carts.refresh()
+Controller->>DeleteController : deleteCartItem(cartItemID, cartID)
+DeleteController->>DeleteController : isLoading.value = true
+DeleteController->>DeleteRepo : execute()
+DeleteRepo->>API : DELETE /api/cart/item/{id}/remove
+API-->>DeleteRepo : Success/Error Response
+DeleteRepo-->>DeleteController : Either<ErrorModel, bool>
+DeleteController->>DeleteController : isLoading.value = false
+DeleteController->>DeleteController : response.fold()
+DeleteController-->>Controller : Deletion Result
+Controller-->>DeleteButton : UI Update with deletion state
+```
+
+**Diagram sources**
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [delete_cart_item_controller.dart:9-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L9-L25)
+
+**Section sources**
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
+
+### Delete All Functionality
+The bulk deletion system provides efficient management of multiple cart items simultaneously with improved UI integration:
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant DeleteAllButton as "Delete All Button"
+participant Controller as "CartController"
+participant DeleteAllRepo as "DeleteAllCartItemsRepository"
+participant API as "Cart API"
+User->>DeleteAllButton : Tap Delete All
+DeleteAllButton->>Controller : deleteAll()
+Controller->>Controller : Current implementation (placeholder)
+Controller->>DeleteAllRepo : execute()
+DeleteAllRepo->>API : POST /api/cart/delete-all
+API-->>DeleteAllRepo : Success/Error Response
+DeleteAllRepo-->>Controller : Response
+Controller->>Controller : Placeholder implementation
+Controller-->>DeleteAllButton : UI Update
+```
+
+**Diagram sources**
+- [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
+- [cart_controller.dart:106](file://lib/features/cart/controller/cart_controller.dart#L106)
+
+**Section sources**
+- [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
+- [cart_controller.dart:106](file://lib/features/cart/controller/cart_controller.dart#L106)
 
 ### Granular Item Selection Capabilities
 The individual item selection system provides precise control over cart items with server synchronization:
@@ -332,12 +500,12 @@ Controller-->>CheckBox : UI Update with selection state
 
 **Diagram sources**
 - [cart_item_info.dart:38-47](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L38-L47)
-- [cart_controller.dart:49-61](file://lib/features/cart/controller/cart_controller.dart#L49-L61)
+- [cart_controller.dart:67-79](file://lib/features/cart/controller/cart_controller.dart#L67-L79)
 - [select_cart_item_controller.dart:11-31](file://lib/features/cart/controller/select_cart_item_controller.dart#L11-L31)
 
 **Section sources**
 - [cart_item_info.dart:35-49](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L35-L49)
-- [cart_controller.dart:49-61](file://lib/features/cart/controller/cart_controller.dart#L49-L61)
+- [cart_controller.dart:67-79](file://lib/features/cart/controller/cart_controller.dart#L67-L79)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 
 ### Bulk Selection Operations
@@ -370,16 +538,16 @@ Controller-->>SelectAllCheckBox : UI Update with bulk selection state
 
 **Diagram sources**
 - [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
-- [cart_controller.dart:63-75](file://lib/features/cart/controller/cart_controller.dart#L63-L75)
+- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
 - [select_all_cart_item_controller.dart:11-29](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L11-L29)
 
 **Section sources**
-- [cart_select_item.dart:1-53](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L53)
-- [cart_controller.dart:63-75](file://lib/features/cart/controller/cart_controller.dart#L63-L75)
+- [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
+- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 
 ### Reactive State Management
-The selection system implements comprehensive reactive state management for real-time updates:
+The selection and deletion system implements comprehensive reactive state management for real-time updates:
 
 ```mermaid
 classDiagram
@@ -396,6 +564,12 @@ class SelectionTracking {
 +State Calculation Logic
 +UI Reactive Updates
 }
+class DeletionStateManagement {
++Individual Item Deletion
++Client-State Updates
++Server-Sync Deletion
++State Refresh Mechanism
+}
 class StateSynchronization {
 +Client Side State
 +Server Side State
@@ -403,21 +577,23 @@ class StateSynchronization {
 +Conflict Resolution
 }
 ReactiveStateManagement --> SelectionTracking
+ReactiveStateManagement --> DeletionStateManagement
 SelectionTracking --> StateSynchronization
+DeletionStateManagement --> StateSynchronization
 ```
 
 **Diagram sources**
-- [cart_controller.dart:18-20](file://lib/features/cart/controller/cart_controller.dart#L18-L20)
+- [cart_controller.dart:22-24](file://lib/features/cart/controller/cart_controller.dart#L22-L24)
 - [cart_item_info.dart:38-47](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L38-L47)
 - [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
 
 **Section sources**
-- [cart_controller.dart:17-25](file://lib/features/cart/controller/cart_controller.dart#L17-L25)
+- [cart_controller.dart:22-24](file://lib/features/cart/controller/cart_controller.dart#L22-L24)
 - [cart_item_info.dart:38-47](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L38-L47)
 - [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
 
 ### Enhanced Repository Pattern Implementation
-The repository pattern has been enhanced with dedicated selection endpoints and improved API response handling:
+The repository pattern has been enhanced with dedicated selection and deletion endpoints and improved API response handling:
 
 ```mermaid
 classDiagram
@@ -426,6 +602,14 @@ class GetCartRepository {
 +execute() Either~ErrorModel, CartModel~
 +EnhancedParsing : json["data"]
 +NestedDataSupport
+}
+class DeleteCartItemRepository {
++PostWithoutResponse postWithoutResponse
++execute(cartItemID, cartID) Either~ErrorModel, bool~
++DeleteEndpoint : /api/cart/item/{id}/remove
++JSON Body : {"cart_id" : cartID}
++ErrorHandling : Comprehensive
++LoadingStates : Reactive
 }
 class SelectCartItemRepository {
 +PostWithoutResponse postWithoutResponse
@@ -451,24 +635,27 @@ class DebuggingIntegration {
 +EnhancedErrorMessages
 }
 GetCartRepository --> CartModel
+DeleteCartItemRepository --> CartModel
 SelectCartItemRepository --> CartModel
 SelectAllCartItemsRepository --> CartModel
 ```
 
 **Diagram sources**
 - [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
-- [select_cart_item_repo.dart:8-24](file://lib/features/cart/repositories/select_cart_item_repo.dart#L8-L24)
-- [select_all_cart_items_repo.dart:8-23](file://lib/features/cart/repositories/select_all_cart_items_repo.dart#L8-L23)
+- [delete_cart_item_repo.dart:12-22](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L12-L22)
+- [select_cart_item_repo.dart:12-23](file://lib/features/cart/repositories/select_cart_item_repo.dart#L12-L23)
+- [select_all_cart_items_repo.dart:12-22](file://lib/features/cart/repositories/select_all_cart_items_repo.dart#L12-L22)
 - [cart_model.dart:35-49](file://lib/features/cart/models/cart_model.dart#L35-L49)
 
 **Section sources**
 - [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [delete_cart_item_repo.dart:1-23](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L1-L23)
 - [select_cart_item_repo.dart:1-24](file://lib/features/cart/repositories/select_cart_item_repo.dart#L1-L24)
-- [select_all_cart_items_repo.dart:1-23](file://lib/features/cart/repositories/select_all_cart_items_repo.dart#L1-L23)
+- [select_all_cart_items_repo.dart:1-24](file://lib/features/cart/repositories/select_all_cart_items_repo.dart#L1-L24)
 - [cart_model.dart:35-49](file://lib/features/cart/models/cart_model.dart#L35-L49)
 
-### Improved UI Components with Selection Features
-The cart item components feature significant improvements in image handling, selection integration, and layout:
+### Improved UI Components with Deletion Features
+The cart item components feature significant improvements in image handling, selection integration, deletion functionality, and layout:
 
 ```mermaid
 classDiagram
@@ -478,6 +665,7 @@ class CartItemBox {
 +ImprovedLayout
 +BetterSpacing
 +EnhancedQuantityControls
++DeleteButton Integration
 }
 class CartItemInfo {
 +CartItem item
@@ -494,6 +682,13 @@ class CustomCheckBox {
 +ReactiveStateBinding
 +SelectionStateSync
 }
+class DeleteButton {
++Circular Design
++Trash Icon Integration
++Visual Feedback
++Tap Gesture Handling
++Positioned in Top-Right Corner
+}
 class CachedNetworkImage {
 +imageUrl : item.product.media.first.image
 +CacheImages
@@ -505,25 +700,36 @@ class CartSelectItem {
 +DeleteAllButton
 +BulkSelectionControls
 +ReactiveStateBinding
++VisualIndicators
+}
+class EmptyCartState {
++Empty Cart Detection
++Improved Display Message
++Better User Experience
++Empty State Styling
 }
 CartItemBox --> CartItemInfo
+CartItemBox --> DeleteButton
 CartItemInfo --> CachedNetworkImage
 CartItemInfo --> CustomCheckBox
 CartSelectItem --> CustomCheckBox
+CartSelectItem --> DeleteButton
 ```
 
 **Diagram sources**
 - [cart_item.dart:11-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L11-L103)
 - [cart_item_info.dart:11-99](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L11-L99)
-- [cart_select_item.dart:10-52](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L10-L52)
+- [cart_select_item.dart:10-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L10-L57)
+- [cart_view.dart:29-33](file://lib/features/cart/views/cart_view.dart#L29-L33)
 
 **Section sources**
 - [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
 - [cart_item_info.dart:1-99](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L99)
-- [cart_select_item.dart:1-53](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L53)
+- [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
+- [cart_view.dart:29-33](file://lib/features/cart/views/cart_view.dart#L29-L33)
 
 ### Cart State Persistence and Synchronization
-The selection system implements comprehensive state persistence and synchronization mechanisms:
+The selection and deletion system implements comprehensive state persistence and synchronization mechanisms:
 
 ```mermaid
 flowchart TD
@@ -532,8 +738,8 @@ LoadCart --> ParseItems["Parse Items with isSelected"]
 ParseItems --> InitSelection["Initialize Selection State"]
 InitSelection --> TrackSelection["Track Selected Items"]
 TrackSelection --> ReactiveUpdates["Reactive UI Updates"]
-ReactiveUpdates --> UserInteraction["User Selection Interaction"]
-UserInteraction --> UpdateLocalState["Update Local Selection State"]
+ReactiveUpdates --> UserInteraction["User Selection/Deletion Interaction"]
+UserInteraction --> UpdateLocalState["Update Local Selection/Deletion State"]
 UpdateLocalState --> SyncWithServer["Sync with Server"]
 SyncWithServer --> HandleResponse["Handle Server Response"]
 HandleResponse --> UpdateUI["Update UI State"]
@@ -543,17 +749,17 @@ MonitorState --> LoadCart
 ```
 
 **Diagram sources**
-- [cart_controller.dart:37-46](file://lib/features/cart/controller/cart_controller.dart#L37-L46)
-- [cart_controller.dart:49-61](file://lib/features/cart/controller/cart_controller.dart#L49-L61)
-- [cart_controller.dart:63-75](file://lib/features/cart/controller/cart_controller.dart#L63-L75)
+- [cart_controller.dart:55-62](file://lib/features/cart/controller/cart_controller.dart#L55-L62)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
 
 **Section sources**
-- [cart_controller.dart:37-46](file://lib/features/cart/controller/cart_controller.dart#L37-L46)
-- [cart_controller.dart:49-61](file://lib/features/cart/controller/cart_controller.dart#L49-L61)
-- [cart_controller.dart:63-75](file://lib/features/cart/controller/cart_controller.dart#L63-L75)
+- [cart_controller.dart:55-62](file://lib/features/cart/controller/cart_controller.dart#L55-L62)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
 
 ## Enhanced Selection System Implementation
-The selection system implements comprehensive granular and bulk selection capabilities with reactive state management:
+The selection system implements comprehensive granular and bulk selection capabilities with reactive state management and deletion integration:
 
 ```mermaid
 classDiagram
@@ -570,6 +776,10 @@ class CartController {
 +increaseQty(id)
 +decreaseQty(id)
 }
+class DeleteCartItemController {
++RxBool isLoading
++deleteCartItem(cartItemID, cartID)
+}
 class SelectCartItemController {
 +RxBool isLoading
 +toggleItem(cartItemID, cartID, selected)
@@ -585,26 +795,43 @@ class SelectionStateManagement {
 +UI Reactive Updates
 +Server Synchronization
 }
+class DeletionStateManagement {
++Individual Item Deletion
++Client-State Updates
++Server-Sync Deletion
++State Refresh Mechanism
+}
 class SelectionAPIIntegration {
 +Individual Item Toggle
 +Bulk Selection Endpoint
 +Error Handling
 +Loading States
 }
+class DeletionAPIIntegration {
++Individual Item Remove
++Server-Sync Deletion
++Error Handling
++Loading States
+}
+CartController --> DeleteCartItemController
 CartController --> SelectCartItemController
 CartController --> SelectAllCartItemsController
+DeleteCartItemController --> DeletionStateManagement
 SelectCartItemController --> SelectionStateManagement
 SelectAllCartItemsController --> SelectionStateManagement
 SelectionStateManagement --> SelectionAPIIntegration
+DeletionStateManagement --> DeletionAPIIntegration
 ```
 
 **Diagram sources**
-- [cart_controller.dart:8-21](file://lib/features/cart/controller/cart_controller.dart#L8-L21)
+- [cart_controller.dart:8-20](file://lib/features/cart/controller/cart_controller.dart#L8-L20)
+- [delete_cart_item_controller.dart:6-8](file://lib/features/cart/controller/delete_cart_item_controller.dart#L6-L8)
 - [select_cart_item_controller.dart:6-9](file://lib/features/cart/controller/select_cart_item_controller.dart#L6-L9)
 - [select_all_cart_item_controller.dart:6-9](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L6-L9)
 
 **Section sources**
-- [cart_controller.dart:1-85](file://lib/features/cart/controller/cart_controller.dart#L1-L85)
+- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 
@@ -638,12 +865,12 @@ Controller-->>ItemWidget : Obx Update
 
 **Diagram sources**
 - [cart_item_info.dart:38-47](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L38-L47)
-- [cart_controller.dart:49-61](file://lib/features/cart/controller/cart_controller.dart#L49-L61)
+- [cart_controller.dart:67-79](file://lib/features/cart/controller/cart_controller.dart#L67-L79)
 - [select_cart_item_controller.dart:11-31](file://lib/features/cart/controller/select_cart_item_controller.dart#L11-L31)
 
 **Section sources**
 - [cart_item_info.dart:35-49](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L35-L49)
-- [cart_controller.dart:49-61](file://lib/features/cart/controller/cart_controller.dart#L49-L61)
+- [cart_controller.dart:67-79](file://lib/features/cart/controller/cart_controller.dart#L67-L79)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 
 ## Bulk Selection Operations
@@ -677,22 +904,131 @@ Controller-->>SelectAllWidget : Obx Update
 
 **Diagram sources**
 - [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
-- [cart_controller.dart:63-75](file://lib/features/cart/controller/cart_controller.dart#L63-L75)
+- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
 - [select_all_cart_item_controller.dart:11-29](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L11-L29)
 
 **Section sources**
-- [cart_select_item.dart:1-53](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L53)
-- [cart_controller.dart:63-75](file://lib/features/cart/controller/cart_controller.dart#L63-L75)
+- [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
+- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 
+## Comprehensive Item Deletion System
+The item deletion system provides comprehensive individual and bulk deletion capabilities with client-side state management and server synchronization:
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant DeleteButton as "Delete Button"
+participant Controller as "CartController"
+participant DeleteController as "DeleteCartItemController"
+participant DeleteRepo as "DeleteCartItemRepository"
+participant API as "Cart API"
+User->>DeleteButton : Tap Delete Button
+DeleteButton->>Controller : deleteItem(id)
+Controller->>Controller : Remove item from carts.value.items
+Controller->>Controller : Update selectedItems observable
+Controller->>Controller : Update isAllSelected.value
+Controller->>Controller : carts.refresh()
+Controller->>DeleteController : deleteCartItem(cartItemID, cartID)
+DeleteController->>DeleteController : isLoading.value = true
+DeleteController->>DeleteRepo : execute()
+DeleteRepo->>API : DELETE /api/cart/item/{id}/remove
+API-->>DeleteRepo : Response
+DeleteRepo-->>DeleteController : Either<ErrorModel, bool>
+DeleteController->>DeleteController : isLoading.value = false
+DeleteController->>DeleteController : response.fold()
+DeleteController-->>Controller : Deletion Result
+Controller->>Controller : Update UI State
+Controller-->>DeleteButton : Obx Update
+```
+
+**Diagram sources**
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [delete_cart_item_controller.dart:9-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L9-L25)
+
+**Section sources**
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
+
+## Individual Item Deletion Implementation
+The individual item deletion system provides precise control over cart items with comprehensive state management and visual feedback:
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant DeleteButton as "Delete Button"
+participant Controller as "CartController"
+participant DeleteController as "DeleteCartItemController"
+participant DeleteRepo as "DeleteCartItemRepository"
+participant API as "Cart API"
+User->>DeleteButton : Tap Delete Button
+DeleteButton->>Controller : deleteItem(id)
+Controller->>Controller : Remove item from carts.value.items
+Controller->>Controller : Update selectedItems observable
+Controller->>Controller : Update isAllSelected.value
+Controller->>Controller : carts.refresh()
+Controller->>DeleteController : deleteCartItem(cartItemID, cartID)
+DeleteController->>DeleteController : isLoading.value = true
+DeleteController->>DeleteRepo : execute()
+DeleteRepo->>API : DELETE /api/cart/item/{id}/remove
+API-->>DeleteRepo : Success/Error Response
+DeleteRepo-->>DeleteController : Either<ErrorModel, bool>
+DeleteController->>DeleteController : isLoading.value = false
+DeleteController->>DeleteController : response.fold()
+DeleteController-->>Controller : Deletion Result
+Controller-->>DeleteButton : UI Update with deletion state
+```
+
+**Diagram sources**
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [delete_cart_item_controller.dart:9-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L9-L25)
+
+**Section sources**
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
+
+## Delete All Functionality
+The bulk deletion system provides efficient management of multiple cart items with improved UI integration:
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant DeleteAllButton as "Delete All Button"
+participant Controller as "CartController"
+participant DeleteAllRepo as "DeleteAllCartItemsRepository"
+participant API as "Cart API"
+User->>DeleteAllButton : Tap Delete All
+DeleteAllButton->>Controller : deleteAll()
+Controller->>Controller : Current implementation (placeholder)
+Controller->>DeleteAllRepo : execute()
+DeleteAllRepo->>API : POST /api/cart/delete-all
+API-->>DeleteAllRepo : Response
+DeleteAllRepo-->>Controller : Response
+Controller->>Controller : Placeholder implementation
+Controller-->>DeleteAllButton : UI Update
+```
+
+**Diagram sources**
+- [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
+- [cart_controller.dart:106](file://lib/features/cart/controller/cart_controller.dart#L106)
+
+**Section sources**
+- [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
+- [cart_controller.dart:106](file://lib/features/cart/controller/cart_controller.dart#L106)
+
 ## Reactive State Management
-The selection system implements comprehensive reactive state management for real-time updates and synchronization:
+The selection and deletion system implements comprehensive reactive state management for real-time updates and synchronization:
 
 ```mermaid
 classDiagram
 class ReactiveStateSystem {
 +selectedItems Observable Set<int>
 +isAllSelected Observable Bool
++carts Reactive CartModel
 +Reactive UI Updates
 +State Synchronization
 +Error Handling
@@ -702,6 +1038,12 @@ class SelectionStateCalculation {
 +Bulk Selection State
 +Partial Selection State
 +State Validation
+}
+class DeletionStateCalculation {
++Individual Item Deletion
++Client-State Updates
++State Refresh Mechanism
++Selection State Adjustment
 }
 class StateSynchronizationMechanism {
 +Client State Tracking
@@ -716,20 +1058,22 @@ class UIReactiveUpdates {
 +Performance Optimization
 }
 ReactiveStateSystem --> SelectionStateCalculation
+ReactiveStateSystem --> DeletionStateCalculation
 SelectionStateCalculation --> StateSynchronizationMechanism
+DeletionStateCalculation --> StateSynchronizationMechanism
 StateSynchronizationMechanism --> UIReactiveUpdates
 ```
 
 **Diagram sources**
-- [cart_controller.dart:18-20](file://lib/features/cart/controller/cart_controller.dart#L18-L20)
-- [cart_controller.dart:43-44](file://lib/features/cart/controller/cart_controller.dart#L43-L44)
+- [cart_controller.dart:22-24](file://lib/features/cart/controller/cart_controller.dart#L22-L24)
+- [cart_controller.dart:55-62](file://lib/features/cart/controller/cart_controller.dart#L55-L62)
 
 **Section sources**
-- [cart_controller.dart:17-25](file://lib/features/cart/controller/cart_controller.dart#L17-L25)
-- [cart_controller.dart:43-44](file://lib/features/cart/controller/cart_controller.dart#L43-L44)
+- [cart_controller.dart:22-24](file://lib/features/cart/controller/cart_controller.dart#L22-L24)
+- [cart_controller.dart:55-62](file://lib/features/cart/controller/cart_controller.dart#L55-L62)
 
 ## Enhanced Repository Pattern Implementation
-The repository pattern has been enhanced with dedicated selection endpoints and comprehensive error handling:
+The repository pattern has been enhanced with dedicated selection and deletion endpoints and comprehensive error handling:
 
 ```mermaid
 classDiagram
@@ -738,6 +1082,14 @@ class GetCartRepository {
 +execute() Either~ErrorModel, CartModel~
 +EnhancedParsing : json["data"]
 +NestedDataSupport
+}
+class DeleteCartItemRepository {
++PostWithoutResponse postWithoutResponse
++execute(cartItemID, cartID) Either~ErrorModel, bool~
++DeleteEndpoint : /api/cart/item/{id}/remove
++JSON Body : {"cart_id" : cartID}
++ErrorHandling : Comprehensive
++LoadingStates : Reactive
 }
 class SelectCartItemRepository {
 +PostWithoutResponse postWithoutResponse
@@ -755,29 +1107,39 @@ class SelectAllCartItemsRepository {
 +ErrorHandling : Comprehensive
 +LoadingStates : Reactive
 }
+class DeletionAPIEndpoints {
++Individual Item Remove
++Bulk Selection Endpoint
++Error Response Handling
++Success/Failure States
+}
 class SelectionAPIEndpoints {
 +Individual Item Toggle
 +Bulk Selection Endpoint
 +Error Response Handling
 +Success/Failure States
 }
+GetCartRepository --> DeletionAPIEndpoints
 GetCartRepository --> SelectionAPIEndpoints
+DeleteCartItemRepository --> DeletionAPIEndpoints
 SelectCartItemRepository --> SelectionAPIEndpoints
 SelectAllCartItemsRepository --> SelectionAPIEndpoints
 ```
 
 **Diagram sources**
 - [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [delete_cart_item_repo.dart:12-22](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L12-L22)
 - [select_cart_item_repo.dart:12-23](file://lib/features/cart/repositories/select_cart_item_repo.dart#L12-L23)
 - [select_all_cart_items_repo.dart:12-22](file://lib/features/cart/repositories/select_all_cart_items_repo.dart#L12-L22)
 
 **Section sources**
 - [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [delete_cart_item_repo.dart:1-23](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L1-L23)
 - [select_cart_item_repo.dart:1-24](file://lib/features/cart/repositories/select_cart_item_repo.dart#L1-L24)
-- [select_all_cart_items_repo.dart:1-23](file://lib/features/cart/repositories/select_all_cart_items_repo.dart#L1-L23)
+- [select_all_cart_items_repo.dart:1-24](file://lib/features/cart/repositories/select_all_cart_items_repo.dart#L1-L24)
 
-## Improved UI Components with Selection Features
-The cart item components feature significant improvements in image handling, selection integration, and user interaction:
+## Improved UI Components with Deletion Features
+The cart item components feature significant improvements in image handling, selection integration, deletion functionality, and user interaction:
 
 ```mermaid
 classDiagram
@@ -787,6 +1149,7 @@ class CartItemBox {
 +ImprovedLayout
 +BetterSpacing
 +EnhancedQuantityControls
++DeleteButton Integration
 }
 class CartItemInfo {
 +CartItem item
@@ -804,12 +1167,28 @@ class CustomCheckBox {
 +SelectionStateSync
 +VisualFeedback
 }
+class DeleteButton {
++Circular Design
++Trash Icon Integration
++Visual Feedback
++Tap Gesture Handling
++Positioned in Top-Right Corner
++Proper Styling with Theme Colors
+}
 class CartSelectItem {
 +SelectAllCheckbox
 +DeleteAllButton
 +BulkSelectionControls
 +ReactiveStateBinding
 +VisualIndicators
++Improved Styling
+}
+class EmptyCartState {
++Empty Cart Detection
++Improved Display Message
++Better User Experience
++Empty State Styling
++Centered Text Display
 }
 class SelectionVisualFeedback {
 +Checkbox State Changes
@@ -818,39 +1197,46 @@ class SelectionVisualFeedback {
 +Focus States
 }
 CartItemBox --> CartItemInfo
+CartItemBox --> DeleteButton
 CartItemInfo --> CustomCheckBox
 CartSelectItem --> CustomCheckBox
+CartSelectItem --> DeleteButton
 CustomCheckBox --> SelectionVisualFeedback
+DeleteButton --> SelectionVisualFeedback
 ```
 
 **Diagram sources**
 - [cart_item.dart:11-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L11-L103)
 - [cart_item_info.dart:11-99](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L11-L99)
-- [cart_select_item.dart:10-52](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L10-L52)
+- [cart_select_item.dart:10-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L10-L57)
+- [cart_view.dart:29-33](file://lib/features/cart/views/cart_view.dart#L29-L33)
 
 **Section sources**
 - [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
 - [cart_item_info.dart:1-99](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L99)
-- [cart_select_item.dart:1-53](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L53)
+- [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
+- [cart_view.dart:29-33](file://lib/features/cart/views/cart_view.dart#L29-L33)
 
 ## Performance Considerations
-The enhanced cart system implements several performance optimization strategies for selection operations:
+The enhanced cart system implements several performance optimization strategies for selection and deletion operations:
 
 - **CachedNetworkImage**: Improved image loading performance with caching and fallback handling for product images
-- **Reactive Updates**: Efficient state management with selective UI updates based on cart changes and selection state
+- **Reactive Updates**: Efficient state management with selective UI updates based on cart changes, selection state, and deletion operations
 - **Enhanced Decimal Formatting**: Optimized toPrecision(2) calculations for consistent monetary display
-- **Improved API Parsing**: Better error handling reduces unnecessary retries and network calls for selection operations
-- **Debugging Integration**: Real-time monitoring helps identify performance bottlenecks in selection operations
-- **Memory Management**: Proper disposal of cached images and reactive subscriptions for selection state
-- **Layout Optimization**: Better spacing and alignment reduce rendering overhead in selection-enabled components
-- **Enhanced Error Handling**: Prevents cascading failures and improves system stability during selection operations
+- **Improved API Parsing**: Better error handling reduces unnecessary retries and network calls for selection and deletion operations
+- **Debugging Integration**: Real-time monitoring helps identify performance bottlenecks in selection and deletion operations
+- **Memory Management**: Proper disposal of cached images and reactive subscriptions for selection and deletion state
+- **Layout Optimization**: Better spacing and alignment reduce rendering overhead in selection and deletion enabled components
+- **Enhanced Error Handling**: Prevents cascading failures and improves system stability during selection and deletion operations
 - **Nested Data Parsing**: Efficient handling of API response structures reduces parsing overhead for cart data
 - **Selection State Optimization**: Observable collections for efficient selection tracking and UI updates
-- **API Endpoint Efficiency**: Dedicated endpoints for individual and bulk selection operations reduce payload sizes
-- **State Synchronization**: Optimized client-server state synchronization prevents redundant API calls
+- **Deletion State Management**: Optimized client-side state updates prevent redundant API calls for deletion operations
+- **API Endpoint Efficiency**: Dedicated endpoints for individual and bulk selection and deletion operations reduce payload sizes
+- **State Synchronization**: Optimized client-server state synchronization prevents redundant API calls for both selection and deletion operations
+- **Empty Cart Optimization**: Efficient empty cart state detection reduces unnecessary UI updates and rendering
 
 ## Troubleshooting Guide
-Enhanced troubleshooting procedures for the improved cart system with selection capabilities:
+Enhanced troubleshooting procedures for the improved cart system with selection and deletion capabilities:
 
 **Selection State Issues**
 - Verify selectedItems observable properly tracks item IDs and updates reactively
@@ -870,54 +1256,73 @@ Enhanced troubleshooting procedures for the improved cart system with selection 
 - Ensure bulk selection state updates all items consistently
 - Verify partial selection scenarios handled properly
 
+**Individual Item Deletion Problems**
+- Confirm DeleteCartItemController properly handles deleteCartItem requests
+- Check DeleteCartItemRepository executes correct API endpoint (/api/cart/item/{id}/remove)
+- Verify item deletion state syncs with server responses
+- Ensure error handling displays appropriate feedback for deletion failures
+- Check that client-side state updates occur before server calls
+
+**Delete All Functionality**
+- Verify CartController.deleteAll method is properly integrated
+- Check for proper implementation of bulk deletion operations
+- Ensure UI integration with delete all button works correctly
+- Verify state management for bulk deletion operations
+
 **API Response Parsing Errors**
 - Confirm nested data structure matches expected format for cart data
 - Check field mapping in CartModel.fromJson includes isSelected property
-- Verify error handling catches parsing exceptions for selection data
+- Verify error handling catches parsing exceptions for selection and deletion data
 - Ensure graceful degradation for malformed API responses
 
 **UI Component Issues**
 - Confirm CustomCheckBox properly binds to selection state observables
-- Check Obx widgets update correctly when selection state changes
-- Verify selection visual feedback displays appropriate states
+- Check Obx widgets update correctly when selection or deletion state changes
+- Verify selection and deletion visual feedback displays appropriate states
 - Ensure checkbox positioning remains consistent across different screen sizes
+- Check delete button positioning and visual feedback
 
 **State Synchronization Problems**
-- Verify client-side selection state updates server-side state correctly
-- Check for conflicts between client and server selection states
-- Ensure selection state remains consistent across app navigation
-- Verify selection state persists through app restarts
+- Verify client-side selection and deletion state updates server-side state correctly
+- Check for conflicts between client and server selection and deletion states
+- Ensure selection and deletion state remains consistent across app navigation
+- Verify selection and deletion state persists through app restarts
 
 **Performance Issues**
-- Monitor selection operation performance with large cart contents
-- Check for memory leaks in selection state observables
+- Monitor selection and deletion operation performance with large cart contents
+- Check for memory leaks in selection and deletion state observables
 - Verify UI updates don't cause excessive rebuild cycles
-- Ensure selection operations don't block main thread execution
+- Ensure selection and deletion operations don't block main thread execution
+- Monitor empty cart state detection performance
 
 **Section sources**
-- [cart_controller.dart:1-85](file://lib/features/cart/controller/cart_controller.dart#L1-L85)
+- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
-- [cart_item_info.dart:35-49](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L35-L49)
-- [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
+- [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
+- [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
 
 ## Conclusion
-The Shopping Cart system in ZB-DEZINE has been significantly enhanced with granular item selection capabilities, bulk selection operations, reactive state management, and improved UI components. The system maintains its modernized API-driven architecture while adding robust selection management and performance optimizations.
+The Shopping Cart system in ZB-DEZINE has been significantly enhanced with granular item selection capabilities, bulk selection operations, comprehensive item deletion functionality, reactive state management, and improved UI components. The system maintains its modernized API-driven architecture while adding robust selection management, performance optimizations, and streamlined cart deletion operations.
 
-**Updated** Key enhancements include granular item selection capabilities through new SelectCartItemController and SelectAllCartItemsController, comprehensive selection management with reactive state handling, improved UI components with integrated selection checkboxes, expanded repository pattern implementation with dedicated selection endpoints, enhanced cart state synchronization across selection operations, and comprehensive debugging capabilities for selection-related issues.
+**Updated** Key enhancements include granular item selection capabilities through new SelectCartItemController and SelectAllCartItemsController, comprehensive selection management with reactive state handling, comprehensive item deletion through new DeleteCartItemController and DeleteCartItemRepository, improved UI components with integrated selection and deletion features, expanded repository pattern implementation with dedicated selection and deletion endpoints, enhanced cart state synchronization across selection and deletion operations, and comprehensive debugging capabilities for cart management operations.
 
 The enhanced system features:
 - **Granular Selection Management**: Individual item selection with server synchronization and client-side state tracking
 - **Bulk Selection Operations**: Comprehensive bulk selection capabilities with optimized API communication
-- **Enhanced State Synchronization**: Real-time state updates between client and server for selection changes
-- **Improved API Integration**: Better nested data structure handling and enhanced error management for selection operations
-- **Enhanced UI Components**: CachedNetworkImage for better image performance and integrated selection checkbox positioning
+- **Comprehensive Item Deletion**: Individual item removal with client-side state updates and server synchronization
+- **Delete All Functionality**: Bulk deletion operations with improved user interface integration
+- **Enhanced State Synchronization**: Real-time state updates between client and server for selection and deletion changes
+- **Improved API Integration**: Better nested data structure handling and enhanced error management for selection and deletion operations
+- **Enhanced UI Components**: CachedNetworkImage for better image performance, integrated selection checkbox positioning, and circular delete buttons with visual feedback
 - **Reactive Calculations**: Dynamic pricing updates with consistent decimal formatting
-- **Debugging Support**: Real-time monitoring and enhanced error logging capabilities for selection operations
-- **Performance Optimizations**: Cached image loading, efficient state management, and optimized API communication
+- **Debugging Support**: Real-time monitoring and enhanced error logging capabilities for selection and deletion operations
+- **Performance Optimizations**: Cached image loading, efficient state management, and optimized API communication for both selection and deletion
 - **Maintainable Architecture**: Clear separation of concerns with enhanced repository pattern implementation
 - **Scalable Design**: Modular components ready for future enhancements like advanced inventory validation and promotional discount systems
-- **Robust Error Handling**: Comprehensive error handling for selection operations and state synchronization
-- **User Experience Enhancement**: Intuitive selection controls with visual feedback and responsive state updates
+- **Robust Error Handling**: Comprehensive error handling for selection, deletion, and state synchronization operations
+- **User Experience Enhancement**: Intuitive selection and deletion controls with visual feedback and responsive state updates
+- **Empty Cart State Handling**: Improved empty cart detection and display with better user experience
 
-The system is designed for optimal performance with clear separation of concerns, making it easy to extend with additional features while maintaining reliability and responsiveness for production use with comprehensive selection management capabilities.
+The system is designed for optimal performance with clear separation of concerns, making it easy to extend with additional features while maintaining reliability and responsiveness for production use with comprehensive selection and deletion management capabilities.

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/cart/controller/cart_controller.dart';
 import 'package:zb_dezign/features/home/controller/bottom_nav_controller.dart';
 import 'package:zb_dezign/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart';
 import 'package:zb_dezign/features/home/widgets/bottom_nav_widgets/bottom_nav_dashboard_item.dart';
@@ -60,12 +61,18 @@ class BottomNavView extends GetView<BottomNavController> {
                   ),
                   Expanded(child: SizedBox()),
                   Expanded(
-                    child: BottomNavCartItem(
-                      icon: IconsPath.cart,
-                      label: 'Cart',
-                      index: 3,
-                      badgeCount: '4',
-                    ),
+                    child: Obx(() {
+                      final cartController = Get.find<CartController>();
+                      final count =
+                          cartController.carts.value?.items?.length ?? 0;
+                      return BottomNavCartItem(
+                        key: ValueKey(count),
+                        icon: IconsPath.cart,
+                        label: 'Cart',
+                        index: 3,
+                        badgeCount: count.toString(),
+                      );
+                    }),
                   ),
                   Expanded(child: BottomNavProfileItem(index: 4)),
                 ],

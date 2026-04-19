@@ -13,46 +13,48 @@ class BottomNavDashboardItem extends GetWidget<BottomNavController> {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
-                onTap: () {
-                  controller.selectedIndex.value = 2;
-                  Get.find<CustomDrawerController>().selectedItem.value = 0;
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 72.w,
-                      height: 72.h,
-                      decoration: BoxDecoration(
-                        color:isDark? AppColors.labelColor:AppColors.whiteColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Container(
-                          width: 60.w,
-                          height: 60.h,
-                          padding: EdgeInsets.all(14.r),
-                          decoration: ShapeDecoration(
-                            gradient:isDark? AppColors.darkPrimaryGradient :LinearGradient(
-                              begin: Alignment(-0.10, 0.83),
-                              end: Alignment(1.66, -0.19),
-                              colors: [Color(0xFF15003A), Color(0xFF3900A0)],
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100.r),
-                            ),
-                          ),
-                          child: Image.asset(
-                            IconsPath.dashboardNav,
-                            height: 24.h,
-                            width: 24.w,
-                            color: AppColors.whiteColor,
-                          ),
+      onTap: () {
+        controller.selectedIndex.value = 2;
+        Get.find<CustomDrawerController>().selectedItem.value = 0;
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 72.w,
+            height: 72.h,
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.labelColor : AppColors.whiteColor,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Container(
+                width: 60.w,
+                height: 60.h,
+                padding: EdgeInsets.all(14.r),
+                decoration: ShapeDecoration(
+                  gradient: isDark
+                      ? AppColors.darkPrimaryGradient
+                      : LinearGradient(
+                          begin: Alignment(-0.10, 0.83),
+                          end: Alignment(1.66, -0.19),
+                          colors: [Color(0xFF15003A), Color(0xFF3900A0)],
                         ),
-                      ),
-                    ),
-                  ],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100.r),
+                  ),
                 ),
-              );
+                child: Image.asset(
+                  IconsPath.dashboardNav,
+                  height: 24.h,
+                  width: 24.w,
+                  color: AppColors.whiteColor,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

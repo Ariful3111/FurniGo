@@ -7,9 +7,14 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class BottomNavItems extends GetWidget<BottomNavController> {
   final String icon;
-    final String label;
-    final int index;
-  const BottomNavItems({super.key, required this.icon, required this.label, required this.index});
+  final String label;
+  final int index;
+  const BottomNavItems({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +32,18 @@ class BottomNavItems extends GetWidget<BottomNavController> {
               icon,
               height: 24.h,
               width: 24.w,
-              color: isDark?AppColors.primaryBorderColor: controller.selectedIndex.value == index
+              color: isDark
+                  ? AppColors.primaryBorderColor
+                  : controller.selectedIndex.value == index
                   ? AppColors.secondaryColor
                   : AppColors.labelColor,
             ),
             SizedBox(height: 4.h),
             CustomPrimaryText(
               text: label,
-              color:isDark?AppColors.primaryBorderColor: controller.selectedIndex.value == index
+              color: isDark
+                  ? AppColors.primaryBorderColor
+                  : controller.selectedIndex.value == index
                   ? AppColors.secondaryColor
                   : AppColors.labelColor,
               fontSize: 12.sp,
