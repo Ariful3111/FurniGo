@@ -5,6 +5,8 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/membership/controller/subscription_controller.dart';
 import 'package:zb_dezign/features/membership/widgets/active_subscription.dart';
+import 'package:zb_dezign/features/membership/widgets/expire_soon_button.dart';
+import 'package:zb_dezign/features/membership/widgets/expired_button.dart';
 import 'package:zb_dezign/features/membership/widgets/most_popular_plan.dart';
 import 'package:zb_dezign/features/membership/widgets/subscription_plan_feature.dart';
 import 'package:zb_dezign/features/membership/widgets/subscription_plan_price.dart';
@@ -23,6 +25,8 @@ class SubscriptionPlanCard extends GetWidget<SubscriptionController> {
   @override
   Widget build(BuildContext context) {
     bool isActive = data["isActive"] ?? false;
+    bool isExpire = data["isExpire"] ?? false;
+    bool isExpireSoon = data["isExpireSoon"] ?? false;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     bool isPrimary = data["isPrimary"] ?? false;
     bool isPremium = data['isPremium'] ?? false;
@@ -103,6 +107,8 @@ class SubscriptionPlanCard extends GetWidget<SubscriptionController> {
                     ),
                   ],
                 ),
+                if(isExpireSoon)ExpireSoonButton(),
+                if(isExpire)ExpiredButton(),
             ],
           ),
           SizedBox(height: 20.h),

@@ -31,7 +31,11 @@ class ProfileOptionsController extends GetxController {
       'title': 'Subscription and Membership',
       'route': AppRoutes.subscriptionView,
     },
-    {'icon': IconsPath.profileContact, 'title': 'Contact Us'},
+    {
+      'icon': IconsPath.profileContact,
+      'title': 'Contact Us',
+      'route': AppRoutes.contactUsView,
+    },
     {
       'icon': IconsPath.profileSupport,
       'title': 'Support',
