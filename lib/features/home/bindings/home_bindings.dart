@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:zb_dezign/features/cart/controller/cart_controller.dart';
-import 'package:zb_dezign/features/cart/repositories/get_cart_repo.dart';
 import 'package:zb_dezign/features/favorites/controller/toggle_favourite_controller.dart';
 import 'package:zb_dezign/features/favorites/repositories/toggle_favourite_repo.dart';
 import 'package:zb_dezign/features/home/controller/bottom_nav_controller.dart';
@@ -25,7 +23,6 @@ class HomeBindings implements Bindings {
     Get.lazyPut(() => GetProductTypeRepository(getNetwork: Get.find()));
     Get.lazyPut(() => GetProductsByTypeRepository(getNetwork: Get.find()));
     Get.lazyPut(() => GlobalSearchRepository(getNetwork: Get.find()));
-    Get.lazyPut(() => GetCartRepository(getNetwork: Get.find()));
     Get.lazyPut(() => BottomNavController());
     Get.lazyPut(() => HomeController());
     Get.lazyPut(() => GetRoomsController(getRoomsRepository: Get.find()));
@@ -44,7 +41,6 @@ class HomeBindings implements Bindings {
       () => GlobalSearchController(globalSearchRepository: Get.find()),
     );
     Get.lazyPut(() => CustomDrawerController());
-    Get.lazyPut(() => CartController(getCartRepository: Get.find()));
 
     // Favorites
     Get.lazyPut(

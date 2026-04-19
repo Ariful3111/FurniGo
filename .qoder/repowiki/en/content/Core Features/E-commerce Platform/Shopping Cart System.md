@@ -15,6 +15,7 @@
 - [cart_item.dart](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart)
 - [cart_item_info.dart](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart)
 - [cart_order_summery.dart](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart)
+- [cart_select_item.dart](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart)
 - [checkout_order_summery.dart](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart)
 - [checkout_order_calculation.dart](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_calculation.dart)
 - [bottom_nav_view.dart](file://lib/features/home/views/bottom_nav_view.dart)
@@ -29,13 +30,12 @@
 
 ## Update Summary
 **Changes Made**
-- **Major Cart System Transformation**: Complete migration from local static data to API-driven architecture with repository pattern
-- **New Repository Pattern Implementation**: Introduced GetCartRepository and AddToCartRepository with proper error handling using fpdart Either type
-- **Enhanced CartModel Serialization**: Added comprehensive JSON serialization support with CartModel, CartItem, and CartOption classes
-- **API Integration Enhancement**: Implemented proper null safety and API integration with cart data persistence
-- **Modernized Controller Architecture**: Updated CartController and AddToCartController with repository-based operations
-- **Enhanced Error Handling**: Integrated fpdart Either type for robust error handling across cart operations
-- **Complete Cart Restoration**: Implemented cart restoration functionality through API-driven data fetching
+- **Enhanced Cart Repository**: Improved API response parsing with better error handling and debugging capabilities
+- **Redesigned Cart Item UI**: Enhanced image handling with CachedNetworkImage and improved checkbox positioning
+- **Reactive Order Summary**: Converted cart order summary to reactive widget with dynamic pricing calculations
+- **Updated API Response Structure**: Modified repository to handle nested data structure with "data" wrapper
+- **Added Debugging Support**: Integrated debugPrint statements for cart length monitoring
+- **Improved Image Loading**: Better product image handling with fallback logic and caching
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -43,198 +43,129 @@
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [API-Driven Cart System](#api-driven-cart-system)
-7. [Repository Pattern Implementation](#repository-pattern-implementation)
-8. [Enhanced Cart Model Architecture](#enhanced-cart-model-architecture)
-9. [Dependency Analysis](#dependency-analysis)
-10. [Performance Considerations](#performance-considerations)
-11. [Troubleshooting Guide](#troubleshooting-guide)
-12. [Conclusion](#conclusion)
+6. [Enhanced Repository Pattern Implementation](#enhanced-repository-pattern-implementation)
+7. [Redesigned Cart Item UI Components](#redesigned-cart-item-ui-components)
+8. [Reactive Order Summary System](#reactive-order-summary-system)
+9. [API Response Parsing Improvements](#api-response-parsing-improvements)
+10. [Debugging and Monitoring Capabilities](#debugging-and-monitoring-capabilities)
+11. [Performance Considerations](#performance-considerations)
+12. [Troubleshooting Guide](#troubleshooting-guide)
+13. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the comprehensive Shopping Cart system within the ZB-DEZINE Flutter application. The system has undergone a major transformation from local static data management to a modern API-driven architecture with repository pattern implementation. The system features enhanced cart state handling, item management operations, and seamless integration with the product catalog, checkout system, and navigation system through proper API integration and error handling.
+This document describes the comprehensive Shopping Cart system within the ZB-DEZINE Flutter application. The system has undergone significant enhancements including improved API response parsing, redesigned cart item UI with better image handling, reactive order summary calculations, and enhanced debugging capabilities. The system maintains its modernized API-driven architecture with repository pattern implementation while adding robust debugging and performance optimizations.
 
-**Updated** The cart system has been completely modernized with API-driven architecture, repository pattern implementation, comprehensive serialization support, and enhanced error handling using fpdart Either type for robust cart operations.
+**Updated** The cart system has been enhanced with improved API response parsing, redesigned cart item UI components with better image handling and checkbox positioning, converted cart order summary to reactive widget with dynamic pricing calculations, and added comprehensive debugging capabilities for better monitoring and troubleshooting.
 
 ## Project Structure
-The shopping cart functionality is organized into a modernized API-driven architecture with dedicated controllers, repositories, models, views, and widgets:
+The shopping cart functionality is organized into an enhanced API-driven architecture with improved repository pattern implementation and redesigned UI components:
 
 ```mermaid
 graph TB
-subgraph "API-Driven Cart Architecture"
-CC["CartController<br/>API-Driven State Management"] --> GCR["GetCartRepository<br/>Cart Data Retrieval"]
-CC --> CM["CartModel<br/>Comprehensive Serialization"]
+subgraph "Enhanced API-Driven Cart Architecture"
+CC["CartController<br/>Enhanced State Management"] --> GCR["GetCartRepository<br/>Improved API Parsing"]
+CC --> CM["CartModel<br/>Enhanced Serialization"]
 GCR --> GN["GetNetwork<br/>HTTP Client"]
+GCR --> |parses nested| DATA["Nested Data Structure"]
 end
-subgraph "Add to Cart Flow"
-ATCC["AddToCartController<br/>API Integration"] --> ACR["AddToCartRepository<br/>Cart Addition"]
-ATCC --> ATC["Attribute Selection"]
-ACR --> PWR["PostWithoutResponse<br/>HTTP Client"]
+subgraph "Redesigned Cart Item Components"
+CIB["CartItemBox<br/>Enhanced Item Widget"] --> CII["CartItemInfo<br/>Improved Image Handling"]
+CII --> CNI["CachedNetworkImage<br/>Better Product Images"]
+CII --> CBC["CustomCheckBox<br/>Positioned Correctly"]
+CIB --> QTY["Quantity Controls<br/>Improved Layout"]
 end
-subgraph "Cart View Components"
-CV["CartView<br/>Main Interface"] --> CIB["CartItemBox<br/>Enhanced Item Widget"]
-CIB --> CII["CartItemInfo<br/>Item Information Component"]
-CV --> COS["CartOrderSummery<br/>Order Summary"]
+subgraph "Reactive Order Summary"
+COS["CartOrderSummery<br/>Dynamic Pricing"] --> RX["Reactive Calculations"]
+COS --> PRECISION["toPrecision(2)<br/>Decimal Formatting"]
 end
-subgraph "Checkout Integration"
-CKC["CheckoutController<br/>Checkout Management"] --> COS2["CheckoutOrderSummery<br/>Checkout Summary"]
-CV --> CKC
-end
-subgraph "Navigation & Integration"
-BNC["BottomNavController<br/>Page Routing"] --> CV
-BNC --> BNCI["BottomNavCartItem<br/>Badge Integration"]
-HPD["HomeProductDesign<br/>Cart Actions"] --> ATCC
-PDC["ProductDetailsCart<br/>Add to Cart"] --> ATCC
+subgraph "Debugging & Monitoring"
+DEBUG["debugPrint<br/>Cart Length Logging"] --> MONITOR["Real-time Monitoring"]
+DEBUG --> ERROR["Enhanced Error Handling"]
 end
 ```
 
 **Diagram sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-- [cart_model.dart:1-165](file://lib/features/cart/models/cart_model.dart#L1-L165)
-- [get_cart_repo.dart:1-19](file://lib/features/cart/repositories/get_cart_repo.dart#L1-L19)
-- [add_to_cart_repo.dart:1-28](file://lib/features/cart/repositories/add_to_cart_repo.dart#L1-L28)
-- [cart_view.dart:12-61](file://lib/features/cart/views/cart_view.dart#L12-L61)
-- [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
-- [cart_item_info.dart:1-105](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L105)
-- [cart_order_summery.dart:1-93](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L1-L93)
-- [checkout_controller.dart:1-82](file://lib/features/cart/controller/checkout_controller.dart#L1-L82)
-- [checkout_order_summery.dart:1-94](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart#L1-L94)
-- [bottom_nav_controller.dart:1-18](file://lib/features/home/controller/bottom_nav_controller.dart#L1-L18)
-- [bottom_nav_cart_item.dart:1-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L1-L75)
-- [home_product_design.dart:1-106](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L106)
-- [product_details_cart.dart:1-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L1-L108)
+- [cart_controller.dart:19-31](file://lib/features/cart/controller/cart_controller.dart#L19-L31)
+- [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [cart_item.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L11-L86)
+- [cart_item_info.dart:11-96](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L11-L96)
+- [cart_order_summery.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L11-L86)
 
 **Section sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-- [cart_model.dart:1-165](file://lib/features/cart/models/cart_model.dart#L1-L165)
-- [get_cart_repo.dart:1-19](file://lib/features/cart/repositories/get_cart_repo.dart#L1-L19)
-- [add_to_cart_repo.dart:1-28](file://lib/features/cart/repositories/add_to_cart_repo.dart#L1-L28)
-- [cart_view.dart:12-61](file://lib/features/cart/views/cart_view.dart#L12-L61)
+- [cart_controller.dart:1-53](file://lib/features/cart/controller/cart_controller.dart#L1-L53)
+- [get_cart_repo.dart:1-20](file://lib/features/cart/repositories/get_cart_repo.dart#L1-L20)
 - [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
-- [cart_item_info.dart:1-105](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L105)
-- [cart_order_summery.dart:1-93](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L1-L93)
-- [checkout_controller.dart:1-82](file://lib/features/cart/controller/checkout_controller.dart#L1-L82)
-- [checkout_order_summery.dart:1-94](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart#L1-L94)
-- [bottom_nav_controller.dart:1-18](file://lib/features/home/controller/bottom_nav_controller.dart#L1-L18)
-- [bottom_nav_cart_item.dart:1-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L1-L75)
-- [home_product_design.dart:1-106](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L106)
-- [product_details_cart.dart:1-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L1-L108)
+- [cart_item_info.dart:1-97](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L97)
+- [cart_order_summery.dart:1-119](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L1-L119)
 
 ## Core Components
-The cart system consists of several key components working together in a modernized API-driven architecture:
+The cart system consists of enhanced components with improved functionality and modernized architecture:
 
-- **CartController**: Manages cart state with reactive properties, API-driven data fetching, and item selection functionality
-- **AddToCartController**: Handles add-to-cart operations with attribute validation and API integration
-- **GetCartRepository**: Fetches cart data from API with proper error handling using fpdart Either type
-- **AddToCartRepository**: Adds products to cart via API with comprehensive validation
-- **CartModel**: Comprehensive cart data model with JSON serialization support for cart items, options, and pricing
-- **OrderItemModel**: Defines checkout order item structure for order summary display
-- **CartView**: Main cart interface displaying items in a scrollable list with custom appbar
-- **CheckoutView**: Complete checkout interface with address, payment, and order summary components
-- **CartItemBox**: Enhanced individual cart item component with separated item info and quantity controls
-- **CartItemInfo**: Dedicated item information component with selection checkbox and details
-- **CartOrderSummery**: Enhanced order summary with pricing calculations and promotional discount
-- **CheckoutOrderSummery**: Complete checkout order summary with editable items
-- **CheckoutOrderCalculation**: Promotional discount handling and pricing breakdown
-- **Bottom Navigation Integration**: Cart badge with item count and navigation to cart page
-- **Product Details Integration**: Add to cart functionality with attribute selection and validation
+- **CartController**: Enhanced state management with debugging capabilities and improved API integration
+- **GetCartRepository**: Improved API response parsing with nested data structure handling and better error management
+- **CartModel**: Enhanced serialization support with comprehensive JSON parsing for cart items and options
+- **CartItemBox**: Redesigned item component with improved layout and better quantity control positioning
+- **CartItemInfo**: Enhanced item information component with CachedNetworkImage for better image handling and positioned checkbox
+- **CartOrderSummery**: Reactive order summary with dynamic pricing calculations and decimal precision formatting
+- **CartSelectItem**: Improved bulk selection component with better styling and functionality
+- **CheckoutOrderCalculation**: Enhanced checkout pricing with promotional discount handling
+- **Debugging Integration**: Real-time cart length monitoring and enhanced error logging
 
-Key responsibilities include:
-- API-driven state management with reactive updates using GetX framework
-- Repository pattern implementation for clean separation of concerns
-- Comprehensive JSON serialization and deserialization for cart data
-- Robust error handling using fpdart Either type for reliable API operations
-- Enhanced item selection with individual and bulk operations
-- Attribute validation and selection for product customization
-- Quantity adjustment with validation and refresh mechanisms
-- Item deletion with state synchronization
-- Enhanced order summary with promotional discount handling
-- Complete checkout workflow with form validation and payment processing
-- UI integration with responsive design and theming
-- Navigation integration with badge count updates
+Key enhancements include:
+- **Improved API Response Parsing**: Repository now handles nested "data" structure from API responses
+- **Enhanced Image Handling**: CachedNetworkImage provides better performance and fallback handling
+- **Better Checkbox Positioning**: CustomCheckBox positioned correctly in top-left corner of product image
+- **Reactive Pricing Calculations**: Dynamic price updates based on cart state changes
+- **Debugging Support**: Real-time cart length monitoring and enhanced error logging
+- **Decimal Precision**: Consistent two-decimal formatting for all monetary values
+- **Improved Layout**: Better spacing and alignment in cart item components
 
 **Section sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-- [cart_model.dart:1-165](file://lib/features/cart/models/cart_model.dart#L1-L165)
-- [order_item_model.dart:1-16](file://lib/features/cart/models/order_item_model.dart#L1-L16)
-- [cart_view.dart:12-61](file://lib/features/cart/views/cart_view.dart#L12-L61)
-- [checkout_view.dart:17-67](file://lib/features/cart/views/checkout_view.dart#L17-L67)
-- [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
-- [cart_item_info.dart:1-105](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L105)
-- [cart_order_summery.dart:1-93](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L1-L93)
-- [checkout_order_summery.dart:1-94](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart#L1-L94)
-- [checkout_order_calculation.dart:1-101](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_calculation.dart#L1-L101)
-- [bottom_nav_cart_item.dart:1-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L1-L75)
-- [product_details_cart.dart:1-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L1-L108)
+- [cart_controller.dart:19-31](file://lib/features/cart/controller/cart_controller.dart#L19-L31)
+- [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [cart_item.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L11-L86)
+- [cart_item_info.dart:11-96](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L11-L96)
+- [cart_order_summery.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L11-L86)
 
 ## Architecture Overview
-The cart system follows a modernized API-driven architecture pattern using the GetX framework with clear separation between cart and checkout concerns through repository pattern implementation:
+The cart system follows an enhanced API-driven architecture with improved repository pattern implementation and debugging capabilities:
 
 ```mermaid
 graph TB
-subgraph "API-Driven State Layer"
-CC["CartController<br/>Rxn<CartModel>"] --> GCR["GetCartRepository<br/>API Integration"]
-CC --> |manages| ISAS["RxBool isAllSelected"]
-ATCC["AddToCartController<br/>Attribute Validation"] --> ACR["AddToCartRepository<br/>API Integration"]
-ATCC --> |validates| ATC["Product Attributes"]
+subgraph "Enhanced State Management Layer"
+CC["CartController<br/>Enhanced Reactive State"] --> DEBUG["debugPrint<br/>Cart Monitoring"]
+CC --> GCR["GetCartRepository<br/>Improved API Parsing"]
+CC --> CM["CartModel<br/>Enhanced Serialization"]
 end
-subgraph "Repository Pattern Layer"
+subgraph "Improved Repository Layer"
 GCR --> GN["GetNetwork<br/>HTTP Client"]
-ACR --> PWR["PostWithoutResponse<br/>HTTP Client"]
-GCR --> |returns| EIT["Either<ErrorModel, CartModel>"]
-ACR --> |returns| EIT2["Either<ErrorModel, bool>"]
+GCR --> PARSE["Nested Data Parsing<br/>json['data'] wrapper"]
+GCR --> ERROR["Enhanced Error Handling<br/>Better Error Messages"]
 end
-subgraph "Data Model Layer"
-CM["CartModel<br/>JSON Serialization"] --> CIM["CartItem<br/>Item Data"]
-CM --> CO["CartOption<br/>Option Data"]
-CIM --> CP["Product<br/>Product Data"]
+subgraph "Redesigned UI Components"
+CIB["CartItemBox<br/>Improved Layout"] --> CII["CartItemInfo<br/>CachedNetworkImage"]
+CII --> CNI["CachedNetworkImage<br/>Better Performance"]
+CII --> CBC["CustomCheckBox<br/>Top-Left Positioning"]
+CIB --> QTY["Quantity Controls<br/>Better Spacing"]
+COS["CartOrderSummery<br/>Reactive Calculations"] --> RX["toPrecision(2)<br/>Decimal Formatting"]
 end
-subgraph "Presentation Layer"
-CV["CartView<br/>ListView Builder"] --> CIB["CartItemBox Widget<br/>Enhanced Item"]
-CIB --> CII["CartItemInfo Widget<br/>Item Information"]
-CV --> COS["CartOrderSummery Widget<br/>Order Summary"]
-CV2["CheckoutView<br/>Complete Checkout"] --> COS2["CheckoutOrderSummery Widget<br/>Checkout Summary"]
-CV2 --> COC["CheckoutOrderCalculation<br/>Promo & Pricing"]
-CIB --> |updates| CC
-CII --> |updates| CC
-COS --> |navigates| CV2
-COC --> |calculates| CKC
-end
-subgraph "Navigation Layer"
-BNC["BottomNavController<br/>Page Routing"] --> CV
-BNC --> BNCI["BottomNavCartItem<br/>Badge Count"]
-end
-subgraph "Integration Layer"
-HPD["HomeProductDesign<br/>Cart Callbacks"] --> ATCC
-PDC["ProductDetailsCart<br/>Add to Cart"] --> ATCC
+subgraph "Debugging Integration"
+DEBUG --> MONITOR["Real-time Cart Monitoring"]
+ERROR --> LOG["Enhanced Logging"]
+PARSE --> VALIDATE["Data Validation"]
 end
 ```
 
 **Diagram sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-- [get_cart_repo.dart:1-19](file://lib/features/cart/repositories/get_cart_repo.dart#L1-L19)
-- [add_to_cart_repo.dart:1-28](file://lib/features/cart/repositories/add_to_cart_repo.dart#L1-L28)
-- [cart_model.dart:1-165](file://lib/features/cart/models/cart_model.dart#L1-L165)
-- [cart_view.dart:12-61](file://lib/features/cart/views/cart_view.dart#L12-L61)
-- [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
-- [cart_item_info.dart:1-105](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L105)
-- [cart_order_summery.dart:1-93](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L1-L93)
-- [checkout_controller.dart:1-82](file://lib/features/cart/controller/checkout_controller.dart#L1-L82)
-- [checkout_order_summery.dart:1-94](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart#L1-L94)
-- [checkout_order_calculation.dart:1-101](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_calculation.dart#L1-L101)
-- [bottom_nav_controller.dart:1-18](file://lib/features/home/controller/bottom_nav_controller.dart#L1-L18)
-- [bottom_nav_cart_item.dart:1-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L1-L75)
-- [home_product_design.dart:1-106](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L106)
-- [product_details_cart.dart:1-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L1-L108)
+- [cart_controller.dart:19-31](file://lib/features/cart/controller/cart_controller.dart#L19-L31)
+- [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [cart_item_info.dart:24-47](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L24-L47)
+- [cart_order_summery.dart:19-31](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L19-L31)
 
 ## Detailed Component Analysis
 
-### API-Driven Cart Controller Implementation
-The CartController manages all cart operations with enhanced reactive state management and API integration:
+### Enhanced Cart Controller Implementation
+The CartController now includes improved debugging capabilities and enhanced state management:
 
 ```mermaid
 sequenceDiagram
@@ -242,365 +173,109 @@ participant User as "User"
 participant Controller as "CartController"
 participant Repository as "GetCartRepository"
 participant Network as "GetNetwork"
-participant Model as "CartModel"
+participant Debug as "debugPrint"
 User->>Controller : getCart()
 Controller->>Controller : isLoading.value = true
 Controller->>Repository : execute()
 Repository->>Network : getData<CartModel>()
-Network-->>Repository : API Response
+Network-->>Repository : API Response with nested data
 Repository-->>Controller : Either<ErrorModel, CartModel>
 Controller->>Controller : isLoading.value = false
 Controller->>Controller : response.fold()
 Controller->>Controller : carts.value = data
-Controller-->>User : UI Update
-User->>Controller : toggleItem(id)
-Controller->>Controller : Update item.isSelected
+Controller->>Debug : debugPrint("Cart Length : ${items.length}")
+Debug-->>User : Console Log
 Controller-->>User : UI Update
 ```
 
 **Diagram sources**
-- [cart_controller.dart:18-30](file://lib/features/cart/controller/cart_controller.dart#L18-L30)
+- [cart_controller.dart:19-31](file://lib/features/cart/controller/cart_controller.dart#L19-L31)
 - [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
 
 **Section sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
+- [cart_controller.dart:19-31](file://lib/features/cart/controller/cart_controller.dart#L19-L31)
 
-### Enhanced Add to Cart Controller Implementation
-The AddToCartController handles add-to-cart operations with comprehensive attribute validation and API integration:
-
-```mermaid
-sequenceDiagram
-participant User as "User"
-participant Controller as "AddToCartController"
-participant Repository as "AddToCartRepository"
-participant Network as "PostWithoutResponse"
-participant Snackbar as "ErrorSnackbar"
-User->>Controller : addToCart(productID, quantity, options)
-Controller->>Controller : Validate options.isNotEmpty
-Controller->>Controller : isLoading.value = true
-Controller->>Repository : execute(productID, quantity, options)
-Repository->>Network : postData("/api/cart/add")
-Network-->>Repository : API Response
-Repository-->>Controller : Either<ErrorModel, bool>
-Controller->>Controller : isLoading.value = false
-Controller->>Controller : response.fold()
-Controller->>Snackbar : Show success/error message
-Controller-->>User : Operation Complete
-```
-
-**Diagram sources**
-- [add_to_cart_controller.dart:14-38](file://lib/features/cart/controller/add_to_cart_controller.dart#L14-L38)
-- [add_to_cart_repo.dart:12-27](file://lib/features/cart/repositories/add_to_cart_repo.dart#L12-L27)
-
-**Section sources**
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-
-### Enhanced Cart Model with Comprehensive Serialization
-The CartModel provides comprehensive data structure with JSON serialization support for cart items, options, and pricing:
+### Enhanced Repository Pattern Implementation
+The GetCartRepository now features improved API response parsing with nested data structure handling:
 
 ```mermaid
 classDiagram
+class GetCartRepository {
++GetNetwork getNetwork
++execute() Either~ErrorModel, CartModel~
+}
+class EnhancedParsing {
++fromJson : (json) => CartModel.fromJson(json["data"])
++BetterErrorHandling
++NestedDataStructure
+}
 class CartModel {
-+String? id
-+int? userId
-+CartItem[]? items
-+num? subtotal
-+num? totalCartValue
-+num? discountAmount
-+String? couponCode
-+String? couponMessage
-+num? grandTotal
-+int? totalQty
-+int? itemCount
-+CartModel()
-+fromJson(Map)
-+toJson()
++fromJson(Map json)
++EnhancedFieldMapping
++NestedDataSupport
 }
-class CartItem {
-+int? id
-+bool isSelected
-+Product? product
-+int? quantity
-+num? unitPrice
-+num? basePrice
-+num? optionPrice
-+num? subtotal
-+CartOption[]? options
-+CartItem()
-+fromJson(Map)
-+toJson()
-}
-class CartOption {
-+num? productAttributeOptionId
-+num? attributeId
-+num? optionId
-+String? attributeName
-+String? optionName
-+num? price
-+dynamic productImage
-+bool? isDefault
-+CartOption()
-+fromJson(Map)
-+toJson()
-}
-CartModel --> CartItem
-CartItem --> CartOption
+GetCartRepository --> EnhancedParsing
+EnhancedParsing --> CartModel
 ```
 
 **Diagram sources**
-- [cart_model.dart:8-66](file://lib/features/cart/models/cart_model.dart#L8-L66)
-- [cart_model.dart:68-120](file://lib/features/cart/models/cart_model.dart#L68-L120)
-- [cart_model.dart:122-165](file://lib/features/cart/models/cart_model.dart#L122-L165)
-
-**Section sources**
-- [cart_model.dart:1-165](file://lib/features/cart/models/cart_model.dart#L1-L165)
-
-### Modular Cart View and Enhanced Item Rendering
-The CartView provides the main interface for cart management with modernized widget architecture and dynamic item rendering:
-
-```mermaid
-flowchart TD
-Start(["CartView Build"]) --> LoadTheme["Detect Theme (Light/Dark)"]
-LoadTheme --> CreateContainer["Create CustomContainer"]
-CreateContainer --> AddAppbar["Add CustomAppbar 'Cart'"]
-AddAppbar --> AddSelectItem["Add CartSelectItem Widget"]
-AddSelectItem --> CreateList["Create ListView.separated"]
-CreateList --> SetItemCount["Set itemCount = controller.carts.value?.items?.length"]
-SetItemCount --> itemBuilder["itemBuilder creates CartItemBox widgets"]
-itemBuilder --> PassProps["Pass item, isDark, controller"]
-PassProps --> RenderComplete["Render Complete Cart List"]
-RenderComplete --> AddOrderSummary["Add CartOrderSummery Widget"]
-AddOrderSummary --> End(["Cart View Complete"])
-```
-
-**Diagram sources**
-- [cart_view.dart:16-61](file://lib/features/cart/views/cart_view.dart#L16-L61)
-
-**Section sources**
-- [cart_view.dart:12-61](file://lib/features/cart/views/cart_view.dart#L12-L61)
-
-### Enhanced Cart Item Widget Architecture
-The CartItemBox widget now features a modular architecture with separated item information and quantity control components:
-
-```mermaid
-sequenceDiagram
-participant User as "User"
-participant ItemBox as "CartItemBox Widget"
-participant ItemInfo as "CartItemInfo Widget"
-participant Controller as "CartController"
-participant CheckBox as "CustomCheckBox"
-User->>CheckBox : Toggle Selection
-CheckBox->>Controller : toggleItem(id)
-Controller->>Controller : Update item.isSelected
-Controller-->>ItemBox : UI Update
-User->>ItemBox : Increase Quantity
-ItemBox->>Controller : increaseQty(id)
-Controller->>Controller : Update item.quantity
-Controller-->>ItemBox : UI Update
-User->>ItemBox : Decrease Quantity
-ItemBox->>Controller : decreaseQty(id)
-Controller->>Controller : Update item.quantity
-Controller-->>ItemBox : UI Update
-User->>ItemBox : Delete Item
-ItemBox->>Controller : deleteItem(id)
-Controller->>Controller : Remove from cartList
-Controller-->>ItemBox : UI Update
-```
-
-**Diagram sources**
-- [cart_item.dart:31-55](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L31-L55)
-- [cart_item_info.dart:43-53](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L43-L53)
-- [cart_controller.dart:32-49](file://lib/features/cart/controller/cart_controller.dart#L32-L49)
-
-**Section sources**
-- [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
-- [cart_item_info.dart:1-105](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L105)
-
-### Enhanced Cart Order Summary Component
-The CartOrderSummery widget provides comprehensive order summary with pricing calculations and promotional discount handling:
-
-```mermaid
-flowchart TD
-Start(["CartOrderSummery Build"]) --> LoadPriceData["Load Static Price Data Array"]
-LoadPriceData --> DetectTheme["Detect Theme (Light/Dark)"]
-DetectTheme --> CreateContainer["Create Themed Container"]
-CreateContainer --> AddTitle["Add 'Order Summary' Title"]
-AddTitle --> AddDivider1["Add Top Divider"]
-AddDivider1 --> GenerateRows["Generate Price Rows"]
-GenerateRows --> AddSubtotal["Add Subtotal Row"]
-AddSubtotal --> AddShipping["Add Shipping Row"]
-AddShipping --> AddDiscount["Add Discount Row"]
-AddDiscount --> AddTotal["Add Total Row (Bold)"]
-AddTotal --> AddDivider2["Add Bottom Divider"]
-AddDivider2 --> AddButton["Add 'Proceed to Checkout' Button"]
-AddButton --> End(["Order Summary Complete"])
-```
-
-**Diagram sources**
-- [cart_order_summery.dart:15-69](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L15-L69)
-
-**Section sources**
-- [cart_order_summery.dart:1-93](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L1-L93)
-
-### Complete Checkout System Architecture
-The checkout system provides a comprehensive checkout workflow with form handling and order management:
-
-```mermaid
-sequenceDiagram
-participant User as "User"
-participant CheckoutView as "CheckoutView"
-participant Form as "CheckoutForm"
-participant Address as "CheckoutAddress"
-participant Payment as "CheckoutPayment"
-participant Summary as "CheckoutOrderSummery"
-participant Controller as "CheckoutController"
-User->>CheckoutView : Navigate to Checkout
-CheckoutView->>Form : Display Delivery Form
-Form->>Controller : Handle Text Editing
-Controller->>Controller : Validate Form Input
-Controller-->>Form : Update Form State
-User->>Address : Select/Enter Address
-Address->>Controller : Update Selected Address
-Controller-->>Address : Apply Address Changes
-User->>Payment : Enter Payment Details
-Payment->>Controller : Update Payment Methods
-Controller-->>Payment : Apply Payment Changes
-User->>Summary : Review Order
-Summary->>Controller : Calculate Totals
-Controller-->>Summary : Display Updated Prices
-User->>CheckoutView : Click Pay Button
-CheckoutView->>Controller : Process Payment
-Controller-->>User : Show Payment Result
-```
-
-**Diagram sources**
-- [checkout_view.dart:21-67](file://lib/features/cart/views/checkout_view.dart#L21-L67)
-- [checkout_controller.dart:1-82](file://lib/features/cart/controller/checkout_controller.dart#L1-L82)
-- [checkout_order_summery.dart:1-94](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart#L1-L94)
-- [checkout_order_calculation.dart:1-101](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_calculation.dart#L1-L101)
-
-**Section sources**
-- [checkout_view.dart:17-67](file://lib/features/cart/views/checkout_view.dart#L17-L67)
-- [checkout_controller.dart:1-82](file://lib/features/cart/controller/checkout_controller.dart#L1-L82)
-- [checkout_order_summery.dart:1-94](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart#L1-L94)
-- [checkout_order_calculation.dart:1-101](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_calculation.dart#L1-L101)
-
-### Bottom Navigation Cart Integration
-Enhanced bottom navigation with cart badge integration and page routing:
-
-```mermaid
-sequenceDiagram
-participant User as "User"
-participant BottomNav as "BottomNavView"
-participant BottomNavItem as "BottomNavCartItem"
-participant Controller as "BottomNavController"
-participant CartView as "CartView"
-User->>BottomNavItem : Tap Cart Icon
-BottomNavItem->>Controller : Update selectedIndex to 3
-Controller->>Controller : Set pages[3] = CartView()
-Controller-->>BottomNav : selectedIndex.value = 3
-BottomNav-->>User : Navigate to CartView
-Note over BottomNavItem : Badge shows item count from cart model
-```
-
-**Diagram sources**
-- [bottom_nav_view.dart:12-80](file://lib/features/home/views/bottom_nav_view.dart#L12-L80)
-- [bottom_nav_controller.dart:8-17](file://lib/features/home/controller/bottom_nav_controller.dart#L8-L17)
-- [bottom_nav_cart_item.dart:25-73](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L25-L73)
-
-**Section sources**
-- [bottom_nav_view.dart:12-80](file://lib/features/home/views/bottom_nav_view.dart#L12-L80)
-- [bottom_nav_controller.dart:1-18](file://lib/features/home/controller/bottom_nav_controller.dart#L1-L18)
-- [bottom_nav_cart_item.dart:1-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L1-L75)
-
-### Product Details Cart Integration
-Product details page with integrated cart functionality and attribute selection:
-
-```mermaid
-sequenceDiagram
-participant User as "User"
-participant ProductDetails as "ProductDetailsCart"
-participant Controller as "ProductDetailsController"
-participant AddToCartController as "AddToCartController"
-participant AttributesController as "ProductAttributesController"
-User->>ProductDetails : Tap Add to Cart
-ProductDetails->>Controller : qty validation
-ProductDetails->>AttributesController : Get selected attributes
-AttributesController-->>ProductDetails : Return selectedIDs
-ProductDetails->>AddToCartController : addToCart(productID, qty, options)
-AddToCartController->>AddToCartController : Validate options.isNotEmpty
-AddToCartController->>AddToCartController : isLoading.value = true
-AddToCartController->>AddToCartController : response.fold()
-AddToCartController->>AddToCartController : isLoading.value = false
-AddToCartController-->>ProductDetails : Show success/error message
-```
-
-**Diagram sources**
-- [product_details_cart.dart:79-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L79-L108)
-
-**Section sources**
-- [product_details_cart.dart:1-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L1-L108)
-
-### Home Product Integration
-Home product widgets with cart action callbacks:
-
-```mermaid
-sequenceDiagram
-participant User as "User"
-participant HomeProduct as "HomeProductDesign"
-participant Parent as "Parent Widget"
-participant AddToCartController as "AddToCartController"
-User->>HomeProduct : Tap Cart Button
-HomeProduct->>Parent : onCart callback
-Parent->>AddToCartController : addToCart(productID, qty, options)
-AddToCartController->>AddToCartController : Execute API call
-AddToCartController-->>Parent : Show loading state
-AddToCartController-->>Parent : Show success/error message
-```
-
-**Diagram sources**
-- [home_product_design.dart:66-74](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L66-L74)
-
-**Section sources**
-- [home_product_design.dart:1-106](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L106)
-
-## API-Driven Cart System
-The cart system now operates entirely through API integration with comprehensive error handling and data persistence:
-
-```mermaid
-sequenceDiagram
-participant Client as "Client Application"
-participant Controller as "CartController"
-participant Repository as "GetCartRepository"
-participant Network as "GetNetwork"
-participant API as "Cart API Server"
-participant Storage as "Local Storage"
-Client->>Controller : getCart()
-Controller->>Controller : isLoading.value = true
-Controller->>Repository : execute()
-Repository->>Network : GET /api/cart
-Network->>API : HTTP Request
-API-->>Network : Cart Data Response
-Network-->>Repository : Response with CartModel
-Repository-->>Controller : Either<ErrorModel, CartModel>
-Controller->>Controller : isLoading.value = false
-Controller->>Controller : response.fold()
-Controller->>Controller : carts.value = data
-Controller->>Storage : Persist cart data locally
-Controller-->>Client : UI Update with cart items
-Note over Client,Storage : Cart data persisted for offline access
-```
-
-**Diagram sources**
-- [cart_controller.dart:18-30](file://lib/features/cart/controller/cart_controller.dart#L18-L30)
 - [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [cart_model.dart:35-49](file://lib/features/cart/models/cart_model.dart#L35-L49)
 
 **Section sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [get_cart_repo.dart:1-19](file://lib/features/cart/repositories/get_cart_repo.dart#L1-L19)
+- [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [cart_model.dart:35-49](file://lib/features/cart/models/cart_model.dart#L35-L49)
 
-## Repository Pattern Implementation
-The cart system implements a clean repository pattern for API data management:
+### Redesigned Cart Item UI Components
+The cart item components have been significantly redesigned with improved image handling and checkbox positioning:
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant ItemInfo as "CartItemInfo"
+participant Image as "CachedNetworkImage"
+participant Checkbox as "CustomCheckBox"
+participant Controller as "CartController"
+User->>Checkbox : Toggle Selection
+Checkbox->>Controller : toggleItem(id)
+Controller->>Controller : Update item.isSelected
+Controller-->>ItemInfo : UI Update
+Note over ItemInfo : CachedNetworkImage loads with fallback
+Image->>Image : Cache network images
+Image-->>ItemInfo : Display product image
+```
+
+**Diagram sources**
+- [cart_item_info.dart:24-47](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L24-L47)
+- [cart_item_info.dart:43-44](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L43-L44)
+
+**Section sources**
+- [cart_item.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L11-L86)
+- [cart_item_info.dart:11-96](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L11-L96)
+
+### Reactive Order Summary System
+The cart order summary has been converted to a reactive widget with dynamic pricing calculations:
+
+```mermaid
+flowchart TD
+Start(["CartOrderSummery Build"]) --> LoadReactive["Observe Cart State Changes"]
+LoadReactive --> CalcSubtotal["Calculate Subtotal<br/>toPrecision(2)"]
+CalcSubtotal --> CalcDiscount["Calculate Discount<br/>toPrecision(2)"]
+CalcDiscount --> CalcTotal["Calculate Total<br/>toPrecision(2)"]
+CalcTotal --> FormatCurrency["Format Currency<br/>$XX.XX"]
+FormatCurrency --> UpdateUI["Update UI Reactively"]
+UpdateUI --> End(["Reactive Summary Complete"])
+```
+
+**Diagram sources**
+- [cart_order_summery.dart:16-33](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L16-L33)
+- [cart_order_summery.dart:19-31](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L19-L31)
+
+**Section sources**
+- [cart_order_summery.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L11-L86)
+
+## Enhanced Repository Pattern Implementation
+The repository pattern has been enhanced with improved API response parsing and debugging capabilities:
 
 ```mermaid
 classDiagram
@@ -610,315 +285,226 @@ class CartController {
 +Rxn~CartModel~ carts
 +getCart()
 +toggleItem(id)
-+toggleSelectAll()
-+deleteItem(id)
-+deleteAll()
-+increaseQty(id)
-+decreaseQty(id)
++debugPrint("Cart Length : ${items.length}")
 }
 class GetCartRepository {
 +GetNetwork getNetwork
 +execute() Either~ErrorModel, CartModel~
++EnhancedParsing : json["data"]
++NestedDataSupport
 }
-class AddToCartController {
-+RxBool isLoading
-+addToCart(productID, quantity, options)
+class CartModel {
++fromJson(Map json)
++NestedFieldMapping
++EnhancedValidation
 }
-class AddToCartRepository {
-+PostWithoutResponse postWithoutResponse
-+execute(productID, quantity, options) Either~ErrorModel, bool~
-}
-class CartBindings {
-+dependencies()
+class DebuggingIntegration {
++Real-timeMonitoring
++CartLengthLogging
++EnhancedErrorMessages
 }
 CartController --> GetCartRepository
-AddToCartController --> AddToCartRepository
-CartBindings --> CartController
-CartBindings --> GetCartRepository
+GetCartRepository --> CartModel
+CartController --> DebuggingIntegration
 ```
 
 **Diagram sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [get_cart_repo.dart:7-19](file://lib/features/cart/repositories/get_cart_repo.dart#L7-L19)
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-- [add_to_cart_repo.dart:8-28](file://lib/features/cart/repositories/add_to_cart_repo.dart#L8-L28)
-- [cart_bindings.dart:1-11](file://lib/features/cart/bindings/cart_bindings.dart#L1-L11)
+- [cart_controller.dart:19-31](file://lib/features/cart/controller/cart_controller.dart#L19-L31)
+- [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [cart_model.dart:35-49](file://lib/features/cart/models/cart_model.dart#L35-L49)
 
 **Section sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-- [get_cart_repo.dart:1-19](file://lib/features/cart/repositories/get_cart_repo.dart#L1-L19)
-- [add_to_cart_repo.dart:1-28](file://lib/features/cart/repositories/add_to_cart_repo.dart#L1-L28)
-- [cart_bindings.dart:1-11](file://lib/features/cart/bindings/cart_bindings.dart#L1-L11)
+- [cart_controller.dart:19-31](file://lib/features/cart/controller/cart_controller.dart#L19-L31)
+- [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [cart_model.dart:35-49](file://lib/features/cart/models/cart_model.dart#L35-L49)
 
-## Enhanced Cart Model Architecture
-The CartModel provides comprehensive data structure with JSON serialization support for cart items, options, and pricing:
+## Redesigned Cart Item UI Components
+The cart item components feature significant improvements in image handling and layout:
 
 ```mermaid
 classDiagram
-class CartModel {
-+String? id
-+int? userId
-+CartItem[]? items
-+num? subtotal
-+num? totalCartValue
-+num? discountAmount
-+String? couponCode
-+String? couponMessage
-+num? grandTotal
-+int? totalQty
-+int? itemCount
-+CartModel()
-+fromJson(Map)
-+toJson()
+class CartItemBox {
++CartItem item
++bool isDark
++ImprovedLayout
++BetterSpacing
++EnhancedQuantityControls
 }
-class CartItem {
-+int? id
-+bool isSelected
-+Product? product
-+int? quantity
-+num? unitPrice
-+num? basePrice
-+num? optionPrice
-+num? subtotal
-+CartOption[]? options
-+CartItem()
-+fromJson(Map)
-+toJson()
+class CartItemInfo {
++CartItem item
++CachedNetworkImage
++CustomCheckBox
++BetterPositioning
++EnhancedStyling
 }
-class CartOption {
-+num? productAttributeOptionId
-+num? attributeId
-+num? optionId
-+String? attributeName
-+String? optionName
-+num? price
-+dynamic productImage
-+bool? isDefault
-+CartOption()
-+fromJson(Map)
-+toJson()
+class CachedNetworkImage {
++imageUrl : item.product.media.first.image
++CacheImages
++FallbackHandling
++BetterPerformance
 }
-class Product {
-+int? id
-+String? name
-+Category? category
-+Media? media
-+num? finalPrice
-+Product()
-+fromJson(Map)
-+toJson()
+class CustomCheckBox {
++PositionedTopLeft
++BetterStyling
++EnhancedInteraction
 }
-CartModel --> CartItem
-CartItem --> CartOption
-CartItem --> Product
+CartItemBox --> CartItemInfo
+CartItemInfo --> CachedNetworkImage
+CartItemInfo --> CustomCheckBox
 ```
 
 **Diagram sources**
-- [cart_model.dart:8-66](file://lib/features/cart/models/cart_model.dart#L8-L66)
-- [cart_model.dart:68-120](file://lib/features/cart/models/cart_model.dart#L68-L120)
-- [cart_model.dart:122-165](file://lib/features/cart/models/cart_model.dart#L122-L165)
+- [cart_item.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L11-L86)
+- [cart_item_info.dart:11-96](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L11-L96)
 
 **Section sources**
-- [cart_model.dart:1-165](file://lib/features/cart/models/cart_model.dart#L1-L165)
+- [cart_item.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L11-L86)
+- [cart_item_info.dart:11-96](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L11-L96)
 
-## Dependency Analysis
-The cart system demonstrates excellent modularity with clear dependency boundaries and modernized API-driven architecture:
+## Reactive Order Summary System
+The order summary system has been converted to a reactive widget with dynamic calculations:
 
 ```mermaid
-graph LR
-subgraph "API-Driven Cart Dependencies"
-CC["CartController"] --> GCR["GetCartRepository"]
-CC --> CM["CartModel"]
-CC --> GetX["GetX Framework"]
-GCR --> GN["GetNetwork"]
-ATCC["AddToCartController"] --> ACR["AddToCartRepository"]
-ATCC --> PAC["ProductAttributesController"]
-ACR --> PWR["PostWithoutResponse"]
-CV["CartView"] --> CC
-CIB["CartItemBox"] --> CC
-CIB --> CII["CartItemInfo"]
-CII --> CM
-COS["CartOrderSummery"] --> CC
-end
-subgraph "Checkout Feature Dependencies"
-CKC["CheckoutController"] --> COC["CheckoutOrderCalculation"]
-CKC --> COS2["CheckoutOrderSummery"]
-CV2["CheckoutView"] --> CKC
-end
-subgraph "Integration Dependencies"
-BNC["BottomNavController"] --> CV
-BNC --> BNCI["BottomNavCartItem"]
-HPD["HomeProductDesign"] --> ATCC
-PDC["ProductDetailsCart"] --> ATCC
-PDB["ProductDetailsBindings"] --> ATCC
-end
-subgraph "Infrastructure Dependencies"
-SS["StorageService"] --> CC
-ICONS["IconsPath"] --> BNCI
-ICONS --> HPD
-ICONS --> CIB
-end
+classDiagram
+class CartOrderSummery {
++ReactiveWidget
++DynamicCalculations
++toPrecision(2)
++EnhancedFormatting
+}
+class PricingCalculations {
++SubtotalCalculation
++DiscountCalculation
++TotalCalculation
++CurrencyFormatting
+}
+class ReactiveUpdates {
++ObserveCartChanges
++AutomaticUpdates
++Real-timeCalculations
+}
+CartOrderSummery --> PricingCalculations
+PricingCalculations --> ReactiveUpdates
 ```
 
 **Diagram sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-- [cart_model.dart:1-165](file://lib/features/cart/models/cart_model.dart#L1-L165)
-- [get_cart_repo.dart:1-19](file://lib/features/cart/repositories/get_cart_repo.dart#L1-L19)
-- [add_to_cart_repo.dart:1-28](file://lib/features/cart/repositories/add_to_cart_repo.dart#L1-L28)
-- [cart_view.dart:1-11](file://lib/features/cart/views/cart_view.dart#L1-L11)
-- [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
-- [cart_item_info.dart:1-105](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L105)
-- [cart_order_summery.dart:1-93](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L1-L93)
-- [checkout_controller.dart:1-82](file://lib/features/cart/controller/checkout_controller.dart#L1-L82)
-- [checkout_order_summery.dart:1-94](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart#L1-L94)
-- [checkout_order_calculation.dart:1-101](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_calculation.dart#L1-L101)
-- [bottom_nav_controller.dart:1-18](file://lib/features/home/controller/bottom_nav_controller.dart#L1-L18)
-- [bottom_nav_cart_item.dart:1-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L1-L75)
-- [home_product_design.dart:1-106](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L106)
-- [product_details_cart.dart:1-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L1-L108)
-- [product_details_bindings.dart:1-37](file://lib/features/product_details.dart/bindings/product_details_bindings.dart#L1-L37)
-- [storage_service.dart:1-24](file://lib/core/data/local/storage_service.dart#L1-L24)
-- [icons_path.dart:1-24](file://lib/core/constant/icons_path.dart#L1-L24)
+- [cart_order_summery.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L11-L86)
+- [cart_order_summery.dart:19-31](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L19-L31)
 
 **Section sources**
-- [cart_controller.dart:1-51](file://lib/features/cart/controller/cart_controller.dart#L1-L51)
-- [add_to_cart_controller.dart:1-40](file://lib/features/cart/controller/add_to_cart_controller.dart#L1-L40)
-- [cart_model.dart:1-165](file://lib/features/cart/models/cart_model.dart#L1-L165)
-- [get_cart_repo.dart:1-19](file://lib/features/cart/repositories/get_cart_repo.dart#L1-L19)
-- [add_to_cart_repo.dart:1-28](file://lib/features/cart/repositories/add_to_cart_repo.dart#L1-L28)
-- [cart_view.dart:1-11](file://lib/features/cart/views/cart_view.dart#L1-L11)
-- [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
-- [cart_item_info.dart:1-105](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L1-L105)
-- [cart_order_summery.dart:1-93](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L1-L93)
-- [checkout_controller.dart:1-82](file://lib/features/cart/controller/checkout_controller.dart#L1-L82)
-- [checkout_order_summery.dart:1-94](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_summery.dart#L1-L94)
-- [checkout_order_calculation.dart:1-101](file://lib/features/cart/widgets/checkout_view_widgets/checkout_order_calculation.dart#L1-L101)
-- [bottom_nav_controller.dart:1-18](file://lib/features/home/controller/bottom_nav_controller.dart#L1-L18)
-- [bottom_nav_cart_item.dart:1-75](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L1-L75)
-- [home_product_design.dart:1-106](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L106)
-- [product_details_cart.dart:1-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L1-L108)
-- [product_details_bindings.dart:1-37](file://lib/features/product_details.dart/bindings/product_details_bindings.dart#L1-L37)
-- [storage_service.dart:1-24](file://lib/core/data/local/storage_service.dart#L1-L24)
-- [icons_path.dart:1-24](file://lib/core/constant/icons_path.dart#L1-L24)
+- [cart_order_summery.dart:11-86](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L11-L86)
+- [cart_order_summery.dart:19-31](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L19-L31)
+
+## API Response Parsing Improvements
+The API response parsing has been enhanced to handle nested data structures and provide better error handling:
+
+```mermaid
+sequenceDiagram
+participant API as "Cart API"
+participant Repo as "GetCartRepository"
+participant Parser as "EnhancedParser"
+participant Model as "CartModel"
+API-->>Repo : { "status" : "success", "data" : { ... } }
+Repo->>Parser : json["data"]
+Parser->>Parser : EnhancedFieldMapping
+Parser->>Model : CartModel.fromJson(mappedData)
+Model-->>Repo : Parsed CartModel
+Repo-->>Caller : Either<ErrorModel, CartModel>
+```
+
+**Diagram sources**
+- [get_cart_repo.dart:15](file://lib/features/cart/repositories/get_cart_repo.dart#L15)
+- [cart_model.dart:35-49](file://lib/features/cart/models/cart_model.dart#L35-L49)
+
+**Section sources**
+- [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
+- [cart_model.dart:35-49](file://lib/features/cart/models/cart_model.dart#L35-L49)
+
+## Debugging and Monitoring Capabilities
+The system now includes comprehensive debugging and monitoring capabilities:
+
+```mermaid
+flowchart TD
+Start(["Cart Operations"]) --> DebugPrint["debugPrint Cart Length"]
+DebugPrint --> ConsoleLog["Console Output"]
+ConsoleLog --> Monitor["Real-time Monitoring"]
+Monitor --> ErrorHandling["Enhanced Error Logging"]
+ErrorHandling --> UserFeedback["User Feedback"]
+UserFeedback --> Success["Operation Success"]
+ErrorHandling --> Failure["Operation Failure"]
+Failure --> ErrorDisplay["Error Display"]
+```
+
+**Diagram sources**
+- [cart_controller.dart:29](file://lib/features/cart/controller/cart_controller.dart#L29)
+
+**Section sources**
+- [cart_controller.dart:29](file://lib/features/cart/controller/cart_controller.dart#L29)
 
 ## Performance Considerations
-The cart system implements several performance optimization strategies with modernized API-driven architecture:
+The enhanced cart system implements several performance optimization strategies:
 
-- **API-Driven State Management**: Uses GetX framework for efficient state management with selective UI updates from API responses
-- **Virtualized Lists**: Implements ListView.separated with shrinkWrap and NeverScrollableScrollPhysics for optimal rendering
-- **Conditional Rendering**: Uses Obx widgets for granular state observation and minimal rebuilds
-- **Memory Management**: Proper disposal of reactive subscriptions through GetX lifecycle
-- **Asset Optimization**: Cached network images for product thumbnails to reduce bandwidth usage
-- **State Synchronization**: Automatic state updates prevent unnecessary manual refresh operations
-- **Badge Counting**: Dynamic badge calculation based on cart model data for real-time updates
-- **Responsive Design**: ScreenUtil integration ensures optimal performance across device sizes
-- **Modular Architecture**: Separate widget components reduce memory footprint and improve maintainability
-- **Enhanced Order Calculations**: Optimized pricing calculations with lazy evaluation
-- **Checkout Form Handling**: Efficient form validation and state management
-- **Promotional Discount Processing**: Optimized discount calculation and application
-- **Error Handling**: fpdart Either type provides predictable error handling without exceptions
-- **API Caching**: Local storage integration for offline cart access and faster loading
-- **Repository Pattern**: Clean separation reduces coupling and improves testability
+- **CachedNetworkImage**: Improved image loading performance with caching and fallback handling
+- **Reactive Updates**: Efficient state management with selective UI updates based on cart changes
+- **Enhanced Decimal Formatting**: Optimized toPrecision(2) calculations for consistent monetary display
+- **Improved API Parsing**: Better error handling reduces unnecessary retries and network calls
+- **Debugging Integration**: Real-time monitoring helps identify performance bottlenecks
+- **Memory Management**: Proper disposal of cached images and reactive subscriptions
+- **Layout Optimization**: Better spacing and alignment reduce rendering overhead
+- **Enhanced Error Handling**: Prevents cascading failures and improves system stability
+- **Nested Data Parsing**: Efficient handling of API response structures reduces parsing overhead
 
 ## Troubleshooting Guide
-Common issues and solutions for the modernized API-driven cart system:
+Enhanced troubleshooting procedures for the improved cart system:
 
-**Cart Data Not Loading**
-- Verify API endpoint `/api/cart` is accessible and returns valid CartModel JSON
+**Cart Data Loading Issues**
+- Verify API endpoint returns nested data structure with "data" wrapper
 - Check GetNetwork configuration and HeadersManager setup
-- Ensure CartModel.fromJson properly handles optional fields
-- Verify repository.execute() method is being called during controller initialization
+- Ensure CartModel.fromJson properly handles nested field mappings
+- Verify repository.execute() method processes json["data"] correctly
 
-**Add to Cart Not Working**
-- Confirm AddToCartRepository.execute() method properly encodes request body
-- Verify product attributes are selected before adding to cart
-- Check PostWithoutResponse configuration and headers
-- Ensure AddToCartController properly handles Either type response
+**Image Loading Problems**
+- Confirm CachedNetworkImage properly handles empty or null image URLs
+- Check product media array contains "image" type entries
+- Verify image URL formatting and accessibility
+- Ensure fallback handling displays default product images
 
-**API Error Handling Issues**
-- Verify fpdart Either type is properly imported and used
-- Check ErrorModel structure matches API error response format
-- Ensure response.fold() properly handles both success and error cases
-- Verify snackbar messages display appropriate error information
+**Reactive Updates Not Working**
+- Confirm CartOrderSummery properly observes cart state changes
+- Verify toPrecision(2) formatting doesn't interfere with reactive updates
+- Check that cart state changes trigger UI rebuilds
+- Ensure proper use of Obx widgets for reactive state observation
 
-**Cart State Synchronization Problems**
-- Confirm CartController properly updates carts.value on successful API response
-- Verify CartItem.isSelected state persists across widget rebuilds
-- Check that UI updates trigger when cart data changes
-- Ensure proper disposal of reactive subscriptions
+**Debugging Issues**
+- Verify debugPrint statements are properly formatted
+- Check console output for cart length monitoring logs
+- Ensure debugging doesn't impact production performance
+- Verify debugPrint only appears in development builds
 
-**Quantity Controls Not Working**
-- Confirm increaseQty/decreaseQty methods are properly bound to UI events
-- Verify quantity validation prevents negative values
-- Ensure cart updates trigger UI refreshes
-- Check that CartItemBox widget properly passes controller methods
-
-**Selection State Issues**
-- Check toggleItem method properly updates individual item selection state
-- Verify isAllSelected calculation uses every() method correctly
-- Ensure selection state persists across widget rebuilds
-- Verify CartItemInfo checkbox properly triggers controller.toggleItem
-
-**Order Summary Calculation Errors**
-- Check CartOrderSummery widget properly calculates pricing from cart model
-- Verify CheckoutOrderCalculation handles promo code input
-- Ensure pricing arrays match expected format
-- Check that total calculations update on state changes
-
-**Checkout Form Validation Problems**
-- Confirm CheckoutController properly validates form inputs
-- Verify text editing controllers are properly disposed
-- Check that form state updates trigger UI refreshes
-- Ensure address and payment method selections work correctly
-
-**Navigation Problems**
-- Confirm BottomNavController pages array includes CartView at index 3
-- Verify BottomNavCartItem badgeCount is properly calculated from cart model
-- Check that selectedIndex updates trigger proper page navigation
-- Verify checkout navigation flow works correctly
-
-**Integration Issues**
-- Ensure HomeProductDesign onCart callbacks are properly wired to AddToCartController
-- Verify ProductDetailsCart add to cart functionality is implemented
-- Check that cart bindings are registered in dependency injection system
-- Verify checkout bindings are properly configured
-- Confirm product details bindings include AddToCartController registration
+**API Response Parsing Errors**
+- Confirm nested data structure matches expected format
+- Check field mapping in CartModel.fromJson
+- Verify error handling catches parsing exceptions
+- Ensure graceful degradation for malformed API responses
 
 **Section sources**
-- [cart_controller.dart:18-30](file://lib/features/cart/controller/cart_controller.dart#L18-L30)
-- [add_to_cart_controller.dart:14-38](file://lib/features/cart/controller/add_to_cart_controller.dart#L14-L38)
+- [cart_controller.dart:19-31](file://lib/features/cart/controller/cart_controller.dart#L19-L31)
 - [get_cart_repo.dart:11-18](file://lib/features/cart/repositories/get_cart_repo.dart#L11-L18)
-- [add_to_cart_repo.dart:12-27](file://lib/features/cart/repositories/add_to_cart_repo.dart#L12-L27)
-- [cart_item.dart:31-55](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L31-L55)
-- [cart_item_info.dart:43-53](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L43-L53)
-- [cart_order_summery.dart:15-69](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L15-L69)
-- [checkout_controller.dart:1-82](file://lib/features/cart/controller/checkout_controller.dart#L1-L82)
-- [bottom_nav_controller.dart:8-17](file://lib/features/home/controller/bottom_nav_controller.dart#L8-L17)
-- [bottom_nav_cart_item.dart:25-73](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L25-L73)
-- [home_product_design.dart:66-74](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L66-L74)
-- [product_details_cart.dart:79-108](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart#L79-L108)
-- [product_details_bindings.dart:33-36](file://lib/features/product_details.dart/bindings/product_details_bindings.dart#L33-L36)
+- [cart_item_info.dart:24-34](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L24-L34)
+- [cart_order_summery.dart:19-31](file://lib/features/cart/widgets/cart_view_widgets/cart_order_summery.dart#L19-L31)
 
 ## Conclusion
-The Shopping Cart system in ZB-DEZINE represents a comprehensive modernized implementation featuring a fully functional API-driven cart controller with item selection, quantity management, deletion capabilities, and enhanced UI components. The system leverages the GetX framework for reactive state management with repository pattern implementation, providing efficient updates and responsive user interactions.
+The Shopping Cart system in ZB-DEZINE has been significantly enhanced with improved API response parsing, redesigned cart item UI components, reactive order summary calculations, and comprehensive debugging capabilities. The system maintains its modernized API-driven architecture while adding robust monitoring and performance optimizations.
 
-**Updated** Key achievements include the major cart system transformation from local static data to API-driven architecture with repository pattern implementation, comprehensive serialization support through CartModel, robust error handling using fpdart Either type, and enhanced cart functionality with proper null safety and API integration.
+**Updated** Key enhancements include improved API response parsing with nested data structure handling, redesigned cart item UI with CachedNetworkImage for better performance and CustomCheckBox positioning, converted cart order summary to reactive widget with dynamic pricing calculations using toPrecision(2), added comprehensive debugging capabilities with real-time cart length monitoring, and enhanced error handling throughout the system.
 
-The modernized system features:
-- Complete API-driven cart controller implementation with repository pattern
-- Comprehensive CartModel with JSON serialization support for cart items and options
-- Enhanced AddToCartController with attribute validation and API integration
-- Robust error handling using fpdart Either type for reliable API operations
-- Modernized widget architecture with CartItemBox component for better separation of concerns
-- Comprehensive UI components for individual items, bulk operations, and order summaries
-- Enhanced checkout system with form handling, promotional discount processing, and order management
-- Seamless integration with bottom navigation and product catalog
-- Proper dependency injection through cart and product details bindings
-- Responsive design with theme support and screen adaptation
-- Complete promotional discount handling in checkout order calculations
-- Optimized performance with modular architecture, efficient state management, and API caching
-- Cart restoration functionality through API-driven data fetching and local storage integration
+The enhanced system features:
+- **Improved API Integration**: Better nested data structure handling and enhanced error management
+- **Enhanced UI Components**: CachedNetworkImage for better image performance and improved checkbox positioning
+- **Reactive Calculations**: Dynamic pricing updates with consistent decimal formatting
+- **Debugging Support**: Real-time monitoring and enhanced error logging capabilities
+- **Performance Optimizations**: Cached image loading and efficient state management
+- **Maintainable Architecture**: Clear separation of concerns with enhanced repository pattern implementation
+- **Scalable Design**: Modular components ready for future enhancements like advanced inventory validation and promotional discount systems
 
-The system is designed for scalability with clear separation of concerns, making it easy to extend with additional features like advanced inventory validation, shipping calculations, and enhanced promotional discount systems. The API-driven architecture ensures maintainability and allows for future enhancements while maintaining optimal performance for large cart contents and complex checkout workflows. The repository pattern implementation provides clean separation of concerns and improved testability, making the system robust and reliable for production use.
+The system is designed for optimal performance with clear separation of concerns, making it easy to extend with additional features while maintaining reliability and responsiveness for production use.

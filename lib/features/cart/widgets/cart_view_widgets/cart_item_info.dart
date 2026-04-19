@@ -35,14 +35,16 @@ class CartItemInfo extends GetWidget<CartController> {
               Positioned(
                 top: 0.h,
                 left: 0.w,
-                child: CustomCheckBox(
-                  borderColor: isDark
-                      ? AppColors.primaryBorderColor
-                      : AppColors.darkColor,
-                  isChecked: item.isSelected,
-                  onChange: (value) {
-                    controller.toggleItem(id: item.id ?? 0);
-                  },
+                child: Obx(
+                  () => CustomCheckBox(
+                    borderColor: isDark
+                        ? AppColors.primaryBorderColor
+                        : AppColors.darkColor,
+                    isChecked: controller.selectedItems.contains(item.id ?? 0),
+                    onChange: (value) {
+                      controller.toggleItem(id: item.id ?? 0);
+                    },
+                  ),
                 ),
               ),
             ],
