@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/cart/models/cart_model.dart';
 import 'package:zb_dezign/features/cart/repositories/get_cart_repo.dart';
@@ -25,6 +26,7 @@ class CartController extends GetxController {
       },
       (data) {
         carts.value = data;
+        debugPrint("Cart Length: ${carts.value!.items!.length}");
       },
     );
   }

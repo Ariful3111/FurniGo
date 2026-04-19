@@ -12,7 +12,7 @@ class GetCartRepository {
     final response = await getNetwork.getData<CartModel>(
       url: "/api/cart",
       headers: HeadersManager.getHeaders(),
-      fromJson: (json) => CartModel.fromJson(json),
+      fromJson: (json) => CartModel.fromJson(json["data"]),
     );
     return response;
   }

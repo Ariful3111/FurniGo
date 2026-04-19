@@ -28,17 +28,22 @@
 - [subscription_view.dart](file://lib/features/membership/views/subscription_view.dart)
 - [subscription_bindings.dart](file://lib/features/membership/bindings/subscription_bindings.dart)
 - [subscription_controller.dart](file://lib/features/membership/controller/subscription_controller.dart)
+- [contact_us_view.dart](file://lib/features/contact_us/views/contact_us_view.dart)
+- [contact_us_bindings.dart](file://lib/features/contact_us/bindings/contact_us_bindings.dart)
+- [contact_us_controller.dart](file://lib/features/contact_us/controller/contact_us_controller.dart)
+- [contact_header.dart](file://lib/features/contact_us/widgets/contact_header.dart)
+- [profile_options_controller.dart](file://lib/features/profile/controllers/profile_options_controller.dart)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Added comprehensive documentation for new AI product placement regenerate route and functionality
-- Updated route constants section to include aiProductPlacementRegenerateView route
-- Enhanced route definitions section with detailed coverage of AI regenerate functionality
-- Added new sections covering AI product placement regeneration workflow and subscription management
-- Updated architecture diagrams to reflect the expanded AI feature set with regeneration capabilities
-- Enhanced navigation flow documentation with AI regeneration patterns and subscription integration
-- Added subscription management routes and controllers for membership handling
+- Added comprehensive documentation for new Contact Us feature and routing integration
+- Updated route constants section to include contactUsView route
+- Enhanced route definitions section with detailed coverage of Contact Us functionality
+- Added new sections covering Contact Us view structure, controller implementation, and widget components
+- Updated architecture diagrams to reflect the expanded feature set with Contact Us integration
+- Enhanced navigation flow documentation with Contact Us patterns and profile integration
+- Updated dependency analysis to include Contact Us bindings and controller
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -49,17 +54,18 @@
 6. [Expanded Feature Routes](#expanded-feature-routes)
 7. [AI Integration](#ai-integration)
 8. [Subscription Management](#subscription-management)
-9. [E-commerce Integration](#e-commerce-integration)
-10. [Dependency Analysis](#dependency-analysis)
-11. [Performance Considerations](#performance-considerations)
-12. [Troubleshooting Guide](#troubleshooting-guide)
-13. [Conclusion](#conclusion)
+9. [Contact Us Integration](#contact-us-integration)
+10. [E-commerce Integration](#e-commerce-integration)
+11. [Dependency Analysis](#dependency-analysis)
+12. [Performance Considerations](#performance-considerations)
+13. [Troubleshooting Guide](#troubleshooting-guide)
+14. [Conclusion](#conclusion)
 
 ## Introduction
-This document explains the routing and navigation system of the ZB-DEZINE application. It focuses on route definition patterns, navigation logic, page transitions, and how the system integrates with the MVVM pattern and controller-based navigation. The documentation covers the AppRoutes class, route constants, navigation helpers, programmatic navigation, deep linking considerations, and navigation state management. The system now includes comprehensive AI integration with category-based navigation, dashboard AI design management, specialized AI service routes, AI product placement regeneration capabilities, and subscription management functionality.
+This document explains the routing and navigation system of the ZB-DEZINE application. It focuses on route definition patterns, navigation logic, page transitions, and how the system integrates with the MVVM pattern and controller-based navigation. The documentation covers the AppRoutes class, route constants, navigation helpers, programmatic navigation, deep linking considerations, and navigation state management. The system now includes comprehensive AI integration with category-based navigation, dashboard AI design management, specialized AI service routes, AI product placement regeneration capabilities, subscription management functionality, and a complete Contact Us feature integration.
 
 ## Project Structure
-The routing system is implemented using the GetX package and organized under the core routes module. The application initializes routes via a central list of pages and route constants. Controllers orchestrate navigation after business logic completion. The expanded system now includes dedicated routes for AI category navigation, AI design dashboard, specialized AI service implementations, AI product placement regeneration, and subscription management.
+The routing system is implemented using the GetX package and organized under the core routes module. The application initializes routes via a central list of pages and route constants. Controllers orchestrate navigation after business logic completion. The expanded system now includes dedicated routes for AI category navigation, AI design dashboard, specialized AI service implementations, AI product placement regeneration, subscription management, and a comprehensive Contact Us feature with profile integration.
 
 ```mermaid
 graph TB
@@ -68,8 +74,8 @@ MAIN["main.dart<br/>Initialize DI, set initialRoute, configure GetMaterialApp"]
 DI["dependency_injection.dart<br/>Initialize storage and services"]
 end
 subgraph "Routing Layer"
-APPRT["app_routes.dart<br/>Route constants<br/>+1 new AI route<br/>+1 new subscription route"]
-ROUTES["routes.dart<br/>GetPage list<br/>+2 new GetPage entries<br/>+1 new binding import"]
+APPRT["app_routes.dart<br/>Route constants<br/>+1 new Contact Us route"]
+ROUTES["routes.dart<br/>GetPage list<br/>+1 new GetPage entry"]
 end
 subgraph "Feature Views"
 AUTHV["Auth Views<br/>e.g., SigninView, OnboardingView"]
@@ -82,6 +88,8 @@ AIDASHBOARD["AI Dashboard Views<br/>DashboardAiDesignView, DashboardAiDesignCont
 AISERVICES["AI Service Views<br/>AiView, AiProductPlacementView, AiInteriorDesignView"]
 AIREGENERATE["AI Regenerate Views<br/>AiProductPlacementRegenerateView, AiProductPlacementRegenerateController"]
 SUBSCRIPTION["Subscription Views<br/>SubscriptionView, SubscriptionController"]
+CONTACTUS["Contact Us Views<br/>ContactUsView, ContactUsController"]
+PROFILEOPT["Profile Options<br/>ProfileOptionsController"]
 end
 MAIN --> DI
 MAIN --> APPRT
@@ -96,45 +104,49 @@ ROUTES --> AIDASHBOARD
 ROUTES --> AISERVICES
 ROUTES --> AIREGENERATE
 ROUTES --> SUBSCRIPTION
+ROUTES --> CONTACTUS
+CONTACTUS --> PROFILEOPT
 ```
 
 **Diagram sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
 - [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [app_routes.dart:1-47](file://lib/core/routes/app_routes.dart#L1-L47)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
 
 **Section sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
 - [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [app_routes.dart:1-47](file://lib/core/routes/app_routes.dart#L1-L47)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
 
 ## Core Components
-- AppRoutes: Centralized route constants used for programmatic navigation and deep linking, now expanded with 5 new routes including AI product placement regeneration and subscription management.
+- AppRoutes: Centralized route constants used for programmatic navigation and deep linking, now expanded with 6 new routes including AI product placement regeneration, subscription management, and Contact Us functionality.
 - routes.dart: Defines all named routes using GetPage entries, each mapping a route constant to a view and its associated binding(s).
 - main.dart: Initializes the app with GetMaterialApp, sets the initial route based on authentication state, and registers all pages.
 
 Key responsibilities:
-- Route constants: Provide a single source of truth for route names, including AI category, AI dashboard, AI service routes, AI product placement regeneration, and subscription management routes.
+- Route constants: Provide a single source of truth for route names, including AI category, AI dashboard, AI service routes, AI product placement regeneration, subscription management, and Contact Us routes.
 - GetPage list: Declares all pages, their constructors, and bindings for dependency injection.
 - Initial route selection: Chooses onboarding or bottom navigation based on token presence.
 - AI integration: Supports seamless navigation between AI category selection, AI design dashboard, specialized AI services, and AI product placement regeneration.
 - Subscription management: Provides dedicated routes for membership and subscription handling.
+- Contact Us integration: Offers comprehensive customer support interface with profile integration.
 
 **Section sources**
-- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [app_routes.dart:1-47](file://lib/core/routes/app_routes.dart#L1-L47)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
 - [main.dart:36-40](file://lib/main.dart#L36-L40)
 
 ## Architecture Overview
-The routing architecture follows MVVM with GetX and now includes comprehensive AI capabilities and subscription management:
+The routing architecture follows MVVM with GetX and now includes comprehensive AI capabilities, subscription management, and Contact Us functionality:
 - Views are thin and delegate UI logic to controllers.
 - Controllers perform navigation after completing business operations.
 - Bindings connect controllers and models to the view lifecycle.
 - Route constants and GetPage definitions decouple navigation from view code.
 - AI routes support category-based navigation, dashboard management, specialized AI service implementations, and product placement regeneration.
 - Subscription routes provide dedicated membership management functionality.
+- Contact Us routes offer comprehensive customer support integration with profile options.
 
 ```mermaid
 graph TB
@@ -148,10 +160,12 @@ CTRL_AIDASH["AI Dashboard Controllers<br/>DashboardAiDesignController"]
 CTRL_AI["AI Service Controllers<br/>AiController"]
 CTRL_AIREGEN["AI Regenerate Controllers<br/>AiProductPlacementRegenerateController"]
 CTRL_SUB["Subscription Controllers<br/>SubscriptionController"]
-VIEWS["Feature Views<br/>e.g., BottomNavView, SigninView,<br/>FavoritesView, ShopView, CheckoutView,<br/>AiCategoryView, DashboardAiDesignView, AiView,<br/>AiProductPlacementRegenerateView, SubscriptionView"]
-BINDINGS["Feature Bindings<br/>e.g., AuthBindings, HomeBindings,<br/>FavoritesBindings, ShopBindings, CheckoutBindings,<br/>AiBindings, CategoryBindings, DashboardAiDesignBindings,<br/>AiProductPlacementRegenerateBindings, SubscriptionBindings"]
-ROUTES["routes.dart<br/>GetPage list<br/>+2 new AI routes<br/>+1 new subscription route"]
-CONST["app_routes.dart<br/>Route constants<br/>+5 new routes"]
+CTRL_CONTACT["Contact Us Controllers<br/>ContactUsController"]
+CTRL_PROFILE["Profile Options Controllers<br/>ProfileOptionsController"]
+VIEWS["Feature Views<br/>e.g., BottomNavView, SigninView,<br/>FavoritesView, ShopView, CheckoutView,<br/>AiCategoryView, DashboardAiDesignView, AiView,<br/>AiProductPlacementRegenerateView, SubscriptionView,<br/>ContactUsView"]
+BINDINGS["Feature Bindings<br/>e.g., AuthBindings, HomeBindings,<br/>FavoritesBindings, ShopBindings, CheckoutBindings,<br/>AiBindings, CategoryBindings, DashboardAiDesignBindings,<br/>AiProductPlacementRegenerateBindings, SubscriptionBindings,<br/>ContactUsBindings"]
+ROUTES["routes.dart<br/>GetPage list<br/>+1 new Contact Us route"]
+CONST["app_routes.dart<br/>Route constants<br/>+6 new routes"]
 CTRL_AUTH --> CONST
 CTRL_HOME --> CONST
 CTRL_FAVORITES --> CONST
@@ -162,6 +176,8 @@ CTRL_AIDASH --> CONST
 CTRL_AI --> CONST
 CTRL_AIREGEN --> CONST
 CTRL_SUB --> CONST
+CTRL_CONTACT --> CONST
+CTRL_PROFILE --> CONST
 CONST --> ROUTES
 ROUTES --> VIEWS
 ROUTES --> BINDINGS
@@ -175,6 +191,8 @@ VIEWS --> CTRL_AIDASH
 VIEWS --> CTRL_AI
 VIEWS --> CTRL_AIREGEN
 VIEWS --> CTRL_SUB
+VIEWS --> CTRL_CONTACT
+VIEWS --> CTRL_PROFILE
 ```
 
 **Diagram sources**
@@ -187,20 +205,24 @@ VIEWS --> CTRL_SUB
 - [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
 - [ai_product_placement_regenerate_bindings.dart:4-9](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L4-L9)
 - [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
+- [contact_us_bindings.dart:4-9](file://lib/features/contact_us/bindings/contact_us_bindings.dart#L4-L9)
 - [ai_controller.dart:7-94](file://lib/features/ai/controller/ai_controller.dart#L7-L94)
 - [ai_product_placement_regenerate_controller.dart:4-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L4-L16)
 - [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
-- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
+- [contact_us_controller.dart:4-85](file://lib/features/contact_us/controller/contact_us_controller.dart#L4-L85)
+- [profile_options_controller.dart:5-47](file://lib/features/profile/controllers/profile_options_controller.dart#L5-L47)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
+- [app_routes.dart:1-47](file://lib/core/routes/app_routes.dart#L1-L47)
 
 ## Detailed Component Analysis
 
 ### AppRoutes and Route Constants
-- Purpose: Define all route names as static constants for type-safe navigation, now including 5 new routes for AI product placement regeneration and subscription management.
+- Purpose: Define all route names as static constants for type-safe navigation, now including 6 new routes for AI product placement regeneration, subscription management, and Contact Us functionality.
 - Usage: Controllers call Get.toNamed(AppRoutes.<name>) to navigate programmatically.
 - Benefits: Centralization reduces typos and simplifies refactoring.
 - New AI routes: aiCategoryView, aiView, aiProductPlacementView, aiInteriorDesignView, aiProductPlacementRegenerateView.
 - New subscription route: subscriptionView.
+- New Contact Us route: contactUsView.
 
 Examples of usage:
 - Programmatic navigation after successful login.
@@ -208,9 +230,10 @@ Examples of usage:
 - AI flow: aiCategoryView → aiView → dashboardAiDesignView → dashboardAiDesignDetailsView.
 - AI regeneration flow: aiProductPlacementView → aiProductPlacementRegenerateView.
 - Subscription management: subscriptionView for membership handling.
+- Contact Us integration: contactUsView for customer support access.
 
 **Section sources**
-- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
+- [app_routes.dart:1-47](file://lib/core/routes/app_routes.dart#L1-L47)
 - [signin_controller.dart:32](file://lib/features/auth/controller/signin_controller.dart#L32)
 
 ### Navigation Flow and Page Transitions
@@ -219,6 +242,7 @@ Examples of usage:
 - Initial route: Set based on token availability during app startup.
 - AI navigation: Seamless flow between AI category selection, AI service implementation, dashboard management, and product placement regeneration.
 - Subscription navigation: Dedicated flow for membership management and plan selection.
+- Contact Us navigation: Direct access from profile options to comprehensive customer support interface.
 
 ```mermaid
 sequenceDiagram
@@ -231,6 +255,8 @@ participant AIPRegen as "AiProductPlacementRegenerateView"
 participant AIDashboard as "DashboardAiDesignView"
 participant AIDetails as "DashboardAiDesignDetails"
 participant SubView as "SubscriptionView"
+participant ContactUs as "ContactUsView"
+participant ProfileOpt as "ProfileOptionsController"
 participant Router as "GetMaterialApp(routes.dart)"
 User->>AICategory : Browse AI categories
 AICategory->>AICtrl : Navigate to AI service
@@ -248,6 +274,9 @@ Router-->>User : Show regeneration interface
 User->>SubView : Manage subscription
 SubView->>Router : Get.toNamed(AppRoutes.subscriptionView)
 Router-->>User : Show subscription management
+User->>ProfileOpt : Access profile options
+ProfileOpt->>Router : Get.toNamed(AppRoutes.contactUsView)
+Router-->>User : Show Contact Us interface
 ```
 
 **Diagram sources**
@@ -257,7 +286,9 @@ Router-->>User : Show subscription management
 - [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-L55)
 - [dashboard_ai_design_details.dart:16-78](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L16-L78)
 - [subscription_view.dart:15-82](file://lib/features/membership/views/subscription_view.dart#L15-82)
-- [routes.dart:267-277](file://lib/core/routes/routes.dart#L267-L277)
+- [contact_us_view.dart:10-42](file://lib/features/contact_us/views/contact_us_view.dart#L10-L42)
+- [profile_options_controller.dart:34-38](file://lib/features/profile/controllers/profile_options_controller.dart#L34-L38)
+- [routes.dart:279-283](file://lib/core/routes/routes.dart#L279-L283)
 
 **Section sources**
 - [signin_controller.dart:17-36](file://lib/features/auth/controller/signin_controller.dart#L17-L36)
@@ -272,6 +303,7 @@ Router-->>User : Show subscription management
 - Bindings connect controllers and models to the view lifecycle.
 - New AI bindings: AiBindings, CategoryBindings, DashboardAiDesignBindings, AiProductPlacementRegenerateBindings.
 - New subscription binding: SubscriptionBindings.
+- New Contact Us binding: ContactUsBindings.
 
 ```mermaid
 classDiagram
@@ -295,6 +327,7 @@ class AppRoutes {
 +string aiInteriorDesignView
 +string aiProductPlacementRegenerateView
 +string subscriptionView
++string contactUsView
 +...
 }
 class AuthBindings
@@ -307,6 +340,7 @@ class CategoryBindings
 class DashboardAiDesignBindings
 class AiProductPlacementRegenerateBindings
 class SubscriptionBindings
+class ContactUsBindings
 GetPage --> AppRoutes : "uses name"
 GetPage --> AuthBindings : "optional"
 GetPage --> HomeBindings : "optional"
@@ -318,17 +352,17 @@ GetPage --> CategoryBindings : "optional"
 GetPage --> DashboardAiDesignBindings : "optional"
 GetPage --> AiProductPlacementRegenerateBindings : "optional"
 GetPage --> SubscriptionBindings : "optional"
+GetPage --> ContactUsBindings : "optional"
 ```
 
 **Diagram sources**
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
-- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
-- [ai_product_placement_regenerate_bindings.dart:4-9](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L4-L9)
-- [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
-- [routes.dart:267-277](file://lib/core/routes/routes.dart#L267-L277)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
+- [app_routes.dart:1-47](file://lib/core/routes/app_routes.dart#L1-L47)
+- [contact_us_bindings.dart:4-9](file://lib/features/contact_us/bindings/contact_us_bindings.dart#L4-L9)
+- [routes.dart:279-283](file://lib/core/routes/routes.dart#L279-L283)
 
 **Section sources**
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
 
 ### Navigation State Management
 - Bottom navigation state: Managed by BottomNavController, which holds the current selected index and page stack.
@@ -336,6 +370,7 @@ GetPage --> SubscriptionBindings : "optional"
 - Local gestures: OnboardingController demonstrates gesture-driven navigation within a view.
 - AI state: Controllers manage AI category selection, AI service execution, AI design dashboard navigation, and AI product placement regeneration.
 - Subscription state: Controllers manage subscription plan selection, payment processing, and membership status.
+- Contact Us state: Controllers manage customer support requests and profile integration.
 
 ```mermaid
 flowchart TD
@@ -352,6 +387,8 @@ ProductPlacement --> Regenerate["AiProductPlacementRegenerateView shows regenera
 Regenerate --> End
 Start --> Subscription["SubscriptionView shows membership options"]
 Subscription --> End
+Start --> ContactUs["ContactUsView shows customer support interface"]
+ContactUs --> End
 ```
 
 **Diagram sources**
@@ -361,6 +398,7 @@ Subscription --> End
 - [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-55)
 - [dashboard_ai_design_details.dart:21-77](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L21-77)
 - [subscription_view.dart:18-81](file://lib/features/membership/views/subscription_view.dart#L18-81)
+- [contact_us_view.dart:10-42](file://lib/features/contact_us/views/contact_us_view.dart#L10-42)
 
 **Section sources**
 - [bottom_nav_view.dart:17-21](file://lib/features/home/views/bottom_nav_view.dart#L17-L21)
@@ -373,6 +411,7 @@ Subscription --> End
 - Deep linking: Configure initialRoute and handle external URLs by setting initialRoute to a dynamic route and resolving parameters in the target view.
 - AI parameters: Category titles, sub-titles, and AI design model objects can be passed between AI category, AI service, and dashboard views.
 - Subscription parameters: Payment information and plan details can be passed to subscription management views.
+- Contact Us parameters: Support request types and user preferences can be passed to Contact Us views.
 
 Note: The current implementation uses argument passing for AI design details view to receive AiDesignModel objects. To enable deep linking for AI features, define routes that accept parameters and initialize state accordingly.
 
@@ -387,6 +426,7 @@ Note: The current implementation uses argument passing for AI design details vie
 - Future enhancements: Add guards to protect protected routes by checking token validity before rendering.
 - AI access control: Ensure users can only access AI features after authentication and proper credit balance validation.
 - Subscription access control: Implement membership validation for premium AI features.
+- Contact Us access control: Ensure users can access Contact Us functionality after authentication.
 
 ```mermaid
 flowchart TD
@@ -398,9 +438,11 @@ SetBottomNav --> CheckMembership["Check subscription status"]
 CheckMembership --> Member{"Valid membership?"}
 Member --> |Yes| AllowPremium["Allow premium AI features"]
 Member --> |No| RestrictPremium["Restrict premium AI features"]
-AllowPremium --> End(["Render full app"])
-RestrictPremium --> End
-SetOnboarding --> End
+AllowPremium --> CheckContactAccess["Check Contact Us access"]
+CheckContactAccess --> AllowContact["Allow Contact Us access"]
+RestrictPremium --> AllowContact
+SetOnboarding --> End(["Render onboarding"])
+AllowContact --> End(["Render full app"])
 ```
 
 **Diagram sources**
@@ -431,7 +473,7 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:38](file://lib/core/routes/app_routes.dart#L38)
-- [routes.dart:251-255](file://lib/core/routes/routes.dart#L251-L255)
+- [routes.dart:254-257](file://lib/core/routes/routes.dart#L254-L257)
 - [ai_category_view.dart:13-104](file://lib/features/category/views/ai_category_view.dart#L13-L104)
 
 ### AI Service Implementation System
@@ -450,7 +492,7 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:39](file://lib/core/routes/app_routes.dart#L39)
-- [routes.dart:256](file://lib/core/routes/routes.dart#L256)
+- [routes.dart:258](file://lib/core/routes/routes.dart#L258)
 - [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
 - [ai_controller.dart:7-94](file://lib/features/ai/controller/ai_controller.dart#L7-L94)
 
@@ -470,7 +512,7 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:40](file://lib/core/routes/app_routes.dart#L40)
-- [routes.dart:257-261](file://lib/core/routes/routes.dart#L257-L261)
+- [routes.dart:259-263](file://lib/core/routes/routes.dart#L259-L263)
 
 ### AI Interior Design System
 The AI interior design system provides comprehensive room design and decoration services:
@@ -488,7 +530,7 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:41](file://lib/core/routes/app_routes.dart#L41)
-- [routes.dart:262-266](file://lib/core/routes/routes.dart#L262-L266)
+- [routes.dart:264-268](file://lib/core/routes/routes.dart#L264-L268)
 
 ### AI Product Placement Regeneration System
 The AI product placement regeneration system provides advanced regeneration capabilities for AI-generated designs:
@@ -506,7 +548,7 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:42](file://lib/core/routes/app_routes.dart#L42)
-- [routes.dart:267-271](file://lib/core/routes/routes.dart#L267-L271)
+- [routes.dart:269-273](file://lib/core/routes/routes.dart#L269-L273)
 - [ai_product_placement_regenerate_bindings.dart:4-9](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L4-L9)
 - [ai_product_placement_regenerate_controller.dart:4-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L4-L16)
 - [ai_product_placement_regenerate_view.dart:13-62](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L13-L62)
@@ -527,7 +569,7 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:24](file://lib/core/routes/app_routes.dart#L24)
-- [routes.dart:186-195](file://lib/core/routes/routes.dart#L186-L195)
+- [routes.dart:188-192](file://lib/core/routes/routes.dart#L188-L192)
 - [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-L55)
 
 ### AI Design Details Management System
@@ -546,7 +588,7 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:25](file://lib/core/routes/app_routes.dart#L25)
-- [routes.dart:196-205](file://lib/core/routes/routes.dart#L196-L205)
+- [routes.dart:193-197](file://lib/core/routes/routes.dart#L193-L197)
 - [dashboard_ai_design_details.dart:16-78](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L16-L78)
 
 ### Subscription Management System
@@ -566,10 +608,34 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:44](file://lib/core/routes/app_routes.dart#L44)
-- [routes.dart:272-277](file://lib/core/routes/routes.dart#L272-L277)
+- [routes.dart:274-278](file://lib/core/routes/routes.dart#L274-L278)
 - [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
 - [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
 - [subscription_view.dart:15-82](file://lib/features/membership/views/subscription_view.dart#L15-82)
+
+### Contact Us Integration System
+The Contact Us integration system provides comprehensive customer support functionality with profile integration:
+
+- **Route**: contactUsView (`/contactUsView`)
+- **Controller**: ContactUsController manages customer support requests and profile integration
+- **View**: ContactUsView provides the customer support interface with contact information and live chat
+- **Binding**: ContactUsBindings handles controller initialization
+
+Key features:
+- Comprehensive contact information display
+- Live chat integration
+- Profile integration from profile options
+- Responsive design with dark mode support
+- Professional customer support interface
+
+**Section sources**
+- [app_routes.dart:45](file://lib/core/routes/app_routes.dart#L45)
+- [routes.dart:279-283](file://lib/core/routes/routes.dart#L279-L283)
+- [contact_us_bindings.dart:4-9](file://lib/features/contact_us/bindings/contact_us_bindings.dart#L4-L9)
+- [contact_us_controller.dart:4-85](file://lib/features/contact_us/controller/contact_us_controller.dart#L4-L85)
+- [contact_us_view.dart:10-42](file://lib/features/contact_us/views/contact_us_view.dart#L10-L42)
+- [contact_header.dart:8-107](file://lib/features/contact_us/widgets/contact_header.dart#L8-L107)
+- [profile_options_controller.dart:34-38](file://lib/features/profile/controllers/profile_options_controller.dart#L34-L38)
 
 ## AI Integration
 
@@ -591,8 +657,8 @@ Regenerate --> Animation["Animation Transitions"]
 ```
 
 **Diagram sources**
-- [routes.dart:251-271](file://lib/core/routes/routes.dart#L251-L271)
-- [app_routes.dart:24-44](file://lib/core/routes/app_routes.dart#L24-L44)
+- [routes.dart:254-273](file://lib/core/routes/routes.dart#L254-L273)
+- [app_routes.dart:24-45](file://lib/core/routes/app_routes.dart#L24-L45)
 
 ### Data Flow Between AI Features
 The routing system facilitates smooth data transfer between AI features:
@@ -635,7 +701,7 @@ Features --> PlanFeatures["AnnualMembershipPlan<br/>Plan Features"]
 ```
 
 **Diagram sources**
-- [routes.dart:272-277](file://lib/core/routes/routes.dart#L272-L277)
+- [routes.dart:274-278](file://lib/core/routes/routes.dart#L274-L278)
 - [app_routes.dart:44](file://lib/core/routes/app_routes.dart#L44)
 - [subscription_view.dart:18-81](file://lib/features/membership/views/subscription_view.dart#L18-L81)
 
@@ -658,6 +724,51 @@ Common navigation patterns in the subscription workflow:
 - [subscription_view.dart:63-71](file://lib/features/membership/views/subscription_view.dart#L63-L71)
 - [subscription_controller.dart:53-59](file://lib/features/membership/controller/subscription_controller.dart#L53-L59)
 
+## Contact Us Integration
+
+### Comprehensive Contact Us Workflow
+The Contact Us integration system provides seamless customer support access:
+
+```mermaid
+flowchart LR
+ProfileOptions["ProfileOptionsController<br/>Profile Menu"] --> ContactUs["ContactUsView<br/>Customer Support Interface"]
+ContactUs --> ContactHeader["ContactHeader<br/>Contact Information"]
+ContactHeader --> EmailInfo["Email Information"]
+ContactHeader --> PhoneInfo["Phone Information"]
+ContactHeader --> LiveChat["Live Chat Integration"]
+ContactUs --> DarkMode["Dark Mode Support"]
+ContactUs --> ResponsiveDesign["Responsive Design"]
+```
+
+**Diagram sources**
+- [routes.dart:279-283](file://lib/core/routes/routes.dart#L279-L283)
+- [app_routes.dart:45](file://lib/core/routes/app_routes.dart#L45)
+- [contact_us_view.dart:10-42](file://lib/features/contact_us/views/contact_us_view.dart#L10-L42)
+- [contact_header.dart:8-107](file://lib/features/contact_us/widgets/contact_header.dart#L8-L107)
+- [profile_options_controller.dart:34-38](file://lib/features/profile/controllers/profile_options_controller.dart#L34-L38)
+
+### Data Flow Between Contact Us Features
+The routing system facilitates smooth data transfer between Contact Us features:
+
+- **Contact Information**: Shared between ContactUsView and ContactHeader
+- **Profile Integration**: Managed through ProfileOptionsController state
+- **Live Chat**: Integrated with ContactUsView and ContactHeader components
+- **Theme Support**: Synchronized across ContactUsView and ContactHeader for dark mode
+- **Responsive Layout**: Managed through ContactUsView and ContactHeader responsive design
+
+### Navigation Patterns
+Common navigation patterns in the Contact Us workflow:
+- Back navigation using standard Flutter Navigator.pop()
+- Deep linking from profile options menu
+- Direct access to contact information display
+- Live chat integration from contact header
+- Theme-aware navigation across components
+
+**Section sources**
+- [contact_us_view.dart:18-24](file://lib/features/contact_us/views/contact_us_view.dart#L18-L24)
+- [contact_header.dart:68-76](file://lib/features/contact_us/widgets/contact_header.dart#L68-L76)
+- [profile_options_controller.dart:34-38](file://lib/features/profile/controllers/profile_options_controller.dart#L34-L38)
+
 ## E-commerce Integration
 
 ### Seamless Shopping Experience
@@ -677,7 +788,7 @@ Payment --> Order["OrderView<br/>Confirm Order"]
 ```
 
 **Diagram sources**
-- [routes.dart:214-238](file://lib/core/routes/routes.dart#L214-L238)
+- [routes.dart:243-252](file://lib/core/routes/routes.dart#L243-L252)
 - [app_routes.dart:31-36](file://lib/core/routes/app_routes.dart#L31-L36)
 
 ### Data Flow Between Features
@@ -706,6 +817,7 @@ Common navigation patterns in the e-commerce flow:
 - External dependencies: GetX provides routing, state, and dependency injection.
 - AI dependencies: New AI features integrate with existing auth, dashboard, credit balance, and subscription systems.
 - Subscription dependencies: Subscription features integrate with payment processing and membership management systems.
+- Contact Us dependencies: Contact Us features integrate with profile options and customer support systems.
 
 ```mermaid
 graph LR
@@ -720,6 +832,8 @@ AIDASHBOARD["DashboardAiDesignController"] --> AIDASHBIND["DashboardAiDesignBind
 AI["AiController"] --> AIBIND["AiBindings"]
 AIREGEN["AiProductPlacementRegenerateController"] --> AIREGENBIND["AiProductPlacementRegenerateBindings"]
 SUBCTRL["SubscriptionController"] --> SUBBIND["SubscriptionBindings"]
+CONTACTCTRL["ContactUsController"] --> CONTACTBIND["ContactUsBindings"]
+PROFILEOPT["ProfileOptionsController"] --> APPRT
 MAIN["MyApp(main.dart)"] --> APPRT
 MAIN --> ROUTES["routes.dart"]
 ROUTES --> VIEWS["Feature Views"]
@@ -731,6 +845,8 @@ ROUTES --> AIDASHBOARD
 ROUTES --> AI
 ROUTES --> AIREGEN
 ROUTES --> SUBCTRL
+ROUTES --> CONTACTCTRL
+ROUTES --> PROFILEOPT
 ```
 
 **Diagram sources**
@@ -742,14 +858,16 @@ ROUTES --> SUBCTRL
 - [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
 - [ai_product_placement_regenerate_bindings.dart:4-9](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L4-L9)
 - [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
+- [contact_us_bindings.dart:4-9](file://lib/features/contact_us/bindings/contact_us_bindings.dart#L4-L9)
+- [profile_options_controller.dart:5-47](file://lib/features/profile/controllers/profile_options_controller.dart#L5-L47)
 - [main.dart:30-41](file://lib/main.dart#L30-L41)
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
 
 **Section sources**
 - [signin_controller.dart:9-52](file://lib/features/auth/controller/signin_controller.dart#L9-L52)
 - [bottom_nav_view.dart:11-256](file://lib/features/home/views/bottom_nav_view.dart#L11-L256)
 - [main.dart:30-41](file://lib/main.dart#L30-L41)
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
 
 ## Performance Considerations
 - Prefer named navigation with AppRoutes to avoid string duplication and reduce runtime overhead.
@@ -761,6 +879,7 @@ ROUTES --> SUBCTRL
 - Dashboard pagination: Use pagination for AI design lists to prevent memory issues.
 - Regeneration optimization: Implement efficient state management for AI product placement regeneration.
 - Subscription caching: Cache subscription status to reduce API calls and improve performance.
+- Contact Us optimization: Implement lazy loading for contact information and live chat components.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -776,11 +895,14 @@ Common issues and resolutions:
 - Regeneration issues: Verify AiProductPlacementRegenerateController state management and view bindings.
 - Subscription errors: Check that subscription controller properly manages plan selection and payment processing.
 - Membership validation: Ensure subscription status is properly checked before accessing premium AI features.
+- Contact Us errors: Check that ContactUsController properly manages contact information display and profile integration.
+- Contact Us navigation: Verify contactUsView route is properly configured with ContactUsBindings.
+- Profile integration: Ensure ProfileOptionsController correctly passes AppRoutes.contactUsView to ContactUsView.
 
 **Section sources**
-- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
-- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [app_routes.dart:1-47](file://lib/core/routes/app_routes.dart#L1-L47)
+- [routes.dart:63-285](file://lib/core/routes/routes.dart#L63-L285)
 - [main.dart:36-40](file://lib/main.dart#L36-L40)
 
 ## Conclusion
-The ZB-DEZINE routing and navigation system leverages GetX to provide a clean separation of concerns with comprehensive AI capabilities and subscription management. AppRoutes centralizes route names, routes.dart defines pages and bindings, and controllers orchestrate navigation after business logic. The expanded system now includes AI category navigation, AI service implementations, dashboard AI design management, AI product placement regeneration, and comprehensive subscription management, creating a seamless integrated experience. The system supports programmatic navigation, bottom navigation state management, AI workflow navigation, subscription management, and initial route selection based on authentication state. The addition of AI regeneration routes and subscription management routes enhances user engagement by providing specialized AI services alongside traditional e-commerce functionality and membership benefits. Extending the system with parameter passing, deep linking, and route guards will further enhance robustness and user experience across both AI and e-commerce features, while subscription integration ensures proper access control for premium features.
+The ZB-DEZINE routing and navigation system leverages GetX to provide a clean separation of concerns with comprehensive AI capabilities, subscription management, and Contact Us integration. AppRoutes centralizes route names, routes.dart defines pages and bindings, and controllers orchestrate navigation after business logic. The expanded system now includes AI category navigation, AI service implementations, dashboard AI design management, AI product placement regeneration, comprehensive subscription management, and a complete Contact Us feature with profile integration, creating a seamless integrated experience. The system supports programmatic navigation, bottom navigation state management, AI workflow navigation, subscription management, Contact Us integration, and initial route selection based on authentication state. The addition of Contact Us routes and subscription management routes enhances user engagement by providing specialized AI services alongside traditional e-commerce functionality, membership benefits, and comprehensive customer support. Extending the system with parameter passing, deep linking, and route guards will further enhance robustness and user experience across both AI and e-commerce features, while subscription and Contact Us integration ensures proper access control and customer support for premium features.

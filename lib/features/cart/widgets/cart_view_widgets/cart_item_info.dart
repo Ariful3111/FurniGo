@@ -17,43 +17,35 @@ class CartItemInfo extends GetWidget<CartController> {
     return Expanded(
       child: Row(
         children: [
-          Container(
-            width: 90,
-            height: 80,
-            decoration: BoxDecoration(
-              color: isDark ? AppColors.labelColor : Color(0xFFEFEFEF),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Stack(
-              children: [
-                Center(
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        item.product?.media
-                            ?.firstWhere((media) => media.type == "image")
-                            .url ??
-                        '',
-                    height: 70.h,
-                    width: 77.w,
-                  ),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      item.product?.media
+                          ?.firstWhere((media) => media.type == "image")
+                          .url ??
+                      '',
+                  height: 80.h,
+                  width: 90.w,
+                  fit: BoxFit.cover,
                 ),
-                Positioned(
-                  top: 0.h,
-                  left: 0.w,
-                  child: Obx(
-                    () => CustomCheckBox(
-                      borderColor: isDark
-                          ? AppColors.primaryBorderColor
-                          : AppColors.darkColor,
-                      isChecked: item.isSelected,
-                      onChange: (value) {
-                        controller.toggleItem(id: item.id ?? 0);
-                      },
-                    ),
-                  ),
+              ),
+              Positioned(
+                top: 0.h,
+                left: 0.w,
+                child: CustomCheckBox(
+                  borderColor: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.darkColor,
+                  isChecked: item.isSelected,
+                  onChange: (value) {
+                    controller.toggleItem(id: item.id ?? 0);
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           SizedBox(width: 16.w),
           Expanded(
