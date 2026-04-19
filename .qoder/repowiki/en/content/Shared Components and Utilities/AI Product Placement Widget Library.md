@@ -10,7 +10,23 @@
 - [ai_product_placement_product.dart](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_product.dart)
 - [ai_product_placement_shop.dart](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_shop.dart)
 - [ai_product_placement_shop_items.dart](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_shop_items.dart)
+- [ai_product_placement_regenerate_controller.dart](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart)
+- [ai_product_placement_regenerate_view.dart](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart)
+- [ai_product_placement_regenerate_dropdown.dart](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown.dart)
+- [ai_product_placement_regenerate_dropdown_item.dart](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown_item.dart)
+- [ai_product_placement_regenerate_image.dart](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_image.dart)
+- [ai_product_placement_regenerate_button.dart](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_button.dart)
+- [ai_product_placement_regenerate_bindings.dart](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart)
+- [dropdown_menu_item.dart](file://lib/shared/widgets/custom_dropdown/dropdown_menu_item.dart)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Added comprehensive documentation for the new AI Product Placement Regenerate functionality
+- Updated widget library implementation section to include regenerate components
+- Enhanced state management system documentation to cover regenerate controller
+- Added new section covering the AI Product Placement Regenerate Feature
+- Updated architecture overview to include regenerate functionality
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -20,16 +36,19 @@
 5. [Detailed Component Analysis](#detailed-component-analysis)
 6. [Widget Library Implementation](#widget-library-implementation)
 7. [State Management System](#state-management-system)
-8. [UI Component Architecture](#ui-component-architecture)
-9. [Performance Considerations](#performance-considerations)
-10. [Integration Guide](#integration-guide)
-11. [Conclusion](#conclusion)
+8. [AI Product Placement Regenerate Feature](#ai-product-placement-regenerate-feature)
+9. [UI Component Architecture](#ui-component-architecture)
+10. [Performance Considerations](#performance-considerations)
+11. [Integration Guide](#integration-guide)
+12. [Conclusion](#conclusion)
 
 ## Introduction
 
 The AI Product Placement Widget Library is a comprehensive Flutter solution designed to enable users to virtually place products within various room environments using artificial intelligence. This library provides an intuitive interface for selecting rooms, browsing product catalogs, managing favorites, and organizing shopping carts, all integrated with AI-powered placement capabilities.
 
 The library leverages modern Flutter architecture patterns including GetX for state management, reactive programming with Obx widgets, and modular component design. It supports both light and dark themes, responsive layouts, and smooth animations for enhanced user experience.
+
+**Updated** Enhanced with new AI Product Placement Regenerate functionality for improved user interaction and clearer text content.
 
 ## Project Structure
 
@@ -91,12 +110,24 @@ The [`AiProductPlacementController`:1-123](file://lib/features/ai/controller/ai_
 - Scroll position management
 - Search functionality
 
+### Regenerate Functionality Controller
+The [`AiProductPlacementRegenerateController`:1-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L1-L16) manages the AI regeneration workflow:
+- Dropdown item selection state
+- Regenerate modal visibility
+- Selected product identification
+- Dynamic label generation for selected items
+
 ### View Components
 The [`AiProductPlacementView`:1-31](file://lib/features/ai/views/ai_product_placement_view.dart#L1-L31) provides the main interface containing:
 - Header navigation
 - Room selection area
 - Product placement canvas
 - Interactive elements
+
+The [`AiProductPlacementRegenerateView`:1-62](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L1-L62) extends the functionality with:
+- Image preview container
+- Regenerate action button
+- Modal overlay for customization options
 
 ### Widget Library
 The system includes a comprehensive set of reusable widgets organized by functionality:
@@ -105,10 +136,12 @@ The system includes a comprehensive set of reusable widgets organized by functio
 - Shopping cart interfaces
 - Favorite management tools
 - Search and filtering mechanisms
+- **New** Regenerate functionality widgets
 
 **Section sources**
 - [ai_product_placement_controller.dart:1-123](file://lib/features/ai/controller/ai_product_placement_controller.dart#L1-L123)
 - [ai_product_placement_view.dart:1-31](file://lib/features/ai/views/ai_product_placement_view.dart#L1-L31)
+- [ai_product_placement_regenerate_controller.dart:1-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L1-L16)
 
 ## Architecture Overview
 
@@ -118,7 +151,9 @@ The AI Product Placement Widget Library implements a reactive architecture patte
 sequenceDiagram
 participant User as User Interface
 participant Controller as AiProductPlacementController
+participant RegenerateController as AiProductPlacementRegenerateController
 participant View as AiProductPlacementView
+participant RegenerateView as AiProductPlacementRegenerateView
 participant Widgets as UI Components
 participant State as Reactive State
 User->>View : Initialize Screen
@@ -142,6 +177,7 @@ The architecture follows these key principles:
 - **Modular Design**: Clear separation between views, controllers, and widgets
 - **Component Reusability**: Shared widgets across different screens and contexts
 - **Theme Support**: Built-in light and dark mode compatibility
+- **Enhanced Functionality**: Integrated regenerate feature with dedicated controller
 
 ## Detailed Component Analysis
 
@@ -268,6 +304,7 @@ The AI Product Placement Widget Library provides a comprehensive collection of r
 | **Shopping Cart** | Cart management interface | Multi-item selection, scroll synchronization |
 | **Favorites System** | Favorite items management | Toggle functionality, visual feedback |
 | **Search Interface** | Product search functionality | Real-time filtering, input validation |
+| **Regenerate Feature** | AI image regeneration interface | Dropdown selection, modal overlay, clear instructions |
 
 ### Component Composition Pattern
 
@@ -278,11 +315,14 @@ graph LR
 subgraph "Widget Hierarchy"
 Parent[Parent Widget]
 Controller[AiProductPlacementController]
+RegenerateController[AiProductPlacementRegenerateController]
 State[Reactive State Variables]
 Child[Child Components]
 end
 Parent --> Controller
+Parent --> RegenerateController
 Controller --> State
+RegenerateController --> State
 Parent --> Child
 State --> Parent
 State --> Child
@@ -290,6 +330,7 @@ State --> Child
 
 **Diagram sources**
 - [ai_product_placement_controller.dart:1-123](file://lib/features/ai/controller/ai_product_placement_controller.dart#L1-L123)
+- [ai_product_placement_regenerate_controller.dart:1-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L1-L16)
 
 ### Responsive Design Implementation
 
@@ -319,6 +360,8 @@ The AI Product Placement system utilizes GetX's reactive state management for ef
 | `shopSelectedItems` | `RxList<int>` | Selected shop items | ✅ |
 | `favoriteSelectedItems` | `RxList<int>` | Selected favorite items | ✅ |
 | `cartSelectedItems` | `RxList<int>` | Selected cart items | ✅ |
+| **New** `isRegenerate` | `RxBool` | Regenerate modal visibility | ✅ |
+| **New** `selectedIndex` | `RxInt` | Selected regenerate item | ✅ |
 
 ### State Update Flow
 
@@ -326,6 +369,7 @@ The AI Product Placement system utilizes GetX's reactive state management for ef
 sequenceDiagram
 participant UI as UI Component
 participant Controller as Controller
+participant RegenerateController as RegenerateController
 participant State as Reactive State
 participant Observer as Observer Widget
 UI->>Controller : User Interaction
@@ -342,6 +386,114 @@ Note over Controller,Observer : Automatic UI Updates via GetX
 **Section sources**
 - [ai_product_placement_controller.dart:1-123](file://lib/features/ai/controller/ai_product_placement_controller.dart#L1-L123)
 
+## AI Product Placement Regenerate Feature
+
+**New Section** The AI Product Placement Regenerate Feature provides users with enhanced control over AI-generated product placements through a streamlined interface.
+
+### Regenerate Controller Architecture
+
+The [`AiProductPlacementRegenerateController`:1-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L1-L16) manages the regenerate workflow:
+
+```mermaid
+classDiagram
+class AiProductPlacementRegenerateController {
++List items
++RxInt selectedIndex
++RxBool isRegenerate
++String selectedLabel
++items : [{'title' : 'Sofa 1', 'image' : ImagesPath.chair}, ...]
++selectedIndex : 0.obs
++isRegenerate : false.obs
++selectedLabel : '@img${selectedIndex.value + 1}'
+}
+class RegenerateDropdown {
++PopupMenuButton
++Dropdown styling
++Item selection logic
+}
+class RegenerateImage {
++Modal overlay
++Instruction text
++Dropdown integration
+}
+AiProductPlacementRegenerateController --> RegenerateDropdown : "controls"
+AiProductPlacementRegenerateController --> RegenerateImage : "manages state"
+```
+
+**Diagram sources**
+- [ai_product_placement_regenerate_controller.dart:4-15](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L4-L15)
+- [ai_product_placement_regenerate_dropdown.dart:9-58](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown.dart#L9-L58)
+- [ai_product_placement_regenerate_image.dart:12-112](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_image.dart#L12-112)
+
+### Simplified Dropdown Logic
+
+**Updated** The dropdown item background color logic has been significantly simplified:
+
+#### Previous Complex Logic
+- Multiple conditional checks for background colors
+- Complex alpha value calculations
+- Inconsistent styling across selection states
+
+#### Current Simplified Logic
+- Single background color assignment with consistent alpha
+- Streamlined selection state handling
+- Improved readability and maintainability
+
+The [`AiProductPlacementRegenerateDropdownItem`:1-93](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown_item.dart#L1-L93) now uses:
+- Consistent black background with 0.5 alpha transparency
+- Simplified selection state detection
+- Cleaner visual hierarchy
+
+### Refined Text Content
+
+**Updated** Text content has been refined for better clarity and user guidance:
+
+The [`AiProductPlacementRegenerateImage`:1-112](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_image.dart#L1-L112) now features:
+
+#### Enhanced Instruction Text
+- **Previous**: Generic instruction about AI adjustments
+- **Updated**: Specific guidance: "Add your requirements Tell us how you'd like the placement to look or if there are specific adjustments you'd like the AI to make."
+
+#### Improved Clarity
+- More descriptive action instructions
+- Better explanation of regenerate functionality
+- Clearer communication of AI capabilities
+
+### Component Integration
+
+```mermaid
+graph TB
+subgraph "Regenerate Workflow"
+RegenerateView[AiProductPlacementRegenerateView]
+RegenerateButton[AiProductPlacementRegenerateButton]
+RegenerateImage[AiProductPlacementRegenerateImage]
+RegenerateDropdown[AiProductPlacementRegenerateDropdown]
+RegenerateDropdownItem[AiProductPlacementRegenerateDropdownItem]
+RegenerateController[AiProductPlacementRegenerateController]
+end
+RegenerateView --> RegenerateButton
+RegenerateView --> RegenerateImage
+RegenerateView --> RegenerateController
+RegenerateImage --> RegenerateDropdown
+RegenerateDropdown --> RegenerateDropdownItem
+RegenerateDropdownItem --> RegenerateController
+RegenerateButton --> RegenerateController
+```
+
+**Diagram sources**
+- [ai_product_placement_regenerate_view.dart:13-62](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L13-L62)
+- [ai_product_placement_regenerate_button.dart:8-63](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_button.dart#L8-L63)
+- [ai_product_placement_regenerate_image.dart:12-112](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_image.dart#L12-112)
+- [ai_product_placement_regenerate_dropdown.dart:9-58](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown.dart#L9-L58)
+- [ai_product_placement_regenerate_dropdown_item.dart:9-93](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown_item.dart#L9-L93)
+
+**Section sources**
+- [ai_product_placement_regenerate_controller.dart:1-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L1-L16)
+- [ai_product_placement_regenerate_view.dart:1-62](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L1-L62)
+- [ai_product_placement_regenerate_dropdown.dart:1-58](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown.dart#L1-L58)
+- [ai_product_placement_regenerate_dropdown_item.dart:1-93](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown_item.dart#L1-L93)
+- [ai_product_placement_regenerate_image.dart:1-112](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_image.dart#L1-L112)
+
 ## UI Component Architecture
 
 The widget library implements a layered architecture with clear separation of concerns:
@@ -352,8 +504,10 @@ The widget library implements a layered architecture with clear separation of co
 graph TB
 subgraph "View Layer"
 AiView[AiProductPlacementView]
+AiRegenerateView[AiProductPlacementRegenerateView]
 AiRoom[AiProductPlacementRoom]
 AiProduct[AiProductPlacementProduct]
+AiRegenerateButton[AiProductPlacementRegenerateButton]
 end
 subgraph "Widget Layer"
 ShopWidget[AiProductPlacementShop]
@@ -361,17 +515,25 @@ ShopItems[AiProductPlacementShopItems]
 FavoriteWidget[AiProductPlacementProductFavorite]
 CartWidget[AiProductPlacementProductCart]
 SearchWidget[AiProductPlacementProductSearch]
+RegenerateDropdown[AiProductPlacementRegenerateDropdown]
+RegenerateDropdownItem[AiProductPlacementRegenerateDropdownItem]
+RegenerateImage[AiProductPlacementRegenerateImage]
 end
 subgraph "Controller Layer"
 Controller[AiProductPlacementController]
+RegenerateController[AiProductPlacementRegenerateController]
 end
 subgraph "Shared Layer"
 SharedContainer[SharedContainer]
 CustomText[CustomPrimaryText]
 CustomScrollbar[CustomScrollbar]
+DropdownMenuItems[DropdownMenuItems]
 end
 AiView --> AiRoom
 AiView --> AiProduct
+AiRegenerateView --> AiRegenerateButton
+AiRegenerateView --> RegenerateDropdown
+AiRegenerateView --> RegenerateImage
 AiProduct --> ShopWidget
 AiProduct --> FavoriteWidget
 AiProduct --> CartWidget
@@ -381,15 +543,23 @@ ShopWidget --> SharedContainer
 ShopItems --> CustomScrollbar
 AiRoom --> Controller
 AiProduct --> Controller
-ShopWidget --> Controller
+AiRegenerateButton --> RegenerateController
+RegenerateDropdown --> RegenerateController
+RegenerateDropdownItem --> RegenerateController
+RegenerateImage --> RegenerateController
 Controller --> SharedContainer
 Controller --> CustomText
+RegenerateController --> DropdownMenuItems
 ```
 
 **Diagram sources**
 - [ai_product_placement_view.dart:1-31](file://lib/features/ai/views/ai_product_placement_view.dart#L1-L31)
 - [ai_product_placement_room.dart:1-124](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_room.dart#L1-L124)
 - [ai_product_placement_product.dart:1-137](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_product.dart#L1-L137)
+- [ai_product_placement_regenerate_view.dart:13-62](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L13-L62)
+- [ai_product_placement_regenerate_dropdown.dart:9-58](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown.dart#L9-L58)
+- [ai_product_placement_regenerate_dropdown_item.dart:9-93](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown_item.dart#L9-L93)
+- [ai_product_placement_regenerate_image.dart:12-112](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_image.dart#L12-L112)
 
 ### Animation and Transition System
 
@@ -401,6 +571,8 @@ The library implements smooth transitions between different states:
 | Tab Switching | Tab selection | 300ms | EaseInOut |
 | Item Selection | Toggle selection | 150ms | FastOutSlowIn |
 | Scroll Navigation | Button press | 300ms | Ease |
+| **New** Regenerate Modal | Button press | 300ms | EaseInOut |
+| **New** Dropdown Selection | Item tap | 150ms | FastOutSlowIn |
 
 **Section sources**
 - [ai_product_placement_room.dart:1-124](file://lib/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_room.dart#L1-L124)
@@ -414,16 +586,19 @@ The AI Product Placement Widget Library is optimized for performance through sev
 - **Controller Lifecycle**: Proper disposal of ScrollControllers and TextEditingControllers
 - **State Optimization**: Minimal reactive state updates to prevent unnecessary rebuilds
 - **Widget Reuse**: Efficient component composition to avoid redundant rendering
+- **Regenerate Controller**: Lazy loading of regenerate functionality to reduce initial load
 
 ### Rendering Optimization
 - **Lazy Loading**: Grid items rendered only when visible
 - **AnimatedSize**: Optimized animations using AnimatedSize widget
 - **Theme Caching**: Theme data cached per widget instance
+- **Dropdown Optimization**: Simplified background logic reduces rendering overhead
 
 ### State Management Efficiency
 - **Selective Observing**: Only relevant state variables trigger UI updates
 - **Batch Updates**: Multiple state changes batched into single UI refreshes
 - **Dispose Pattern**: Proper cleanup of resources in controller dispose method
+- **Regenerate State**: Efficient modal state management with animated transitions
 
 **Section sources**
 - [ai_product_placement_controller.dart:111-123](file://lib/features/ai/controller/ai_product_placement_controller.dart#L111-L123)
@@ -433,9 +608,10 @@ The AI Product Placement Widget Library is optimized for performance through sev
 ### Basic Integration Steps
 
 1. **Add Dependencies**: Include required packages in pubspec.yaml
-2. **Initialize Controller**: Set up AiProductPlacementController in your widget tree
+2. **Initialize Controllers**: Set up both AiProductPlacementController and AiProductPlacementRegenerateController in your widget tree
 3. **Configure Routing**: Add AI product placement routes to your application
 4. **Theme Integration**: Ensure theme compatibility with existing app themes
+5. **Regenerate Binding**: Register regenerate bindings for lazy loading support
 
 ### Customization Options
 
@@ -446,6 +622,8 @@ The AI Product Placement Widget Library is optimized for performance through sev
 | Animations | Animation parameters | Configure duration and curves |
 | Content | Room lists | Update roomList array |
 | Behavior | Controller methods | Override controller functions |
+| **New** Regenerate | Dropdown items | Update items array in controller |
+| **New** Instructions | Text content | Modify text properties in regenerate view |
 
 ### Extension Points
 
@@ -454,14 +632,18 @@ The widget library provides several extension points for customization:
 - **Additional Rooms**: Extend room selection functionality
 - **Custom Product Types**: Add new product categories
 - **Integration Hooks**: Add callbacks for external integrations
+- **Regenerate Extensions**: Customize dropdown items and instructions
 
 **Section sources**
 - [main.dart:1-47](file://lib/main.dart#L1-L47)
 - [pubspec.yaml:30-66](file://pubspec.yaml#L30-L66)
+- [ai_product_placement_regenerate_bindings.dart:1-10](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L1-L10)
 
 ## Conclusion
 
 The AI Product Placement Widget Library represents a sophisticated solution for virtual product placement within Flutter applications. Its modular architecture, reactive state management, and comprehensive widget library provide developers with a robust foundation for building AI-powered interior design experiences.
+
+**Updated** The recent enhancements include a streamlined regenerate functionality with simplified dropdown logic and refined text content for improved user clarity.
 
 Key strengths of the implementation include:
 - **Clean Architecture**: Well-separated concerns with clear component boundaries
@@ -469,5 +651,13 @@ Key strengths of the implementation include:
 - **Responsive Design**: Adaptive layouts that work across all device sizes
 - **Extensible Framework**: Easy customization and extension points
 - **Performance Optimization**: Careful memory management and rendering optimization
+- **Enhanced User Experience**: Streamlined regenerate functionality with clear instructions
 
 The library successfully combines modern Flutter development practices with practical UI/UX considerations, resulting in a developer-friendly yet user-focused solution for AI-powered product placement functionality.
+
+**New Features Added**:
+- Comprehensive regenerate functionality with dedicated controller
+- Simplified dropdown item background color logic
+- Refined text content for better user guidance
+- Enhanced modal overlay system for customization
+- Improved accessibility and clarity in instructions

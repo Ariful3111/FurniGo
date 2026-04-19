@@ -10,12 +10,25 @@
 - [annual_membership.dart](file://lib/features/membership/widgets/annual_membership.dart)
 - [active_subscription.dart](file://lib/features/membership/widgets/active_subscription.dart)
 - [active_annual_subscription.dart](file://lib/features/membership/widgets/active_annual_subscription.dart)
+- [expire_button.dart](file://lib/features/membership/widgets/expire_button.dart)
+- [expire_soon_button.dart](file://lib/features/membership/widgets/expire_soon_button.dart)
+- [expired_button.dart](file://lib/features/membership/widgets/expired_button.dart)
+- [annual_membership_button.dart](file://lib/features/membership/widgets/annual_membership_button.dart)
+- [most_popular_plan.dart](file://lib/features/membership/widgets/most_popular_plan.dart)
+- [custom_secondary_button.dart](file://lib/shared/widgets/custom_button/custom_secondary_button.dart)
 - [app_routes.dart](file://lib/core/routes/app_routes.dart)
 - [routes.dart](file://lib/core/routes/routes.dart)
 - [firebase_google_auth.dart](file://lib/core/services/firebase_google_auth.dart)
 - [storage_service.dart](file://lib/core/data/local/storage_service.dart)
 - [pubspec.yaml](file://pubspec.yaml)
 </cite>
+
+## Update Summary
+**Changes Made**
+- Enhanced dark mode support across multiple membership widgets with theme-aware styling
+- Added new ExpireButton widget family (ExpireButton, ExpireSoonButton, ExpiredButton) for subscription status management
+- Updated subscription controller initial state from false to true for improved user experience
+- Improved UI consistency with standardized button styling and theme integration
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -36,6 +49,8 @@ The ZB DEZIGN Membership and Subscription System is a comprehensive Flutter-base
 
 This system integrates modern Flutter architecture patterns with reactive state management, providing users with flexible subscription options that can be upgraded, switched, or canceled at any time. The platform focuses on transforming users' living spaces through premium design services while maintaining accessibility and user-friendly navigation.
 
+**Updated** Enhanced dark mode support ensures consistent visual experience across all membership widgets and improved UI consistency for better user experience.
+
 ## System Architecture
 
 The membership system follows a modular architecture pattern built on Flutter's GetX framework, ensuring scalability and maintainability. The system is structured around clear separation of concerns with dedicated layers for presentation, business logic, data management, and external integrations.
@@ -46,6 +61,8 @@ subgraph "Presentation Layer"
 MVVM[Model-View-ViewModel Pattern]
 UI[User Interface Components]
 Widgets[Custom Widgets]
+DarkMode[Dark Mode Support]
+ExpireButtons[Expire Button Family]
 end
 subgraph "Business Logic Layer"
 Controller[SubscriptionController]
@@ -71,11 +88,13 @@ Bindings --> Controller
 Routes --> Controller
 Storage --> Firebase
 Network --> Payment
+DarkMode --> Widgets
+ExpireButtons --> Widgets
 ```
 
 **Diagram sources**
 - [main.dart:12-47](file://lib/main.dart#L12-L47)
-- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [subscription_controller.dart:4-91](file://lib/features/membership/controller/subscription_controller.dart#L4-L91)
 - [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
 
 ## Core Components
@@ -84,11 +103,13 @@ Network --> Payment
 
 The SubscriptionController serves as the central hub for managing membership-related data and user interactions. Built on GetX's reactive programming model, it maintains state for selected plans, subscription status, and user preferences.
 
+**Updated** Initial state changed from false to true for improved user experience and better default subscription handling.
+
 ```mermaid
 classDiagram
 class SubscriptionController {
 +RxString selectedCard
-+RxBool isActive
++RxBool isActive : true.obs
 +Map[]plans
 +String[]membershipPlanFeature
 +Map[]membership
@@ -104,7 +125,9 @@ class MembershipPlan {
 +String buttonText
 +bool isPrimary
 +bool isPremium
-+bool isActive
++bool isActive : true
++bool isExpire
++bool isExpireSoon
 +String badge
 +String[]features
 }
@@ -118,10 +141,10 @@ SubscriptionController --> MembershipBenefit : displays
 ```
 
 **Diagram sources**
-- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [subscription_controller.dart:4-91](file://lib/features/membership/controller/subscription_controller.dart#L4-L91)
 
 **Section sources**
-- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [subscription_controller.dart:4-91](file://lib/features/membership/controller/subscription_controller.dart#L4-L91)
 
 ### View Layer Implementation
 
@@ -146,11 +169,11 @@ View->>User : Show Selected Plan Details
 ```
 
 **Diagram sources**
-- [subscription_view.dart:15-82](file://lib/features/membership/views/subscription_view.dart#L15-L82)
-- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [subscription_view.dart:15-83](file://lib/features/membership/views/subscription_view.dart#L15-L83)
+- [subscription_controller.dart:4-91](file://lib/features/membership/controller/subscription_controller.dart#L4-L91)
 
 **Section sources**
-- [subscription_view.dart:15-82](file://lib/features/membership/views/subscription_view.dart#L15-L82)
+- [subscription_view.dart:15-83](file://lib/features/membership/views/subscription_view.dart#L15-L83)
 
 ## Membership Plans Management
 
@@ -185,46 +208,139 @@ Beyond subscription tiers, the system provides core membership benefits:
 | Priority Access | Early access to sales and collections | Exclusive availability |
 
 **Section sources**
-- [subscription_controller.dart:7-83](file://lib/features/membership/controller/subscription_controller.dart#L7-L83)
+- [subscription_controller.dart:7-90](file://lib/features/membership/controller/subscription_controller.dart#L7-L90)
 
 ## User Interface Components
+
+### Enhanced Dark Mode Support
+
+**Updated** All membership widgets now feature comprehensive dark mode support with theme-aware styling and consistent visual hierarchy.
+
+The system implements a sophisticated dark mode detection mechanism that automatically adjusts colors, gradients, and borders based on the current theme preference. Each widget responds dynamically to theme changes without requiring manual intervention.
+
+```mermaid
+flowchart TD
+Start([Widget Initialization]) --> CheckTheme{"Theme Detection"}
+CheckTheme --> |Light Theme| ApplyLightStyles["Apply Light Theme Styles<br/>- Light Gradients<br/>- Dark Text Colors<br/>- Subtle Shadows"]
+CheckTheme --> |Dark Theme| ApplyDarkStyles["Apply Dark Theme Styles<br/>- Dark Gradients<br/>- Light Text Colors<br/>- Enhanced Borders"]
+ApplyLightStyles --> RenderWidget["Render Widget with Consistent Styling"]
+ApplyDarkStyles --> RenderWidget
+RenderWidget --> MonitorTheme["Monitor Theme Changes"]
+MonitorTheme --> ThemeChange{"Theme Changed?"}
+ThemeChange --> |Yes| ReapplyStyles["Reapply Appropriate Styles"]
+ThemeChange --> |No| WidgetReady["Widget Ready for Interaction"]
+ReapplyStyles --> RenderWidget
+```
+
+**Diagram sources**
+- [subscription_plan_card.dart:30-85](file://lib/features/membership/widgets/subscription_plan_card.dart#L30-L85)
+- [annual_membership_button.dart:16](file://lib/features/membership/widgets/annual_membership_button.dart#L16)
+- [active_annual_subscription.dart:17](file://lib/features/membership/widgets/active_annual_subscription.dart#L17)
+
+### New Expire Button Widget Family
+
+**Updated** Introduced a comprehensive set of subscription status buttons to improve user experience and provide clear visual feedback on subscription states.
+
+#### ExpireButton
+The base expire button component provides a standardized interface for subscription expiration actions with consistent styling and behavior.
+
+#### ExpireSoonButton
+Displays "Expiring Soon" status with yellow warning color scheme and prominent notification styling to alert users of upcoming subscription expiration.
+
+#### ExpiredButton
+Provides clear "Expired" status indication with red color scheme and appropriate visual hierarchy for expired subscriptions.
+
+```mermaid
+classDiagram
+class ExpireButton {
++CustomSecondaryButton baseButton
++build() Widget
+}
+class ExpireSoonButton {
++CustomSecondaryButton warningButton
++backgroundColor : #FED766
++icon : mark icon
++text : "Expiring Soon"
++build() Widget
+}
+class ExpiredButton {
++CustomSecondaryButton errorButton
++backgroundColor : #DF1C41
++icon : expire icon
++text : "Expired"
++build() Widget
+}
+class CustomSecondaryButton {
++backgroundColor : AppColors.whiteColor
++border : AppColors.buttonBorderColor
++textColor : AppColors.labelColor
++iconColor : iconColor
++build() Widget
+}
+ExpireButton --> CustomSecondaryButton
+ExpireSoonButton --> CustomSecondaryButton
+ExpiredButton --> CustomSecondaryButton
+```
+
+**Diagram sources**
+- [expire_button.dart:4-12](file://lib/features/membership/widgets/expire_button.dart#L4-L12)
+- [expire_soon_button.dart:7-32](file://lib/features/membership/widgets/expire_soon_button.dart#L7-L32)
+- [expired_button.dart:7-31](file://lib/features/membership/widgets/expired_button.dart#L7-L31)
+
+**Section sources**
+- [expire_button.dart:4-12](file://lib/features/membership/widgets/expire_button.dart#L4-L12)
+- [expire_soon_button.dart:7-32](file://lib/features/membership/widgets/expire_soon_button.dart#L7-L32)
+- [expired_button.dart:7-31](file://lib/features/membership/widgets/expired_button.dart#L7-L31)
 
 ### Subscription Plan Card
 
 The SubscriptionPlanCard component provides an interactive interface for displaying subscription options with visual indicators for selection status and premium features.
+
+**Updated** Enhanced with comprehensive dark mode support, improved gradient rendering, and integrated expire button family for better subscription status visualization.
 
 ```mermaid
 flowchart TD
 Start([Plan Card Initialization]) --> CheckSelection{"Is Plan Selected?"}
 CheckSelection --> |Yes| ApplySelectedStyle["Apply Selected Styles<br/>- Highlight Border<br/>- Show Check Icon<br/>- Change Background"]
 CheckSelection --> |No| ApplyDefaultStyle["Apply Default Styles<br/>- Neutral Background<br/>- Standard Border<br/>- Disabled State"]
-ApplySelectedStyle --> ShowFeatures["Display Plan Features"]
-ApplyDefaultStyle --> ShowFeatures
+ApplySelectedStyle --> CheckTheme{"Theme Detection"}
+ApplyDefaultStyle --> CheckTheme
+CheckTheme --> |Dark Theme| ApplyDarkGradients["Apply Dark Gradients<br/>- Deep Blues for Primary<br/>- Dark Grays for Secondary"]
+CheckTheme --> |Light Theme| ApplyLightGradients["Apply Light Gradients<br/>- Soft Blues for Primary<br/>- Light Whites for Secondary"]
+ApplyDarkGradients --> ShowFeatures["Display Plan Features"]
+ApplyLightGradients --> ShowFeatures
 ShowFeatures --> CheckPremium{"Is Premium Plan?"}
 CheckPremium --> |Yes| ShowBadge["Show 'Most Popular' Badge"]
-CheckPremium --> |No| ShowButton["Display Call-to-Action Button"]
-ShowBadge --> ShowButton
+CheckPremium --> |No| CheckSubscriptionStatus["Check Subscription Status"]
+ShowBadge --> CheckSubscriptionStatus
+CheckSubscriptionStatus --> |Active| ShowActiveStatus["Show Active Subscription Status"]
+CheckSubscriptionStatus --> |Expiring Soon| ShowExpireSoon["Show Expiring Soon Button"]
+CheckSubscriptionStatus --> |Expired| ShowExpired["Show Expired Button"]
+CheckSubscriptionStatus --> |None| ShowButton["Display Call-to-Action Button"]
+ShowActiveStatus --> ShowButton
+ShowExpireSoon --> ShowButton
+ShowExpired --> ShowButton
 ShowButton --> End([Ready for Interaction])
 ```
 
 **Diagram sources**
-- [subscription_plan_card.dart](file://lib/features/membership/widgets/subscription_plan_card.dart)
+- [subscription_plan_card.dart:20-184](file://lib/features/membership/widgets/subscription_plan_card.dart#L20-L184)
 
 ### Annual Membership Components
 
 The system includes specialized components for annual membership management:
 
 #### Active Subscription Display
-- Real-time subscription status monitoring
-- Automatic renewal date tracking
-- Grace period management
-- Cancellation workflow integration
+- Real-time subscription status monitoring with dark mode support
+- Automatic renewal date tracking with theme-aware styling
+- Grace period management with consistent visual hierarchy
+- Cancellation workflow integration with improved user experience
 
 #### Annual Membership Interface
-- Long-term commitment options
-- Annual discount calculations
-- Renewal reminder system
-- Premium annual benefits showcase
+- Long-term commitment options with enhanced visual feedback
+- Annual discount calculations with dark mode compatibility
+- Renewal reminder system with customizable notification styling
+- Premium annual benefits showcase with consistent theming
 
 **Section sources**
 - [annual_membership.dart](file://lib/features/membership/widgets/annual_membership.dart)
@@ -236,6 +352,8 @@ The system includes specialized components for annual membership management:
 ### Reactive State Architecture
 
 The membership system leverages GetX's reactive programming model to ensure real-time updates and efficient state management across all components.
+
+**Updated** Enhanced state management with improved dark mode detection and subscription status handling.
 
 ```mermaid
 stateDiagram-v2
@@ -257,19 +375,19 @@ CancellationComplete --> [*]
 ```
 
 **Diagram sources**
-- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [subscription_controller.dart:4-91](file://lib/features/membership/controller/subscription_controller.dart#L4-L91)
 
 ### Data Persistence Strategy
 
 The system implements a multi-layered data persistence approach:
 
-1. **Local Storage**: Immediate access to user preferences and selections
-2. **Firebase Sync**: Real-time synchronization with backend services
-3. **Cache Management**: Optimized loading performance with stale data handling
-4. **Offline Capability**: Graceful degradation when network connectivity is limited
+1. **Local Storage**: Immediate access to user preferences and selections with theme awareness
+2. **Firebase Sync**: Real-time synchronization with backend services including subscription status
+3. **Cache Management**: Optimized loading performance with stale data handling and theme caching
+4. **Offline Capability**: Graceful degradation when network connectivity is limited with dark mode preservation
 
 **Section sources**
-- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [subscription_controller.dart:4-91](file://lib/features/membership/controller/subscription_controller.dart#L4-L91)
 - [storage_service.dart](file://lib/core/data/local/storage_service.dart)
 
 ## Integration Points
@@ -401,6 +519,10 @@ The membership system is designed with extensibility in mind for future enhancem
 **Symptoms**: Inconsistent plan highlighting or button states
 **Solution**: Reset reactive state and reinitialize controller
 
+#### Dark Mode Issues
+**Symptoms**: Inconsistent theme appearance across widgets
+**Solution**: Verify theme detection logic and gradient color schemes
+
 ### Performance Optimization
 
 - **Lazy Loading**: Implement lazy loading for heavy components
@@ -409,12 +531,14 @@ The membership system is designed with extensibility in mind for future enhancem
 - **UI Responsiveness**: Use asynchronous operations for heavy computations
 
 **Section sources**
-- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [subscription_controller.dart:4-91](file://lib/features/membership/controller/subscription_controller.dart#L4-L91)
 
 ## Conclusion
 
 The ZB DEZIGN Membership and Subscription System represents a comprehensive solution for managing user memberships in a modern interior design marketplace. The system's modular architecture, reactive state management, and extensive feature set position it as a scalable foundation for future growth and innovation.
 
-Key strengths include the intuitive three-tier subscription model, seamless integration with Firebase services, and responsive design that adapts to various user contexts. The system's focus on user experience, combined with robust security measures and performance optimizations, creates a solid foundation for delivering premium membership experiences.
+**Updated** Recent enhancements include comprehensive dark mode support across all membership widgets, introduction of the new expire button family for improved subscription status management, and enhanced UI consistency for better user experience. The subscription controller's initial state change to true provides a more intuitive default experience for users.
+
+Key strengths include the intuitive three-tier subscription model, seamless integration with Firebase services, responsive design that adapts to various user contexts, and robust dark mode support that ensures consistent visual experience across all themes. The system's focus on user experience, combined with robust security measures and performance optimizations, creates a solid foundation for delivering premium membership experiences.
 
 Future development should focus on enhancing personalization capabilities, expanding integration opportunities, and continuously optimizing performance to meet growing user demands while maintaining the system's architectural integrity and user-friendly design philosophy.

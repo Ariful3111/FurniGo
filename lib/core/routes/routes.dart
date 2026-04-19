@@ -10,6 +10,8 @@ import 'package:zb_dezign/features/ai/views/ai_product_placement_view.dart';
 import 'package:zb_dezign/features/ai/views/ai_view.dart';
 import 'package:zb_dezign/features/category/bindings/category_bindings.dart';
 import 'package:zb_dezign/features/category/views/ai_category_view.dart';
+import 'package:zb_dezign/features/contact_us/bindings/contact_us_bindings.dart';
+import 'package:zb_dezign/features/contact_us/views/contact_us_view.dart';
 import 'package:zb_dezign/features/dashboard_ai_design/bindings/dashboard_ai_design_bindings.dart';
 import 'package:zb_dezign/features/dashboard_ai_design/views/dashboard_ai_design_details.dart';
 import 'package:zb_dezign/features/dashboard_ai_design/views/dashboard_ai_design_view.dart';
@@ -273,5 +275,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.subscriptionView,
     page: () => SubscriptionView(),
     binding: SubscriptionBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.contactUsView,
+    page: () => ContactUsView(),
+    binding: ContactUsBindings(),
   ),
 ];
