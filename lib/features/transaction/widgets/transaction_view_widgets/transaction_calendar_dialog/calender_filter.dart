@@ -23,7 +23,7 @@ class CalenderFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Align(
-      alignment: alignmentGeometry ?? Alignment(0.5, -0.8),
+      alignment: alignmentGeometry ?? Alignment(0.5, -0.4),
       child: Container(
         padding: EdgeInsets.all(9.44.r),
         height: 350.h,
@@ -54,22 +54,29 @@ class CalenderFilter extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       CustomPrimaryButton(
+                        borderRadius: BorderRadius.circular(6.7.r),
+                        backgroundColor: AppColors.whiteColor,
+                        border: Border.all(color: AppColors.primaryColor),
                         text: 'Cancel',
-                        height: 23.44.h,
-                        width: 49.88.w,
-                       
-                        fontSize: 9.44.sp,
+                        textColor: AppColors.primaryColor,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 6.7.h,
+                          horizontal: 13.39.w,
+                        ),
+                        fontSize: 8.39.sp,
                         onPressed: () {
                           Navigator.pop(context);
-                        }, 
+                        },
                       ),
                       SizedBox(width: 11.8),
                       CustomPrimaryButton(
-                        height: 23.44.h,
-                        width: 44.86.w,
-                        borderRadius: BorderRadius.circular(3.54.r),
+                        borderRadius: BorderRadius.circular(6.7.r),
                         text: 'Apply',
-                        fontSize: 9.44.sp,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 6.7.h,
+                          horizontal: 13.39.w,
+                        ),
+                        fontSize: 8.39.sp,
                         onPressed: onApply,
                       ),
                     ],

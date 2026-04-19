@@ -11,18 +11,20 @@ class SelectDay extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     List dateList = [
+      'Custom',
       'Today',
       'Yesterday',
-      'Last 7 Days',
-      'Last 30 Days',
+      'This Week',
+      'Last Week',
       'This Month',
+      'Last Month',
       'This Year',
-      'Custom Range',
+      'Last Year',
+      
     ];
       return Container(
         padding: EdgeInsets.symmetric(vertical: 7.08.h, horizontal: 9.44.w),
         width: 90.w,
-        height: 165.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7.08.r),
           color: isDark ? AppColors.whiteColor : AppColors.whiteColor,
@@ -50,21 +52,21 @@ class SelectDay extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(bottom: index == dateList.length-1 ? 0 : 2.36.h,),
                 padding: EdgeInsets.symmetric(
-                  vertical: 2.36.h,
-                  horizontal: 4.72.w,
+                  vertical: 4.46.h,
+                  horizontal:10.04.w,
                 ),
                 decoration: BoxDecoration(
-                  color: selected ? AppColors.primaryColor : null,
+                  color: selected ? AppColors.fieldBorderColorLight : null,
                   borderRadius: BorderRadius.circular(selected ? 4.72.r : 0.r),
                 ),
                 child: CustomPrimaryText(
                   text: dateList[index],
                   fontSize: 9.44.sp,
                   color: selected
-                      ? AppColors.whiteColor
+                      ? AppColors.darkTextColor
                       : isDark
                       ? AppColors.whiteColor
-                      : AppColors.primaryColor,
+                      : AppColors.darkTextColor,
                       textOverflow: TextOverflow.ellipsis,
                 ),
               ),

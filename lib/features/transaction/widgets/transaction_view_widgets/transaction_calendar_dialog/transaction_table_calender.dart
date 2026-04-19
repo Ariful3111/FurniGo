@@ -5,7 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 
-class CustomTableCalender extends StatelessWidget {
+class TransactionTableCalender extends StatelessWidget {
   final DateTime firstDay;
   final DateTime lastDay;
   final DateTime focusedDay;
@@ -18,7 +18,7 @@ class CustomTableCalender extends StatelessWidget {
   final Function(CalendarFormat)? onFormatChanged;
   final Function(DateTime)? onPageChanged;
   final DateTime selectDay;
-  const CustomTableCalender({
+  const TransactionTableCalender({
     super.key,
     required this.firstDay,
     required this.lastDay,
@@ -48,7 +48,7 @@ class CustomTableCalender extends StatelessWidget {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.r),
-            color: isDark ? AppColors.whiteColor : AppColors.whiteColor,
+            color: isDark ? AppColors.labelColor : AppColors.whiteColor,
             boxShadow: [
               BoxShadow(
                 offset: Offset(0, 4.72),

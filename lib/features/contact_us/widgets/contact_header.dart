@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/contact_us/widgets/contact_arrow_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
-import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class ContactHeader extends StatelessWidget {
   const ContactHeader({super.key});
@@ -48,32 +47,7 @@ class ContactHeader extends StatelessWidget {
               : AppColors.lightTextColor,
         ),
         SizedBox(height: 20.h),
-        SharedContainer(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-          radius: 100.r,
-          color: isDark
-              ? AppColors.whiteColor
-              : AppColors.primaryColor, // instead of hardcoded color
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomPrimaryText(
-                text: 'Live Chat',
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: isDark ? AppColors.darkColor : AppColors.whiteColor,
-              ),
-              SizedBox(width: 6.w),
-              Image.asset(
-                IconsPath.arrowRight,
-                height: 12.h,
-                width: 12.w,
-                color: isDark ? AppColors.darkColor : AppColors.whiteColor,
-              ),
-            ],
-          ),
-        ),
+        ContactArrowButton(text: 'Live Chat', onTap: () {}),
       ],
     );
   }
