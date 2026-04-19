@@ -39,6 +39,7 @@ class SubscriptionView extends GetView<SubscriptionController> {
           ),
           SizedBox(height: 24.h),
           SharedContainer(
+            
             child: Column(
               children: [
                 CustomPrimaryText(

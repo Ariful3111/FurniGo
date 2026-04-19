@@ -22,17 +22,23 @@
 - [ai_category_view.dart](file://lib/features/category/views/ai_category_view.dart)
 - [dashboard_ai_design_view.dart](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart)
 - [dashboard_ai_design_details.dart](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart)
+- [ai_product_placement_regenerate_view.dart](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart)
+- [ai_product_placement_regenerate_bindings.dart](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart)
+- [ai_product_placement_regenerate_controller.dart](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart)
+- [subscription_view.dart](file://lib/features/membership/views/subscription_view.dart)
+- [subscription_bindings.dart](file://lib/features/membership/bindings/subscription_bindings.dart)
+- [subscription_controller.dart](file://lib/features/membership/controller/subscription_controller.dart)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Added comprehensive documentation for new AI category and AI view routes
-- Updated route constants section to include AI design routes: aiCategoryView, aiView, aiProductPlacementView, aiInteriorDesignView
-- Enhanced route definitions section with detailed coverage of AI feature integration
-- Added new sections covering AI category navigation, AI design dashboard, and AI service routes
-- Updated architecture diagrams to reflect the expanded AI feature set
-- Enhanced navigation flow documentation with AI integration patterns
-- Replaced old AI design routes with new dashboard AI design routes
+- Added comprehensive documentation for new AI product placement regenerate route and functionality
+- Updated route constants section to include aiProductPlacementRegenerateView route
+- Enhanced route definitions section with detailed coverage of AI regenerate functionality
+- Added new sections covering AI product placement regeneration workflow and subscription management
+- Updated architecture diagrams to reflect the expanded AI feature set with regeneration capabilities
+- Enhanced navigation flow documentation with AI regeneration patterns and subscription integration
+- Added subscription management routes and controllers for membership handling
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -42,17 +48,18 @@
 5. [Detailed Component Analysis](#detailed-component-analysis)
 6. [Expanded Feature Routes](#expanded-feature-routes)
 7. [AI Integration](#ai-integration)
-8. [E-commerce Integration](#e-commerce-integration)
-9. [Dependency Analysis](#dependency-analysis)
-10. [Performance Considerations](#performance-considerations)
-11. [Troubleshooting Guide](#troubleshooting-guide)
-12. [Conclusion](#conclusion)
+8. [Subscription Management](#subscription-management)
+9. [E-commerce Integration](#e-commerce-integration)
+10. [Dependency Analysis](#dependency-analysis)
+11. [Performance Considerations](#performance-considerations)
+12. [Troubleshooting Guide](#troubleshooting-guide)
+13. [Conclusion](#conclusion)
 
 ## Introduction
-This document explains the routing and navigation system of the ZB-DEZINE application. It focuses on route definition patterns, navigation logic, page transitions, and how the system integrates with the MVVM pattern and controller-based navigation. The documentation covers the AppRoutes class, route constants, navigation helpers, programmatic navigation, deep linking considerations, and navigation state management. The system now includes comprehensive AI integration with category-based navigation, dashboard AI design management, and specialized AI service routes.
+This document explains the routing and navigation system of the ZB-DEZINE application. It focuses on route definition patterns, navigation logic, page transitions, and how the system integrates with the MVVM pattern and controller-based navigation. The documentation covers the AppRoutes class, route constants, navigation helpers, programmatic navigation, deep linking considerations, and navigation state management. The system now includes comprehensive AI integration with category-based navigation, dashboard AI design management, specialized AI service routes, AI product placement regeneration capabilities, and subscription management functionality.
 
 ## Project Structure
-The routing system is implemented using the GetX package and organized under the core routes module. The application initializes routes via a central list of pages and route constants. Controllers orchestrate navigation after business logic completion. The expanded system now includes dedicated routes for AI category navigation, AI design dashboard, and specialized AI service implementations.
+The routing system is implemented using the GetX package and organized under the core routes module. The application initializes routes via a central list of pages and route constants. Controllers orchestrate navigation after business logic completion. The expanded system now includes dedicated routes for AI category navigation, AI design dashboard, specialized AI service implementations, AI product placement regeneration, and subscription management.
 
 ```mermaid
 graph TB
@@ -61,8 +68,8 @@ MAIN["main.dart<br/>Initialize DI, set initialRoute, configure GetMaterialApp"]
 DI["dependency_injection.dart<br/>Initialize storage and services"]
 end
 subgraph "Routing Layer"
-APPRT["app_routes.dart<br/>Route constants<br/>+4 new AI routes"]
-ROUTES["routes.dart<br/>GetPage list<br/>+4 new GetPage entries"]
+APPRT["app_routes.dart<br/>Route constants<br/>+1 new AI route<br/>+1 new subscription route"]
+ROUTES["routes.dart<br/>GetPage list<br/>+2 new GetPage entries<br/>+1 new binding import"]
 end
 subgraph "Feature Views"
 AUTHV["Auth Views<br/>e.g., SigninView, OnboardingView"]
@@ -73,6 +80,8 @@ CHECKOUT["Checkout Views<br/>CheckoutView, CheckoutController"]
 AICAT["AI Category Views<br/>AiCategoryView, CategoryController"]
 AIDASHBOARD["AI Dashboard Views<br/>DashboardAiDesignView, DashboardAiDesignController"]
 AISERVICES["AI Service Views<br/>AiView, AiProductPlacementView, AiInteriorDesignView"]
+AIREGENERATE["AI Regenerate Views<br/>AiProductPlacementRegenerateView, AiProductPlacementRegenerateController"]
+SUBSCRIPTION["Subscription Views<br/>SubscriptionView, SubscriptionController"]
 end
 MAIN --> DI
 MAIN --> APPRT
@@ -85,43 +94,47 @@ ROUTES --> CHECKOUT
 ROUTES --> AICAT
 ROUTES --> AIDASHBOARD
 ROUTES --> AISERVICES
+ROUTES --> AIREGENERATE
+ROUTES --> SUBSCRIPTION
 ```
 
 **Diagram sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
 - [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
 
 **Section sources**
 - [main.dart:12-46](file://lib/main.dart#L12-L46)
 - [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
-- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
 
 ## Core Components
-- AppRoutes: Centralized route constants used for programmatic navigation and deep linking, now expanded with 4 new AI routes for AI category navigation and AI service management.
+- AppRoutes: Centralized route constants used for programmatic navigation and deep linking, now expanded with 5 new routes including AI product placement regeneration and subscription management.
 - routes.dart: Defines all named routes using GetPage entries, each mapping a route constant to a view and its associated binding(s).
 - main.dart: Initializes the app with GetMaterialApp, sets the initial route based on authentication state, and registers all pages.
 
 Key responsibilities:
-- Route constants: Provide a single source of truth for route names, including AI category, AI dashboard, and AI service routes.
+- Route constants: Provide a single source of truth for route names, including AI category, AI dashboard, AI service routes, AI product placement regeneration, and subscription management routes.
 - GetPage list: Declares all pages, their constructors, and bindings for dependency injection.
 - Initial route selection: Chooses onboarding or bottom navigation based on token presence.
-- AI integration: Supports seamless navigation between AI category selection, AI design dashboard, and specialized AI services.
+- AI integration: Supports seamless navigation between AI category selection, AI design dashboard, specialized AI services, and AI product placement regeneration.
+- Subscription management: Provides dedicated routes for membership and subscription handling.
 
 **Section sources**
-- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
 - [main.dart:36-40](file://lib/main.dart#L36-L40)
 
 ## Architecture Overview
-The routing architecture follows MVVM with GetX and now includes comprehensive AI capabilities:
+The routing architecture follows MVVM with GetX and now includes comprehensive AI capabilities and subscription management:
 - Views are thin and delegate UI logic to controllers.
 - Controllers perform navigation after completing business operations.
 - Bindings connect controllers and models to the view lifecycle.
 - Route constants and GetPage definitions decouple navigation from view code.
-- AI routes support category-based navigation, dashboard management, and specialized AI service implementations.
+- AI routes support category-based navigation, dashboard management, specialized AI service implementations, and product placement regeneration.
+- Subscription routes provide dedicated membership management functionality.
 
 ```mermaid
 graph TB
@@ -133,10 +146,12 @@ CTRL_CHECKOUT["Checkout Controllers<br/>CheckoutController"]
 CTRL_AICAT["AI Category Controllers<br/>CategoryController"]
 CTRL_AIDASH["AI Dashboard Controllers<br/>DashboardAiDesignController"]
 CTRL_AI["AI Service Controllers<br/>AiController"]
-VIEWS["Feature Views<br/>e.g., BottomNavView, SigninView,<br/>FavoritesView, ShopView, CheckoutView,<br/>AiCategoryView, DashboardAiDesignView, AiView"]
-BINDINGS["Feature Bindings<br/>e.g., AuthBindings, HomeBindings,<br/>FavoritesBindings, ShopBindings, CheckoutBindings,<br/>AiBindings, CategoryBindings, DashboardAiDesignBindings"]
-ROUTES["routes.dart<br/>GetPage list<br/>+4 new AI routes"]
-CONST["app_routes.dart<br/>Route constants<br/>+4 new AI routes"]
+CTRL_AIREGEN["AI Regenerate Controllers<br/>AiProductPlacementRegenerateController"]
+CTRL_SUB["Subscription Controllers<br/>SubscriptionController"]
+VIEWS["Feature Views<br/>e.g., BottomNavView, SigninView,<br/>FavoritesView, ShopView, CheckoutView,<br/>AiCategoryView, DashboardAiDesignView, AiView,<br/>AiProductPlacementRegenerateView, SubscriptionView"]
+BINDINGS["Feature Bindings<br/>e.g., AuthBindings, HomeBindings,<br/>FavoritesBindings, ShopBindings, CheckoutBindings,<br/>AiBindings, CategoryBindings, DashboardAiDesignBindings,<br/>AiProductPlacementRegenerateBindings, SubscriptionBindings"]
+ROUTES["routes.dart<br/>GetPage list<br/>+2 new AI routes<br/>+1 new subscription route"]
+CONST["app_routes.dart<br/>Route constants<br/>+5 new routes"]
 CTRL_AUTH --> CONST
 CTRL_HOME --> CONST
 CTRL_FAVORITES --> CONST
@@ -145,6 +160,8 @@ CTRL_CHECKOUT --> CONST
 CTRL_AICAT --> CONST
 CTRL_AIDASH --> CONST
 CTRL_AI --> CONST
+CTRL_AIREGEN --> CONST
+CTRL_SUB --> CONST
 CONST --> ROUTES
 ROUTES --> VIEWS
 ROUTES --> BINDINGS
@@ -156,6 +173,8 @@ VIEWS --> CTRL_CHECKOUT
 VIEWS --> CTRL_AICAT
 VIEWS --> CTRL_AIDASH
 VIEWS --> CTRL_AI
+VIEWS --> CTRL_AIREGEN
+VIEWS --> CTRL_SUB
 ```
 
 **Diagram sources**
@@ -166,32 +185,40 @@ VIEWS --> CTRL_AI
 - [shop_bindings.dart:4-9](file://lib/features/shop/bindings/shop_bindings.dart#L4-L9)
 - [checkout_bindings.dart:4-9](file://lib/features/cart/bindings/checkout_bindings.dart#L4-L9)
 - [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
+- [ai_product_placement_regenerate_bindings.dart:4-9](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L4-L9)
+- [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
 - [ai_controller.dart:7-94](file://lib/features/ai/controller/ai_controller.dart#L7-L94)
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
-- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
+- [ai_product_placement_regenerate_controller.dart:4-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L4-L16)
+- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
 
 ## Detailed Component Analysis
 
 ### AppRoutes and Route Constants
-- Purpose: Define all route names as static constants for type-safe navigation, now including 4 new AI routes for AI category navigation and AI service management.
+- Purpose: Define all route names as static constants for type-safe navigation, now including 5 new routes for AI product placement regeneration and subscription management.
 - Usage: Controllers call Get.toNamed(AppRoutes.<name>) to navigate programmatically.
 - Benefits: Centralization reduces typos and simplifies refactoring.
-- New AI routes: aiCategoryView, aiView, aiProductPlacementView, aiInteriorDesignView.
+- New AI routes: aiCategoryView, aiView, aiProductPlacementView, aiInteriorDesignView, aiProductPlacementRegenerateView.
+- New subscription route: subscriptionView.
 
 Examples of usage:
 - Programmatic navigation after successful login.
 - Navigating from onboarding to authentication modes.
 - AI flow: aiCategoryView → aiView → dashboardAiDesignView → dashboardAiDesignDetailsView.
+- AI regeneration flow: aiProductPlacementView → aiProductPlacementRegenerateView.
+- Subscription management: subscriptionView for membership handling.
 
 **Section sources**
-- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
+- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
 - [signin_controller.dart:32](file://lib/features/auth/controller/signin_controller.dart#L32)
 
 ### Navigation Flow and Page Transitions
 - Programmatic navigation: Controllers call Get.toNamed(routeName) to switch screens.
 - Bottom navigation: BottomNavView renders the selected page from BottomNavController.
 - Initial route: Set based on token availability during app startup.
-- AI navigation: Seamless flow between AI category selection, AI service implementation, and dashboard management.
+- AI navigation: Seamless flow between AI category selection, AI service implementation, dashboard management, and product placement regeneration.
+- Subscription navigation: Dedicated flow for membership management and plan selection.
 
 ```mermaid
 sequenceDiagram
@@ -199,8 +226,11 @@ participant User as "User"
 participant AICategory as "AiCategoryView"
 participant AICtrl as "CategoryController"
 participant AIView as "AiView"
+participant AIPPlace as "AiProductPlacementView"
+participant AIPRegen as "AiProductPlacementRegenerateView"
 participant AIDashboard as "DashboardAiDesignView"
 participant AIDetails as "DashboardAiDesignDetails"
+participant SubView as "SubscriptionView"
 participant Router as "GetMaterialApp(routes.dart)"
 User->>AICategory : Browse AI categories
 AICategory->>AICtrl : Navigate to AI service
@@ -212,14 +242,22 @@ Router-->>User : Show AI designs dashboard
 User->>AIDashboard : View design details
 AIDashboard->>Router : Get.toNamed(AppRoutes.dashboardAiDesignDetailsView)
 Router-->>User : Show design details with arguments
+User->>AIPPlace : Select product placement
+AIPPlace->>Router : Get.toNamed(AppRoutes.aiProductPlacementRegenerateView)
+Router-->>User : Show regeneration interface
+User->>SubView : Manage subscription
+SubView->>Router : Get.toNamed(AppRoutes.subscriptionView)
+Router-->>User : Show subscription management
 ```
 
 **Diagram sources**
 - [ai_category_view.dart:37-40](file://lib/features/category/views/ai_category_view.dart#L37-L40)
 - [ai_view.dart:1-26](file://lib/features/ai/views/ai_view.dart#L1-26)
+- [ai_product_placement_regenerate_view.dart:13-62](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L13-L62)
 - [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-L55)
 - [dashboard_ai_design_details.dart:16-78](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L16-L78)
-- [routes.dart:243-252](file://lib/core/routes/routes.dart#L243-L252)
+- [subscription_view.dart:15-82](file://lib/features/membership/views/subscription_view.dart#L15-82)
+- [routes.dart:267-277](file://lib/core/routes/routes.dart#L267-L277)
 
 **Section sources**
 - [signin_controller.dart:17-36](file://lib/features/auth/controller/signin_controller.dart#L17-L36)
@@ -232,7 +270,8 @@ Router-->>User : Show design details with arguments
   - page: Constructor for the view widget.
   - binding/bindings: One or more bindings for dependency injection and controller lifecycle.
 - Bindings connect controllers and models to the view lifecycle.
-- New AI bindings: AiBindings, CategoryBindings, DashboardAiDesignBindings.
+- New AI bindings: AiBindings, CategoryBindings, DashboardAiDesignBindings, AiProductPlacementRegenerateBindings.
+- New subscription binding: SubscriptionBindings.
 
 ```mermaid
 classDiagram
@@ -254,8 +293,8 @@ class AppRoutes {
 +string aiView
 +string aiProductPlacementView
 +string aiInteriorDesignView
-+string dashboardAiDesignView
-+string dashboardAiDesignDetailsView
++string aiProductPlacementRegenerateView
++string subscriptionView
 +...
 }
 class AuthBindings
@@ -266,6 +305,8 @@ class CheckoutBindings
 class AiBindings
 class CategoryBindings
 class DashboardAiDesignBindings
+class AiProductPlacementRegenerateBindings
+class SubscriptionBindings
 GetPage --> AppRoutes : "uses name"
 GetPage --> AuthBindings : "optional"
 GetPage --> HomeBindings : "optional"
@@ -275,22 +316,26 @@ GetPage --> CheckoutBindings : "optional"
 GetPage --> AiBindings : "optional"
 GetPage --> CategoryBindings : "optional"
 GetPage --> DashboardAiDesignBindings : "optional"
+GetPage --> AiProductPlacementRegenerateBindings : "optional"
+GetPage --> SubscriptionBindings : "optional"
 ```
 
 **Diagram sources**
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
-- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
-- [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
-- [routes.dart:243-252](file://lib/core/routes/routes.dart#L243-L252)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
+- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
+- [ai_product_placement_regenerate_bindings.dart:4-9](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L4-L9)
+- [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
+- [routes.dart:267-277](file://lib/core/routes/routes.dart#L267-L277)
 
 **Section sources**
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
 
 ### Navigation State Management
 - Bottom navigation state: Managed by BottomNavController, which holds the current selected index and page stack.
 - UI updates: BottomNavView observes controller state and rebuilds the visible page.
 - Local gestures: OnboardingController demonstrates gesture-driven navigation within a view.
-- AI state: Controllers manage AI category selection, AI service execution, and AI design dashboard navigation.
+- AI state: Controllers manage AI category selection, AI service execution, AI design dashboard navigation, and AI product placement regeneration.
+- Subscription state: Controllers manage subscription plan selection, payment processing, and membership status.
 
 ```mermaid
 flowchart TD
@@ -302,13 +347,20 @@ GenerateDesign --> ViewDashboard["DashboardAiDesignView shows AI designs"]
 ViewDashboard --> SelectDesign["User selects specific design"]
 SelectDesign --> ViewDesignDetails["DashboardAiDesignDetails shows design with arguments"]
 ViewDesignDetails --> End(["AI workflow complete"])
+Start --> ProductPlacement["AiProductPlacementView shows placement interface"]
+ProductPlacement --> Regenerate["AiProductPlacementRegenerateView shows regeneration interface"]
+Regenerate --> End
+Start --> Subscription["SubscriptionView shows membership options"]
+Subscription --> End
 ```
 
 **Diagram sources**
 - [ai_category_view.dart:33-96](file://lib/features/category/views/ai_category_view.dart#L33-L96)
 - [ai_view.dart:7-25](file://lib/features/ai/views/ai_view.dart#L7-25)
+- [ai_product_placement_regenerate_view.dart:17-61](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L17-L61)
 - [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-55)
 - [dashboard_ai_design_details.dart:21-77](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L21-77)
+- [subscription_view.dart:18-81](file://lib/features/membership/views/subscription_view.dart#L18-81)
 
 **Section sources**
 - [bottom_nav_view.dart:17-21](file://lib/features/home/views/bottom_nav_view.dart#L17-L21)
@@ -320,6 +372,7 @@ ViewDesignDetails --> End(["AI workflow complete"])
 - Parameter passing: Use Get.toNamed(routeName, arguments: payload) to pass data between screens.
 - Deep linking: Configure initialRoute and handle external URLs by setting initialRoute to a dynamic route and resolving parameters in the target view.
 - AI parameters: Category titles, sub-titles, and AI design model objects can be passed between AI category, AI service, and dashboard views.
+- Subscription parameters: Payment information and plan details can be passed to subscription management views.
 
 Note: The current implementation uses argument passing for AI design details view to receive AiDesignModel objects. To enable deep linking for AI features, define routes that accept parameters and initialize state accordingly.
 
@@ -333,6 +386,7 @@ Note: The current implementation uses argument passing for AI design details vie
 - Post-login guard: After storing credentials, controllers redirect to bottomNav.
 - Future enhancements: Add guards to protect protected routes by checking token validity before rendering.
 - AI access control: Ensure users can only access AI features after authentication and proper credit balance validation.
+- Subscription access control: Implement membership validation for premium AI features.
 
 ```mermaid
 flowchart TD
@@ -340,11 +394,12 @@ Start(["App starts"]) --> CheckToken["Read token from storage"]
 CheckToken --> HasToken{"Token present?"}
 HasToken --> |Yes| SetBottomNav["initialRoute = bottomNav"]
 HasToken --> |No| SetOnboarding["initialRoute = onboardingView"]
-SetBottomNav --> CheckAI["Check AI feature access"]
-CheckAI --> AIGranted["Allow AI category/dashboard/services"]
-CheckAI --> AIDenied["Restrict AI features"]
-AIGranted --> End(["Render full app"])
-AIDenied --> End
+SetBottomNav --> CheckMembership["Check subscription status"]
+CheckMembership --> Member{"Valid membership?"}
+Member --> |Yes| AllowPremium["Allow premium AI features"]
+Member --> |No| RestrictPremium["Restrict premium AI features"]
+AllowPremium --> End(["Render full app"])
+RestrictPremium --> End
 SetOnboarding --> End
 ```
 
@@ -375,8 +430,8 @@ Key features:
 - Argument passing for service details
 
 **Section sources**
-- [app_routes.dart:37](file://lib/core/routes/app_routes.dart#L37)
-- [routes.dart:243-247](file://lib/core/routes/routes.dart#L243-L247)
+- [app_routes.dart:38](file://lib/core/routes/app_routes.dart#L38)
+- [routes.dart:251-255](file://lib/core/routes/routes.dart#L251-L255)
 - [ai_category_view.dart:13-104](file://lib/features/category/views/ai_category_view.dart#L13-L104)
 
 ### AI Service Implementation System
@@ -394,8 +449,8 @@ Key features:
 - AI service execution management
 
 **Section sources**
-- [app_routes.dart:38](file://lib/core/routes/app_routes.dart#L38)
-- [routes.dart:248-252](file://lib/core/routes/routes.dart#L248-L252)
+- [app_routes.dart:39](file://lib/core/routes/app_routes.dart#L39)
+- [routes.dart:256](file://lib/core/routes/routes.dart#L256)
 - [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
 - [ai_controller.dart:7-94](file://lib/features/ai/controller/ai_controller.dart#L7-L94)
 
@@ -414,8 +469,8 @@ Key features:
 - Real-time preview capabilities
 
 **Section sources**
-- [app_routes.dart:39](file://lib/core/routes/app_routes.dart#L39)
-- [routes.dart:248-252](file://lib/core/routes/routes.dart#L248-L252)
+- [app_routes.dart:40](file://lib/core/routes/app_routes.dart#L40)
+- [routes.dart:257-261](file://lib/core/routes/routes.dart#L257-L261)
 
 ### AI Interior Design System
 The AI interior design system provides comprehensive room design and decoration services:
@@ -432,8 +487,29 @@ Key features:
 - Style-based design generation
 
 **Section sources**
-- [app_routes.dart:40](file://lib/core/routes/app_routes.dart#L40)
-- [routes.dart:248-252](file://lib/core/routes/routes.dart#L248-L252)
+- [app_routes.dart:41](file://lib/core/routes/app_routes.dart#L41)
+- [routes.dart:262-266](file://lib/core/routes/routes.dart#L262-L266)
+
+### AI Product Placement Regeneration System
+The AI product placement regeneration system provides advanced regeneration capabilities for AI-generated designs:
+
+- **Route**: aiProductPlacementRegenerateView (`/aiProductPlacementRegenerateView`)
+- **Controller**: AiProductPlacementRegenerateController manages regeneration state and product selection
+- **View**: AiProductPlacementRegenerateView provides the regeneration interface with animated transitions
+- **Binding**: AiProductPlacementRegenerateBindings handles controller initialization
+
+Key features:
+- Product selection interface
+- Regeneration animation transitions
+- State-based UI rendering
+- Image replacement functionality
+
+**Section sources**
+- [app_routes.dart:42](file://lib/core/routes/app_routes.dart#L42)
+- [routes.dart:267-271](file://lib/core/routes/routes.dart#L267-L271)
+- [ai_product_placement_regenerate_bindings.dart:4-9](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L4-L9)
+- [ai_product_placement_regenerate_controller.dart:4-16](file://lib/features/ai/controller/ai_product_placement_regenerate_controller.dart#L4-L16)
+- [ai_product_placement_regenerate_view.dart:13-62](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L13-L62)
 
 ### Dashboard AI Design Management System
 The dashboard AI design system provides centralized management of generated AI designs:
@@ -451,7 +527,7 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:24](file://lib/core/routes/app_routes.dart#L24)
-- [routes.dart:178-187](file://lib/core/routes/routes.dart#L178-L187)
+- [routes.dart:186-195](file://lib/core/routes/routes.dart#L186-L195)
 - [dashboard_ai_design_view.dart:14-55](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L14-L55)
 
 ### AI Design Details Management System
@@ -470,13 +546,35 @@ Key features:
 
 **Section sources**
 - [app_routes.dart:25](file://lib/core/routes/app_routes.dart#L25)
-- [routes.dart:188-197](file://lib/core/routes/routes.dart#L188-L197)
+- [routes.dart:196-205](file://lib/core/routes/routes.dart#L196-L205)
 - [dashboard_ai_design_details.dart:16-78](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L16-L78)
+
+### Subscription Management System
+The subscription management system provides comprehensive membership and subscription handling:
+
+- **Route**: subscriptionView (`/subscriptionView`)
+- **Controller**: SubscriptionController manages subscription plans and membership status
+- **View**: SubscriptionView provides the subscription management interface with plan cards
+- **Binding**: SubscriptionBindings handles controller initialization
+
+Key features:
+- Multiple subscription plan management
+- Payment processing integration
+- Membership status tracking
+- Plan comparison and selection
+- Annual membership benefits
+
+**Section sources**
+- [app_routes.dart:44](file://lib/core/routes/app_routes.dart#L44)
+- [routes.dart:272-277](file://lib/core/routes/routes.dart#L272-L277)
+- [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
+- [subscription_controller.dart:4-85](file://lib/features/membership/controller/subscription_controller.dart#L4-L85)
+- [subscription_view.dart:15-82](file://lib/features/membership/views/subscription_view.dart#L15-82)
 
 ## AI Integration
 
 ### Comprehensive AI Workflow
-The expanded routing system creates a complete AI service experience:
+The expanded routing system creates a complete AI service experience with regeneration capabilities:
 
 ```mermaid
 flowchart LR
@@ -484,15 +582,17 @@ AICategory["AiCategoryView<br/>Select AI Service"] --> AIView["AiView<br/>AI Ser
 AIView --> Dashboard["DashboardAiDesignView<br/>AI Designs Dashboard"]
 Dashboard --> Details["DashboardAiDesignDetails<br/>Design Details with Arguments"]
 AICategory --> ProductPlacement["AiProductPlacementView<br/>Product Placement Service"]
+ProductPlacement --> Regenerate["AiProductPlacementRegenerateView<br/>Product Placement Regeneration"]
 AICategory --> InteriorDesign["AiInteriorDesignView<br/>Interior Design Service"]
 AIView --> Credit["Credit Balance Integration"]
 Dashboard --> Pagination["Pagination & Filtering"]
 Details --> ConditionalUI["Conditional UI Rendering"]
+Regenerate --> Animation["Animation Transitions"]
 ```
 
 **Diagram sources**
-- [routes.dart:243-252](file://lib/core/routes/routes.dart#L243-L252)
-- [app_routes.dart:24-40](file://lib/core/routes/app_routes.dart#L24-L40)
+- [routes.dart:251-271](file://lib/core/routes/routes.dart#L251-L271)
+- [app_routes.dart:24-44](file://lib/core/routes/app_routes.dart#L24-L44)
 
 ### Data Flow Between AI Features
 The routing system facilitates smooth data transfer between AI features:
@@ -501,6 +601,8 @@ The routing system facilitates smooth data transfer between AI features:
 - **AI Design Models**: Shared between DashboardAiDesignView and DashboardAiDesignDetails
 - **Credit Balance**: Integrated across AI service views and dashboard
 - **Service Selection**: Managed through CategoryController state
+- **Regeneration State**: Managed through AiProductPlacementRegenerateController state
+- **Product Selection**: Passed between product placement and regeneration views
 
 ### Navigation Patterns
 Common navigation patterns in the AI workflow:
@@ -508,11 +610,53 @@ Common navigation patterns in the AI workflow:
 - Deep linking to specific AI services via category selection
 - Direct access to dashboard from AI service completion
 - Conditional navigation based on AI design type
+- Regeneration flow from product placement to regeneration view
+- Subscription management integration with AI features
 
 **Section sources**
 - [ai_category_view.dart:37-40](file://lib/features/category/views/ai_category_view.dart#L37-L40)
 - [dashboard_ai_design_view.dart:46-49](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_view.dart#L46-L49)
 - [dashboard_ai_design_details.dart:58-61](file://lib/features/dashboard_ai_design/views/dashboard_ai_design_details.dart#L58-L61)
+- [ai_product_placement_regenerate_view.dart:44-56](file://lib/features/ai/views/ai_product_placement_regenerate_view.dart#L44-L56)
+
+## Subscription Management
+
+### Comprehensive Subscription Workflow
+The subscription management system integrates seamlessly with the AI features:
+
+```mermaid
+flowchart LR
+Subscription["SubscriptionView<br/>Membership Plans"] --> PlanSelection["SubscriptionPlanCard<br/>Plan Selection"]
+PlanSelection --> Payment["CustomPaymentDialog<br/>Payment Processing"]
+Payment --> Success["Success Confirmation<br/>Membership Activation"]
+Subscription --> Annual["AnnualMembership<br/>Benefits Overview"]
+Annual --> Features["AnnualMembershipInfo<br/>Feature Benefits"]
+Features --> PlanFeatures["AnnualMembershipPlan<br/>Plan Features"]
+```
+
+**Diagram sources**
+- [routes.dart:272-277](file://lib/core/routes/routes.dart#L272-L277)
+- [app_routes.dart:44](file://lib/core/routes/app_routes.dart#L44)
+- [subscription_view.dart:18-81](file://lib/features/membership/views/subscription_view.dart#L18-L81)
+
+### Data Flow Between Subscription Features
+The routing system facilitates smooth data transfer between subscription features:
+
+- **Plan Information**: Shared between subscription view and plan cards
+- **Payment Information**: Managed through payment dialog and controller state
+- **Membership Status**: Synchronized across subscription and AI features
+- **Feature Benefits**: Integrated with annual membership and plan features
+
+### Navigation Patterns
+Common navigation patterns in the subscription workflow:
+- Back navigation using standard Flutter Navigator.pop()
+- Deep linking to specific subscription plans
+- Direct access to payment processing from plan selection
+- Membership status updates across application features
+
+**Section sources**
+- [subscription_view.dart:63-71](file://lib/features/membership/views/subscription_view.dart#L63-L71)
+- [subscription_controller.dart:53-59](file://lib/features/membership/controller/subscription_controller.dart#L53-L59)
 
 ## E-commerce Integration
 
@@ -560,7 +704,8 @@ Common navigation patterns in the e-commerce flow:
 - Coupling: Controllers depend on AppRoutes for navigation and on repositories/services for business logic.
 - Cohesion: Each feature's bindings encapsulate its controllers and models.
 - External dependencies: GetX provides routing, state, and dependency injection.
-- AI dependencies: New AI features integrate with existing auth, dashboard, and credit balance systems.
+- AI dependencies: New AI features integrate with existing auth, dashboard, credit balance, and subscription systems.
+- Subscription dependencies: Subscription features integrate with payment processing and membership management systems.
 
 ```mermaid
 graph LR
@@ -573,6 +718,8 @@ CHECKOUT["CheckoutController"] --> CHECKBIND["CheckoutBindings"]
 AICATEGORY["CategoryController"] --> AICATBIND["CategoryBindings"]
 AIDASHBOARD["DashboardAiDesignController"] --> AIDASHBIND["DashboardAiDesignBindings"]
 AI["AiController"] --> AIBIND["AiBindings"]
+AIREGEN["AiProductPlacementRegenerateController"] --> AIREGENBIND["AiProductPlacementRegenerateBindings"]
+SUBCTRL["SubscriptionController"] --> SUBBIND["SubscriptionBindings"]
 MAIN["MyApp(main.dart)"] --> APPRT
 MAIN --> ROUTES["routes.dart"]
 ROUTES --> VIEWS["Feature Views"]
@@ -582,6 +729,8 @@ ROUTES --> CHECKOUT
 ROUTES --> AICATEGORY
 ROUTES --> AIDASHBOARD
 ROUTES --> AI
+ROUTES --> AIREGEN
+ROUTES --> SUBCTRL
 ```
 
 **Diagram sources**
@@ -591,14 +740,16 @@ ROUTES --> AI
 - [shop_bindings.dart:4-9](file://lib/features/shop/bindings/shop_bindings.dart#L4-L9)
 - [checkout_bindings.dart:4-9](file://lib/features/cart/bindings/checkout_bindings.dart#L4-L9)
 - [ai_bindings.dart:4-9](file://lib/features/ai/bindings/ai_bindings.dart#L4-L9)
+- [ai_product_placement_regenerate_bindings.dart:4-9](file://lib/features/ai/bindings/ai_product_placement_regenerate_bindings.dart#L4-L9)
+- [subscription_bindings.dart:4-9](file://lib/features/membership/bindings/subscription_bindings.dart#L4-L9)
 - [main.dart:30-41](file://lib/main.dart#L30-L41)
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
 
 **Section sources**
 - [signin_controller.dart:9-52](file://lib/features/auth/controller/signin_controller.dart#L9-L52)
 - [bottom_nav_view.dart:11-256](file://lib/features/home/views/bottom_nav_view.dart#L11-L256)
 - [main.dart:30-41](file://lib/main.dart#L30-L41)
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
 
 ## Performance Considerations
 - Prefer named navigation with AppRoutes to avoid string duplication and reduce runtime overhead.
@@ -608,6 +759,8 @@ ROUTES --> AI
 - AI optimization: Implement lazy loading for AI service components and optimize credit balance queries.
 - Favorites caching: Store frequently accessed favorites locally to improve performance.
 - Dashboard pagination: Use pagination for AI design lists to prevent memory issues.
+- Regeneration optimization: Implement efficient state management for AI product placement regeneration.
+- Subscription caching: Cache subscription status to reduce API calls and improve performance.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -620,11 +773,14 @@ Common issues and resolutions:
 - Dashboard navigation: Verify dashboard routes are properly configured with appropriate bindings.
 - Favorites not persisting: Ensure favorites controller has proper persistence setup.
 - Checkout errors: Check that checkout controller validates required fields before navigation.
+- Regeneration issues: Verify AiProductPlacementRegenerateController state management and view bindings.
+- Subscription errors: Check that subscription controller properly manages plan selection and payment processing.
+- Membership validation: Ensure subscription status is properly checked before accessing premium AI features.
 
 **Section sources**
-- [app_routes.dart:1-42](file://lib/core/routes/app_routes.dart#L1-L42)
-- [routes.dart:63-254](file://lib/core/routes/routes.dart#L63-L254)
+- [app_routes.dart:1-46](file://lib/core/routes/app_routes.dart#L1-L46)
+- [routes.dart:63-278](file://lib/core/routes/routes.dart#L63-L278)
 - [main.dart:36-40](file://lib/main.dart#L36-L40)
 
 ## Conclusion
-The ZB-DEZINE routing and navigation system leverages GetX to provide a clean separation of concerns with comprehensive AI capabilities. AppRoutes centralizes route names, routes.dart defines pages and bindings, and controllers orchestrate navigation after business logic. The expanded system now includes AI category navigation, AI service implementations, dashboard AI design management, and comprehensive e-commerce features, creating a seamless integrated experience. The system supports programmatic navigation, bottom navigation state management, AI workflow navigation, and initial route selection based on authentication state. The addition of AI routes enhances user engagement by providing specialized AI services alongside traditional e-commerce functionality. Extending the system with parameter passing, deep linking, and route guards will further enhance robustness and user experience across both AI and e-commerce features.
+The ZB-DEZINE routing and navigation system leverages GetX to provide a clean separation of concerns with comprehensive AI capabilities and subscription management. AppRoutes centralizes route names, routes.dart defines pages and bindings, and controllers orchestrate navigation after business logic. The expanded system now includes AI category navigation, AI service implementations, dashboard AI design management, AI product placement regeneration, and comprehensive subscription management, creating a seamless integrated experience. The system supports programmatic navigation, bottom navigation state management, AI workflow navigation, subscription management, and initial route selection based on authentication state. The addition of AI regeneration routes and subscription management routes enhances user engagement by providing specialized AI services alongside traditional e-commerce functionality and membership benefits. Extending the system with parameter passing, deep linking, and route guards will further enhance robustness and user experience across both AI and e-commerce features, while subscription integration ensures proper access control for premium features.

@@ -15,7 +15,12 @@ class SubscriptionPlanFeature extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 20.h),
       child: Row(
         children: [
-          Image.asset(IconsPath.check, height: 16.h, width: 16.w),
+          Image.asset(
+            IconsPath.check,
+            height: 16.h,
+            width: 16.w,
+            color: isDark ? AppColors.whiteColor : null,
+          ),
           SizedBox(width: 8.w),
           Expanded(
             child: CustomPrimaryText(

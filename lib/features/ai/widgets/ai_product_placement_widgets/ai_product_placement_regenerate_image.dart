@@ -30,7 +30,7 @@ class AiProductPlacementRegenerateImage
         children: [
           CustomPrimaryText(
             text:
-                'Add your requirements Tell us how you\'d like the placement to look or if there are specific adjustments you’d like the AI to make.',
+                'Add your requirements Tell us how you\'d like the placement to look or if there are specific adjustments you\'d like the AI to make.',
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: isDark ? AppColors.whiteColor : AppColors.darkColor,

@@ -68,13 +68,15 @@ class SubscriptionPlanCard extends GetWidget<SubscriptionController> {
             ),
       border: Border.all(
         width: 6.r,
-        color: isDark ? AppColors.darkBorderColor : AppColors.whiteColor,
+        color: isDark ? AppColors.labelColor : AppColors.whiteColor,
       ),
       boxShadow: [
         BoxShadow(
           offset: Offset(0, 2),
           blurRadius: 12,
-          color: AppColors.shadowColor.withValues(alpha: 0.08),
+          color: isDark
+              ? AppColors.whiteColor.withValues(alpha: 0.08)
+              : AppColors.shadowColor.withValues(alpha: 0.08),
         ),
       ],
       child: Column(
@@ -95,7 +97,9 @@ class SubscriptionPlanCard extends GetWidget<SubscriptionController> {
                       text: 'Next Renewal on\n12 February 2026.',
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xFF696969),
+                      color: isDark
+                          ? AppColors.darkPrimaryTextColor
+                          : Color(0xFF696969),
                     ),
                   ],
                 ),
@@ -135,14 +139,26 @@ class SubscriptionPlanCard extends GetWidget<SubscriptionController> {
                 },
               );
             },
-            textColor: isPrimary ? AppColors.whiteColor : AppColors.labelColor,
-            backgroundColor: isPrimary
-                ? isActive
-                      ? AppColors.darkPrimaryTextColor
-                      : AppColors.primaryColor
+            textColor: isActive
+                ? isDark
+                      ? Color(0xFFEEEEEE)
+                      : AppColors.whiteColor
+                : isPrimary
+                ? AppColors.whiteColor
+                : AppColors.labelColor,
+            backgroundColor: isActive
+                ? isDark
+                      ? AppColors.greyTextColor
+                      : AppColors.darkPrimaryTextColor
+                : isPrimary
+                ? AppColors.primaryColor
                 : AppColors.whiteColor,
             border: Border.all(
-              color: isPrimary ? AppColors.primaryColor : AppColors.borderColor,
+              color: isDark
+                  ? Colors.transparent
+                  : isPrimary
+                  ? AppColors.primaryColor
+                  : AppColors.borderColor,
             ),
           ),
           SizedBox(height: 24.h),
