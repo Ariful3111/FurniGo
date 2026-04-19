@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/cart/controller/delete_cart_item_controller.dart';
 import 'package:zb_dezign/features/cart/controller/select_all_cart_item_controller.dart';
 import 'package:zb_dezign/features/cart/controller/select_cart_item_controller.dart';
 import 'package:zb_dezign/features/cart/models/cart_model.dart';
@@ -9,10 +10,12 @@ class CartController extends GetxController {
   final GetCartRepository getCartRepository;
   final SelectCartItemController selectCartItemController;
   final SelectAllCartItemsController selectAllCartItemsController;
+  final DeleteCartItemController deleteCartItemController;
   CartController({
     required this.getCartRepository,
     required this.selectCartItemController,
     required this.selectAllCartItemsController,
+    required this.deleteCartItemController,
   });
   RxBool isLoading = false.obs;
   RxBool isAllSelected = false.obs;
@@ -74,7 +77,16 @@ class CartController extends GetxController {
     );
   }
 
-  void deleteItem({required int id}) {}
+  Future<void> deleteItem({required int id}) async {
+    await deleteCartItemController.deleteCartItem(
+      cartID: carts.value?.id ?? "0",
+      cartItemID: id,
+    );
+    carts.value?.items?.removeWhere((item) => item.id == id);
+    carts.refresh();
+    selectedItems.remove(id);
+    isAllSelected.value = selectedItems.length == carts.value?.items?.length;
+  }
 
   void deleteAll() {}
 

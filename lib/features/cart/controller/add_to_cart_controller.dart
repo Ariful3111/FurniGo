@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:zb_dezign/features/cart/controller/cart_controller.dart';
 import 'package:zb_dezign/features/cart/repositories/add_to_cart_repo.dart';
 import 'package:zb_dezign/features/home/models/rooms_model.dart';
 import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
@@ -29,9 +30,10 @@ class AddToCartController extends GetxController {
         (error) {
           ErrorSnackbar.show(description: error.message);
         },
-        (data) {
+        (data) async {
           isLoading.value = false;
           SuccessSnackbar.show(description: "Added to cart successfully");
+          await Get.find<CartController>().getCart();
         },
       );
     }

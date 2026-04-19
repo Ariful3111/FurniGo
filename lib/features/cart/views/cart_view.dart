@@ -9,6 +9,7 @@ import 'package:zb_dezign/features/cart/widgets/cart_view_widgets/cart_select_it
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
+import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class CartView extends GetView<CartController> {
   const CartView({super.key});
@@ -27,6 +28,8 @@ class CartView extends GetView<CartController> {
         ),
         child: controller.isLoading.value
             ? ButtonLoading()
+            : controller.carts.value?.items?.isEmpty ?? true
+            ? Center(child: CustomPrimaryText(text: "Your cart is empty"))
             : ListView(
                 children: [
                   CustomAppbar(
@@ -37,23 +40,21 @@ class CartView extends GetView<CartController> {
                   SizedBox(height: 32.h),
                   CartSelectItem(),
                   SizedBox(height: 16),
-                  Obx(
-                    () => ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: controller.carts.value?.items?.length ?? 0,
-                      separatorBuilder: (_, _) => Column(
-                        children: [
-                          Divider(color: AppColors.borderColor),
-                          SizedBox(height: 12.h),
-                        ],
-                      ),
-                      itemBuilder: (context, index) {
-                        final item = controller.carts.value?.items?[index];
-                        if (item == null) return SizedBox.shrink();
-                        return CartItemBox(item: item, isDark: isDark);
-                      },
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: controller.carts.value?.items?.length ?? 0,
+                    separatorBuilder: (_, _) => Column(
+                      children: [
+                        Divider(color: AppColors.borderColor),
+                        SizedBox(height: 12.h),
+                      ],
                     ),
+                    itemBuilder: (context, index) {
+                      final item = controller.carts.value?.items?[index];
+                      if (item == null) return SizedBox.shrink();
+                      return CartItemBox(item: item, isDark: isDark);
+                    },
                   ),
                   SizedBox(height: 20.h),
                   CartOrderSummery(),
