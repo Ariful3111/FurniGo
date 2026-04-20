@@ -13,47 +13,57 @@ class CheckoutPaymentPaypal extends GetWidget<CheckoutController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(()=> Column(
-      children: [
-        InkWell(
-          onTap: () => controller.selectedMethod.value = 1,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CheckoutHelper().paymentTile(
-                  title: "PayPal",
-                  value: 1,
-                  controller: controller,
-                ),
-                Image.asset(IconsPath.paypal, height: 30.h, width: 48.w),
-              ],
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return Obx(
+      () => Column(
+        children: [
+          InkWell(
+            onTap: () => controller.selectedMethod.value = 1,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CheckoutHelper().paymentTile(
+                    title: "PayPal",
+                    value: 1,
+                    controller: controller,
+                    isDark: isDark,
+                  ),
+                  Image.asset(IconsPath.paypal, height: 30.h, width: 48.w),
+                ],
+              ),
             ),
           ),
-        ),
-        AnimatedSize(
-          duration: Duration(milliseconds: 300),
-          child: controller.selectedMethod.value == 1
-              ? Column(
-                  children: [
-                    CustomDivider(color: AppColors.grayBorderColor,),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 12.h,
+          AnimatedSize(
+            duration: Duration(milliseconds: 300),
+            child: controller.selectedMethod.value == 1
+                ? Column(
+                    children: [
+                      CustomDivider(
+                        color: isDark
+                            ? AppColors.primaryBorderColor
+                            : AppColors.grayBorderColor,
                       ),
-                      child: CustomTextFormField(
-                        controller: controller.paypalEmailController,
-                        labelText: 'Enter Your Paypal Email',
-                        borderColor: AppColors.grayBorderColor,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 12.h,
+                        ),
+                        child: CustomTextFormField(
+                          controller: controller.paypalEmailController,
+                          labelText: 'Enter Your Paypal Email',
+                          borderColor: isDark
+                              ? AppColors.primaryBorderColor
+                              : AppColors.grayBorderColor,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              : SizedBox(),
-        ),
-      ],
-    ));
+                    ],
+                  )
+                : SizedBox(),
+          ),
+        ],
+      ),
+    );
   }
 }

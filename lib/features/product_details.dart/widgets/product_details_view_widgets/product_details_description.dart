@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/utils.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/product_details.dart/controller/product_details_controller.dart';
@@ -67,7 +66,7 @@ class ProductDetailsDescription extends GetWidget<ProductDetailsController> {
               SizedBox(width: 20.w),
               CustomPrimaryText(
                 text:
-                    '\$${controller.productDetails.value?.data.finalPrice.toDouble().toPrecision(2)}',
+                    '\$${(controller.productDetails.value?.data.finalPrice?.toDouble() ?? 0.0).toStringAsFixed(2)}',
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w600,
                 textOverflow: TextOverflow.ellipsis,

@@ -32,7 +32,7 @@ class HomeProductText extends StatelessWidget {
                   fontSize: 12.sp,
                   color: isDark
                       ? AppColors.darkPrimaryTextColor
-                      : Color(0xFF585858),
+                      : AppColors.darkGreyTextColor,
 
                   textOverflow: TextOverflow.ellipsis,
                 ),
@@ -75,7 +75,9 @@ class HomeProductText extends StatelessWidget {
           CustomPrimaryText(
             text: price,
             fontSize: 12.sp,
-            color: isDark ? Color(0xFF989898) : AppColors.buttonTextColor,
+            color: isDark
+                ? AppColors.darkSecondaryTextColor
+                : AppColors.buttonTextColor,
           ),
         ],
       ),

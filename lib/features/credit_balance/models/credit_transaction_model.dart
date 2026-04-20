@@ -1,11 +1,7 @@
 class CreditTransaction {
-  final String title;
-  final String date;
-  final double amount;
+  final String? title;
+  final String? date;
+  final double? amount;
 
-  CreditTransaction({
-    required this.title,
-    required this.date,
-    required this.amount,
-  });
+  CreditTransaction({this.title, this.date, this.amount});
 }

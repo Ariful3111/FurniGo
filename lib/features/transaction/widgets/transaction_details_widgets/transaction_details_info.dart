@@ -35,117 +35,111 @@ class TransactionDetailsInfo extends GetWidget<TransactionDetailsController> {
                 : AppColors.greyTextColor,
           ),
           SizedBox(height: 26.h),
-          ...List.generate(
-            controller.transactionInfo.length,
-            (index) {
-              final item = controller.transactionInfo[index];
-              return Padding(
-                padding: EdgeInsets.only(
-                  bottom:
-                      controller.transactionInfo.length - 1 ==
-                          index
-                      ? 0
-                      : 12.0.h,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: item['title'] == 'Status' ? 1 : 2,
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: CustomPrimaryText(
-                          text: item['title'],
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: isDark
-                              ? AppColors.whiteColor
-                              : AppColors.darkTextColor,
-                          textAlign: TextAlign.left,
-                        ),
+          ...List.generate(controller.transactionInfo.length, (index) {
+            final item = controller.transactionInfo[index];
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: controller.transactionInfo.length - 1 == index
+                    ? 0
+                    : 12.0.h,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: item['title'] == 'Status' ? 1 : 2,
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: CustomPrimaryText(
+                        text: item['title'],
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: isDark
+                            ? AppColors.whiteColor
+                            : AppColors.darkTextColor,
+                        textAlign: TextAlign.left,
                       ),
                     ),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: CustomPrimaryText(
-                          text: ':',
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: isDark
-                              ? AppColors.whiteColor
-                              : AppColors.darkTextColor,
-                          textAlign: TextAlign.center,
-                        ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CustomPrimaryText(
+                        text: ':',
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: isDark
+                            ? AppColors.whiteColor
+                            : AppColors.darkTextColor,
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    item['title'] == 'Payment Method'
-                        ? Expanded(
-                            flex: 2,
-                            child: Column(
-                              children: [
-                                CustomPrimaryText(
-                                  text: item['value'],
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: isDark
-                                      ? AppColors.whiteColor
-                                      : AppColors.darkTextColor,
-                                  textAlign: TextAlign.right,
-                                ),
-                                SizedBox(height: 8.h),
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      IconsPath.visa,
-                                      height: 20.h,
-                                      width: 32.w,
-                                    ),
-                                    SizedBox(width: 12.w),
-                                    Expanded(
-                                      child: CustomPrimaryText(
-                                        text: '546545454',
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: isDark
-                                            ? AppColors.whiteColor
-                                            : AppColors.darkTextColor,
-                                        textAlign: TextAlign.right,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        : Expanded(
-                            flex: item['title'] == 'Status' ? 1 : 2,
-                            child: item['title'] == 'Status'
-                                ? CustomTableStatus(
-                                    status: controller
-                                        .transactionModel
-                                        .status,
-                                  )
-                                : Align(
-                                    alignment: Alignment.topRight,
+                  ),
+                  item['title'] == 'Payment Method'
+                      ? Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              CustomPrimaryText(
+                                text: item['value'],
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                color: isDark
+                                    ? AppColors.whiteColor
+                                    : AppColors.darkTextColor,
+                                textAlign: TextAlign.right,
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    IconsPath.visa,
+                                    height: 20.h,
+                                    width: 32.w,
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
                                     child: CustomPrimaryText(
-                                      text: item['value'],
+                                      text: '546545454',
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,
-                                      color: item['title'] == 'Charged Amount'
-                                          ? Color(0xFFAF1D38)
-                                          : isDark
+                                      color: isDark
                                           ? AppColors.whiteColor
                                           : AppColors.darkTextColor,
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
+                                ],
+                              ),
+                            ],
                           ),
-                  ],
-                ),
-              );
-            },
-          ),
+                        )
+                      : Expanded(
+                          flex: item['title'] == 'Status' ? 1 : 2,
+                          child: item['title'] == 'Status'
+                              ? CustomTableStatus(
+                                  status:
+                                      controller.transactionModel.status ?? '',
+                                )
+                              : Align(
+                                  alignment: Alignment.topRight,
+                                  child: CustomPrimaryText(
+                                    text: item['value'],
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: item['title'] == 'Charged Amount'
+                                        ? Color(0xFFAF1D38)
+                                        : isDark
+                                        ? AppColors.whiteColor
+                                        : AppColors.darkTextColor,
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                        ),
+                ],
+              ),
+            );
+          }),
           SizedBox(height: 45.h),
           TransactionDetailsInfoButton(),
         ],

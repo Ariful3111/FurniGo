@@ -1,438 +1,106 @@
 {
-  "data": [
-    {
-      "id": 21,
-      "category_id": 3,
-      "category_name": "Queen Beds",
-      "name": "consectetur explicabo facere",
-      "sku": "SKU-7733-UOLB",
-      "description": "Dolores vel minus iste praesentium accusantium. Fuga aut pariatur quibusdam nihil quo quia.",
-      "price": 3561.57000000000016370904631912708282470703125,
-      "selling_price": 3561.57000000000016370904631912708282470703125,
-      "discount_type": "percentage",
-      "discount_amount": 15,
-      "final_price": 3027.329999999999927240423858165740966796875,
-      "is_rentable": false,
-      "is_favourite": false,
-      "is_in_stock": true,
-      "status": "active",
-      "dimensions": {
-        "weight": 69.56999999999999317878973670303821563720703125,
-        "length_cm": 167.8600000000000136424205265939235687255859375,
-        "width_cm": 35.67999999999999971578290569595992565155029296875,
-        "height_cm": 103.9200000000000017053025658242404460906982421875,
-        "weight_kg": 82.756000000000000227373675443232059478759765625
-      },
-      "category": {
-        "id": 3,
-        "name": "Queen Beds",
-        "slug": "beds-queen-beds",
-        "parent_id": 1,
-        "image_url": null,
-        "status": "active",
-        "order": 2,
-        "created_at": "2026-04-02T07:16:52.000000Z",
-        "updated_at": "2026-04-02T07:16:52.000000Z"
-      },
-      "media": [
-        {
-          "id": 31,
-          "product_id": 21,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_21_J62J1.jpg",
-          "is_primary": true,
-          "created_at": "2026-04-02T07:17:15.000000Z",
-          "updated_at": "2026-04-02T07:17:15.000000Z"
-        },
-        {
-          "id": 32,
-          "product_id": 21,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_21_2_xXQKz.jpg",
-          "is_primary": false,
-          "created_at": "2026-04-02T07:17:15.000000Z",
-          "updated_at": "2026-04-02T07:17:15.000000Z"
-        }
-      ],
-      "default_option_ids": [
-        {
-          "product_attribute_option_id": 147,
-          "attribute_id": 1,
-          "option_id": 1
-        },
-        {
-          "product_attribute_option_id": 144,
-          "attribute_id": 7,
-          "option_id": 12
-        }
-      ],
-      "created_at": "2026-04-02T07:16:58.000000Z",
-      "updated_at": "2026-04-02T07:16:58.000000Z"
-    },
-    {
-      "id": 22,
-      "category_id": 3,
-      "category_name": "Queen Beds",
-      "name": "cumque iste esse",
-      "sku": "SKU-9255-EZIL",
-      "description": "Accusamus deleniti et dolores hic pariatur accusantium. Aliquam sit consectetur consequatur praesentium est. Totam aut consectetur eligendi est quia sunt. Blanditiis et ad temporibus aspernatur sint fugiat voluptates.",
-      "price": 1076.779999999999972715158946812152862548828125,
-      "selling_price": 1076.779999999999972715158946812152862548828125,
-      "discount_type": "fixed",
-      "discount_amount": 69,
-      "final_price": 1007.779999999999972715158946812152862548828125,
-      "is_rentable": false,
-      "is_favourite": false,
-      "is_in_stock": true,
-      "status": "active",
-      "dimensions": {
-        "weight": 23.739999999999998436805981327779591083526611328125,
-        "length_cm": 90.9200000000000017053025658242404460906982421875,
-        "width_cm": 27.03999999999999914734871708787977695465087890625,
-        "height_cm": 80.409999999999996589394868351519107818603515625,
-        "weight_kg": 68.6280000000000001136868377216160297393798828125
-      },
-      "category": {
-        "id": 3,
-        "name": "Queen Beds",
-        "slug": "beds-queen-beds",
-        "parent_id": 1,
-        "image_url": null,
-        "status": "active",
-        "order": 2,
-        "created_at": "2026-04-02T07:16:52.000000Z",
-        "updated_at": "2026-04-02T07:16:52.000000Z"
-      },
-      "media": [
-        {
-          "id": 33,
-          "product_id": 22,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_22_Zzibh.jpg",
-          "is_primary": true,
-          "created_at": "2026-04-02T07:17:15.000000Z",
-          "updated_at": "2026-04-02T07:17:15.000000Z"
-        }
-      ],
-      "default_option_ids": [
-        {
-          "product_attribute_option_id": 150,
-          "attribute_id": 1,
-          "option_id": 1
-        },
-        {
-          "product_attribute_option_id": 153,
-          "attribute_id": 2,
-          "option_id": 4
-        },
-        {
-          "product_attribute_option_id": 156,
-          "attribute_id": 3,
-          "option_id": 7
-        }
-      ],
-      "created_at": "2026-04-02T07:16:58.000000Z",
-      "updated_at": "2026-04-02T07:16:58.000000Z"
-    },
-    {
-      "id": 23,
-      "category_id": 3,
-      "category_name": "Queen Beds",
-      "name": "at quo asperiores",
-      "sku": "SKU-5319-QQOC",
-      "description": "Cupiditate sunt quibusdam beatae autem nihil omnis similique. Reprehenderit error id quia exercitationem veniam nihil. Qui porro molestiae ipsa quisquam nemo consequatur.",
-      "price": 4276.6199999999998908606357872486114501953125,
-      "selling_price": 4276.6199999999998908606357872486114501953125,
-      "discount_type": "percentage",
-      "discount_amount": 12,
-      "final_price": 3763.42999999999983629095368087291717529296875,
-      "is_rentable": true,
-      "is_favourite": false,
-      "is_in_stock": true,
-      "status": "active",
-      "dimensions": {
-        "weight": 43.82000000000000028421709430404007434844970703125,
-        "length_cm": 109.7300000000000039790393202565610408782958984375,
-        "width_cm": 22.160000000000000142108547152020037174224853515625,
-        "height_cm": 59,
-        "weight_kg": 30.7259999999999990905052982270717620849609375
-      },
-      "category": {
-        "id": 3,
-        "name": "Queen Beds",
-        "slug": "beds-queen-beds",
-        "parent_id": 1,
-        "image_url": null,
-        "status": "active",
-        "order": 2,
-        "created_at": "2026-04-02T07:16:52.000000Z",
-        "updated_at": "2026-04-02T07:16:52.000000Z"
-      },
-      "media": [
-        {
-          "id": 34,
-          "product_id": 23,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_23_c0UWi.jpg",
-          "is_primary": true,
-          "created_at": "2026-04-02T07:17:16.000000Z",
-          "updated_at": "2026-04-02T07:17:16.000000Z"
-        },
-        {
-          "id": 35,
-          "product_id": 23,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_23_2_IQvEi.jpg",
-          "is_primary": false,
-          "created_at": "2026-04-02T07:17:16.000000Z",
-          "updated_at": "2026-04-02T07:17:16.000000Z"
-        }
-      ],
-      "default_option_ids": [
-        {
-          "product_attribute_option_id": 158,
-          "attribute_id": 2,
-          "option_id": 4
-        },
-        {
-          "product_attribute_option_id": 161,
-          "attribute_id": 3,
-          "option_id": 7
-        }
-      ],
-      "created_at": "2026-04-02T07:16:58.000000Z",
-      "updated_at": "2026-04-02T07:16:58.000000Z"
-    },
-    {
-      "id": 24,
-      "category_id": 3,
-      "category_name": "Queen Beds",
-      "name": "enim veritatis assumenda",
-      "sku": "SKU-8129-QPKX",
-      "description": "Deserunt nostrum dolor et iusto sit distinctio possimus. Officiis nesciunt possimus repudiandae earum quaerat molestiae. Nisi placeat est omnis et odio. Qui ex perferendis distinctio non.",
-      "price": 4303.15999999999985448084771633148193359375,
-      "selling_price": 4303.15999999999985448084771633148193359375,
-      "discount_type": "fixed",
-      "discount_amount": 16,
-      "final_price": 4287.15999999999985448084771633148193359375,
-      "is_rentable": false,
-      "is_favourite": false,
-      "is_in_stock": true,
-      "status": "active",
-      "dimensions": {
-        "weight": 71.8799999999999954525264911353588104248046875,
-        "length_cm": 125.5799999999999982946974341757595539093017578125,
-        "width_cm": 30,
-        "height_cm": 80.93000000000000682121026329696178436279296875,
-        "weight_kg": 60.820999999999997953636921010911464691162109375
-      },
-      "category": {
-        "id": 3,
-        "name": "Queen Beds",
-        "slug": "beds-queen-beds",
-        "parent_id": 1,
-        "image_url": null,
-        "status": "active",
-        "order": 2,
-        "created_at": "2026-04-02T07:16:52.000000Z",
-        "updated_at": "2026-04-02T07:16:52.000000Z"
-      },
-      "media": [
-        {
-          "id": 36,
-          "product_id": 24,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_24_cN6b9.jpg",
-          "is_primary": true,
-          "created_at": "2026-04-02T07:17:17.000000Z",
-          "updated_at": "2026-04-02T07:17:17.000000Z"
-        }
-      ],
-      "default_option_ids": [
-        {
-          "product_attribute_option_id": 163,
-          "attribute_id": 3,
-          "option_id": 7
-        },
-        {
-          "product_attribute_option_id": 165,
-          "attribute_id": 4,
-          "option_id": 9
-        },
-        {
-          "product_attribute_option_id": 168,
-          "attribute_id": 5,
-          "option_id": 10
-        }
-      ],
-      "created_at": "2026-04-02T07:16:58.000000Z",
-      "updated_at": "2026-04-02T07:16:58.000000Z"
-    },
-    {
-      "id": 25,
-      "category_id": 3,
-      "category_name": "Queen Beds",
-      "name": "omnis et voluptate",
-      "sku": "SKU-0909-ZLVC",
-      "description": "Et tenetur minus voluptatem consequatur quidem suscipit. Et qui tempore molestiae reiciendis. Repudiandae minima deleniti cupiditate saepe cumque qui. Quis harum perspiciatis dolor quasi omnis reiciendis.",
-      "price": 4007.15999999999985448084771633148193359375,
-      "selling_price": 4007.15999999999985448084771633148193359375,
-      "discount_type": "fixed",
-      "discount_amount": 38,
-      "final_price": 3969.15999999999985448084771633148193359375,
-      "is_rentable": false,
-      "is_favourite": false,
-      "is_in_stock": true,
-      "status": "active",
-      "dimensions": {
-        "weight": 65.030000000000001136868377216160297393798828125,
-        "length_cm": 168.590000000000003410605131648480892181396484375,
-        "width_cm": 159.419999999999987494447850622236728668212890625,
-        "height_cm": 111.8799999999999954525264911353588104248046875,
-        "weight_kg": 54.429000000000002046363078989088535308837890625
-      },
-      "category": {
-        "id": 3,
-        "name": "Queen Beds",
-        "slug": "beds-queen-beds",
-        "parent_id": 1,
-        "image_url": null,
-        "status": "active",
-        "order": 2,
-        "created_at": "2026-04-02T07:16:52.000000Z",
-        "updated_at": "2026-04-02T07:16:52.000000Z"
-      },
-      "media": [
-        {
-          "id": 37,
-          "product_id": 25,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_25_WK6lc.jpg",
-          "is_primary": true,
-          "created_at": "2026-04-02T07:17:17.000000Z",
-          "updated_at": "2026-04-02T07:17:17.000000Z"
-        },
-        {
-          "id": 38,
-          "product_id": 25,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_25_2_xrEak.jpg",
-          "is_primary": false,
-          "created_at": "2026-04-02T07:17:17.000000Z",
-          "updated_at": "2026-04-02T07:17:17.000000Z"
-        }
-      ],
-      "default_option_ids": [
-        {
-          "product_attribute_option_id": 171,
-          "attribute_id": 4,
-          "option_id": 9
-        },
-        {
-          "product_attribute_option_id": 174,
-          "attribute_id": 5,
-          "option_id": 10
-        }
-      ],
-      "created_at": "2026-04-02T07:16:58.000000Z",
-      "updated_at": "2026-04-02T07:16:58.000000Z"
-    },
-    {
-      "id": 26,
-      "category_id": 3,
-      "category_name": "Queen Beds",
-      "name": "voluptatem voluptatum quia",
-      "sku": "SKU-0907-KDVX",
-      "description": "Sit aut recusandae expedita sit dicta totam ducimus. Placeat a ullam autem non at. Accusamus tempore dolor et qui optio aut dignissimos. Quis temporibus quis et doloremque.",
-      "price": 4178.899999999999636202119290828704833984375,
-      "selling_price": 4178.899999999999636202119290828704833984375,
-      "discount_type": "percentage",
-      "discount_amount": 29,
-      "final_price": 2967.01999999999998181010596454143524169921875,
-      "is_rentable": false,
-      "is_favourite": false,
-      "is_in_stock": true,
-      "status": "active",
-      "dimensions": {
-        "weight": 22.089999999999999857891452847979962825775146484375,
-        "length_cm": 87.5499999999999971578290569595992565155029296875,
-        "width_cm": 13.4000000000000003552713678800500929355621337890625,
-        "height_cm": 159.280000000000001136868377216160297393798828125,
-        "weight_kg": 33.06400000000000005684341886080801486968994140625
-      },
-      "category": {
-        "id": 3,
-        "name": "Queen Beds",
-        "slug": "beds-queen-beds",
-        "parent_id": 1,
-        "image_url": null,
-        "status": "active",
-        "order": 2,
-        "created_at": "2026-04-02T07:16:52.000000Z",
-        "updated_at": "2026-04-02T07:16:52.000000Z"
-      },
-      "media": [
-        {
-          "id": 39,
-          "product_id": 26,
-          "type": "image",
-          "url": "https://jbdesign.sepiabd.com/storage/products/product_26_h3lc8.jpg",
-          "is_primary": true,
-          "created_at": "2026-04-02T07:17:18.000000Z",
-          "updated_at": "2026-04-02T07:17:18.000000Z"
-        }
-      ],
-      "default_option_ids": [
-        {
-          "product_attribute_option_id": 177,
-          "attribute_id": 5,
-          "option_id": 10
-        },
-        {
-          "product_attribute_option_id": 180,
-          "attribute_id": 6,
-          "option_id": 11
-        },
-        {
-          "product_attribute_option_id": 183,
-          "attribute_id": 7,
-          "option_id": 12
-        }
-      ],
-      "created_at": "2026-04-02T07:16:58.000000Z",
-      "updated_at": "2026-04-02T07:16:58.000000Z"
-    }
-  ],
-  "links": {
-    "first": "https://jbdesign.sepiabd.com/api/products/1/related?page=1",
-    "last": "https://jbdesign.sepiabd.com/api/products/1/related?page=1",
-    "prev": null,
-    "next": null
-  },
-  "meta": {
-    "current_page": 1,
-    "from": 1,
-    "last_page": 1,
-    "links": [
+  "data": {
+    "id": "019d9068-8ea6-7035-992e-45bea1d0bd27",
+    "user_id": 6,
+    "items": [
       {
-        "url": null,
-        "label": "&laquo; Previous",
-        "active": false
-      },
-      {
-        "url": "https://jbdesign.sepiabd.com/api/products/1/related?page=1",
-        "label": "1",
-        "active": true
-      },
-      {
-        "url": null,
-        "label": "Next &raquo;",
-        "active": false
+        "id": 54,
+        "is_selected": true,
+        "product": {
+          "id": 1,
+          "category_id": 25,
+          "category_name": "Outdoor Chairs",
+          "name": "voluptate porro voluptatem",
+          "sku": "SKU-2457-XWPW",
+          "description": "Quam fugit fugiat et sint eveniet molestiae. Nemo et vitae aut ratione voluptatibus. Earum minus recusandae ut repellendus sed ut.",
+          "price": 1703.720000000000027284841053187847137451171875,
+          "selling_price": 1703.720000000000027284841053187847137451171875,
+          "discount_type": null,
+          "discount_amount": 0,
+          "final_price": 1703.720000000000027284841053187847137451171875,
+          "is_rentable": false,
+          "is_favourite": false,
+          "is_in_stock": true,
+          "status": "active",
+          "dimensions": {
+            "weight": 12.3800000000000007815970093361102044582366943359375,
+            "length_cm": 159.43000000000000682121026329696178436279296875,
+            "width_cm": 151.409999999999996589394868351519107818603515625,
+            "height_cm": 97.2900000000000062527760746888816356658935546875,
+            "weight_kg": 74.2770000000000010231815394945442676544189453125
+          },
+          "category": {
+            "id": 25,
+            "name": "Outdoor Chairs",
+            "slug": "outdoor-outdoor-chairs",
+            "parent_id": 22,
+            "image_url": null,
+            "status": "active",
+            "order": 3,
+            "created_at": "2026-04-13T05:51:20.000000Z",
+            "updated_at": "2026-04-13T05:51:20.000000Z"
+          },
+          "media": [
+            {
+              "id": 1,
+              "product_id": 1,
+              "type": "image",
+              "url": "https://jbdesign.sepiabd.com/storage/products/product_1_acxUK.jpg",
+              "is_primary": true,
+              "created_at": "2026-04-13T05:51:25.000000Z",
+              "updated_at": "2026-04-13T05:51:25.000000Z"
+            },
+            {
+              "id": 2,
+              "product_id": 1,
+              "type": "image",
+              "url": "https://jbdesign.sepiabd.com/storage/products/product_1_2_rS1cr.jpg",
+              "is_primary": false,
+              "created_at": "2026-04-13T05:51:25.000000Z",
+              "updated_at": "2026-04-13T05:51:25.000000Z"
+            }
+          ],
+          "default_option_ids": [
+            {
+              "product_attribute_option_id": 1,
+              "attribute_id": 1,
+              "option_id": 1
+            },
+            {
+              "product_attribute_option_id": 4,
+              "attribute_id": 2,
+              "option_id": 4
+            }
+          ],
+          "created_at": "2026-04-13T05:51:24.000000Z",
+          "updated_at": "2026-04-13T05:51:24.000000Z"
+        },
+        "quantity": 1,
+        "unit_price": 1703.720000000000027284841053187847137451171875,
+        "base_price": 1703.720000000000027284841053187847137451171875,
+        "option_price": 0,
+        "subtotal": 1703.720000000000027284841053187847137451171875,
+        "options": [
+          {
+            "product_attribute_option_id": 1,
+            "attribute_id": 1,
+            "option_id": 1,
+            "attribute_name": "Color",
+            "option_name": "Red",
+            "price": 10,
+            "product_image": null,
+            "is_default": true
+          }
+        ]
       }
     ],
-    "path": "https://jbdesign.sepiabd.com/api/products/1/related",
-    "per_page": 8,
-    "to": 6,
-    "total": 6
+    "subtotal": 1703.720000000000027284841053187847137451171875,
+    "total_cart_value": 1703.720000000000027284841053187847137451171875,
+    "discount_amount": 0,
+    "coupon_code": null,
+    "coupon_message": null,
+    "grand_total": 1703.720000000000027284841053187847137451171875,
+    "total_qty": 1,
+    "item_count": 1
   }
 }

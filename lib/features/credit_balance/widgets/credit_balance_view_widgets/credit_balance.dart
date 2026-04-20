@@ -52,7 +52,7 @@ class CreditBalance extends StatelessWidget {
           SizedBox(height: 4.h),
           CustomPrimaryText(
             text:
-                "Last updated: Today \n Credits are used for AI interior designs & product placement",
+                "Last updated: Today\n Credits are used for AI interior designs & product placement",
             fontSize: 14.sp,
             color: isDark
                 ? AppColors.darkPrimaryTextColor
@@ -64,6 +64,7 @@ class CreditBalance extends StatelessWidget {
             icon: IconsPath.arrowRight,
             text: "Purchase Credits",
             fontSize: 14.sp,
+            backgroundColor: AppColors.secondaryColor,
             textColor:isDark? AppColors.darkColor:AppColors.whiteColor,
             iconColor: isDark? AppColors.darkColor:AppColors.whiteColor,
             onTap: () {},

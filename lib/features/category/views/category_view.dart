@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/features/dashboard/controller/dashboard_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_quick_action/quick_action_list.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class CategoryView extends GetView<DashboardController> {
+class CategoryView extends StatelessWidget {
   const CategoryView({super.key});
 
   @override
@@ -24,10 +24,10 @@ class CategoryView extends GetView<DashboardController> {
             radius: 16.r,
             padding: EdgeInsets.all(16.r),
             child: Column(
-              children: List.generate(controller.quickAction.length, (
+              children: List.generate(QuickActionList().quickAction.length, (
                 index,
               ) {
-                final item = controller.quickAction[index];
+                final item = QuickActionList().quickAction[index];
                 return GestureDetector(
                   onTap: () {
                     Get.toNamed(item['page']);
@@ -36,7 +36,7 @@ class CategoryView extends GetView<DashboardController> {
                     width: MediaQuery.widthOf(context),
                     margin: EdgeInsets.only(
                       bottom:
-                          controller.quickAction.length - 1 == index
+                          QuickActionList().quickAction.length - 1 == index
                           ? 0
                           : 8.h,
                     ),

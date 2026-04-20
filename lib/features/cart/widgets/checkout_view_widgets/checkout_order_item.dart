@@ -11,50 +11,57 @@ class CheckoutOrderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          width: 72,
-          height: 72,
+          width: 72.w,
+          height: 72.h,
           padding: EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: AppColors.whiteColor,
-            borderRadius: BorderRadius.circular(8),
+            color: isDark ? AppColors.darkColor : AppColors.whiteColor,
+            borderRadius: BorderRadius.circular(8.r),
             border: Border.all(color: AppColors.fieldBorderColor),
           ),
-          child: Image.asset(item.image, fit: BoxFit.contain),
+          child: Image.asset(item.image ?? '', fit: BoxFit.contain),
         ),
-        SizedBox(width: 12),
+        SizedBox(width: 12.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomPrimaryText(
-                text: item.title,
-                fontSize: 16,
+                text: item.title ?? '',
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
-                color: AppColors.darkGreyColor,
+                color: isDark ? AppColors.whiteColor : AppColors.darkGreyColor,
               ),
-              SizedBox(height: 6),
+              SizedBox(height: 6.h),
               Row(
                 children: [
                   CustomPrimaryText(
-                    text: item.category,
+                    text: item.category ?? '',
                     fontSize: 14.sp,
-                    color: AppColors.lightTextColor,
+                    color: isDark
+                        ? AppColors.primaryBorderColor
+                        : AppColors.lightTextColor,
                   ),
-                  SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Container(
                     width: 1,
                     height: 14,
-                    color: AppColors.lightTextColor,
+                    color: isDark
+                        ? AppColors.primaryBorderColor
+                        : AppColors.lightTextColor,
                   ),
-                  SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   CustomPrimaryText(
-                    text: 'Color: ${item.color}',
+                    text: 'Color: ${item.color ?? ''}',
                     fontSize: 14.sp,
-                    color: AppColors.lightTextColor,
+                    color: isDark
+                        ? AppColors.primaryBorderColor
+                        : AppColors.lightTextColor,
                   ),
                 ],
               ),
@@ -62,9 +69,11 @@ class CheckoutOrderItem extends StatelessWidget {
           ),
         ),
         CustomPrimaryText(
-          text: item.price,
+          text: item.price ?? '',
           fontSize: 16.sp,
-          color: AppColors.darkGreyColor,
+          color: isDark
+              ? AppColors.primaryBorderColor
+              : AppColors.darkGreyColor,
         ),
       ],
     );

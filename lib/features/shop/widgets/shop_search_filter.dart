@@ -53,6 +53,9 @@ class ShopSearchFilter extends GetWidget<ShopController> {
                                       item['image'],
                                       height: 18.h,
                                       width: 18.w,
+                                      color: isDark
+                                          ? AppColors.primaryBorderColor
+                                          : null,
                                     ),
                                   ),
 
@@ -76,6 +79,9 @@ class ShopSearchFilter extends GetWidget<ShopController> {
                                   : IconsPath.downArrow,
                               height: 18.h,
                               width: 18.w,
+                              color: isDark
+                                  ? AppColors.primaryBorderColor
+                                  : null,
                             ),
                           ),
                         ],

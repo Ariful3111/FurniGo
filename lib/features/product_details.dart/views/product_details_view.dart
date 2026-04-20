@@ -34,17 +34,21 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                     controller: controller.productScrollController,
                     children: [
                       ProductDetailsViewHeader(
-                        images: controller.productDetails.value!.data.media
-                            .where((element) => element.type == 'image')
-                            .map((element) => element.url)
-                            .toList(),
+                        images:
+                            controller.productDetails.value!.data.media
+                                ?.where((element) => element.type == 'image')
+                                .map((element) => element.url ?? '')
+                                .toList() ??
+                            [],
                       ),
                       SizedBox(height: 12.h),
                       ProductDetailsViewImage(
-                        images: controller.productDetails.value!.data.media
-                            .where((element) => element.type == 'image')
-                            .map((element) => element.url)
-                            .toList(),
+                        images:
+                            controller.productDetails.value!.data.media
+                                ?.where((element) => element.type == 'image')
+                                .map((element) => element.url ?? '')
+                                .toList() ??
+                            [],
                       ),
                       SizedBox(height: 16.h),
                       ProductDetailsDescription(),

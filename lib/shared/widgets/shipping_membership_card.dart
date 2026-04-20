@@ -16,7 +16,7 @@ class ShippingMembershipCard extends StatelessWidget {
           begin: Alignment.centerRight,
           end: Alignment.centerLeft,
           colors: [
-            isDark ? AppColors.labelColor : Colors.white,
+            isDark ? AppColors.labelColor : AppColors.primaryBorderColor,
             Color(0xFFCDFFF0),
           ],
         ),

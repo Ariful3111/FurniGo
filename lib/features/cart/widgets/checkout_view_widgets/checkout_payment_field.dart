@@ -10,33 +10,41 @@ class CheckoutPaymentField extends GetWidget<CheckoutController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 12.w,vertical: 16.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
       child: Column(
         children: [
-
           CustomTextFormField(
             controller: controller.cardNumber,
             labelText: "Card Number",
-            borderColor: AppColors.grayBorderColor,
+            borderColor: isDark
+                ? AppColors.primaryBorderColor
+                : AppColors.grayBorderColor,
           ),
           SizedBox(height: 16.h),
           CustomTextFormField(
             controller: controller.mmYY,
             labelText: "MM/YY",
-            borderColor: AppColors.grayBorderColor,
+            borderColor: isDark
+                ? AppColors.primaryBorderColor
+                : AppColors.grayBorderColor,
           ),
           SizedBox(height: 16.h),
           CustomTextFormField(
             controller: controller.cvv,
             labelText: "CVV",
-            borderColor: AppColors.grayBorderColor,
+            borderColor: isDark
+                ? AppColors.primaryBorderColor
+                : AppColors.grayBorderColor,
           ),
           SizedBox(height: 16.h),
           CustomTextFormField(
             controller: controller.nameOnCard,
             labelText: "Name on Card",
-            borderColor: AppColors.grayBorderColor,
+            borderColor: isDark
+                ? AppColors.primaryBorderColor
+                : AppColors.grayBorderColor,
           ),
         ],
       ),

@@ -115,7 +115,7 @@ class GlobalSearchSuggestionBox extends GetWidget<GlobalSearchController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomPrimaryText(
-                    text: product.name,
+                    text: product.name ?? '',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.darkColor,
@@ -124,14 +124,14 @@ class GlobalSearchSuggestionBox extends GetWidget<GlobalSearchController> {
                   ),
                   SizedBox(height: 4.h),
                   CustomPrimaryText(
-                    text: product.categoryName,
+                    text: product.categoryName ?? '',
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                     color: AppColors.labelColor,
                   ),
                   SizedBox(height: 4.h),
                   CustomPrimaryText(
-                    text: '\$${product.finalPrice.toStringAsFixed(2)}',
+                    text: '\$${(product.finalPrice ?? 0).toStringAsFixed(2)}',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.darkColor,
@@ -151,12 +151,12 @@ class GlobalSearchSuggestionBox extends GetWidget<GlobalSearchController> {
   Widget _buildProductImage(Product product) {
     // Get the primary image or first image
     String? imageUrl;
-    if (product.media.isNotEmpty) {
-      final primaryMedia = product.media.firstWhere(
-        (media) => media.isPrimary,
-        orElse: () => product.media.first,
+    if (product.media?.isNotEmpty == true) {
+      final primaryMedia = product.media?.firstWhere(
+        (media) => media.isPrimary ?? false,
+        orElse: () => product.media!.first,
       );
-      imageUrl = primaryMedia.url;
+      imageUrl = primaryMedia?.url;
     }
 
     return Container(

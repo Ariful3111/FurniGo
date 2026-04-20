@@ -18,8 +18,8 @@ class AttributeOptionsList extends GetView<ProductAttributesController> {
         spacing: 12.w,
         runSpacing: 12.h,
         alignment: WrapAlignment.start,
-        children: List.generate(attribute.options.length, (optionIndex) {
-          final option = attribute.options[optionIndex];
+        children: List.generate(attribute.options?.length ?? 0, (optionIndex) {
+          final option = attribute.options![optionIndex];
           return AttributeOptionChip(
             attributeIndex: attributeIndex,
             optionIndex: optionIndex,

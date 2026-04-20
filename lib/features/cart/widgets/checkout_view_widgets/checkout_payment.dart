@@ -16,13 +16,14 @@ class CheckoutPayment extends GetWidget<CheckoutController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPrimaryText(
           text: "Payment",
           fontWeight: FontWeight.w600,
-          color: AppColors.labelColor,
+          color: isDark ? AppColors.whiteColor : AppColors.labelColor,
         ),
         SizedBox(height: 16.h),
         Obx(
@@ -45,11 +46,16 @@ class CheckoutPayment extends GetWidget<CheckoutController> {
                           title: "Credit Card",
                           value: 0,
                           controller: controller,
+                          isDark: isDark,
                         ),
                         Spacer(),
                         Image.asset(IconsPath.fedx, height: 24.h, width: 48.w),
                         SizedBox(width: 8.w),
-                        Image.asset(IconsPath.dropOf, height: 24.h, width: 48.w),
+                        Image.asset(
+                          IconsPath.dropOf,
+                          height: 24.h,
+                          width: 48.w,
+                        ),
                       ],
                     ),
                   ),
@@ -58,12 +64,23 @@ class CheckoutPayment extends GetWidget<CheckoutController> {
                   duration: Duration(milliseconds: 300),
                   child: controller.selectedMethod.value == 0
                       ? Column(
-                          children: [CustomDivider(color: AppColors.grayBorderColor,), CheckoutPaymentField()],
+                          children: [
+                            CustomDivider(
+                              color: isDark
+                                  ? AppColors.primaryBorderColor
+                                  : AppColors.grayBorderColor,
+                            ),
+                            CheckoutPaymentField(),
+                          ],
                         )
                       : SizedBox(),
                 ),
-                CustomDivider(color: AppColors.grayBorderColor,),
-                CheckoutPaymentPaypal()
+                CustomDivider(
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.grayBorderColor,
+                ),
+                CheckoutPaymentPaypal(),
               ],
             ),
           ),

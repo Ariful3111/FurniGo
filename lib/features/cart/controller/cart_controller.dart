@@ -1,70 +1,96 @@
 import 'package:get/get.dart';
-import 'package:zb_dezign/core/constant/images_path.dart';
-import 'package:zb_dezign/features/cart/models/cart_item_model.dart';
+import 'package:zb_dezign/features/cart/controller/delete_cart_item_controller.dart';
+import 'package:zb_dezign/features/cart/controller/select_all_cart_item_controller.dart';
+import 'package:zb_dezign/features/cart/controller/select_cart_item_controller.dart';
+import 'package:zb_dezign/features/cart/models/cart_model.dart';
+import 'package:zb_dezign/features/cart/repositories/get_cart_repo.dart';
+import 'package:zb_dezign/shared/widgets/snackbars/error_snackbar.dart';
 
 class CartController extends GetxController {
-  RxList<CartItemModel> cartList = <CartItemModel>[].obs;
+  final GetCartRepository getCartRepository;
+  final SelectCartItemController selectCartItemController;
+  final SelectAllCartItemsController selectAllCartItemsController;
+  final DeleteCartItemController deleteCartItemController;
+  CartController({
+    required this.getCartRepository,
+    required this.selectCartItemController,
+    required this.selectAllCartItemsController,
+    required this.deleteCartItemController,
+  });
+  RxBool isLoading = false.obs;
   RxBool isAllSelected = false.obs;
+  final carts = Rxn<CartModel>();
+  final selectedItems = <int>{}.obs;
   @override
   void onInit() {
     super.onInit();
-    cartList.addAll([
-      CartItemModel(
-        name: "ECHO LOUNGE CHAIR",
-        category: "Chair",
-        color: "Blue",
-        image: ImagesPath.chair,
-        price: 320,
-      ),
-      CartItemModel(
-        name: "LUXE CUP SOFA",
-        category: "Chair",
-        color: "Blue",
-        image: ImagesPath.chair,
-        price: 320,
-      ),
-      CartItemModel(
-        name: "MODERN CHAIR",
-        category: "Chair",
-        color: "Blue",
-        image: ImagesPath.chair,
-        price: 320,
-      ),
-    ]);
+    getCart();
   }
 
-  void toggleItem(int index) {
-    cartList[index].isSelected.toggle();
-    isAllSelected.value =
-        cartList.every((item) => item.isSelected.value);
+  Future<void> getCart() async {
+    isLoading.value = true;
+    final response = await getCartRepository.execute();
+    isLoading.value = false;
+    response.fold(
+      (error) {
+        ErrorSnackbar.show(description: error.message);
+      },
+      (data) {
+        carts.value = data;
+        selectedItems.clear();
+        for (var item in data.items ?? []) {
+          if (item.isSelected) {
+            selectedItems.add(item.id ?? 0);
+          }
+        }
+        isAllSelected.value =
+            selectedItems.length == carts.value?.items?.length;
+      },
+    );
   }
-  void toggleSelectAll() {
-    isAllSelected.toggle();
 
-    for (var item in cartList) {
-      item.isSelected.value = isAllSelected.value;
+  void toggleItem({required int id}) async {
+    if (selectedItems.contains(id)) {
+      selectedItems.remove(id);
+    } else {
+      selectedItems.add(id);
     }
-  }
-  void deleteItem(int index) {
-    cartList.removeAt(index);
-
-    isAllSelected.value =
-        cartList.isNotEmpty &&
-        cartList.every((item) => item.isSelected.value);
-  }
-  void deleteAll() {
-    cartList.clear();
-    isAllSelected.value = false;
-  }
-  void increaseQty(int index) {
-    cartList[index].quantity++;
-    cartList.refresh();
+    isAllSelected.value = selectedItems.length == carts.value?.items?.length;
+    await selectCartItemController.toggleItem(
+      cartItemID: id,
+      cartID: carts.value?.id ?? "0",
+      selected: selectedItems.contains(id),
+    );
   }
 
-  void decreaseQty(int index) {
-    if (cartList[index].quantity > 1) {
-      cartList[index].quantity--;
-      cartList.refresh();
+  void toggleSelectAll() async {
+    if (isAllSelected.value) {
+      selectedItems.clear();
+      isAllSelected.value = false;
+    } else {
+      selectedItems.addAll(carts.value?.items?.map((e) => e.id ?? 0) ?? []);
+      isAllSelected.value = true;
     }
+    await selectAllCartItemsController.toggleItems(
+      cartID: carts.value?.id ?? "0",
+      selected: isAllSelected.value,
+    );
   }
+
+  Future<void> deleteItem({required int id}) async {
+    await deleteCartItemController.deleteCartItem(
+      cartID: carts.value?.id ?? "0",
+      cartItemID: id,
+    );
+    carts.value?.items?.removeWhere((item) => item.id == id);
+    carts.refresh();
+    selectedItems.remove(id);
+    isAllSelected.value = selectedItems.length == carts.value?.items?.length;
+  }
+
+  void deleteAll() {}
+
+  void increaseQty({required int id}) {}
+
+  void decreaseQty({required int id}) {}
 }

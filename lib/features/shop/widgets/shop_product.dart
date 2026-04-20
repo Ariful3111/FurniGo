@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zb_dezign/features/shop/widgets/shop_product_design.dart';
-import 'package:zb_dezign/features/shop/widgets/shop_product_text.dart';
+import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/shared/widgets/custom_product_design.dart';
+import 'package:zb_dezign/shared/widgets/custom_product_text.dart';
 
 class ShopProduct extends StatelessWidget {
   const ShopProduct({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<Color> color = [
-      Color(0xFFBCBAC9),
-      Color(0xFFDEC4AF),
-      Color(0xFFD28E8D),
-      Color(0xFF86765B),
-    ];
     return GridView.builder(
       itemCount: 10,
       physics: NeverScrollableScrollPhysics(),
@@ -28,10 +23,10 @@ class ShopProduct extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ShopProductDesign(onFavorite: () {}),
+            CustomProductDesign(onFavorite: () {}, favoriteItem: null),
             SizedBox(height: 14.h),
-            ShopProductText(
-              color: color,
+            CustomProductText(
+              color: AppColors.productColorList,
               title: 'Modern Velvet Sofa',
               price: '\$299',
             ),

@@ -67,7 +67,8 @@ class CustomPaymentDropdownMenu extends StatelessWidget {
     this.selectedTrailingIconHeight,
     this.selectedTrailingIconWidth,
     this.selectedTrailingIconColor,
-    this.brandIconPath = IconsPath.visa, this.borderColor,
+    this.brandIconPath = IconsPath.visa,
+    this.borderColor,
   });
 
   @override
@@ -107,7 +108,8 @@ class CustomPaymentDropdownMenu extends StatelessWidget {
             borderWidth: borderWidth,
             borderRadius: borderRadius,
             focusBorderRadius: focusBorderRadius,
-            contentPadding: contentPadding ?? EdgeInsets.all(12.r), borderColor: borderColor,
+            contentPadding: contentPadding ?? EdgeInsets.all(12.r),
+            borderColor: borderColor,
           ),
           leadingIcon: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -150,7 +152,7 @@ class CustomPaymentDropdownMenu extends StatelessWidget {
           ),
           dropdownMenuEntries: CustomPaymentDropdownItem().dropdownMenuItem(
             cardList: cardList,
-            isSelect: selectedCard,
+            selectedCard: selectedCard,
             context: context,
             brandIconPath: brandIconPath,
             menuFontSize: menuFontSize,

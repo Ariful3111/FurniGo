@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/auth/controller/onboarding_controller.dart';
-import 'package:zb_dezign/features/auth/widgets/header_button.dart';
+import 'package:zb_dezign/shared/widgets/glass_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_white_text.dart';
 
@@ -18,7 +18,7 @@ class OnboardingHeader extends GetWidget<OnboardingController> {
     return Row(
       children: [
         Obx(
-          () => controller.currentIndex.value==0?SizedBox.shrink() :HeaderButton(
+          () => controller.currentIndex.value==0?SizedBox.shrink() :GlassButton(
             height: 40.h,
             width: 40.w,
             radius: 100.r,
@@ -55,7 +55,7 @@ class OnboardingHeader extends GetWidget<OnboardingController> {
               controller.currentIndex.value == page - 1 ||
                   controller.currentIndex.value == page - 2
               ? SizedBox.shrink()
-              : HeaderButton(
+              : GlassButton(
                   height: 40.h,
                   width: 73.w,
                   radius: 18.r,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_quick_action.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_ai_design.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_header.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_helper.dart';
@@ -12,6 +13,7 @@ import 'package:zb_dezign/features/home/widgets/home_widgets/home_rent.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_sell.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_shop.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/global_search_suggestion_box.dart';
+import 'package:zb_dezign/shared/widgets/custom_quick_action/custom_quick_action.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -36,7 +38,7 @@ class HomeView extends StatelessWidget {
                 SizedBox(height: 20.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: DashboardQuickAction(text: 'Categories'),
+                  child: CustomQuickAction(text: 'Categories'),
                 ),
                 SizedBox(height: 20.h),
                 Padding(
@@ -54,7 +56,9 @@ class HomeView extends StatelessWidget {
                       SizedBox(height: 40.h),
                       HomeHelper.categoryTitle(
                         title: 'New Arrival',
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(AppRoutes.shopView);
+                        },
                         isDark: isDark,
                       ),
                       SizedBox(height: 16.h),

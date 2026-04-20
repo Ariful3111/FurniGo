@@ -36,7 +36,7 @@ class ShopSearchFilterPrice extends GetWidget<ShopController> {
             divisions: 100,
             activeColor: AppColors.primaryColor,
             inactiveColor: isDark
-                ? AppColors.darkSecondaryColor
+                ? AppColors.primaryBorderColor
                 : AppColors.fieldBorderColor,
             onChanged: (value) {
               controller.minPrice.value = value.start;

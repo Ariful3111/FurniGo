@@ -37,6 +37,7 @@ class CustomDropdownMenu extends StatelessWidget {
   final double? trailingIconHeight;
   final double? trailingIconWidth;
   final double? menuFontSize;
+  final double? labelFontSize;
   final AlignmentGeometry? alignmentGeometry;
   final Color? borderColor;
   const CustomDropdownMenu({
@@ -71,6 +72,7 @@ class CustomDropdownMenu extends StatelessWidget {
     this.height,
     this.width,
     this.borderColor,
+    this.labelFontSize,
   });
 
   @override
@@ -94,7 +96,7 @@ class CustomDropdownMenu extends StatelessWidget {
               ),
           label: CustomPrimaryText(
             text: label,
-            fontSize: 14.sp,
+            fontSize: labelFontSize ?? 14.sp,
             color: isDark
                 ? labelColor ?? AppColors.whiteColor
                 : labelColor ?? AppColors.labelColor,
@@ -143,12 +145,13 @@ class CustomDropdownMenu extends StatelessWidget {
               AppColors.shadowColor.withValues(alpha: 0.1),
             ),
           ),
-          alignmentOffset: offset ?? Offset(20, 0),
+          alignmentOffset: offset ?? Offset(70, 0),
           onSelected: onSelect,
           dropdownMenuEntries: DropdownMenuItems().dropdownMenuItem(
             option: option,
             context: context,
             isSelect: isSelect,
+            menuFontSize: menuFontSize,
           ),
         ),
       ),
