@@ -27,7 +27,7 @@ class NotificationListInfo extends StatelessWidget {
           padding: EdgeInsets.zero,
           color: notification.length - 1 == index
               ?isDark? Color(0xFFFF383C):Color(0xFFFAE8E7)
-              :isDark? Color(0xFF0E5843): Color(0xFFE9FAF5),
+              :isDark? Color(0xFF0E5843): AppColors.darkActiveTextColor,
           child: Center(
             child: Image.asset(
               IconsPath.bell,

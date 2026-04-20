@@ -16,7 +16,7 @@ class AiUserImagePainter extends CustomPainter {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     final rect = Offset.zero & size;
     final basePaint = Paint()
-      ..color = isDark ? AppColors.primaryColor : Color(0xFFE8E6EB)
+      ..color = isDark ? AppColors.primaryColor : AppColors.boxColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
 
