@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/core/constant/icons_path.dart';
 
 class TransactionTableCalender extends StatelessWidget {
   final DateTime firstDay;
@@ -75,20 +74,23 @@ class TransactionTableCalender extends StatelessWidget {
               daysOfWeekHeight: weekBarHeight,
               selectedDayPredicate: (day) => isSameDay(day, selectDay),
               headerStyle: HeaderStyle(
+                decoration: BoxDecoration(color: AppColors.darkActiveTextColor),
                 titleCentered: true,
                 formatButtonVisible: false,
                 headerMargin: EdgeInsets.zero,
                 headerPadding: EdgeInsets.zero,
                 titleTextStyle: textDecoration(
                   fontSize: 13.sp,
-                  color: isDark ? AppColors.primaryBorderColor : null,
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.labelColor,
                 ),
                 leftChevronIcon: icon(
-                  icon: IconsPath.arrowLeft,
+                  icon: Icons.arrow_back_ios,
                   context: context,
                 ),
                 rightChevronIcon: icon(
-                  icon: IconsPath.arrowRight,
+                  icon: Icons.arrow_forward_ios,
                   context: context,
                 ),
               ),
@@ -115,22 +117,22 @@ class TransactionTableCalender extends StatelessWidget {
                 weekendTextStyle: textDecoration(
                   color: isDark ? AppColors.primaryColor : null,
                 ),
-                rangeHighlightColor: Color(0xFFD1B1C5),
+                rangeHighlightColor: AppColors.boxColor,
                 withinRangeTextStyle: textDecoration(
-                  color: AppColors.borderColor,
+                  color: AppColors.labelColor,
                 ),
                 todayDecoration: BoxDecoration(shape: BoxShape.rectangle),
-                rangeEndTextStyle: textDecoration(color: AppColors.borderColor),
+                rangeEndTextStyle: textDecoration(color: AppColors.labelColor),
                 rangeStartTextStyle: textDecoration(
-                  color: AppColors.borderColor,
+                  color: AppColors.labelColor,
                 ),
                 rangeStartDecoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFD1B1C5),
+                  color: AppColors.boxColor,
                 ),
                 rangeEndDecoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFD1B1C5),
+                  color: AppColors.boxColor,
                 ),
               ),
               daysOfWeekStyle: DaysOfWeekStyle(
@@ -153,26 +155,13 @@ class TransactionTableCalender extends StatelessWidget {
     );
   }
 
-  Widget icon({required String icon, required BuildContext context}) {
+  Widget icon({required IconData icon, required BuildContext context}) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      height: 26.72,
-      width: 26.72,
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkBorderColor : AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(3.34.r),
-        border: Border.all(
-          width: 0.83.r,
-          color: isDark ? AppColors.whiteColor : Color(0xFFD8DAE5),
-        ),
-      ),
-      child: Center(
-        child: Image.asset(
-          icon,
-          height: 10.h,
-          width: 10.w,
-          color: isDark ? AppColors.whiteColor : Color(0xFF051B44),
-        ),
+    return Center(
+      child: Icon(
+        icon,
+        size: 10.sp,
+        color: isDark ? AppColors.whiteColor : AppColors.labelColor,
       ),
     );
   }
