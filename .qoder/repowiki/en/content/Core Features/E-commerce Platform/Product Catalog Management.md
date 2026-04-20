@@ -14,6 +14,8 @@
 - [get_products_by_type_repo.dart](file://lib/features/home/repositories/get_products_by_type_repo.dart)
 - [products_model.dart](file://lib/features/home/models/products_model.dart)
 - [product_types_model.dart](file://lib/features/home/models/product_types_model.dart)
+- [rooms_model.dart](file://lib/features/home/models/rooms_model.dart)
+- [product_details_model.dart](file://lib/features/product_details.dart/models/product_details_model.dart)
 - [home_our_product_filter.dart](file://lib/features/home/widgets/home_widgets/home_our_product_filter.dart)
 - [home_our_products.dart](file://lib/features/home/widgets/home_widgets/home_our_products.dart)
 - [custom_pagination.dart](file://lib/shared/widgets/custom_pagination/custom_pagination.dart)
@@ -21,11 +23,11 @@
 
 ## Update Summary
 **Changes Made**
-- Enhanced product data models with comprehensive pagination support through Links and Meta classes
-- Updated all product field types to use num-based numeric types for improved precision
-- Added dimension specifications support for product measurements and weight
-- Integrated pagination components for scalable product catalog management
-- Enhanced product data handling with structured dimension objects
+- Enhanced ProductsModel with comprehensive nullable field implementations throughout the entire model hierarchy
+- Added proper null checks in fromJson and toJson methods for graceful degradation when optional fields are missing
+- Implemented nullable field support for Product, Category, FurnitureType, Room, Media, and DefaultOptionId classes
+- Enhanced ProductDetailsModel with consistent nullable field patterns
+- Improved data serialization/deserialization with robust null safety mechanisms
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -34,19 +36,21 @@
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
 6. [Enhanced Product Data Models](#enhanced-product-data-models)
-7. [Pagination Support Implementation](#pagination-support-implementation)
-8. [Numeric Type Precision Improvements](#numeric-type-precision-improvements)
-9. [Dimension Specifications Handling](#dimension-specifications-handling)
-10. [Dependency Analysis](#dependency-analysis)
-11. [Performance Considerations](#performance-considerations)
-12. [Troubleshooting Guide](#troubleshooting-guide)
-13. [Conclusion](#conclusion)
+7. [Nullable Field Implementation Strategy](#nullable-field-implementation-strategy)
+8. [Graceful Degradation Mechanisms](#graceful-degradation-mechanisms)
+9. [Pagination Support Implementation](#pagination-support-implementation)
+10. [Numeric Type Precision Improvements](#numeric-type-precision-improvements)
+11. [Dimension Specifications Handling](#dimension-specifications-handling)
+12. [Dependency Analysis](#dependency-analysis)
+13. [Performance Considerations](#performance-considerations)
+14. [Troubleshooting Guide](#troubleshooting-guide)
+15. [Conclusion](#conclusion)
 
 ## Introduction
-This document explains the enhanced Product Catalog Management system with advanced pagination support, comprehensive product data models, and improved numeric precision handling. The system now features sophisticated pagination capabilities, structured dimension specifications for products, and enhanced numeric type safety across all product fields. It covers category navigation, product listing, filtering mechanisms, and the integration between categories and products with full pagination support for large-scale catalogs.
+This document explains the enhanced Product Catalog Management system with advanced pagination support, comprehensive product data models, and improved nullable field implementations throughout the entire model hierarchy. The system now features sophisticated nullable field handling, graceful degradation mechanisms, and enhanced numeric precision across all product fields. It covers category navigation, product listing, filtering mechanisms, and the integration between categories and products with full pagination support for large-scale catalogs.
 
 ## Project Structure
-The application maintains its layered architecture with enhanced pagination support and improved data models. The category feature coexists with the home feature's enhanced product catalog controllers, repositories, and models that now support pagination and comprehensive product data handling.
+The application maintains its layered architecture with enhanced nullable field support and improved data models. The category feature coexists with the home feature's enhanced product catalog controllers, repositories, and models that now support comprehensive nullable field implementations and graceful degradation.
 
 ```mermaid
 graph TB
@@ -62,10 +66,11 @@ I --> J["GetProductsByTypeRepository<br/>features/home/repositories/get_products
 J --> K["ProductsModel<br/>features/home/models/products_model.dart"]
 K --> L["Links & Meta<br/>Pagination Support"]
 K --> M["Dimensions Support<br/>Weight & Measurements"]
-H --> N["CustomPagination<br/>shared/widgets/custom_pagination/custom_pagination.dart"]
-I --> O["GetProductTypesController<br/>features/home/controller/get_product_types_controller.dart"]
-O --> P["GetProductTypeRepository<br/>features/home/repositories/get_product_type_repo.dart"]
-P --> Q["ProductTypesModel<br/>features/home/models/product_types_model.dart"]
+K --> N["Nullable Fields<br/>Graceful Degradation"]
+H --> O["CustomPagination<br/>shared/widgets/custom_pagination/custom_pagination.dart"]
+I --> P["GetProductTypesController<br/>features/home/controller/get_product_types_controller.dart"]
+P --> Q["GetProductTypeRepository<br/>features/home/repositories/get_product_type_repo.dart"]
+Q --> R["ProductTypesModel<br/>features/home/models/product_types_model.dart"]
 ```
 
 **Diagram sources**
@@ -77,7 +82,7 @@ P --> Q["ProductTypesModel<br/>features/home/models/product_types_model.dart"]
 - [home_our_products.dart:11-88](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L88)
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_product_types_controller.dart:7-37](file://lib/features/home/controller/get_product_types_controller.dart#L7-L37)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
 - [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 
@@ -90,7 +95,7 @@ P --> Q["ProductTypesModel<br/>features/home/models/product_types_model.dart"]
 - [home_our_products.dart:11-88](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L88)
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_product_types_controller.dart:7-37](file://lib/features/home/controller/get_product_types_controller.dart#L7-L37)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
 - [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 
@@ -104,8 +109,9 @@ P --> Q["ProductTypesModel<br/>features/home/models/product_types_model.dart"]
   - GetProductsByTypeController: Fetches products for a given type with pagination support and manages loading state and Rx data
   - GetProductTypeRepository: Handles product type retrieval with enhanced model support
   - GetProductsByTypeRepository: Manages product fetching with pagination and dimension data
-  - ProductsModel: Comprehensive product data model with pagination, links, and meta information
+  - ProductsModel: Comprehensive product data model with pagination, links, meta information, and nullable field support
   - ProductTypesModel: Enhanced product type model with numeric IDs
+  - ProductDetailsModel: Extended product detail model with consistent nullable field patterns
   - HomeOurProductFilter: Horizontal filter bar with pagination-aware type switching
   - HomeOurProducts: Enhanced product grid with pagination support and dimension handling
   - CustomPagination: Reusable pagination component for large catalogs
@@ -118,18 +124,19 @@ P --> Q["ProductTypesModel<br/>features/home/models/product_types_model.dart"]
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_product_type_repo.dart:7-19](file://lib/features/home/repositories/get_product_type_repo.dart#L7-L19)
 - [get_products_by_type_repo.dart:7-21](file://lib/features/home/repositories/get_products_by_type_repo.dart#L7-L21)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
 - [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
+- [product_details_model.dart:1-356](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L356)
 - [home_our_product_filter.dart:11-136](file://lib/features/home/widgets/home_widgets/home_our_product_filter.dart#L11-L136)
 - [home_our_products.dart:11-88](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L88)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 
 ## Architecture Overview
-The system follows a layered architecture with enhanced pagination support and comprehensive data models:
+The system follows a layered architecture with enhanced nullable field support and comprehensive data models:
 - **UI Layer**: Views and widgets (CategoryView, HomeOurProducts, HomeOurProductFilter, CustomPagination)
 - **Controller Layer**: GetX controllers orchestrating data fetching, pagination state, and product management
 - **Repository Layer**: Network abstractions with enhanced model support for pagination
-- **Model Layer**: Comprehensive data models with pagination, numeric precision, and dimension specifications
+- **Model Layer**: Comprehensive data models with pagination, nullable field support, and graceful degradation mechanisms
 - **DI Layer**: Centralized dependency initialization and service registration
 
 ```mermaid
@@ -152,8 +159,10 @@ end
 subgraph "Model Layer"
 PM["ProductsModel"]
 PTM["ProductTypesModel"]
+PDM["ProductDetailsModel"]
 LN["Links & Meta"]
 DIM["Dimensions"]
+NULL["Nullable Fields<br/>Graceful Degradation"]
 end
 subgraph "DI Layer"
 DI["DependencyInjection"]
@@ -168,6 +177,7 @@ GPtr --> PTM
 GPbr --> PM
 PM --> LN
 PM --> DIM
+PM --> NULL
 DI --> CATC
 DI --> GPTC
 DI --> GPBRC
@@ -182,8 +192,9 @@ DI --> GPBRC
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_product_type_repo.dart:7-19](file://lib/features/home/repositories/get_product_type_repo.dart#L7-L19)
 - [get_products_by_type_repo.dart:7-21](file://lib/features/home/repositories/get_products_by_type_repo.dart#L7-L21)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
 - [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
+- [product_details_model.dart:1-356](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L356)
 - [category_controller.dart:3-4](file://lib/features/category/controller/category_controller.dart#L3-L4)
 - [dependency_injection.dart:11-26](file://lib/core/di/dependency_injection.dart#L11-L26)
 
@@ -235,10 +246,9 @@ CategoryView --> CategoryController : "observes"
   - Responsibilities: Handles product type retrieval with enhanced ProductTypesModel
 - **GetProductsByTypeRepository**
   - Responsibilities: Manages product fetching with pagination and dimension data
-  - Enhanced: Returns ProductsModel with comprehensive pagination information
+  - Enhanced: Returns ProductsModel with comprehensive pagination information and nullable field support
 - **HomeOurProductFilter**
   - Responsibilities: Render horizontal filter chips, update selected type, trigger product reload
-  - Enhanced: Works seamlessly with pagination-aware type switching
 - **HomeOurProducts**
   - Responsibilities: Display product grid with pagination support, show loading indicator, render product media/name/price
   - Enhanced: Integrates with CustomPagination component for large catalogs
@@ -368,7 +378,7 @@ ShowPagination --> Complete
 - [home_our_products.dart:11-88](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L88)
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_product_types_controller.dart:7-37](file://lib/features/home/controller/get_product_types_controller.dart#L7-L37)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 
 ### Integration Between Categories and Products
@@ -393,7 +403,7 @@ GRID --> PAGINATION["CustomPagination"]
 - [get_product_types_controller.dart:25-27](file://lib/features/home/controller/get_product_types_controller.dart#L25-L27)
 - [get_products_by_type_controller.dart:13-25](file://lib/features/home/controller/get_products_by_type_controller.dart#L13-L25)
 - [get_products_by_type_repo.dart:11-20](file://lib/features/home/repositories/get_products_by_type_repo.dart#L11-L20)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
 - [home_our_products.dart:11-88](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L88)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 
@@ -402,18 +412,32 @@ GRID --> PAGINATION["CustomPagination"]
 - [get_product_types_controller.dart:7-37](file://lib/features/home/controller/get_product_types_controller.dart#L7-L37)
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_products_by_type_repo.dart:7-21](file://lib/features/home/repositories/get_products_by_type_repo.dart#L7-L21)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
 - [home_our_products.dart:11-88](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L88)
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 
 ## Enhanced Product Data Models
 
-### Comprehensive Pagination Support
-The ProductsModel now includes sophisticated pagination support through Links and Meta classes:
+### Comprehensive Nullable Field Implementation
+The ProductsModel now includes comprehensive nullable field support throughout the entire model hierarchy:
 
-- **Links Class**: Provides navigation URLs for pagination (first, last, previous, next)
-- **Meta Class**: Contains pagination metadata (current_page, from, last_page, path, per_page, to, total)
-- **Integration**: Seamless pagination support across all product queries and filtering operations
+- **Product Class**: All fields except isFavourite are nullable (id, categoryId, categoryName, name, sku, description, price, sellingPrice, discountType, discountAmount, finalPrice, isRentable, isInStock, status, category, furnitureType, rooms, media, defaultOptionIds, totalReviews, createdAt, updatedAt)
+- **Category Class**: All fields are nullable (id, name, slug, parentId, imageUrl, status, order, createdAt, updatedAt)
+- **FurnitureType Class**: All fields are nullable (id, name)
+- **Room Class**: All fields are nullable (id, name)
+- **Media Class**: All fields are nullable (id, productId, type, url, isPrimary, createdAt, updatedAt)
+- **DefaultOptionId Class**: All fields are nullable (productAttributeOptionId, attributeId, optionId)
+- **Links Class**: All fields are nullable (first, last, prev, next)
+- **Meta Class**: Mixed nullable fields (currentPage, from, lastPage, links, path, perPage, to, total)
+- **ProductDetail Class**: Consistent nullable field patterns with Product class
+
+### Graceful Degradation Mechanisms
+Enhanced null safety with proper fallback mechanisms:
+
+- **Null Checks**: fromJson methods include comprehensive null checks for optional fields
+- **Default Values**: Safe fallbacks using null-aware operators (??) for primitive types
+- **Type Safety**: Proper type casting and validation in fromJson methods
+- **Serialization**: Conditional serialization using null-aware operators in toJson methods
 
 ### Structured Dimension Specifications
 Enhanced product data handling with comprehensive dimension support:
@@ -427,7 +451,7 @@ All product fields now use num-based numeric types for enhanced precision:
 
 - **Product ID**: num type for precise identification
 - **Category ID**: num type for category associations
-- **Price Fields**: num type for currency calculations (price, selling_price, discount_amount, final_price)
+- **Price Fields**: num type for currency calculations (price, sellingPrice, discountAmount, finalPrice)
 - **Quantity Fields**: num type for inventory management
 - **Dimension Values**: num type for precise measurements
 
@@ -439,29 +463,63 @@ class ProductsModel {
 +Meta? meta
 }
 class Product {
-+num id
-+num categoryId
-+String categoryName
-+String name
-+String sku
++num? id
++num? categoryId
++String? categoryName
++String? name
++String? sku
 +String? description
-+num price
-+num sellingPrice
++num? price
++num? sellingPrice
 +String? discountType
-+num discountAmount
-+num finalPrice
-+bool isRentable
++num? discountAmount
++num? finalPrice
++bool? isRentable
 +bool isFavourite
-+bool isInStock
-+String status
++bool? isInStock
++String? status
 +dynamic dimensions
-+Category category
-+FurnitureType furnitureType
-+Room[] rooms
-+Media[] media
++Category? category
++FurnitureType? furnitureType
++Room[]? rooms
++Media[]? media
 +DefaultOptionId[]? defaultOptionIds
-+DateTime createdAt
++int? totalReviews
++DateTime? createdAt
 +dynamic updatedAt
+}
+class Category {
++num? id
++String? name
++String? slug
++dynamic parentId
++dynamic imageUrl
++dynamic status
++dynamic order
++dynamic createdAt
++dynamic updatedAt
+}
+class FurnitureType {
++num? id
++String? name
+}
+class Room {
++num? id
++String? name
+}
+class Media {
++num? id
++num? productId
++String? type
++String? url
++bool? isPrimary
++DateTime? createdAt
++DateTime? updatedAt
+}
+class DefaultOptionId {
++num? productAttributeOptionId
++num? attributeId
++num? optionId
 }
 class Links {
 +String? first
@@ -471,25 +529,102 @@ class Links {
 }
 class Meta {
 +int currentPage
-+int from
++int? from
 +int lastPage
 +Link[]? links
 +String path
 +int perPage
-+int to
++int? to
 +int total
 }
 ProductsModel --> Product : "contains many"
 ProductsModel --> Links : "includes"
 ProductsModel --> Meta : "includes"
+Product --> Category : "has optional"
+Product --> FurnitureType : "has optional"
+Product --> Room : "has optional list"
+Product --> Media : "has optional list"
+Product --> DefaultOptionId : "has optional list"
 ```
 
 **Diagram sources**
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
+- [product_details_model.dart:20-158](file://lib/features/product_details.dart/models/product_details_model.dart#L20-L158)
 
 **Section sources**
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
+- [product_details_model.dart:1-356](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L356)
 - [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
+
+## Nullable Field Implementation Strategy
+
+### Consistent Null Safety Patterns
+The enhanced model hierarchy implements consistent nullable field patterns:
+
+- **Optional Fields**: All fields that may be null are declared with nullable types (?)
+- **Constructor Parameters**: Nullable fields accept null values with default null assignments
+- **Required Fields**: Non-nullable fields maintain strict type safety
+- **Mixed Types**: Some fields use dynamic types for flexibility while others use specific types
+
+### Enhanced fromJson Methods
+Comprehensive null checking and safe parsing:
+
+- **Product.fromJson**: Implements extensive null checks for all optional fields
+- **Category.fromJson**: Handles nullable category properties safely
+- **Media.fromJson**: Includes proper DateTime parsing with null checks
+- **DefaultOptionId.fromJson**: Simple mapping with nullable numeric fields
+- **ProductDetail.fromJson**: Consistent nullable field patterns across product detail model
+
+### Robust toJson Methods
+Conditional serialization with null safety:
+
+- **Product.toJson**: Uses null-aware operators for optional fields
+- **Category.toJson**: Serializes only non-null properties
+- **Media.toJson**: Handles DateTime serialization safely
+- **DefaultOptionId.toJson**: Simple property mapping
+- **ProductDetail.toJson**: Consistent serialization patterns
+
+**Section sources**
+- [products_model.dart:82-121](file://lib/features/home/models/products_model.dart#L82-L121)
+- [products_model.dart:180-190](file://lib/features/home/models/products_model.dart#L180-L190)
+- [products_model.dart:248-260](file://lib/features/home/models/products_model.dart#L248-L260)
+- [products_model.dart:284-289](file://lib/features/home/models/products_model.dart#L284-L289)
+- [product_details_model.dart:77-120](file://lib/features/product_details.dart/models/product_details_model.dart#L77-L120)
+
+## Graceful Degradation Mechanisms
+
+### Null Check Implementation
+Enhanced null safety throughout the model hierarchy:
+
+- **Product.fromJson**: Comprehensive null checks for all optional fields
+- **Category.fromJson**: Safe parsing of nullable category properties
+- **Media.fromJson**: Proper DateTime parsing with null fallbacks
+- **DefaultOptionId.fromJson**: Simple numeric field mapping
+- **ProductDetail.fromJson**: Consistent nullable field handling
+
+### Safe Default Value Assignment
+Robust fallback mechanisms:
+
+- **Boolean Defaults**: isFavourite defaults to false when null
+- **Integer Defaults**: totalReviews defaults to 0 when null
+- **DateTime Parsing**: Safe DateTime parsing with null checks
+- **List Handling**: Empty lists as defaults for collection fields
+- **Type Casting**: Proper type casting with null safety
+
+### Serialization Safety
+Conditional serialization with null-aware operators:
+
+- **Optional Field Serialization**: Only non-null fields are serialized
+- **DateTime Serialization**: Safe ISO 8601 string conversion
+- **Collection Serialization**: Null-safe list serialization
+- **Nested Object Serialization**: Recursive null-aware serialization
+
+**Section sources**
+- [products_model.dart:95-96](file://lib/features/home/models/products_model.dart#L95-L96)
+- [products_model.dart:116-117](file://lib/features/home/models/products_model.dart#L116-L117)
+- [products_model.dart:117-119](file://lib/features/home/models/products_model.dart#L117-L119)
+- [products_model.dart:136-137](file://lib/features/home/models/products_model.dart#L136-L137)
+- [products_model.dart:151-152](file://lib/features/home/models/products_model.dart#L151-L152)
 
 ## Pagination Support Implementation
 
@@ -534,7 +669,7 @@ UI-->>UI : Re-render Page Numbers
 - [custom_pagination.dart:7-87](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L7-L87)
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_products_by_type_repo.dart:7-21](file://lib/features/home/repositories/get_products_by_type_repo.dart#L7-L21)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
 
 ## Numeric Type Precision Improvements
 
@@ -602,7 +737,8 @@ The enhanced product model includes sophisticated dimension handling:
   - GetProductsByTypeController depends on GetProductsByTypeRepository and exposes Rx data
   - GetProductTypeRepository depends on ProductTypesModel and GetNetwork
   - GetProductsByTypeRepository depends on ProductsModel and GetNetwork
-  - ProductsModel depends on Links, Meta, and comprehensive product data structures
+  - ProductsModel depends on Links, Meta, and comprehensive product data structures with nullable fields
+  - ProductDetailsModel depends on Product with consistent nullable field patterns
   - ProductTypesModel depends on ProductType with numeric IDs
   - HomeOurProductFilter depends on GetProductTypesController and GetProductsByTypeController
   - HomeOurProducts depends on GetProductsByTypeController and CustomPagination
@@ -619,6 +755,8 @@ PTR --> PTM["ProductTypesModel"]
 PBR --> PM["ProductsModel"]
 PM --> LN["Links & Meta"]
 PM --> DIM["Dimensions"]
+PM --> NULL["Nullable Fields"]
+PDM["ProductDetailsModel"] --> PM
 FILTER["HomeOurProductFilter"] --> TYPES
 FILTER --> PROD
 GRID["HomeOurProducts"] --> PROD
@@ -634,7 +772,8 @@ CP --> RX["RxInt State"]
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_product_type_repo.dart:7-19](file://lib/features/home/repositories/get_product_type_repo.dart#L7-L19)
 - [get_products_by_type_repo.dart:7-21](file://lib/features/home/repositories/get_products_by_type_repo.dart#L7-L21)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
+- [product_details_model.dart:1-356](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L356)
 - [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
 - [home_our_product_filter.dart:11-136](file://lib/features/home/widgets/home_widgets/home_our_product_filter.dart#L11-L136)
 - [home_our_products.dart:11-88](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L88)
@@ -648,7 +787,8 @@ CP --> RX["RxInt State"]
 - [get_products_by_type_controller.dart:6-26](file://lib/features/home/controller/get_products_by_type_controller.dart#L6-L26)
 - [get_product_type_repo.dart:7-19](file://lib/features/home/repositories/get_product_type_repo.dart#L7-L19)
 - [get_products_by_type_repo.dart:7-21](file://lib/features/home/repositories/get_products_by_type_repo.dart#L7-L21)
-- [products_model.dart:9-363](file://lib/features/home/models/products_model.dart#L9-L363)
+- [products_model.dart:9-385](file://lib/features/home/models/products_model.dart#L9-L385)
+- [product_details_model.dart:1-356](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L356)
 - [product_types_model.dart:1-37](file://lib/features/home/models/product_types_model.dart#L1-L37)
 - [home_our_product_filter.dart:11-136](file://lib/features/home/widgets/home_widgets/home_our_product_filter.dart#L11-L136)
 - [home_our_products.dart:11-88](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L11-L88)
@@ -675,6 +815,10 @@ CP --> RX["RxInt State"]
 - **Dimension Handling**
   - **Structured**: Efficient dimension data handling with dynamic objects
   - **Memory**: Optimized storage and processing of dimensional specifications
+- **Nullable Field Optimization**
+  - **Safe**: Null checks prevent runtime errors and improve stability
+  - **Memory**: Nullable fields reduce memory overhead for optional data
+  - **Performance**: Conditional serialization improves performance for sparse data
 
 ## Troubleshooting Guide
 - **Navigation issues**
@@ -693,6 +837,13 @@ CP --> RX["RxInt State"]
 - **Dimension data issues**
   - **New**: Validate dimensions object structure matches expected format
   - **New**: Ensure dimension values are properly parsed and accessible
+- **Nullable field issues**
+  - **New**: Verify null checks in fromJson methods prevent runtime errors
+  - **New**: Check default value assignments for nullable fields
+  - **New**: Ensure toJson methods handle null values safely
+- **Graceful degradation problems**
+  - **New**: Test fallback mechanisms for missing optional fields
+  - **New**: Verify serialization works correctly with null values
 
 **Section sources**
 - [app_routes.dart:1-34](file://lib/core/routes/app_routes.dart#L1-L34)
@@ -703,4 +854,4 @@ CP --> RX["RxInt State"]
 - [custom_pagination.dart:14-79](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L14-L79)
 
 ## Conclusion
-The enhanced Product Catalog Management system now provides comprehensive pagination support, improved numeric precision, and sophisticated dimension handling capabilities. The integration of Links and Meta classes enables scalable product catalog management for large-scale applications. The migration to num-based numeric types ensures precise financial calculations and improved reliability. The addition of dimension specifications supports complex product data requirements across various industries. The CustomPagination component provides a reusable solution for efficient navigation through large product catalogs. The system maintains its layered architecture while adding powerful new capabilities for enterprise-grade product catalog management.
+The enhanced Product Catalog Management system now provides comprehensive pagination support, improved numeric precision, sophisticated dimension handling capabilities, and robust nullable field implementations throughout the entire model hierarchy. The system features graceful degradation mechanisms that ensure stable operation even when optional fields are missing from API responses. The integration of Links and Meta classes enables scalable product catalog management for large-scale applications. The migration to num-based numeric types ensures precise financial calculations and improved reliability. The addition of dimension specifications supports complex product data requirements across various industries. The CustomPagination component provides a reusable solution for efficient navigation through large product catalogs. The comprehensive nullable field support enhances data integrity and prevents runtime errors. The system maintains its layered architecture while adding powerful new capabilities for enterprise-grade product catalog management with enhanced stability and performance.

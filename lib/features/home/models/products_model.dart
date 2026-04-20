@@ -27,55 +27,55 @@ class ProductsModel {
 }
 
 class Product {
-  final num id;
-  final num categoryId;
-  final String categoryName;
-  final String name;
-  final String sku;
+  final num? id;
+  final num? categoryId;
+  final String? categoryName;
+  final String? name;
+  final String? sku;
   final String? description;
-  final num price;
-  final num sellingPrice;
+  final num? price;
+  final num? sellingPrice;
   final String? discountType;
-  final num discountAmount;
-  final num finalPrice;
-  final bool isRentable;
+  final num? discountAmount;
+  final num? finalPrice;
+  final bool? isRentable;
   bool isFavourite;
-  final bool isInStock;
-  final String status;
+  final bool? isInStock;
+  final String? status;
   final dynamic dimensions;
-  final Category category;
+  final Category? category;
   final FurnitureType? furnitureType;
-  final List<Room> rooms;
-  final List<Media> media;
+  final List<Room>? rooms;
+  final List<Media>? media;
   final List<DefaultOptionId>? defaultOptionIds;
-  final int totalReviews;
-  final DateTime createdAt;
+  final int? totalReviews;
+  final DateTime? createdAt;
   final dynamic updatedAt;
 
   Product({
-    required this.id,
-    required this.categoryId,
-    required this.categoryName,
-    required this.name,
-    required this.sku,
+    this.id,
+    this.categoryId,
+    this.categoryName,
+    this.name,
+    this.sku,
     this.description,
-    required this.price,
-    required this.sellingPrice,
+    this.price,
+    this.sellingPrice,
     this.discountType,
-    required this.discountAmount,
-    required this.finalPrice,
-    required this.isRentable,
+    this.discountAmount,
+    this.finalPrice,
+    this.isRentable,
     required this.isFavourite,
-    required this.isInStock,
-    required this.status,
+    this.isInStock,
+    this.status,
     this.dimensions,
-    required this.category,
+    this.category,
     this.furnitureType,
     this.rooms = const [],
-    required this.media,
+    this.media,
     this.defaultOptionIds,
     this.totalReviews = 0,
-    required this.createdAt,
+    this.createdAt,
     this.updatedAt,
   });
 
@@ -92,25 +92,31 @@ class Product {
     discountAmount: json["discount_amount"],
     finalPrice: json["final_price"],
     isRentable: json["is_rentable"],
-    isFavourite: json["is_favourite"],
+    isFavourite: json["is_favourite"] ?? false,
     isInStock: json["is_in_stock"],
     status: json["status"],
     dimensions: json["dimensions"],
-    category: Category.fromJson(json["category"]),
+    category: json["category"] != null
+        ? Category.fromJson(json["category"])
+        : null,
     furnitureType: json["furniture_type"] != null
         ? FurnitureType.fromJson(json["furniture_type"])
         : null,
     rooms: json["rooms"] != null
         ? List<Room>.from(json["rooms"].map((x) => Room.fromJson(x)))
         : [],
-    media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
+    media: json["media"] != null
+        ? List<Media>.from(json["media"].map((x) => Media.fromJson(x)))
+        : [],
     defaultOptionIds: json["default_option_ids"] != null
         ? List<DefaultOptionId>.from(
             json["default_option_ids"].map((x) => DefaultOptionId.fromJson(x)),
           )
         : [],
     totalReviews: json["total_reviews"] ?? 0,
-    createdAt: DateTime.parse(json["created_at"]),
+    createdAt: json["created_at"] != null
+        ? DateTime.parse(json["created_at"])
+        : null,
     updatedAt: json["updated_at"],
   );
 
@@ -131,23 +137,27 @@ class Product {
     "is_in_stock": isInStock,
     "status": status,
     "dimensions": dimensions,
-    "category": category.toJson(),
+    "category": category?.toJson(),
     "furniture_type": furnitureType?.toJson(),
-    "rooms": List<dynamic>.from(rooms.map((x) => x.toJson())),
-    "media": List<dynamic>.from(media.map((x) => x.toJson())),
+    "rooms": rooms != null
+        ? List<dynamic>.from(rooms!.map((x) => x.toJson()))
+        : [],
+    "media": media != null
+        ? List<dynamic>.from(media!.map((x) => x.toJson()))
+        : [],
     "default_option_ids": defaultOptionIds != null
         ? List<dynamic>.from(defaultOptionIds!.map((x) => x.toJson()))
         : [],
     "total_reviews": totalReviews,
-    "created_at": createdAt.toIso8601String(),
+    "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt,
   };
 }
 
 class Category {
-  final num id;
-  final String name;
-  final String slug;
+  final num? id;
+  final String? name;
+  final String? slug;
   final dynamic parentId;
   final dynamic imageUrl;
   final dynamic status;
@@ -156,9 +166,9 @@ class Category {
   final dynamic updatedAt;
 
   Category({
-    required this.id,
-    required this.name,
-    required this.slug,
+    this.id,
+    this.name,
+    this.slug,
     this.parentId,
     this.imageUrl,
     this.status,
@@ -193,10 +203,10 @@ class Category {
 }
 
 class FurnitureType {
-  final num id;
-  final String name;
+  final num? id;
+  final String? name;
 
-  FurnitureType({required this.id, required this.name});
+  FurnitureType({this.id, this.name});
 
   factory FurnitureType.fromJson(Map<String, dynamic> json) =>
       FurnitureType(id: json["id"], name: json["name"]);
@@ -205,10 +215,10 @@ class FurnitureType {
 }
 
 class Room {
-  final num id;
-  final String name;
+  final num? id;
+  final String? name;
 
-  Room({required this.id, required this.name});
+  Room({this.id, this.name});
 
   factory Room.fromJson(Map<String, dynamic> json) =>
       Room(id: json["id"], name: json["name"]);
@@ -217,22 +227,22 @@ class Room {
 }
 
 class Media {
-  final num id;
-  final num productId;
-  final String type;
-  final String url;
-  final bool isPrimary;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final num? id;
+  final num? productId;
+  final String? type;
+  final String? url;
+  final bool? isPrimary;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Media({
-    required this.id,
-    required this.productId,
-    required this.type,
-    required this.url,
-    required this.isPrimary,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.productId,
+    this.type,
+    this.url,
+    this.isPrimary,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
@@ -241,8 +251,12 @@ class Media {
     type: json["type"],
     url: json["url"],
     isPrimary: json["is_primary"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    createdAt: json["created_at"] != null
+        ? DateTime.parse(json["created_at"])
+        : null,
+    updatedAt: json["updated_at"] != null
+        ? DateTime.parse(json["updated_at"])
+        : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -251,20 +265,20 @@ class Media {
     "type": type,
     "url": url,
     "is_primary": isPrimary,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
   };
 }
 
 class DefaultOptionId {
-  final num productAttributeOptionId;
-  final num attributeId;
-  final num optionId;
+  final num? productAttributeOptionId;
+  final num? attributeId;
+  final num? optionId;
 
   DefaultOptionId({
-    required this.productAttributeOptionId,
-    required this.attributeId,
-    required this.optionId,
+    this.productAttributeOptionId,
+    this.attributeId,
+    this.optionId,
   });
 
   factory DefaultOptionId.fromJson(Map<String, dynamic> json) =>

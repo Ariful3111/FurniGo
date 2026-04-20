@@ -27,7 +27,9 @@ class CartSelectItem extends GetWidget<CartController> {
               CustomPrimaryText(
                 text: "Select All",
                 fontSize: 14,
-                color:isDark? AppColors.primaryBorderColor:AppColors.lightTextColor,
+                color: isDark
+                    ? AppColors.primaryBorderColor
+                    : AppColors.lightTextColor,
               ),
             ],
           ),
@@ -40,7 +42,9 @@ class CartSelectItem extends GetWidget<CartController> {
                 CustomPrimaryText(
                   text: "Delete All",
                   fontSize: 14,
-                  color:isDark? AppColors.primaryBorderColor: AppColors.lightTextColor,
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.lightTextColor,
                 ),
               ],
             ),

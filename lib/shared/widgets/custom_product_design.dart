@@ -40,13 +40,13 @@ class CustomProductDesign extends StatelessWidget {
               onTap: () {
                 Get.toNamed(
                   AppRoutes.productDetailsView,
-                  arguments: favoriteItem?.product.id ?? 0,
+                  arguments: favoriteItem?.product?.id?.toInt() ?? 0,
                 );
               },
               child: CachedNetworkImage(
                 imageUrl:
-                    favoriteItem?.product.media
-                        .firstWhere((media) => media.type == 'image')
+                    favoriteItem?.product?.media
+                        ?.firstWhere((media) => media.type == 'image')
                         .url ??
                     '',
                 height: 200.h,
@@ -70,7 +70,7 @@ class CustomProductDesign extends StatelessWidget {
                   ),
                   radius: 20.r,
                   child: CustomPrimaryText(
-                    text: favoriteItem?.product.isRentable ?? false
+                    text: (favoriteItem?.product?.isRentable ?? false)
                         ? "Rent Product"
                         : "New Arrival",
                     fontSize: 10.sp,

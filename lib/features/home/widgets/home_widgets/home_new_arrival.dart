@@ -40,36 +40,36 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
                           onFavorite: () async {
                             await Get.find<ToggleFavouriteController>()
                                 .toggleFavourite(
-                                  productID: controller
-                                      .newArrivals
-                                      .value!
-                                      .data[index]
-                                      .id
-                                      .toInt(),
+                                  productID:
+                                      controller
+                                          .newArrivals
+                                          .value
+                                          ?.data[index]
+                                          .id
+                                          ?.toInt() ??
+                                      0,
                                   changeIndex: 0,
                                 );
                           },
                           onCart: () {},
-                          productID: controller
-                              .newArrivals
-                              .value!
-                              .data[index]
-                              .id
-                              .toInt(),
+                          productID:
+                              controller.newArrivals.value?.data[index].id
+                                  ?.toInt() ??
+                              0,
                           image:
                               controller
                                       .newArrivals
                                       .value
                                       ?.data[index]
                                       .media
-                                      .isNotEmpty ==
+                                      ?.isNotEmpty ==
                                   true
                               ? controller
                                         .newArrivals
                                         .value
                                         ?.data[index]
                                         .media
-                                        .first
+                                        ?.first
                                         .url ??
                                     ''
                               : '',
@@ -82,7 +82,7 @@ class HomeNewArrival extends GetWidget<GetNewArrivalsController> {
                                   .toString() ??
                               '',
                           price:
-                              '\$${controller.newArrivals.value?.data[index].price.toDouble().toPrecision(2) ?? 0.0}',
+                              '\$${(controller.newArrivals.value?.data[index].price?.toDouble() ?? 0.0).toStringAsFixed(2)}',
                         ),
                       ],
                     ),

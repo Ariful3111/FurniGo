@@ -21,13 +21,13 @@ class ProductTypesModel {
 }
 
 class ProductType {
-  final num id;
-  final String name;
+  final num? id;
+  final String? name;
 
-  ProductType({required this.id, required this.name});
+  ProductType({this.id, this.name});
 
   factory ProductType.fromJson(Map<String, dynamic> json) {
-    return ProductType(id: json['id'] as num, name: json['name'] as String);
+    return ProductType(id: json['id'] as num?, name: json['name'] as String?);
   }
 
   Map<String, dynamic> toJson() {

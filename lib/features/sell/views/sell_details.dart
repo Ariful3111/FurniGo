@@ -44,19 +44,19 @@ class SellDetails extends GetView<SellDetailsController> {
                 Row(
                   children: [
                     CustomPrimaryText(
-                      text: sellModel.id,
+                      text: sellModel.id ?? '',
                       fontWeight: FontWeight.w600,
                       color: isDark
                           ? AppColors.whiteColor
                           : AppColors.labelColor,
                     ),
                     SizedBox(width: 8.w),
-                    CustomTableStatus(status: sellModel.status),
+                    CustomTableStatus(status: sellModel.status ?? ''),
                   ],
                 ),
                 SizedBox(height: 4.h),
                 CustomPrimaryText(
-                  text: 'Submitted ${sellModel.submitDate}',
+                  text: 'Submitted ${sellModel.submitDate ?? ''}',
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                   color: isDark
@@ -76,7 +76,7 @@ class SellDetails extends GetView<SellDetailsController> {
             Padding(
               padding: EdgeInsets.only(top: 12.h),
               child: SellOfferReady(
-                amount: sellModel.offer,
+                amount: sellModel.offer ?? '',
                 onPayment: () {
                   Navigator.pop(context);
                   showDialog(

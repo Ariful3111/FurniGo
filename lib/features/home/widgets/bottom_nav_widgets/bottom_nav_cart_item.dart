@@ -41,7 +41,9 @@ class BottomNavCartItem extends GetWidget<BottomNavController> {
                 ),
               ),
               badgeStyle: badges.BadgeStyle(
-                badgeColor:isDark? Color(0xFF209DF0):AppColors.secondaryColor,
+                badgeColor: isDark
+                    ? Color(0xFF209DF0)
+                    : AppColors.secondaryColor,
                 padding: EdgeInsets.all(4.r),
               ),
               position: badges.BadgePosition.topEnd(top: -7.h, end: -7.w),

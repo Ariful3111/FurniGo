@@ -11,7 +11,7 @@ class CreditTransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    bool isPositive = transaction.amount > 0;
+    bool isPositive = (transaction.amount ?? 0) > 0;
     return SharedContainer(
       margin: EdgeInsets.only(bottom: 4.h),
       padding: EdgeInsets.all(10.r),
@@ -27,14 +27,14 @@ class CreditTransactionItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomPrimaryText(
-                text: transaction.title,
+                text: transaction.title ?? '',
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
                 color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
               ),
               SizedBox(height: 2.h),
               CustomPrimaryText(
-                text: transaction.date,
+                text: transaction.date ?? '',
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
                 color: isDark
@@ -60,11 +60,12 @@ class CreditTransactionItem extends StatelessWidget {
   }
 
   String _amountText(bool isPositive) {
-    final int intValue = transaction.amount.toInt();
-    final bool isWholeNumber = transaction.amount == intValue;
+    final double amount = transaction.amount ?? 0;
+    final int intValue = amount.toInt();
+    final bool isWholeNumber = amount == intValue;
     final String value = isWholeNumber
         ? intValue.toString()
-        : transaction.amount.toStringAsFixed(2);
+        : amount.toStringAsFixed(2);
     return isPositive ? '+$value' : value;
   }
 }

@@ -21,7 +21,8 @@ class GetProductTypesController extends GetxController {
       },
       (data) async {
         productTypes.value = data;
-        selectedProductType.value = productTypes.value?.data[0].id.toInt() ?? 0;
+        selectedProductType.value =
+            productTypes.value?.data.firstOrNull?.id?.toInt() ?? 0;
         await Get.find<GetProductsByTypeController>().getProductsByType(
           typeID: selectedProductType.value,
         );

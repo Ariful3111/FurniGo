@@ -10,6 +10,7 @@ class ProductAttributesController extends GetxController {
   final productsAttributes = Rxn<ProductAttributesModel>();
   RxBool isLoading = true.obs;
   RxList<bool> isOpen = <bool>[].obs;
+  RxList<int> selectedIDs = <int>[].obs;
 
   Future<void> getProductsAttributes({required int productID}) async {
     isLoading.value = true;
@@ -30,6 +31,14 @@ class ProductAttributesController extends GetxController {
 
   void toggleExpand(int index) {
     isOpen[index] = !isOpen[index];
+  }
+
+  void toggleSelection({required int attributeID}) {
+    if (selectedIDs.contains(attributeID)) {
+      selectedIDs.remove(attributeID);
+    } else {
+      selectedIDs.add(attributeID);
+    }
   }
 
   @override

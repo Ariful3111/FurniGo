@@ -19,15 +19,19 @@ class SellTableExpanded extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildDetailRow('Item', sellModel.item, isDark: isDark),
+        buildDetailRow('Item', sellModel.item ?? '', isDark: isDark),
         SizedBox(height: 8.h),
-        buildDetailRow('Submitted', sellModel.submitDate, isDark: isDark),
+        buildDetailRow('Submitted', sellModel.submitDate ?? '', isDark: isDark),
         SizedBox(height: 8.h),
-        row(text: 'Status:', status: sellModel.status, isDark: isDark),
+        row(text: 'Status:', status: sellModel.status ?? '', isDark: isDark),
         SizedBox(height: 8.h),
-        row(text: 'Shipment:', status: sellModel.shipment, isDark: isDark),
+        row(
+          text: 'Shipment:',
+          status: sellModel.shipment ?? '',
+          isDark: isDark,
+        ),
         SizedBox(height: 8.h),
-        row(text: 'PAYMENT:', status: sellModel.payment, isDark: isDark),
+        row(text: 'PAYMENT:', status: sellModel.payment ?? '', isDark: isDark),
         SizedBox(height: 8.h),
         CustomPrimaryText(
           text: 'Next step:',

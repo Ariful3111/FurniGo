@@ -6,6 +6,14 @@
 - [app_routes.dart](file://lib/core/routes/app_routes.dart)
 - [routes.dart](file://lib/core/routes/routes.dart)
 - [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+- [home_bindings.dart](file://lib/features/home/bindings/home_bindings.dart)
+- [home_controller.dart](file://lib/features/home/controller/home_controller.dart)
+- [home_view.dart](file://lib/features/home/views/home_view.dart)
+- [home_shop.dart](file://lib/features/home/widgets/home_widgets/home_shop.dart)
+- [home_header.dart](file://lib/features/home/widgets/home_widgets/home_header.dart)
+- [home_helper.dart](file://lib/features/home/widgets/home_widgets/home_helper.dart)
+- [custom_quick_action.dart](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart)
+- [quick_action_list.dart](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart)
 - [products_model.dart](file://lib/features/home/models/products_model.dart)
 - [orders_model.dart](file://lib/features/order/models/orders_model.dart)
 - [get_orders_repo.dart](file://lib/features/order/repositories/get_orders_repo.dart)
@@ -45,17 +53,13 @@
 
 ## Update Summary
 **Changes Made**
-- Added comprehensive product attributes system with dynamic attribute options and default selections
-- Enhanced product review and rating functionality with detailed rating distribution visualization
-- Implemented separate controllers for product details and product attributes management
-- Added new rating components including rating info display and percentage bars
-- Enhanced product details view with integrated rating and review sections
-- Improved product customization system with expandable attribute sections
-- Added comprehensive UI safety checks documentation for product image loading with null and empty list validation
-- Documented media URL validation patterns across product catalog, search suggestions, and product details views
-- Enhanced error handling documentation for image loading failures and fallback mechanisms
-- Updated product catalog system documentation to include robust image loading safeguards
-- Added documentation for cached network image implementation and placeholder handling
+- Added comprehensive quick action system with four main categories: Shop Products, Sell Furniture, Rent Products, and Design My Room
+- Enhanced home screen with improved product presentation including room-based shopping and AI interior design features
+- Integrated CustomQuickAction widget with responsive grid layout and visual design elements
+- Added HomeShop widget for horizontal room-based product browsing with cached image loading
+- Enhanced HomeHeader with improved visual presentation and shadow effects
+- Added HomeAiDesign widget for AI-powered interior design capabilities
+- Improved overall home screen navigation with better categorization and user experience
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -63,20 +67,24 @@
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Enhanced Product Attributes System](#enhanced-product-attributes-system)
-7. [Improved Rating and Review System](#improved-rating-and-review-system)
-8. [Enhanced UI Components](#enhanced-ui-components)
-9. [Form Field Components](#form-field-components)
-10. [Rating System Components](#rating-system-components)
-11. [Validation Extensions](#validation-extensions)
-12. [UI Safety Checks for Product Image Loading](#ui-safety-checks-for-product-image-loading)
-13. [Dependency Analysis](#dependency-analysis)
-14. [Performance Considerations](#performance-considerations)
-15. [Troubleshooting Guide](#troubleshooting-guide)
-16. [Conclusion](#conclusion)
+6. [Enhanced Home Screen System](#enhanced-home-screen-system)
+7. [Quick Action System](#quick-action-system)
+8. [Enhanced Product Presentation](#enhanced-product-presentation)
+9. [AI Room Interior Design](#ai-room-interior-design)
+10. [Enhanced Product Attributes System](#enhanced-product-attributes-system)
+11. [Improved Rating and Review System](#improved-rating-and-review-system)
+12. [Enhanced UI Components](#enhanced-ui-components)
+13. [Form Field Components](#form-field-components)
+14. [Rating System Components](#rating-system-components)
+15. [Validation Extensions](#validation-extensions)
+16. [UI Safety Checks for Product Image Loading](#ui-safety-checks-for-product-image-loading)
+17. [Dependency Analysis](#dependency-analysis)
+18. [Performance Considerations](#performance-considerations)
+19. [Troubleshooting Guide](#troubleshooting-guide)
+20. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the e-commerce platform feature set implemented in the Flutter application. It focuses on the product catalog system, product details view, order management, payment processing, category management, filtering mechanisms, and the integrated lifecycle from browsing to order fulfillment. The platform leverages a modular feature-based architecture using GetX for state management and dependency injection, with network repositories abstracted via core networking utilities. Recent enhancements include a comprehensive product attributes system with dynamic attribute options, improved product review and rating functionality with detailed visualization, enhanced form field components, custom phone field validation, rating bar widgets, comprehensive UI safety checks for product image loading, and various UI improvements across product catalog, shopping cart, and order management systems.
+This document describes the e-commerce platform feature set implemented in the Flutter application. It focuses on the product catalog system, product details view, order management, payment processing, category management, filtering mechanisms, and the integrated lifecycle from browsing to order fulfillment. The platform leverages a modular feature-based architecture using GetX for state management and dependency injection, with network repositories abstracted via core networking utilities. Recent enhancements include a comprehensive product attributes system with dynamic attribute options, improved product review and rating functionality with detailed visualization, enhanced form field components, custom phone field validation, rating bar widgets, comprehensive UI safety checks for product image loading, and **major architectural additions** including the enhanced home screen with quick action system and improved product presentation.
 
 ## Project Structure
 The application initializes through a central entry point that sets up dependency injection, theme, routing, and navigation bindings. Features are organized under the features directory, with dedicated modules for product catalog, product details, orders, payments, categories, and more. Core infrastructure resides under core, including DI, routes, theme, and network utilities. Enhanced UI components are organized under shared/widgets with specialized components for forms, ratings, dialogs, and containers.
@@ -88,6 +96,17 @@ M["main.dart"]
 DI["dependency_injection.dart"]
 AR["app_routes.dart"]
 RT["routes.dart"]
+HB["home_bindings.dart"]
+HC["home_controller.dart"]
+end
+subgraph "Enhanced Home Screen"
+HV["home_view.dart"]
+HQ["custom_quick_action.dart"]
+QAL["quick_action_list.dart"]
+HS["home_shop.dart"]
+HH["home_header.dart"]
+HHE["home_helper.dart"]
+HAD["home_ai_design.dart"]
 end
 subgraph "Features"
 PC["product_details_controller.dart"]
@@ -125,13 +144,18 @@ end
 M --> DI
 M --> AR
 M --> RT
-M --> PC
-M --> PAC
-M --> PAM
-M --> PDR
-M --> PDMI
-M --> OC
-M --> PM
+M --> HB
+HB --> HC
+M --> HV
+HV --> HQ
+HV --> HS
+HV --> HH
+HV --> HAD
+HQ --> QAL
+PC --> CM
+PC --> CRD
+PC --> PDR
+PC --> PDMI
 OC --> GR
 OC --> OM
 GR --> GN
@@ -140,11 +164,6 @@ GR --> EM
 OR --> PWR
 OR --> HM
 OR --> EM
-PC --> CM
-PC --> CRD
-PC --> PDR
-PC --> PDMI
-OC --> CRD
 PC --> HPD
 PC --> GSSB
 PC --> HOUP
@@ -158,6 +177,15 @@ PAC --> GN
 - [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
 - [app_routes.dart](file://lib/core/routes/app_routes.dart)
 - [routes.dart](file://lib/core/routes/routes.dart)
+- [home_bindings.dart:19-55](file://lib/features/home/bindings/home_bindings.dart#L19-L55)
+- [home_controller.dart:3-11](file://lib/features/home/controller/home_controller.dart#L3-L11)
+- [home_view.dart:18-92](file://lib/features/home/views/home_view.dart#L18-L92)
+- [custom_quick_action.dart:10-101](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L10-L101)
+- [quick_action_list.dart:4-30](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart#L4-L30)
+- [home_shop.dart:11-62](file://lib/features/home/widgets/home_widgets/home_shop.dart#L11-L62)
+- [home_header.dart:10-57](file://lib/features/home/widgets/home_widgets/home_header.dart#L10-L57)
+- [home_helper.dart:7-88](file://lib/features/home/widgets/home_widgets/home_helper.dart#L7-L88)
+- [home_ai_design.dart:10-63](file://lib/features/home/widgets/home_widgets/home_ai_design.dart#L10-L63)
 - [product_details_controller.dart:1-162](file://lib/features/product_details.dart/controller/product_details_controller.dart#L1-L162)
 - [products_attributes_controller.dart:1-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
 - [product_attributes_model.dart:1-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L100)
@@ -190,6 +218,7 @@ PAC --> GN
 - [app_routes.dart](file://lib/core/routes/app_routes.dart)
 - [routes.dart](file://lib/core/routes/routes.dart)
 - [dependency_injection.dart](file://lib/core/di/dependency_injection.dart)
+- [home_bindings.dart:19-55](file://lib/features/home/bindings/home_bindings.dart#L19-L55)
 
 ## Core Components
 - Product Catalog Model: Defines product entities, categories, furniture types, rooms, media, and default options used across the catalog.
@@ -202,6 +231,8 @@ PAC --> GN
 - Product Details Controller: Manages carousel navigation, AI toggle state, customization options, and review management for product media presentation.
 - Product Attributes Controller: Manages dynamic attribute loading, expandable sections, and attribute option selection for product customization.
 - Payment Controller: Holds form field controllers for payment inputs and manages lifecycle cleanup.
+- **Enhanced Home Screen**: Comprehensive home screen with quick action system, improved product presentation, and AI design capabilities.
+- **Quick Action System**: Four main categories with icons, titles, descriptions, and navigation to respective views.
 
 **Section sources**
 - [products_model.dart:23-129](file://lib/features/home/models/products_model.dart#L23-L129)
@@ -214,6 +245,9 @@ PAC --> GN
 - [product_details_controller.dart:14-162](file://lib/features/product_details.dart/controller/product_details_controller.dart#L14-L162)
 - [products_attributes_controller.dart:6-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L6-L40)
 - [payment_controller.dart:1-23](file://lib/features/payment/controller/payment_controller.dart#L1-L23)
+- [home_view.dart:18-92](file://lib/features/home/views/home_view.dart#L18-L92)
+- [custom_quick_action.dart:10-101](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L10-L101)
+- [quick_action_list.dart:4-30](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart#L4-L30)
 
 ## Architecture Overview
 The e-commerce feature architecture follows a layered pattern:
@@ -222,20 +256,25 @@ The e-commerce feature architecture follows a layered pattern:
 - Repository Layer: Handles network requests and JSON serialization/deserialization.
 - Core Layer: Provides shared networking utilities, headers, and error models.
 - Enhanced UI Layer: Provides reusable components for forms, ratings, dialogs, and containers.
+- **Enhanced Home Screen**: Comprehensive home screen with quick action system and improved user navigation.
 
 ```mermaid
 graph TB
-UI["Feature Views<br/>Order View, Product Details View, Payment View"]
-CTRL["Controllers<br/>OrderController, ProductDetailsController, ProductAttributesController, PaymentController"]
+UI["Feature Views<br/>Order View, Product Details View, Payment View, Home View"]
+CTRL["Controllers<br/>OrderController, ProductDetailsController, ProductAttributesController, PaymentController, HomeController"]
 REPO["Repositories<br/>GetOrdersRepository, OrderReviewRepository, ProductAttributesRepository"]
 NET["Network Utilities<br/>GetNetwork, PostWithoutResponse, HeadersManager"]
 MODELS["Data Models<br/>ProductsModel, ProductAttributesModel, ProductDetailsModel, OrdersModel"]
 ERR["Error Model & Snackbar"]
+QUICK["Quick Action System<br/>CustomQuickAction, QuickActionList"]
+HOME["Enhanced Home Screen<br/>HomeView, HomeShop, HomeHeader, HomeAiDesign"]
 UI --> CTRL
 CTRL --> REPO
 REPO --> NET
 REPO --> MODELS
 REPO --> ERR
+UI --> QUICK
+UI --> HOME
 subgraph "Enhanced UI Components"
 FORM["Form Components<br/>CustomTextFormField, CustomPhoneField"]
 RATING["Rating Components<br/>CustomRatingBar, CustomRatingBuilder"]
@@ -275,79 +314,345 @@ UI --> REV
 - [custom_rating_bar.dart:1-30](file://lib/shared/widgets/custom_rating/custom_rating_bar.dart#L1-L30)
 - [custom_rating_dialog.dart:1-128](file://lib/shared/widgets/custom_dialog/custom_rating_dialog.dart#L1-L128)
 - [shared_container.dart:1-57](file://lib/shared/widgets/shared_container.dart#L1-L57)
+- [home_view.dart:18-92](file://lib/features/home/views/home_view.dart#L18-L92)
+- [custom_quick_action.dart:10-101](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L10-L101)
+- [quick_action_list.dart:4-30](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart#L4-L30)
 
 ## Detailed Component Analysis
 
-### Product Catalog System
-- Purpose: Load and present product listings with metadata, pricing, stock status, and media.
-- Data Model: Product entity includes category, furniture type, rooms, media, and default options.
-- Usage Pattern: Controllers initialize repository calls during initialization to fetch product data.
-- **UI Safety Checks**: Implemented comprehensive null and empty list validation before accessing product media URLs to prevent crashes when products have no associated images.
+### Enhanced Home Screen System
+- Purpose: Provide an improved user experience with categorized product browsing, quick actions, and enhanced visual presentation.
+- Implementation: HomeView serves as the main entry point with stacked layout containing header, quick actions, product sections, and AI design features.
+- **Enhancement**: Comprehensive redesign with better organization, improved navigation, and enhanced visual appeal.
 
 ```mermaid
 classDiagram
-class ProductsModel {
-+Product[] data
-+fromJson(json)
-+toJson()
+class HomeView {
++build(context) Widget
++HomeHeader header
++CustomQuickAction quickAction
++HomeShop shopByRoom
++HomeNewArrival newArrival
++HomeProductPlacement placement
++HomeOurProducts ourProducts
++HomeSell sell
++HomeRent rent
++HomeAiDesign aiDesign
 }
-class Product {
-+int id
-+int category_id
-+String name
-+double price
-+double final_price
-+bool is_in_stock
-+Category category
-+FurnitureType furniture_type
-+Room[] rooms
-+Media[] media
-+DateTime created_at
-+fromJson(json)
-+toJson()
+class HomeHeader {
++BoxDecoration decoration
++CustomPrimaryText title
++CustomPrimaryText subtitle
++HomeSearchFilter searchFilter
 }
-class Category {
-+int id
-+String name
-+String slug
-+fromJson(json)
-+toJson()
+class HomeHelper {
++BoxShadow boxShadow()
++Widget blurContainer()
++Widget categoryTitle()
 }
-class FurnitureType {
-+int id
-+String name
-+fromJson(json)
-+toJson()
-}
-class Room {
-+int id
-+String name
-+fromJson(json)
-+toJson()
-}
-class Media {
-+int id
-+int product_id
-+String type
-+String url
-+bool is_primary
-+DateTime created_at
-+DateTime updated_at
-+fromJson(json)
-+toJson()
-}
-ProductsModel --> Product : "contains"
-Product --> Category : "has"
-Product --> FurnitureType : "has"
-Product --> Room : "has many"
-Product --> Media : "has many"
+HomeView --> HomeHeader : "contains"
+HomeView --> HomeHelper : "uses"
 ```
 
 **Diagram sources**
-- [products_model.dart:9-129](file://lib/features/home/models/products_model.dart#L9-L129)
+- [home_view.dart:18-92](file://lib/features/home/views/home_view.dart#L18-L92)
+- [home_header.dart:10-57](file://lib/features/home/widgets/home_widgets/home_header.dart#L10-L57)
+- [home_helper.dart:7-88](file://lib/features/home/widgets/home_widgets/home_helper.dart#L7-L88)
 
 **Section sources**
-- [products_model.dart:23-129](file://lib/features/home/models/products_model.dart#L23-L129)
+- [home_view.dart:18-92](file://lib/features/home/views/home_view.dart#L18-L92)
+- [home_header.dart:10-57](file://lib/features/home/widgets/home_widgets/home_header.dart#L10-L57)
+- [home_helper.dart:7-88](file://lib/features/home/widgets/home_widgets/home_helper.dart#L7-L88)
+
+### Quick Action System
+- Purpose: Provide four main categories (Shop Products, Sell Furniture, Rent Products, Design My Room) with visual icons and descriptions for quick navigation.
+- Implementation: CustomQuickAction widget with GridView layout displaying four quick action items with background patterns and overlay graphics.
+- **Architecture Enhancement**: New dedicated system for quick navigation with centralized configuration in QuickActionList.
+
+```mermaid
+classDiagram
+class CustomQuickAction {
++text String?
++GridView.builder grid
++GestureDetector onTap
++SharedContainer container
++Stack overlay
++ImageAsset backgroundPattern
++Column content
++ImageAsset icon
++CustomPrimaryText title
++CustomPrimaryText subtitle
+}
+class QuickActionList {
++List quickAction
++Map icon
++Map title
++Map sub
++Map page
+}
+CustomQuickAction --> QuickActionList : "uses"
+```
+
+**Diagram sources**
+- [custom_quick_action.dart:10-101](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L10-L101)
+- [quick_action_list.dart:4-30](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart#L4-L30)
+
+**Section sources**
+- [custom_quick_action.dart:10-101](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L10-L101)
+- [quick_action_list.dart:4-30](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart#L4-L30)
+
+### Enhanced Product Presentation
+- Purpose: Improve product browsing experience with room-based shopping and horizontal scrolling product display.
+- Implementation: HomeShop widget uses CachedNetworkImage for efficient image loading with horizontal ListView for room-based product categories.
+- **Enhancement**: Better visual presentation with cached image loading and improved user interaction patterns.
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant HomeView as "HomeView"
+participant HomeShop as "HomeShop"
+participant GetRoomsController as "GetRoomsController"
+participant CachedImage as "CachedNetworkImage"
+User->>HomeView : "Open Home Screen"
+HomeView->>HomeShop : "Display Shop by Room"
+HomeShop->>GetRoomsController : "Load rooms data"
+GetRoomsController->>GetRoomsController : "isLoading = true"
+GetRoomsController->>GetRoomsController : "Fetch rooms from repository"
+GetRoomsController->>GetRoomsController : "isLoading = false"
+GetRoomsController->>HomeShop : "Return rooms data"
+HomeShop->>CachedImage : "Load room images"
+CachedImage-->>HomeShop : "Display cached images"
+User->>HomeShop : "Scroll horizontally"
+User->>HomeShop : "Tap on room"
+HomeShop->>User : "Navigate to product details"
+```
+
+**Diagram sources**
+- [home_shop.dart:11-62](file://lib/features/home/widgets/home_widgets/home_shop.dart#L11-L62)
+
+**Section sources**
+- [home_shop.dart:11-62](file://lib/features/home/widgets/home_widgets/home_shop.dart#L11-L62)
+
+### AI Room Interior Design
+- Purpose: Provide AI-powered interior design capabilities with step-by-step guidance and visual product placement.
+- Implementation: HomeAiDesign widget with step indicators, slider for design progression, and product placement visualization.
+- **Enhancement**: New AI design feature that enhances the shopping experience with personalized design recommendations.
+
+```mermaid
+classDiagram
+class HomeAiDesign {
++bool isDark
++SharedContainer container
++CustomPrimaryText title
++SharedContainer designContainer
++HomeAiDesignStep stepIndicator
++HomeAiSlider slider
++HomeProductPlacementPlace placementButton
+}
+class HomeAiDesignStep {
++int currentStep
++List steps
++Widget buildStepIndicator()
+}
+class HomeAiSlider {
++double position
++HomeController controller
++updatePosition(dx, width)
+}
+HomeAiDesign --> HomeAiDesignStep : "contains"
+HomeAiDesign --> HomeAiSlider : "contains"
+HomeAiDesign --> HomeProductPlacementPlace : "contains"
+```
+
+**Diagram sources**
+- [home_ai_design.dart:10-63](file://lib/features/home/widgets/home_widgets/home_ai_design.dart#L10-L63)
+
+**Section sources**
+- [home_ai_design.dart:10-63](file://lib/features/home/widgets/home_widgets/home_ai_design.dart#L10-L63)
+
+### Enhanced Home Screen System
+
+#### Overview
+The enhanced home screen system represents a significant architectural improvement to the e-commerce platform, providing users with a more intuitive and visually appealing shopping experience. The system integrates multiple components including quick actions, improved product presentation, and AI design capabilities.
+
+#### Key Features
+- **Quick Action System**: Four main categories with visual icons and descriptions for instant navigation
+- **Enhanced Product Presentation**: Room-based shopping with horizontal scrolling and cached image loading
+- **AI Room Design**: Step-by-step interior design assistance with visual product placement
+- **Improved Visual Design**: Enhanced header with shadow effects and better typography
+- **Responsive Layout**: Grid-based quick action system with adaptive spacing
+
+#### Architecture Enhancement
+The home screen system introduces a new architectural pattern with dedicated controllers and widgets:
+
+```mermaid
+flowchart TD
+A["HomeView"] --> B["HomeHeader"]
+A --> C["CustomQuickAction"]
+A --> D["HomeShop"]
+A --> E["HomeNewArrival"]
+A --> F["HomeProductPlacement"]
+A --> G["HomeOurProducts"]
+A --> H["HomeSell"]
+A --> I["HomeRent"]
+A --> J["HomeAiDesign"]
+C --> K["QuickActionList"]
+K --> L["Shop Products"]
+K --> M["Sell Furniture"]
+K --> N["Rent Products"]
+K --> O["Design My Room"]
+```
+
+**Diagram sources**
+- [home_view.dart:34-78](file://lib/features/home/views/home_view.dart#L34-L78)
+- [custom_quick_action.dart:25-35](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L25-L35)
+- [quick_action_list.dart:5-30](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart#L5-L30)
+
+#### Quick Action Implementation
+The quick action system provides instant access to major platform features:
+
+**Features:**
+- **Shop Products**: Navigate to product catalog with fast delivery and easy setup
+- **Sell Furniture**: Get fair offers with fast pickup included
+- **Rent Products**: Brand-new pieces with fast delivery and easy setup
+- **Design My Room**: AI-powered interior design assistance
+
+**Implementation Details:**
+- Grid-based layout with 2-column responsive design
+- Background pattern overlay with subtle opacity
+- Icon-based visual representation
+- Descriptive subtitle text for each action
+- Navigation to respective routes via Get.toNamed()
+
+**Section sources**
+- [custom_quick_action.dart:10-101](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L10-L101)
+- [quick_action_list.dart:4-30](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart#L4-L30)
+- [home_view.dart:39-42](file://lib/features/home/views/home_view.dart#L39-L42)
+
+### Enhanced Product Presentation
+
+#### Overview
+The enhanced product presentation system focuses on improving the visual appeal and usability of product browsing through room-based categorization and improved image loading mechanisms.
+
+#### Room-Based Shopping
+The HomeShop widget implements a sophisticated room-based product browsing system:
+
+**Key Features:**
+- Horizontal scrolling ListView for intuitive navigation
+- CachedNetworkImage for efficient image loading and caching
+- Room name overlay with white text for contrast
+- Responsive design with proper spacing and sizing
+- Tap-to-navigate functionality to product details
+
+**Implementation Architecture:**
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant HomeView as "HomeView"
+participant HomeShop as "HomeShop"
+participant GetRoomsController as "GetRoomsController"
+participant CachedNetworkImage as "CachedNetworkImage"
+User->>HomeView : "Open Home Screen"
+HomeView->>HomeShop : "Render Shop by Room"
+HomeShop->>GetRoomsController : "Check isLoading"
+alt "Loading State"
+GetRoomsController-->>HomeShop : "ButtonLoading()"
+else "Data Available"
+GetRoomsController->>GetRoomsController : "Fetch rooms data"
+GetRoomsController-->>HomeShop : "Return rooms list"
+HomeShop->>CachedNetworkImage : "Load room image"
+CachedNetworkImage-->>HomeShop : "Display cached image"
+end
+User->>HomeShop : "Tap on room"
+HomeShop->>User : "Navigate to product details"
+```
+
+**Diagram sources**
+- [home_shop.dart:16-60](file://lib/features/home/widgets/home_widgets/home_shop.dart#L16-L60)
+
+#### Visual Design Enhancements
+The enhanced presentation includes several visual improvements:
+
+**HomeHeader Enhancements:**
+- Large decorative background image
+- Bold typography with text shadows for readability
+- Responsive sizing using Flutter_ScreenUtil
+- Improved spacing and alignment
+- Better contrast for text elements
+
+**HomeHelper Utilities:**
+- BoxShadow helper for consistent shadow effects
+- BlurContainer for glass-morphism effects
+- CategoryTitle helper for consistent section headers
+- SplitImageClipper for advanced image clipping
+
+**Section sources**
+- [home_shop.dart:11-62](file://lib/features/home/widgets/home_widgets/home_shop.dart#L11-L62)
+- [home_header.dart:10-57](file://lib/features/home/widgets/home_widgets/home_header.dart#L10-L57)
+- [home_helper.dart:7-88](file://lib/features/home/widgets/home_widgets/home_helper.dart#L7-L88)
+
+### AI Room Interior Design
+
+#### Overview
+The AI Room Interior Design feature represents a cutting-edge enhancement to the e-commerce platform, providing users with personalized interior design assistance powered by AI technology.
+
+#### Design Architecture
+The AI design system consists of several interconnected components:
+
+```mermaid
+classDiagram
+class HomeAiDesign {
++bool isDark
++SharedContainer container
++CustomPrimaryText title
++SharedContainer designContainer
++HomeAiDesignStep stepIndicator
++HomeAiSlider slider
++HomeProductPlacementPlace placementButton
+}
+class HomeAiDesignStep {
++int currentStep
++List steps
++Widget buildStepIndicator()
+}
+class HomeAiSlider {
++double position
++HomeController controller
++updatePosition(dx, width)
+}
+class HomeProductPlacementPlace {
++String text
++VoidCallback onTap
++Widget build()
+}
+HomeAiDesign --> HomeAiDesignStep : "contains"
+HomeAiDesign --> HomeAiSlider : "contains"
+HomeAiDesign --> HomeProductPlacementPlace : "contains"
+```
+
+**Diagram sources**
+- [home_ai_design.dart:10-63](file://lib/features/home/widgets/home_widgets/home_ai_design.dart#L10-L63)
+
+#### Step-by-Step Design Process
+The AI design system guides users through a structured design process:
+
+**Step 1: Design Selection**
+- Users choose from various design categories
+- Visual indicators show current selection
+- Progress tracking through the design process
+
+**Step 2: Slider Interface**
+- Interactive slider for design adjustments
+- Real-time preview updates
+- Position-based calculations for smooth interaction
+
+**Step 3: Product Placement**
+- Visual placement of products in design space
+- Drag-and-drop functionality
+- Realistic product positioning
+
+**Section sources**
+- [home_ai_design.dart:10-63](file://lib/features/home/widgets/home_widgets/home_ai_design.dart#L10-L63)
 
 ### Enhanced Product Attributes System
 - Purpose: Manage dynamic product attributes with options, pricing, stock levels, and default selections for comprehensive product customization.
@@ -601,153 +906,8 @@ Orders->>User : "Order visible in order list"
 - Payments ↔ Orders: Use Airwallex fields (client secret, intent ID) from OrdersModel to finalize payment and update order status.
 - Product Attributes ↔ Orders: Product attributes should be captured during purchase for accurate order fulfillment.
 - Rating System ↔ Orders: Order review system complements product rating system for comprehensive feedback collection.
-
-## Enhanced Product Attributes System
-
-### Overview
-The enhanced product attributes system provides comprehensive dynamic customization options for products, enabling customers to select from various attributes such as materials, colors, sizes, and finishes. This system represents a significant architectural addition to the product details feature, allowing for complex product configurations beyond simple media and basic details.
-
-### Data Model Architecture
-The product attributes system consists of three main components:
-
-1. **ProductAttributesModel**: Top-level container for attribute data
-2. **ProductAttribute**: Individual attribute groups (e.g., "Wood Finish", "Color")
-3. **AttributeOption**: Specific options within attributes with pricing and stock information
-
-```mermaid
-classDiagram
-class ProductAttributesModel {
-+ProductAttribute[] data
-+ProductAttributesModel.fromJson(json)
-+toJson()
-}
-class ProductAttribute {
-+int productAttributeId
-+int attributeId
-+String name
-+AttributeOption[] options
-+ProductAttribute.fromJson(json)
-+toJson()
-}
-class AttributeOption {
-+int productAttributeOptionId
-+int optionId
-+String name
-+dynamic image
-+String productImage
-+int price
-+int stock
-+bool isDefault
-+AttributeOption.fromJson(json)
-+toJson()
-}
-ProductAttributesModel --> ProductAttribute : "contains"
-ProductAttribute --> AttributeOption : "has many"
-```
-
-**Diagram sources**
-- [product_attributes_model.dart:9-100](file://lib/features/product_details.dart/models/product_attributes_model.dart#L9-L100)
-
-### Controller Implementation
-The ProductAttributesController manages the loading and display of product attributes with expandable sections and default option handling:
-
-**Key Features:**
-- Asynchronous attribute loading with loading state management
-- Expandable/collapsible attribute sections
-- Default option selection for each attribute group
-- Error handling with user-friendly snackbars
-
-**Section sources**
-- [products_attributes_controller.dart:1-40](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L40)
-- [product_attributes_repo.dart:1-21](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L1-L21)
-
-### UI Integration
-The product attributes system integrates seamlessly with the product details view through dedicated UI components that handle:
-- Dynamic attribute section expansion/collapse
-- Option selection with visual feedback
-- Price and stock level display
-- Default option highlighting
-
-## Improved Rating and Review System
-
-### Overview
-The enhanced rating and review system provides comprehensive product feedback mechanisms with detailed visualization and interactive submission capabilities. This system represents a significant improvement over basic rating implementations, offering detailed star distribution analysis and user-friendly review management.
-
-### Rating Distribution Visualization
-The system calculates and displays detailed rating distributions with dynamic star count analysis:
-
-```mermaid
-flowchart TD
-A["Load Product Reviews"] --> B["Initialize Star Counts"]
-B --> C["Iterate Through Reviews"]
-C --> D{"Valid Star Rating?"}
-D --> |Yes| E["Increment Star Count"]
-D --> |No| F["Skip Review"]
-E --> G{"More Reviews?"}
-F --> G
-G --> |Yes| C
-G --> |No| H["Calculate Percentages"]
-H --> I["Display Rating Distribution"]
-```
-
-**Diagram sources**
-- [product_details_rating.dart:21-38](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L21-L38)
-
-### Rating Components Architecture
-The rating system consists of several specialized components:
-
-1. **ProductDetailsRating**: Main container component handling overall rating display
-2. **ProductDetailsRatingInfo**: Displays average rating and review statistics
-3. **ProductDetailsRatingPercent**: Shows individual star rating distribution with progress bars
-4. **ProductDetailsReview**: Manages review display and submission interface
-
-```mermaid
-classDiagram
-class ProductDetailsRating {
-+build(context) Widget
-+calculateStarDistribution() List
-}
-class ProductDetailsRatingInfo {
-+double averageRating
-+int totalReviews
-+bool isDark
-+build(context) Widget
-}
-class ProductDetailsRatingPercent {
-+int star
-+double percent
-+bool isDark
-+build(context) Widget
-}
-class ProductDetailsReview {
-+Map[] reviews
-+int reviewIndex
-+build(context) Widget
-}
-ProductDetailsRating --> ProductDetailsRatingInfo : "contains"
-ProductDetailsRating --> ProductDetailsRatingPercent : "contains many"
-ProductDetailsReview --> CustomRatingDialog : "uses"
-```
-
-**Diagram sources**
-- [product_details_rating.dart:10-94](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L10-L94)
-- [product_details_rating_info.dart:7-104](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_info.dart#L7-L104)
-- [product_details_rating_percent.dart:7-55](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_percent.dart#L7-L55)
-- [product_details_review.dart:13-135](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_review.dart#L13-L135)
-
-### Review Submission Integration
-The rating system integrates with the existing order review system through the CustomRatingDialog component, providing:
-- Interactive star rating selection
-- Text review submission
-- Loading states and error handling
-- Success feedback upon submission
-
-**Section sources**
-- [product_details_rating.dart:1-94](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L1-L94)
-- [product_details_rating_info.dart:1-104](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_info.dart#L1-L104)
-- [product_details_rating_percent.dart:1-55](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating_percent.dart#L1-L55)
-- [product_details_review.dart:1-135](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_review.dart#L1-L135)
-- [order_review_controller.dart:1-42](file://lib/features/order/controllers/order_review_controller.dart#L1-L42)
+- **Quick Action System**: Centralized navigation system integrating with all major platform features.
+- **Enhanced Home Screen**: Unified interface combining quick actions, product presentation, and AI design capabilities.
 
 ## Enhanced UI Components
 
@@ -942,6 +1102,18 @@ Implements safe image navigation with fallback mechanisms:
 **Section sources**
 - [product_details_view_image.dart:33-51](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L33-L51)
 
+#### HomeShop Component
+Implements efficient room-based product image loading:
+
+**Key Features:**
+- CachedNetworkImageProvider for horizontal scrolling
+- Proper image sizing and aspect ratio
+- Overlay text for room names
+- Responsive design with proper spacing
+
+**Section sources**
+- [home_shop.dart:38-55](file://lib/features/home/widgets/home_widgets/home_shop.dart#L38-L55)
+
 ### Error Handling Mechanisms
 
 #### Fallback Strategies
@@ -958,6 +1130,7 @@ Implements safe image navigation with fallback mechanisms:
 **Section sources**
 - [global_search_suggestion_box.dart:184-192](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L184-L192)
 - [home_product_design.dart:63-64](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L63-L64)
+- [home_shop.dart:38-46](file://lib/features/home/widgets/home_widgets/home_shop.dart#L38-L46)
 
 ## Dependency Analysis
 - Controllers depend on Repositories for data access.
@@ -968,6 +1141,8 @@ Implements safe image navigation with fallback mechanisms:
 - **Product Attributes System**: New dedicated controllers and repositories for attribute management.
 - **Rating System**: Integrated rating components with dynamic visualization and review submission.
 - **UI Safety Checks**: Comprehensive validation patterns ensure robust image loading across all components.
+- **Quick Action System**: New centralized navigation system with dedicated widget and configuration classes.
+- **Enhanced Home Screen**: Comprehensive redesign with multiple integrated components and improved user experience.
 
 ```mermaid
 graph LR
@@ -991,6 +1166,14 @@ PC --> GSSB["GlobalSearchSuggestionBox"]
 PC --> HOUP["HomeOurProducts"]
 PC --> PDVI["ProductDetailsViewImage"]
 PAC --> GN
+subgraph "Enhanced Home Screen"
+HV["HomeView"] --> HQ["CustomQuickAction"]
+HV --> HS["HomeShop"]
+HV --> HH["HomeHeader"]
+HV --> HAD["HomeAiDesign"]
+HQ --> QAL["QuickActionList"]
+HC["HomeController"] --> HAD
+end
 subgraph "Enhanced UI Dependencies"
 CTFF["CustomTextFormField"] --> CTFF
 CPHF["CustomPhoneField"] --> CPHF
@@ -1018,10 +1201,13 @@ END
 - [error_snackbar.dart](file://lib/shared/widgets/snackbars/error_snackbar.dart)
 - [products_model.dart:1-267](file://lib/features/home/models/products_model.dart#L1-L267)
 - [product_details_model.dart:1-340](file://lib/features/product_details.dart/models/product_details_model.dart#L1-L340)
-- [home_product_design.dart:1-99](file://lib/features/home/widgets/home_widgets/home_product_design.dart#L1-L99)
-- [global_search_suggestion_box.dart:150-226](file://lib/features/home/widgets/home_widgets/global_search_suggestion_box.dart#L150-L226)
-- [home_our_products.dart:54-82](file://lib/features/home/widgets/home_widgets/home_our_products.dart#L54-L82)
-- [product_details_view_image.dart:1-97](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_view_image.dart#L1-L97)
+- [home_view.dart:18-92](file://lib/features/home/views/home_view.dart#L18-L92)
+- [custom_quick_action.dart:10-101](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L10-L101)
+- [quick_action_list.dart:4-30](file://lib/shared/widgets/custom_quick_action/quick_action_list.dart#L4-L30)
+- [home_shop.dart:11-62](file://lib/features/home/widgets/home_widgets/home_shop.dart#L11-L62)
+- [home_header.dart:10-57](file://lib/features/home/widgets/home_widgets/home_header.dart#L10-L57)
+- [home_ai_design.dart:10-63](file://lib/features/home/widgets/home_widgets/home_ai_design.dart#L10-L63)
+- [home_controller.dart:3-11](file://lib/features/home/controller/home_controller.dart#L3-L11)
 - [custom_text_form_field.dart:1-191](file://lib/shared/widgets/custom_form_field/custom_text_form_field.dart#L1-L191)
 - [custom_phone_field.dart:1-116](file://lib/shared/widgets/custom_form_field/custom_phone_field.dart#L1-L116)
 - [custom_rating_builder.dart:1-35](file://lib/shared/widgets/custom_rating/custom_rating_builder.dart#L1-L35)
@@ -1031,6 +1217,7 @@ END
 
 **Section sources**
 - [order_bindings.dart:1-11](file://lib/features/order/bindings/order_bindings.dart#L1-L11)
+- [home_bindings.dart:19-55](file://lib/features/home/bindings/home_bindings.dart#L19-L55)
 
 ## Performance Considerations
 - Lazy Loading: Use lazy loading for heavy UI components (e.g., product carousels) to reduce initial load.
@@ -1041,6 +1228,8 @@ END
 - **Image Loading Optimization**: CachedNetworkImage implementation reduces memory usage and improves performance for repeated image loads.
 - **Attribute Loading**: Product attributes are loaded asynchronously to prevent blocking the main UI thread.
 - **Rating Calculation**: Star distribution calculations are performed efficiently with minimal computational overhead.
+- **Quick Action System**: Grid-based layout with proper caching and responsive design for optimal performance.
+- **AI Design Features**: Optimized slider interactions and real-time updates for smooth user experience.
 
 ## Troubleshooting Guide
 - Network Failures: Errors are returned as Either<ErrorModel, T>; ensure controllers handle failures gracefully and display user-friendly messages via ErrorSnackbar.
@@ -1052,6 +1241,9 @@ END
 - **Empty Product States**: Ensure fallback placeholders are displayed when product media is unavailable.
 - **Attribute Loading**: Verify ProductAttributesController properly handles loading states and error conditions.
 - **Rating Distribution**: Ensure star count calculations handle edge cases like empty review lists or invalid rating values.
+- **Quick Action Navigation**: Verify route navigation works correctly for all four quick action categories.
+- **Home Screen Layout**: Check responsive design works across different screen sizes and orientations.
+- **AI Design Interactions**: Ensure slider interactions and design updates work smoothly without performance issues.
 
 **Section sources**
 - [order_controller.dart:16-27](file://lib/features/order/controllers/order_controller.dart#L16-L27)
@@ -1061,23 +1253,32 @@ END
 - [phone_validator.dart:1-15](file://lib/shared/extensions/validators/phone_validator.dart#L1-L15)
 - [products_attributes_controller.dart:20-28](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L20-L28)
 - [product_details_rating.dart:21-38](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_rating.dart#L21-L38)
+- [custom_quick_action.dart:38-41](file://lib/shared/widgets/custom_quick_action/custom_quick_action.dart#L38-L41)
+- [home_view.dart:39-42](file://lib/features/home/views/home_view.dart#L39-L42)
+- [home_shop.dart:26-32](file://lib/features/home/widgets/home_widgets/home_shop.dart#L26-L32)
 
 ## Conclusion
 The e-commerce platform establishes a solid foundation with product catalogs, order retrieval, and UI controllers. Recent enhancements significantly improve the user experience through comprehensive form field components, custom phone field validation, rating bar widgets, robust UI safety checks for product image loading, and **major architectural additions** including:
 
 ### Major Enhancements
+- **Enhanced Home Screen**: Comprehensive redesign with improved visual presentation, better organization, and enhanced user experience
+- **Quick Action System**: Four main categories (Shop Products, Sell Furniture, Rent Products, Design My Room) with visual icons and descriptions
+- **Improved Product Presentation**: Room-based shopping with horizontal scrolling and cached image loading
+- **AI Room Interior Design**: Step-by-step design assistance with visual product placement and real-time updates
+- **Enhanced Visual Design**: Improved typography, shadows, and responsive layout across all components
 - **Comprehensive Product Attributes System**: Dynamic attribute management with pricing, stock, and default options for complex product customization
 - **Enhanced Rating and Review System**: Detailed star distribution visualization, interactive rating submission, and comprehensive review management
-- **Improved Product Details Architecture**: Integrated rating/review components with dynamic attribute sections
 - **Expanded UI Component Library**: Specialized rating components with progress indicators and detailed visualization
 
 ### Architectural Improvements
-- **Separate Controllers**: Dedicated ProductAttributesController for attribute management alongside ProductDetailsController
+- **Integrated Quick Action System**: Centralized navigation system with dedicated widget and configuration classes
+- **Enhanced Home Screen Architecture**: Multiple integrated components working together for unified user experience
 - **Modular Rating System**: Standalone rating components with reusable visualization patterns
 - **Enhanced Data Models**: Comprehensive ProductDetailsModel with rich metadata and review information
 - **Improved User Experience**: Interactive rating submission, detailed feedback visualization, and seamless attribute selection
+- **Better Performance**: Optimized image loading, responsive design, and efficient component interactions
 
 ### Missing Components
-The platform still requires cart functionality, checkout flow, payment gateway integration, category filtering, and inventory management. Extending the existing architecture with repositories and controllers for these features will complete the end-to-end shopping experience while maintaining modularity, testability, and robust error handling across all image loading scenarios and enhanced rating systems.
+The platform still requires cart functionality, checkout flow, payment gateway integration, category filtering, and inventory management. Extending the existing architecture with repositories and controllers for these features will complete the end-to-end shopping experience while maintaining modularity, testability, and robust error handling across all image loading scenarios, enhanced rating systems, and the new quick action navigation system.
 
-The recent enhancements represent a significant step forward in creating a comprehensive e-commerce platform that provides rich product information, detailed customer feedback mechanisms, and robust image handling capabilities essential for modern e-commerce applications.
+The recent enhancements represent a significant step forward in creating a comprehensive e-commerce platform that provides rich product information, detailed customer feedback mechanisms, robust image handling capabilities, and an intuitive user interface essential for modern e-commerce applications. The enhanced home screen with quick action system and improved product presentation creates a more engaging and efficient shopping experience for users.

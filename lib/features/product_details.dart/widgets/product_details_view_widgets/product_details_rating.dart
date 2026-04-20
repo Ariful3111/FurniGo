@@ -15,14 +15,14 @@ class ProductDetailsRating extends GetWidget<ProductDetailsController> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     final productData = controller.productDetails.value!.data;
-    final reviews = productData.reviews;
+    final reviews = productData.reviews ?? [];
     final totalReviews = reviews.length;
 
     // Calculate rating distribution dynamically
     final Map<int, int> starCounts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0};
 
     for (var review in reviews) {
-      final star = review.rating.round();
+      final star = (review.rating ?? 0).round();
       if (star >= 1 && star <= 5) {
         starCounts[star] = (starCounts[star] ?? 0) + 1;
       }
@@ -62,8 +62,8 @@ class ProductDetailsRating extends GetWidget<ProductDetailsController> {
           SizedBox(height: 20.h),
           ProductDetailsRatingInfo(
             isDark: isDark,
-            averageRating: productData.averageRating.toDouble(),
-            totalReviews: productData.totalReviews,
+            averageRating: (productData.averageRating ?? 0).toDouble(),
+            totalReviews: productData.totalReviews ?? 0,
           ),
           SizedBox(height: 20.h),
           Divider(

@@ -3,8 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/cart/controller/add_to_cart_controller.dart';
 import 'package:zb_dezign/features/product_details.dart/controller/product_details_controller.dart';
+import 'package:zb_dezign/features/product_details.dart/controller/products_attributes_controller.dart';
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_helper.dart';
+import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class ProductDetailsCart extends GetWidget<ProductDetailsController> {
@@ -72,15 +75,37 @@ class ProductDetailsCart extends GetWidget<ProductDetailsController> {
                           ),
                         ],
                       ),
-                      button(
-                        text: 'Add TO CART',
-                        icon: IconsPath.productCart,
-                        onTap: () {},
-                        border: Border.all(color: Color(0xFF111116)),
-                        bgColor: AppColors.whiteColor,
-                        iconColor: AppColors.darkColor,
-                        textColor: AppColors.darkColor,
-                      ),
+                      Obx(() {
+                        return Get.find<AddToCartController>().isLoading.value
+                            ? ButtonLoading()
+                            : button(
+                                text: 'Add TO CART',
+                                icon: IconsPath.productCart,
+                                onTap: () async {
+                                  await Get.find<AddToCartController>()
+                                      .addToCart(
+                                        productID:
+                                            controller
+                                                .productDetails
+                                                .value!
+                                                .data
+                                                .id
+                                                ?.toInt() ??
+                                            0,
+                                        quantity: controller.qty.toInt(),
+                                        options:
+                                            Get.find<
+                                                  ProductAttributesController
+                                                >()
+                                                .selectedIDs,
+                                      );
+                                },
+                                border: Border.all(color: Color(0xFF111116)),
+                                bgColor: AppColors.whiteColor,
+                                iconColor: AppColors.darkColor,
+                                textColor: AppColors.darkColor,
+                              );
+                      }),
                     ],
                   ),
                   SizedBox(height: 16.h),

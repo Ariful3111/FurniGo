@@ -57,7 +57,7 @@ class ToggleFavouriteController extends GetxController {
     Get.find<GetFavouritesController>().favourites.value?.data.removeWhere((
       element,
     ) {
-      if (element.product.id == productID) {
+      if (element.product?.id?.toInt() == productID) {
         toggleNewArrival(productID: productID);
         toggleCategoryProduct(productID: productID);
         return true;

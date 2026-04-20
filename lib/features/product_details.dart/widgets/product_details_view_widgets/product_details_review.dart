@@ -21,7 +21,7 @@ class ProductDetailsReview extends GetWidget<ProductDetailsController> {
       return SizedBox.shrink();
     }
 
-    final reviews = controller.productDetails.value!.data.reviews;
+    final reviews = controller.productDetails.value!.data.reviews ?? [];
 
     if (reviews.isEmpty) {
       return Padding(
@@ -35,14 +35,17 @@ class ProductDetailsReview extends GetWidget<ProductDetailsController> {
       child: Column(
         children: [
           ProductDetailsReviewCard(
-            name: reviews[controller.reviewIndex.value].reviewerName,
-            time: reviews[controller.reviewIndex.value].createdAt
-                .toSmartRelativeTime(),
-            rating: reviews[controller.reviewIndex.value].rating.toDouble(),
+            name: reviews[controller.reviewIndex.value].reviewerName ?? '',
+            time:
+                reviews[controller.reviewIndex.value].createdAt
+                    ?.toSmartRelativeTime() ??
+                '',
+            rating: (reviews[controller.reviewIndex.value].rating ?? 0)
+                .toDouble(),
             image:
                 reviews[controller.reviewIndex.value].reviewerImage ??
                 IconsPath.profile,
-            review: reviews[controller.reviewIndex.value].review,
+            review: reviews[controller.reviewIndex.value].review ?? '',
             isDark: isDark,
           ),
           SizedBox(height: 16.h),
