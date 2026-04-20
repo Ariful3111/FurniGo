@@ -27,6 +27,7 @@
 - [bottom_nav_view.dart](file://lib/features/home/views/bottom_nav_view.dart)
 - [bottom_nav_controller.dart](file://lib/features/home/controller/bottom_nav_controller.dart)
 - [bottom_nav_cart_item.dart](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart)
+- [bottom_nav_items.dart](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_items.dart)
 - [home_product_design.dart](file://lib/features/home/widgets/home_widgets/home_product_design.dart)
 - [product_details_cart.dart](file://lib/features/product_details.dart/widgets/product_details_view_widgets/product_details_cart.dart)
 - [product_details_bindings.dart](file://lib/features/product_details.dart/bindings/product_details_bindings.dart)
@@ -36,6 +37,7 @@
 
 ## Update Summary
 **Changes Made**
+- **Enhanced Cart Badge System**: Upgraded from static hardcoded count ('4') to dynamic reactive system using GetX Obx widgets and CartController for real-time updates
 - **Added Comprehensive Cart Item Deletion Functionality**: Introduced new DeleteCartItemController and DeleteCartItemRepository for individual item removal
 - **Enhanced CartController with deleteItem Method**: Integrated client-side state management and server synchronization for item deletion
 - **UI Improvements for Empty Cart State**: Enhanced cart view with better empty cart detection and display
@@ -55,13 +57,14 @@
 9. [Comprehensive Item Deletion System](#comprehensive-item-deletion-system)
 10. [Individual Item Deletion Implementation](#individual-item-deletion-implementation)
 11. [Delete All Functionality](#delete-all-functionality)
-12. [Reactive State Management](#reactive-state-management)
-13. [Enhanced Repository Pattern Implementation](#enhanced-repository-pattern-implementation)
-14. [Improved UI Components with Deletion Features](#improved-ui-components-with-deletion-features)
-15. [Cart State Persistence and Synchronization](#cart-state-persistence-and-synchronization)
-16. [Performance Considerations](#performance-considerations)
-17. [Troubleshooting Guide](#troubleshooting-guide)
-18. [Conclusion](#conclusion)
+12. [Enhanced Cart Badge System](#enhanced-cart-badge-system)
+13. [Reactive State Management](#reactive-state-management)
+14. [Enhanced Repository Pattern Implementation](#enhanced-repository-pattern-implementation)
+15. [Improved UI Components with Deletion Features](#improved-ui-components-with-deletion-features)
+16. [Cart State Persistence and Synchronization](#cart-state-persistence-and-synchronization)
+17. [Performance Considerations](#performance-considerations)
+18. [Troubleshooting Guide](#troubleshooting-guide)
+19. [Conclusion](#conclusion)
 
 ## Introduction
 This document describes the comprehensive Shopping Cart system within the ZB-DEZINE Flutter application. The system has undergone significant enhancements including granular item selection capabilities, bulk selection operations, reactive state management, comprehensive item deletion functionality, and improved UI components. The system maintains its modernized API-driven architecture with repository pattern implementation while adding robust selection management, performance optimizations, and streamlined cart deletion operations.
@@ -93,6 +96,14 @@ CIB --> QTY["Quantity Controls<br/>Improved Layout"]
 CSI["CartSelectItem<br/>Bulk Selection Header"] --> BULK["Select All Checkbox"]
 CSI --> DELETEALL["Delete All Button<br/>Bulk Operation"]
 end
+subgraph "Enhanced Reactive Cart Badge System"
+BNC["BottomNavCartItem<br/>Dynamic Badge Count"] --> OBC["Obx Widget<br/>Real-time Updates"]
+BNC --> CCC["CartController<br/>Item Count Access"]
+BNC --> BADGE["Badge Widget<br/>Visual Indicator"]
+OBC --> CCC
+CCC --> CART_ITEMS["carts.value.items.length"]
+CART_ITEMS --> BADGE
+end
 subgraph "Reactive Order Summary"
 COS["CartOrderSummery<br/>Dynamic Pricing"] --> RX["Reactive Calculations"]
 COS --> PRECISION["toPrecision(2)<br/>Decimal Formatting"]
@@ -105,20 +116,24 @@ end
 ```
 
 **Diagram sources**
-- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [cart_controller.dart:1-97](file://lib/features/cart/controller/cart_controller.dart#L1-L97)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
 - [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
+- [bottom_nav_view.dart:64-75](file://lib/features/home/views/bottom_nav_view.dart#L64-L75)
+- [bottom_nav_cart_item.dart:9-77](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L77)
 
 **Section sources**
-- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [cart_controller.dart:1-97](file://lib/features/cart/controller/cart_controller.dart#L1-L97)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 - [cart_item.dart:1-103](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L1-L103)
 - [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
+- [bottom_nav_view.dart:64-75](file://lib/features/home/views/bottom_nav_view.dart#L64-L75)
+- [bottom_nav_cart_item.dart:9-77](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L77)
 
 ## Core Components
 The cart system consists of enhanced components with improved functionality, granular selection capabilities, comprehensive deletion system, and modernized architecture:
@@ -139,6 +154,7 @@ The cart system consists of enhanced components with improved functionality, gra
 - **CartOrderSummery**: Reactive order summary with dynamic pricing calculations and decimal precision formatting
 - **CheckoutOrderCalculation**: Enhanced checkout pricing with promotional discount handling
 - **Debugging Integration**: Real-time cart length monitoring and enhanced error logging for selection and deletion operations
+- **Enhanced Cart Badge System**: Dynamic reactive badge system with real-time updates using GetX Obx widgets and CartController
 
 Key enhancements include:
 - **Granular Selection Management**: Individual item selection with server synchronization and client-side state tracking
@@ -155,9 +171,10 @@ Key enhancements include:
 - **Decimal Precision**: Consistent two-decimal formatting for all monetary values
 - **Improved Layout**: Better spacing and alignment in cart item components with selection and deletion integration
 - **Empty Cart State Handling**: Enhanced empty cart detection and display with improved user experience
+- **Dynamic Cart Badge**: Real-time cart item count display with reactive updates and visual feedback
 
 **Section sources**
-- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [cart_controller.dart:1-97](file://lib/features/cart/controller/cart_controller.dart#L1-L97)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [delete_cart_item_repo.dart:1-23](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L1-L23)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
@@ -165,6 +182,8 @@ Key enhancements include:
 - [cart_model.dart:68-120](file://lib/features/cart/models/cart_model.dart#L68-L120)
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
 - [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
+- [bottom_nav_view.dart:64-75](file://lib/features/home/views/bottom_nav_view.dart#L64-L75)
+- [bottom_nav_cart_item.dart:9-77](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L77)
 
 ## Architecture Overview
 The cart system follows an enhanced API-driven architecture with improved repository pattern implementation, granular selection capabilities, comprehensive deletion system, and debugging integration:
@@ -202,6 +221,14 @@ CSI["CartSelectItem<br/>Bulk Selection Header"] --> BULK_CB["Select All Checkbox
 CSI --> DELETE_ALL_BTN["Delete All Button<br/>Bulk Operation<br/>Visual Design"]
 COS["CartOrderSummery<br/>Reactive Calculations"] --> RX["toPrecision(2)<br/>Decimal Formatting"]
 end
+subgraph "Enhanced Cart Badge System"
+BNC["BottomNavCartItem<br/>Dynamic Badge"] --> OBC["Obx Widget<br/>Real-time Updates"]
+BNC --> CCC["CartController<br/>Item Count Access"]
+BNC --> BADGE["Badge Widget<br/>Visual Indicator"]
+OBC --> CCC
+CCC --> CART_ITEMS["carts.value.items.length"]
+CART_ITEMS --> BADGE
+end
 subgraph "Selection and Deletion State Management"
 SELECTED --> STATE_SYNC["State Synchronization<br/>Client-Server Sync"]
 STATE_SYNC --> SERVER_UPDATE["Server API Calls<br/>Selection/Deletion Updates"]
@@ -211,12 +238,14 @@ END
 ```
 
 **Diagram sources**
-- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [cart_controller.dart:1-97](file://lib/features/cart/controller/cart_controller.dart#L1-L97)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
 - [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
+- [bottom_nav_view.dart:64-75](file://lib/features/home/views/bottom_nav_view.dart#L64-L75)
+- [bottom_nav_cart_item.dart:9-77](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L77)
 
 ## Detailed Component Analysis
 
@@ -268,12 +297,68 @@ Controller-->>User : UI Update with deletion feedback
 ```
 
 **Diagram sources**
-- [cart_controller.dart:31-104](file://lib/features/cart/controller/cart_controller.dart#L31-L104)
+- [cart_controller.dart:30-96](file://lib/features/cart/controller/cart_controller.dart#L30-L96)
 - [delete_cart_item_controller.dart:9-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L9-L25)
 - [select_cart_item_controller.dart:11-31](file://lib/features/cart/controller/select_cart_item_controller.dart#L11-L31)
 
 **Section sources**
-- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [cart_controller.dart:1-97](file://lib/features/cart/controller/cart_controller.dart#L1-L97)
+
+### Enhanced Cart Badge System
+The cart badge system has been enhanced from a static hardcoded count to a dynamic reactive system using GetX Obx widgets and CartController for real-time updates:
+
+```mermaid
+classDiagram
+class BottomNavCartItem {
++String icon
++String label
++int index
++String badgeCount
++build() Widget
+}
+class BottomNavView {
++Obx Widget
++CartController Integration
++Dynamic Badge Count
+}
+class CartController {
++Rxn~CartModel~ carts
++getCart() Future<void>
++deleteItem(id) Future<void>
+}
+class ObxWidget {
++Reactive Updates
++Real-time State Changes
++Automatic UI Refresh
+}
+class BadgeWidget {
++Visual Indicator
++Dynamic Content
++Positioned Overlay
+}
+class CartItemCountCalculation {
++cartController.carts.value?.items?.length
++Null Safety Handling
++Default Value 0
++toString() Conversion
+}
+BottomNavViewItem --> BottomNavCartItem
+BottomNavView --> BottomNavItem
+BottomNavCartItem --> ObxWidget
+ObxWidget --> CartController
+CartController --> CartItemCountCalculation
+CartItemCountCalculation --> BadgeWidget
+```
+
+**Diagram sources**
+- [bottom_nav_view.dart:64-75](file://lib/features/home/views/bottom_nav_view.dart#L64-L75)
+- [bottom_nav_cart_item.dart:9-77](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L77)
+- [cart_controller.dart:22-23](file://lib/features/cart/controller/cart_controller.dart#L22-L23)
+
+**Section sources**
+- [bottom_nav_view.dart:64-75](file://lib/features/home/views/bottom_nav_view.dart#L64-L75)
+- [bottom_nav_cart_item.dart:9-77](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L77)
+- [cart_controller.dart:22-23](file://lib/features/cart/controller/cart_controller.dart#L22-L23)
 
 ### Enhanced Selection System Implementation
 The new selection system provides granular and bulk selection capabilities with comprehensive state management and deletion integration:
@@ -345,7 +430,7 @@ SelectAllCartItemsController --> SelectAllCartItemsRepository
 - [cart_model.dart:68-89](file://lib/features/cart/models/cart_model.dart#L68-L89)
 
 **Section sources**
-- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [cart_controller.dart:1-97](file://lib/features/cart/controller/cart_controller.dart#L1-L97)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
@@ -373,6 +458,7 @@ class CartController {
 +deleteItem(id) - Enhanced with client-side state management
 +Removes item from carts.value.items
 +Updates selectedItems observable
++Updates isAllSelected.value
 +Refreshes cart state
 +Calls DeleteCartItemController for server sync
 }
@@ -392,14 +478,14 @@ class CartView {
 **Diagram sources**
 - [delete_cart_item_controller.dart:6-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L6-L25)
 - [delete_cart_item_repo.dart:8-22](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L8-L22)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
 - [cart_view.dart:29-33](file://lib/features/cart/views/cart_view.dart#L29-L33)
 
 **Section sources**
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [delete_cart_item_repo.dart:1-23](file://lib/features/cart/repositories/delete_cart_item_repo.dart#L1-L23)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
 - [cart_view.dart:29-33](file://lib/features/cart/views/cart_view.dart#L29-L33)
 
@@ -434,12 +520,12 @@ Controller-->>DeleteButton : UI Update with deletion state
 
 **Diagram sources**
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
 - [delete_cart_item_controller.dart:9-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L9-L25)
 
 **Section sources**
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 
 ### Delete All Functionality
@@ -465,11 +551,11 @@ Controller-->>DeleteAllButton : UI Update
 
 **Diagram sources**
 - [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
-- [cart_controller.dart:106](file://lib/features/cart/controller/cart_controller.dart#L106)
+- [cart_controller.dart:91](file://lib/features/cart/controller/cart_controller.dart#L91)
 
 **Section sources**
 - [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
-- [cart_controller.dart:106](file://lib/features/cart/controller/cart_controller.dart#L106)
+- [cart_controller.dart:91](file://lib/features/cart/controller/cart_controller.dart#L91)
 
 ### Granular Item Selection Capabilities
 The individual item selection system provides precise control over cart items with server synchronization:
@@ -500,12 +586,12 @@ Controller-->>CheckBox : UI Update with selection state
 
 **Diagram sources**
 - [cart_item_info.dart:38-47](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L38-L47)
-- [cart_controller.dart:67-79](file://lib/features/cart/controller/cart_controller.dart#L67-L79)
+- [cart_controller.dart:52-64](file://lib/features/cart/controller/cart_controller.dart#L52-L64)
 - [select_cart_item_controller.dart:11-31](file://lib/features/cart/controller/select_cart_item_controller.dart#L11-L31)
 
 **Section sources**
 - [cart_item_info.dart:35-49](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L35-L49)
-- [cart_controller.dart:67-79](file://lib/features/cart/controller/cart_controller.dart#L67-L79)
+- [cart_controller.dart:52-64](file://lib/features/cart/controller/cart_controller.dart#L52-L64)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 
 ### Bulk Selection Operations
@@ -538,12 +624,12 @@ Controller-->>SelectAllCheckBox : UI Update with bulk selection state
 
 **Diagram sources**
 - [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
-- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
+- [cart_controller.dart:66-78](file://lib/features/cart/controller/cart_controller.dart#L66-L78)
 - [select_all_cart_item_controller.dart:11-29](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L11-L29)
 
 **Section sources**
 - [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
-- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
+- [cart_controller.dart:66-78](file://lib/features/cart/controller/cart_controller.dart#L66-L78)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 
 ### Reactive State Management
@@ -749,14 +835,14 @@ MonitorState --> LoadCart
 ```
 
 **Diagram sources**
-- [cart_controller.dart:55-62](file://lib/features/cart/controller/cart_controller.dart#L55-L62)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
-- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
+- [cart_controller.dart:40-49](file://lib/features/cart/controller/cart_controller.dart#L40-L49)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
+- [cart_controller.dart:66-78](file://lib/features/cart/controller/cart_controller.dart#L66-L78)
 
 **Section sources**
-- [cart_controller.dart:55-62](file://lib/features/cart/controller/cart_controller.dart#L55-L62)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
-- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
+- [cart_controller.dart:40-49](file://lib/features/cart/controller/cart_controller.dart#L40-L49)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
+- [cart_controller.dart:66-78](file://lib/features/cart/controller/cart_controller.dart#L66-L78)
 
 ## Enhanced Selection System Implementation
 The selection system implements comprehensive granular and bulk selection capabilities with reactive state management and deletion integration:
@@ -830,7 +916,7 @@ DeletionStateManagement --> DeletionAPIIntegration
 - [select_all_cart_item_controller.dart:6-9](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L6-L9)
 
 **Section sources**
-- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [cart_controller.dart:1-97](file://lib/features/cart/controller/cart_controller.dart#L1-L97)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
@@ -865,12 +951,12 @@ Controller-->>ItemWidget : Obx Update
 
 **Diagram sources**
 - [cart_item_info.dart:38-47](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L38-L47)
-- [cart_controller.dart:67-79](file://lib/features/cart/controller/cart_controller.dart#L67-L79)
+- [cart_controller.dart:52-64](file://lib/features/cart/controller/cart_controller.dart#L52-L64)
 - [select_cart_item_controller.dart:11-31](file://lib/features/cart/controller/select_cart_item_controller.dart#L11-L31)
 
 **Section sources**
 - [cart_item_info.dart:35-49](file://lib/features/cart/widgets/cart_view_widgets/cart_item_info.dart#L35-L49)
-- [cart_controller.dart:67-79](file://lib/features/cart/controller/cart_controller.dart#L67-L79)
+- [cart_controller.dart:52-64](file://lib/features/cart/controller/cart_controller.dart#L52-L64)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 
 ## Bulk Selection Operations
@@ -904,12 +990,12 @@ Controller-->>SelectAllWidget : Obx Update
 
 **Diagram sources**
 - [cart_select_item.dart:22-26](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L22-L26)
-- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
+- [cart_controller.dart:66-78](file://lib/features/cart/controller/cart_controller.dart#L66-L78)
 - [select_all_cart_item_controller.dart:11-29](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L11-L29)
 
 **Section sources**
 - [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
-- [cart_controller.dart:81-93](file://lib/features/cart/controller/cart_controller.dart#L81-L93)
+- [cart_controller.dart:66-78](file://lib/features/cart/controller/cart_controller.dart#L66-L78)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 
 ## Comprehensive Item Deletion System
@@ -944,12 +1030,12 @@ Controller-->>DeleteButton : Obx Update
 
 **Diagram sources**
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
 - [delete_cart_item_controller.dart:9-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L9-L25)
 
 **Section sources**
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 
 ## Individual Item Deletion Implementation
@@ -983,12 +1069,12 @@ Controller-->>DeleteButton : UI Update with deletion state
 
 **Diagram sources**
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
 - [delete_cart_item_controller.dart:9-25](file://lib/features/cart/controller/delete_cart_item_controller.dart#L9-L25)
 
 **Section sources**
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
-- [cart_controller.dart:95-104](file://lib/features/cart/controller/cart_controller.dart#L95-L104)
+- [cart_controller.dart:80-89](file://lib/features/cart/controller/cart_controller.dart#L80-L89)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 
 ## Delete All Functionality
@@ -1014,11 +1100,11 @@ Controller-->>DeleteAllButton : UI Update
 
 **Diagram sources**
 - [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
-- [cart_controller.dart:106](file://lib/features/cart/controller/cart_controller.dart#L106)
+- [cart_controller.dart:91](file://lib/features/cart/controller/cart_controller.dart#L91)
 
 **Section sources**
 - [cart_select_item.dart:1-57](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L1-L57)
-- [cart_controller.dart:106](file://lib/features/cart/controller/cart_controller.dart#L106)
+- [cart_controller.dart:91](file://lib/features/cart/controller/cart_controller.dart#L91)
 
 ## Reactive State Management
 The selection and deletion system implements comprehensive reactive state management for real-time updates and synchronization:
@@ -1066,11 +1152,11 @@ StateSynchronizationMechanism --> UIReactiveUpdates
 
 **Diagram sources**
 - [cart_controller.dart:22-24](file://lib/features/cart/controller/cart_controller.dart#L22-L24)
-- [cart_controller.dart:55-62](file://lib/features/cart/controller/cart_controller.dart#L55-L62)
+- [cart_controller.dart:40-49](file://lib/features/cart/controller/cart_controller.dart#L40-L49)
 
 **Section sources**
 - [cart_controller.dart:22-24](file://lib/features/cart/controller/cart_controller.dart#L22-L24)
-- [cart_controller.dart:55-62](file://lib/features/cart/controller/cart_controller.dart#L55-L62)
+- [cart_controller.dart:40-49](file://lib/features/cart/controller/cart_controller.dart#L40-L49)
 
 ## Enhanced Repository Pattern Implementation
 The repository pattern has been enhanced with dedicated selection and deletion endpoints and comprehensive error handling:
@@ -1234,6 +1320,7 @@ The enhanced cart system implements several performance optimization strategies 
 - **API Endpoint Efficiency**: Dedicated endpoints for individual and bulk selection and deletion operations reduce payload sizes
 - **State Synchronization**: Optimized client-server state synchronization prevents redundant API calls for both selection and deletion operations
 - **Empty Cart Optimization**: Efficient empty cart state detection reduces unnecessary UI updates and rendering
+- **Dynamic Badge System**: Real-time cart item count updates without performance impact through reactive state management
 
 ## Troubleshooting Guide
 Enhanced troubleshooting procedures for the improved cart system with selection and deletion capabilities:
@@ -1269,6 +1356,13 @@ Enhanced troubleshooting procedures for the improved cart system with selection 
 - Ensure UI integration with delete all button works correctly
 - Verify state management for bulk deletion operations
 
+**Cart Badge System Issues**
+- Confirm BottomNavView Obx widget properly accesses CartController
+- Check that cartController.carts.value?.items?.length returns correct count
+- Verify badgeCount.toString() conversion works properly
+- Ensure reactive updates trigger UI refresh when cart items change
+- Check that ValueKey(count) prevents unnecessary widget rebuilds
+
 **API Response Parsing Errors**
 - Confirm nested data structure matches expected format for cart data
 - Check field mapping in CartModel.fromJson includes isSelected property
@@ -1294,14 +1388,17 @@ Enhanced troubleshooting procedures for the improved cart system with selection 
 - Verify UI updates don't cause excessive rebuild cycles
 - Ensure selection and deletion operations don't block main thread execution
 - Monitor empty cart state detection performance
+- Check reactive badge system performance with frequent cart updates
 
 **Section sources**
-- [cart_controller.dart:1-112](file://lib/features/cart/controller/cart_controller.dart#L1-L112)
+- [cart_controller.dart:1-97](file://lib/features/cart/controller/cart_controller.dart#L1-L97)
 - [delete_cart_item_controller.dart:1-27](file://lib/features/cart/controller/delete_cart_item_controller.dart#L1-L27)
 - [select_cart_item_controller.dart:1-32](file://lib/features/cart/controller/select_cart_item_controller.dart#L1-L32)
 - [select_all_cart_item_controller.dart:1-30](file://lib/features/cart/controller/select_all_cart_item_controller.dart#L1-L30)
 - [cart_item.dart:52-78](file://lib/features/cart/widgets/cart_view_widgets/cart_item.dart#L52-L78)
 - [cart_select_item.dart:36-51](file://lib/features/cart/widgets/cart_view_widgets/cart_select_item.dart#L36-L51)
+- [bottom_nav_view.dart:64-75](file://lib/features/home/views/bottom_nav_view.dart#L64-L75)
+- [bottom_nav_cart_item.dart:9-77](file://lib/features/home/widgets/bottom_nav_widgets/bottom_nav_cart_item.dart#L9-L77)
 
 ## Conclusion
 The Shopping Cart system in ZB-DEZINE has been significantly enhanced with granular item selection capabilities, bulk selection operations, comprehensive item deletion functionality, reactive state management, and improved UI components. The system maintains its modernized API-driven architecture while adding robust selection management, performance optimizations, and streamlined cart deletion operations.
@@ -1319,6 +1416,7 @@ The enhanced system features:
 - **Reactive Calculations**: Dynamic pricing updates with consistent decimal formatting
 - **Debugging Support**: Real-time monitoring and enhanced error logging capabilities for selection and deletion operations
 - **Performance Optimizations**: Cached image loading, efficient state management, and optimized API communication for both selection and deletion
+- **Dynamic Cart Badge System**: Real-time cart item count display with reactive updates using GetX Obx widgets and CartController
 - **Maintainable Architecture**: Clear separation of concerns with enhanced repository pattern implementation
 - **Scalable Design**: Modular components ready for future enhancements like advanced inventory validation and promotional discount systems
 - **Robust Error Handling**: Comprehensive error handling for selection, deletion, and state synchronization operations
