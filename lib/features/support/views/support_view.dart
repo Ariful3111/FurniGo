@@ -75,6 +75,7 @@ class SupportView extends StatelessWidget {
               onPressed: () {},
               backgroundColor: AppColors.primaryColor,
               width: 110.w,
+              border: Border.all(color: Colors.transparent),
             ),
           ),
         ],

@@ -60,13 +60,16 @@ class CreditBalance extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           CustomTableActionButton(
+            border: Border.all(color: Colors.transparent),
             padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
             icon: IconsPath.arrowRight,
             text: "Purchase Credits",
             fontSize: 14.sp,
-            backgroundColor: AppColors.secondaryColor,
-            textColor:isDark? AppColors.darkColor:AppColors.whiteColor,
-            iconColor: isDark? AppColors.darkColor:AppColors.whiteColor,
+            backgroundColor: isDark
+                ? AppColors.whiteColor
+                : AppColors.secondaryColor,
+            textColor: isDark ? AppColors.darkColor : AppColors.whiteColor,
+            iconColor: isDark ? AppColors.darkColor : AppColors.whiteColor,
             onTap: () {},
             boxShadow: [
               shadow(dy: 98, blurRadius: 28, alpha: 0.0),

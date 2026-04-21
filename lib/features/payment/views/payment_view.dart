@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/state_manager.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/features/payment/controller/payment_controller.dart';
 import 'package:zb_dezign/features/payment/widgets/eft_payments.dart';
 import 'package:zb_dezign/features/payment/widgets/payment_method.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
@@ -9,7 +11,7 @@ import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
-class PaymentView extends StatelessWidget {
+class PaymentView extends GetView<PaymentController> {
   const PaymentView({super.key});
 
   @override
@@ -17,6 +19,7 @@ class PaymentView extends StatelessWidget {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomContainer(
       child: ListView(
+        controller: controller.scrollController,
         children: [
           CustomAppbar(
             title: 'Payment Method',

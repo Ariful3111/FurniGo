@@ -50,7 +50,7 @@ class PaymentMethod extends StatelessWidget {
             title: 'Payment methods',
             sub: 'Manage cards and EFT details',
             icon2: IconsPath.add,
-            buttonText: 'Add',
+            buttonText: 'Add Card',
             onTap: () {
               showDialog(
                 context: context,

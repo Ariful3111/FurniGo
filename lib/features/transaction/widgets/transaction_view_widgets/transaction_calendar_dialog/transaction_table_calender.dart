@@ -74,7 +74,11 @@ class TransactionTableCalender extends StatelessWidget {
               daysOfWeekHeight: weekBarHeight,
               selectedDayPredicate: (day) => isSameDay(day, selectDay),
               headerStyle: HeaderStyle(
-                decoration: BoxDecoration(color: AppColors.darkActiveTextColor),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? Color(0xFF0F0029)
+                      : AppColors.darkActiveTextColor,
+                ),
                 titleCentered: true,
                 formatButtonVisible: false,
                 headerMargin: EdgeInsets.zero,
@@ -99,25 +103,33 @@ class TransactionTableCalender extends StatelessWidget {
               calendarStyle: CalendarStyle(
                 cellMargin: EdgeInsets.all(3.r),
                 selectedTextStyle: textDecoration(
-                  color: isDark
-                      ? AppColors.primaryBorderColor
-                      : AppColors.whiteColor,
+                  color: isDark ? AppColors.whiteColor : AppColors.labelColor,
                 ),
                 selectedDecoration: BoxDecoration(
-                  color: AppColors.primaryColor,
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isDark
+                        ? AppColors.whiteColor
+                        : AppColors.primaryColor,
+                  ),
                 ),
                 defaultTextStyle: textDecoration(
-                  color: isDark ? AppColors.primaryBorderColor : null,
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.labelColor,
                 ),
                 todayTextStyle: textDecoration(color: AppColors.borderColor),
                 outsideTextStyle: textDecoration(
-                  color: isDark ? AppColors.borderColor : Color(0xFF525E6F),
+                  color: isDark ? AppColors.borderColor : AppColors.labelColor,
                 ),
                 weekendTextStyle: textDecoration(
-                  color: isDark ? AppColors.primaryColor : null,
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.labelColor,
                 ),
-                rangeHighlightColor: AppColors.boxColor,
+                rangeHighlightColor: isDark
+                    ? AppColors.darkPrimaryTextColor
+                    : AppColors.boxColor,
                 withinRangeTextStyle: textDecoration(
                   color: AppColors.labelColor,
                 ),
@@ -138,11 +150,15 @@ class TransactionTableCalender extends StatelessWidget {
               daysOfWeekStyle: DaysOfWeekStyle(
                 weekendStyle: textDecoration(
                   fontSize: 8.35.sp,
-                  color: isDark ? AppColors.borderColor : Color(0xFF525E6F),
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.labelColor,
                 ),
                 weekdayStyle: textDecoration(
                   fontSize: 8.35.sp,
-                  color: isDark ? AppColors.borderColor : Color(0xFF525E6F),
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.labelColor,
                 ),
                 dowTextFormatter: (date, locale) {
                   return weekDay[date.weekday % 7];

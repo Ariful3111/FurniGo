@@ -33,13 +33,17 @@ class SupportRecentTicketsItems extends StatelessWidget {
               CustomPrimaryText(
                 text: ticket["id"],
                 fontSize: 12.sp,
-                color: AppColors.secondaryTextColor,
+                color: isDark
+                    ? AppColors.primaryBorderColor
+                    : AppColors.secondaryTextColor,
               ),
               SizedBox(height: 6.h),
               CustomPrimaryText(
                 text: ticket["time"],
                 fontSize: 14.sp,
-                color: AppColors.secondaryTextColor,
+                color: isDark
+                    ? AppColors.primaryBorderColor
+                    : AppColors.secondaryTextColor,
               ),
             ],
           ),
