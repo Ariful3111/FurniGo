@@ -67,7 +67,9 @@ class PaymentMethodItem extends StatelessWidget {
                   CustomPrimaryText(
                     text: "Expires ${card["expiry"]}",
                     fontSize: 14.sp,
-                    color: AppColors.secondaryTextColor,
+                    color: isDark
+                        ? AppColors.primaryBorderColor
+                        : AppColors.secondaryTextColor,
                   ),
                 ],
               ),

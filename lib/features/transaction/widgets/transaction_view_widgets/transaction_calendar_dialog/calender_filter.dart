@@ -34,7 +34,10 @@ class CalenderFilter extends StatelessWidget {
           height: 390.h,
           width: MediaQuery.widthOf(context),
           decoration: BoxDecoration(
-            color: isDark ? AppColors.whiteColor : AppColors.whiteColor,
+            color: isDark ? Color(0xFF0D0D0D) : AppColors.whiteColor,
+            border: Border.all(
+              color: isDark ? AppColors.darkBorderColor : Colors.transparent,
+            ),
             boxShadow: [
               BoxShadow(
                 offset: Offset(0, 4.72),
@@ -71,17 +74,25 @@ class CalenderFilter extends StatelessWidget {
                           width: MediaQuery.widthOf(context),
                           child: widget,
                         ),
-                        SizedBox(height: 13.h,),
+                        SizedBox(height: 13.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             CustomPrimaryButton(
                               fontSize: 10.sp,
                               borderRadius: BorderRadius.circular(6.7.r),
-                              backgroundColor: AppColors.whiteColor,
-                              border: Border.all(color: AppColors.primaryColor),
+                              backgroundColor: isDark
+                                  ? Color(0xFF0D0D0D)
+                                  : AppColors.whiteColor,
+                              border: Border.all(
+                                color: isDark
+                                    ? AppColors.whiteColor
+                                    : AppColors.primaryColor,
+                              ),
                               text: 'Cancel',
-                              textColor: AppColors.primaryColor,
+                              textColor: isDark
+                                  ? AppColors.whiteColor
+                                  : AppColors.primaryColor,
                               padding: EdgeInsets.symmetric(
                                 vertical: 6.7.h,
                                 horizontal: 13.39.w,

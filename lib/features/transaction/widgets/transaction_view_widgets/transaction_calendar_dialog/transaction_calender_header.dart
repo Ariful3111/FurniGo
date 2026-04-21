@@ -27,12 +27,15 @@ class TransactionCalenderHeader extends StatelessWidget {
             child: CustomTextFormField(
               controller: TextEditingController(),
               labelText: "From",
-              borderColor: AppColors.darkSecondaryTextColor,
+              borderColor:isDark
+                  ? Color(0xFF697483)
+                  : AppColors.darkSecondaryTextColor,
               padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.46.h),
               borderRadius: 4.46.r,
               borderWidth: 0.56.r,
               fontSize: 10.sp,
               labelFontSize: 10.sp,
+              fillColor:  isDark ? Color(0xFF0D0D0D) :null,
             ),
           ),
           SizedBox(width: 8.w),
@@ -41,12 +44,15 @@ class TransactionCalenderHeader extends StatelessWidget {
             child: CustomTextFormField(
               controller: TextEditingController(),
               labelText: "To",
-              borderColor: AppColors.darkSecondaryTextColor,
+              borderColor: isDark
+                  ? Color(0xFF697483)
+                  : AppColors.darkSecondaryTextColor,
               padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.46.h),
               borderRadius: 4.46.r,
               borderWidth: 0.56.r,
               fontSize: 10.sp,
               labelFontSize: 10.sp,
+              fillColor:  isDark ? Color(0xFF0D0D0D) :null,
             ),
           ),
         ],

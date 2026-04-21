@@ -45,8 +45,13 @@ class SupportContact extends StatelessWidget {
       ),
     );
   }
-  Widget _contactItem(BuildContext context,
-      {required String title, required String value, required String icon}) {
+
+  Widget _contactItem(
+    BuildContext context, {
+    required String title,
+    required String value,
+    required String icon,
+  }) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SharedContainer(
@@ -55,7 +60,12 @@ class SupportContact extends StatelessWidget {
       color: isDark ? AppColors.labelColor : AppColors.containerColor,
       child: Row(
         children: [
-          Image.asset(icon ,height: 20.h,width: 20.w,color: isDark ? AppColors.whiteColor : AppColors.labelColor,),
+          Image.asset(
+            icon,
+            height: 20.h,
+            width: 20.w,
+            color: isDark ? AppColors.whiteColor : AppColors.labelColor,
+          ),
           SizedBox(width: 22.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +73,9 @@ class SupportContact extends StatelessWidget {
               CustomPrimaryText(
                 text: title,
                 fontSize: 14.sp,
-                color: AppColors.secondaryTextColor,
+                color: isDark
+                    ? AppColors.whiteColor
+                    : AppColors.secondaryTextColor,
               ),
               SizedBox(height: 4.h),
               CustomPrimaryText(
@@ -73,7 +85,7 @@ class SupportContact extends StatelessWidget {
                 color: isDark ? AppColors.whiteColor : AppColors.titleColor,
               ),
             ],
-          )
+          ),
         ],
       ),
     );

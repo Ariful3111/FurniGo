@@ -9,6 +9,7 @@ class CreditHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         Column(
@@ -23,12 +24,19 @@ class CreditHeader extends StatelessWidget {
             CustomPrimaryText(
               text: "Track how your credits are\nconsumed over time",
               fontSize: 12.sp,
-              color: AppColors.greyTextColor,
+              color: isDark
+                  ? AppColors.primaryBorderColor
+                  : AppColors.greyTextColor,
             ),
           ],
         ),
         Spacer(),
-        Image.asset(IconsPath.creditCoin, height: 14.h, width: 14.w),
+        Image.asset(
+          IconsPath.creditCoin,
+          height: 14.h,
+          width: 14.w,
+          color: isDark ? AppColors.primaryBorderColor : null,
+        ),
         SizedBox(width: 2.w),
         CustomPrimaryText(text: "Balance: 1250", fontSize: 14.sp),
       ],

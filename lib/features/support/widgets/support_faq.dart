@@ -26,15 +26,15 @@ class SupportFaq extends StatelessWidget {
           Column(
             children: List.generate(2, (index) {
               return SharedContainer(
-                margin: EdgeInsets.only(bottom: index==1?0:12.h),
+                margin: EdgeInsets.only(bottom: index == 1 ? 0 : 12.h),
                 padding: EdgeInsets.all(12.w),
                 radius: 16.r,
                 color: isDark ? AppColors.darkColor : AppColors.whiteColor,
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0x1414132A),
+                    color: Color(0x1414132A),
                     blurRadius: 12,
-                    offset: const Offset(0, 2),
+                    offset: Offset(0, 2),
                   ),
                 ],
                 child: Column(
@@ -53,7 +53,9 @@ class SupportFaq extends StatelessWidget {
                       text:
                           'Go to "My Orders" and click on the tracking number provided.',
                       fontSize: 14.sp,
-                      color: AppColors.secondaryTextColor,
+                      color: isDark
+                          ? AppColors.primaryBorderColor
+                          : AppColors.secondaryTextColor,
                     ),
                   ],
                 ),
@@ -65,7 +67,7 @@ class SupportFaq extends StatelessWidget {
             text: "View all FAQs",
             fontSize: 14.sp,
             fontWeight: FontWeight.w700,
-            color:isDark? AppColors.whiteColor:AppColors.primaryColor,
+            color: isDark ? AppColors.whiteColor : AppColors.primaryColor,
           ),
         ],
       ),

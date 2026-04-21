@@ -31,6 +31,15 @@ class EftPayments extends GetWidget<PaymentController> {
               buttonText: 'Edit',
               onTap: () {
                 controller.isEdit.value = !controller.isEdit.value;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (controller.scrollController.hasClients) {
+                    controller.scrollController.animateTo(
+                      controller.scrollController.position.maxScrollExtent,
+                      duration: const Duration(milliseconds: 350),
+                      curve: Curves.easeOut,
+                    );
+                  }
+                });
               },
             ),
             SizedBox(height: 6.h),
@@ -56,7 +65,7 @@ class EftPayments extends GetWidget<PaymentController> {
               isDark: isDark,
               readOnly: !controller.isEdit.value,
             ),
-            EftPaymentSaveButton()
+            EftPaymentSaveButton(),
           ],
         ),
       ),
