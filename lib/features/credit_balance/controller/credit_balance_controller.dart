@@ -53,5 +53,4 @@ class CreditBalanceController extends GetxController {
     return chartData.length - 1;
   }
 
-  
 }

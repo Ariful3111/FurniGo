@@ -6,6 +6,8 @@ import 'package:zb_dezign/features/credit_balance/models/credit_transaction_mode
 
 class AiController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  RxString selectedMonth = 'This Month'.obs;
+
   final List<CreditTransaction> creditItems = [
     CreditTransaction(
       title: "Room interior design",
@@ -53,6 +55,7 @@ class AiController extends GetxController
       amount: -20,
     ),
   ];
+
   OverlayEntry? overlayEntry;
   final LayerLink layerLink = LayerLink();
 
@@ -71,50 +74,87 @@ class AiController extends GetxController
   }
 
   OverlayEntry _createOverlay(BuildContext context) {
+    // Capture screen size here — safe inside a valid BuildContext.
+    final Size screenSize = MediaQuery.sizeOf(context);
+
     return OverlayEntry(
-      builder: (context) => Stack(
-        children: [
-          GestureDetector(
-            onTap: closeDropdown,
-            child: Container(color: Colors.transparent),
-          ),
-          Positioned(
-            width: 300.w,
-            child: CompositedTransformFollower(
-              link: layerLink,
-              offset: Offset(-120, 50.h),
-              showWhenUnlinked: false,
-              child: AiDropdownCredit(),
-            ),
-          ),
-        ],
-      ),
+      builder: (overlayContext) {
+        return _AiOverlayContent(
+          screenSize: screenSize,
+          layerLink: layerLink,
+          onDismiss: closeDropdown,
+        );
+      },
     );
   }
 
+  // ── Animation ──────────────────────────────────────────────────────────────
   late AnimationController animationController;
-
   RxDouble progress = 0.0.obs;
 
   @override
   void onInit() {
     super.onInit();
-
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
     );
-
     animationController.addListener(() {
       progress.value = animationController.value;
     });
-
     animationController.repeat();
   }
 
   @override
   void onClose() {
+    closeDropdown();
     animationController.dispose();
     super.onClose();
+  }
+}
+
+/// Separate StatelessWidget for the overlay content.
+/// This avoids putting a Stack with unbounded children directly inside the
+/// OverlayEntry builder lambda, which can confuse the layout system.
+class _AiOverlayContent extends StatelessWidget {
+  final Size screenSize;
+  final LayerLink layerLink;
+  final VoidCallback onDismiss;
+
+  const _AiOverlayContent({
+    required this.screenSize,
+    required this.layerLink,
+    required this.onDismiss,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // ── Tap-outside barrier ─────────────────────────────────────────────
+        // Use an explicit SizedBox with finite dimensions instead of
+        // SizedBox.expand — the overlay is not constrained, so .expand
+        // causes an infinite-size layout error.
+        GestureDetector(
+          onTap: onDismiss,
+          child: SizedBox(
+            width: screenSize.width,
+            height: screenSize.height,
+            child: ColoredBox(color: Colors.transparent),
+          ),
+        ),
+
+        // ── Dropdown anchored to the trigger ───────────────────────────────
+        Positioned(
+          width: 300.w,
+          child: CompositedTransformFollower(
+            link: layerLink,
+            offset: Offset(-120, 50.h),
+            showWhenUnlinked: false,
+            child: const AiDropdownCredit(),
+          ),
+        ),
+      ],
+    );
   }
 }
