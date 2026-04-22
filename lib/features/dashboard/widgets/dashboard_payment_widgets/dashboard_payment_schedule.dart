@@ -82,7 +82,7 @@ class DashboardPaymentSchedule extends GetWidget<DashboardPaymentController> {
             );
           }),
           SizedBox(height: 14.h),
-          CustomPrimaryButton(
+          CustomPrimaryButton(       
             text: 'Pay Early',
             onPressed: () {
               showDialog(

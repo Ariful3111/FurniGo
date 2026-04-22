@@ -118,7 +118,9 @@ class TransactionTableCalender extends StatelessWidget {
                       ? AppColors.primaryBorderColor
                       : AppColors.labelColor,
                 ),
-                todayTextStyle: textDecoration(color: AppColors.borderColor),
+                todayTextStyle: textDecoration(
+                  color: isDark ? AppColors.borderColor : AppColors.labelColor,
+                ),
                 outsideTextStyle: textDecoration(
                   color: isDark ? AppColors.borderColor : AppColors.labelColor,
                 ),
@@ -134,17 +136,19 @@ class TransactionTableCalender extends StatelessWidget {
                   color: AppColors.labelColor,
                 ),
                 todayDecoration: BoxDecoration(shape: BoxShape.rectangle),
-                rangeEndTextStyle: textDecoration(color: AppColors.labelColor),
+                rangeEndTextStyle: textDecoration(
+                  color: isDark ? AppColors.labelColor : AppColors.whiteColor,
+                ),
                 rangeStartTextStyle: textDecoration(
-                  color: AppColors.labelColor,
+                  color: isDark ? AppColors.labelColor : AppColors.whiteColor,
                 ),
                 rangeStartDecoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.boxColor,
+                  color: isDark ? AppColors.boxColor : AppColors.primaryColor,
                 ),
                 rangeEndDecoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.boxColor,
+                  color: isDark ? AppColors.boxColor : AppColors.primaryColor,
                 ),
               ),
               daysOfWeekStyle: DaysOfWeekStyle(

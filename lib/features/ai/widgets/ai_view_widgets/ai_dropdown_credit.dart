@@ -7,6 +7,7 @@ import 'package:zb_dezign/features/ai/controller/ai_controller.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_view_widgets/ai_dropdown_upgrade.dart';
 import 'package:zb_dezign/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart';
 import 'package:zb_dezign/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_item.dart';
+import 'package:zb_dezign/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class AiDropdownCredit extends GetWidget<AiController> {
@@ -27,7 +28,9 @@ class AiDropdownCredit extends GetWidget<AiController> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.0, 1.0],
-            colors:isDark? [AppColors.labelColor,AppColors.labelColor]:[AppColors.fieldBorderColor, AppColors.whiteColor],
+            colors: isDark
+                ? [AppColors.labelColor, AppColors.labelColor]
+                : [AppColors.fieldBorderColor, AppColors.whiteColor],
           ),
           borderRadius: BorderRadius.circular(16.r),
         ),
@@ -41,21 +44,27 @@ class AiDropdownCredit extends GetWidget<AiController> {
                       text: "Credit Usage",
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: isDark?AppColors.whiteColor:AppColors.darkColor,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.darkColor,
                     ),
                     Spacer(),
                     Image.asset(
                       IconsPath.creditCoin,
                       height: 10.h,
                       width: 10.w,
-                      color: isDark?AppColors.whiteColor:AppColors.darkColor,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.darkColor,
                     ),
                     SizedBox(width: 4.w),
                     CustomPrimaryText(
                       text: "Balance: 1250",
                       fontSize: 8.sp,
                       fontWeight: FontWeight.w400,
-                      color: isDark?AppColors.whiteColor:AppColors.darkColor,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.darkColor,
                     ),
                   ],
                 ),
@@ -66,6 +75,10 @@ class AiDropdownCredit extends GetWidget<AiController> {
                     child: Column(
                       children: [
                         CreditChart(),
+                        SizedBox(height: 16.h),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomMonthDropdown()),
                         SizedBox(height: 16.h),
                         ...List.generate(
                           controller.creditItems.length,
