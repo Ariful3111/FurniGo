@@ -24,7 +24,6 @@ class ProductDetailsViewHeader extends GetWidget<ProductDetailsController> {
       color: Colors.transparent,
       child: Stack(
         children: [
-          // Carousel as background
           ClipRRect(
             borderRadius: BorderRadius.circular(16.r),
             child: CarouselSlider.builder(

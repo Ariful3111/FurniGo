@@ -75,13 +75,13 @@ class OrderStatus extends StatelessWidget {
                                     ? AppColors.primaryBorderColor
                                     : AppColors.greyColor
                               : isDark
-                              ? Color(0xFF989898)
+                              ? AppColors.darkSecondaryTextColor
                               : AppColors.greyColor,
                         ),
                       ],
                     ),
                   ),
-                  isCurrentStatus: firstIndex,
+                  color: firstIndex ? Color(0xFF00C950) : Color(0xFFD1D5DC),
                   isLast: (order.statusHistories?.length ?? 0) - 1 == index,
                 ),
               );

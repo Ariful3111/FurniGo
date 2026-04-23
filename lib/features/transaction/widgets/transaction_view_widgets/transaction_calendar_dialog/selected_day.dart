@@ -6,71 +6,59 @@ import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 class SelectDay extends StatelessWidget {
   final int isDay;
   final Function(int index) onTap;
-  const SelectDay({super.key, required this.isDay, required this.onTap,});
+  const SelectDay({super.key, required this.isDay, required this.onTap});
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     List dateList = [
+      'Custom',
       'Today',
       'Yesterday',
-      'Last 7 Days',
-      'Last 30 Days',
+      'This Week',
+      'Last Week',
       'This Month',
+      'Last Month',
       'This Year',
-      'Custom Range',
+      'Last Year',
     ];
-      return Container(
-        padding: EdgeInsets.symmetric(vertical: 7.08.h, horizontal: 9.44.w),
-        width: 90.w,
-        height: 165.h,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(7.08.r),
-          color: isDark ? AppColors.whiteColor : AppColors.whiteColor,
-          border: Border.all(
-            width: 0.69.r,
-            color: isDark
-                ? AppColors.whiteColor
-                : AppColors.darkTextColor,
-          ),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, 4.72),
-              blurRadius: 16.52,
-              color: AppColors.shadowColor.withValues(alpha: 0.10),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: List.generate(dateList.length, (index) {
+        final selected = isDay == index;
+        return GestureDetector(
+          onTap: () => onTap(index),
+          child: Container(
+            margin: EdgeInsets.only(
+              bottom: index == dateList.length - 1 ? 0 : 4.h,
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: List.generate(dateList.length, (index) {
-            final selected = isDay == index;
-            return GestureDetector(
-              onTap: () => onTap(index),
-              child: Container(
-                margin: EdgeInsets.only(bottom: index == dateList.length-1 ? 0 : 2.36.h,),
-                padding: EdgeInsets.symmetric(
-                  vertical: 2.36.h,
-                  horizontal: 4.72.w,
-                ),
-                decoration: BoxDecoration(
-                  color: selected ? AppColors.primaryColor : null,
-                  borderRadius: BorderRadius.circular(selected ? 4.72.r : 0.r),
-                ),
-                child: CustomPrimaryText(
-                  text: dateList[index],
-                  fontSize: 9.44.sp,
-                  color: selected
-                      ? AppColors.whiteColor
-                      : isDark
-                      ? AppColors.whiteColor
-                      : AppColors.primaryColor,
-                      textOverflow: TextOverflow.ellipsis,
-                ),
-              ),
-            );
-          }),
-        ),
-      );
+            padding: EdgeInsets.symmetric(
+              vertical: 4.46.h,
+              horizontal: 10.04.w,
+            ),
+            decoration: BoxDecoration(
+              color: selected
+                  ? isDark
+                        ? AppColors.labelColor
+                        : AppColors.fieldBorderColorLight
+                  : null,
+              borderRadius: BorderRadius.circular(selected ? 4.72.r : 0.r),
+            ),
+            child: CustomPrimaryText(
+              text: dateList[index],
+              fontSize: 12.sp,
+              color: selected
+                  ? isDark
+                        ? AppColors.whiteColor
+                        : AppColors.darkTextColor
+                  : isDark
+                  ? AppColors.whiteColor
+                  : AppColors.darkTextColor,
+              textOverflow: TextOverflow.ellipsis,
+            ),
+          ),
+        );
+      }),
+    );
   }
 }

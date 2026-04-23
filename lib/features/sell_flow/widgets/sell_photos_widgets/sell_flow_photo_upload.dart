@@ -12,6 +12,7 @@ class SellFlowPhotoUpload extends GetWidget<SellFlowPhotosController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     final List<String> labels = [
       "Top",
       "Bottom",
@@ -39,7 +40,7 @@ class SellFlowPhotoUpload extends GetWidget<SellFlowPhotosController> {
                   CustomPrimaryText(
                     text: "Recommended: top, bottom, left, right, back, front.",
                     fontSize: 14,
-                    color: AppColors.secondaryTextColor,
+                    color:isDark ? AppColors.primaryBorderColor : AppColors.secondaryTextColor,
                   ),
                   SizedBox(height: 16),
                   GridView.builder(

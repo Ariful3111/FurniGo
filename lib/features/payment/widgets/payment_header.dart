@@ -61,6 +61,9 @@ class PaymentHeader extends StatelessWidget {
           icon: icon2,
           onPressed: onTap,
           iconColor: AppColors.labelColor,
+          border: Border.all(
+            color: isDark ? AppColors.darkColor : AppColors.buttonBorderColor,
+          ),
         ),
       ],
     );

@@ -42,6 +42,7 @@ class HomePickDeliveryDate extends GetWidget<SellFlowDeliveryController> {
           onTap: () {
             DatePicker.pickDate(
               context: context,
+              firstDate: DateTime.now(),
               onDateSelected: (date) {
                 String formattedDate =
                     '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';

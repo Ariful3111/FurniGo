@@ -41,6 +41,10 @@ class ProfileOptionsController extends GetxController {
       'title': 'Support',
       'route': AppRoutes.supportView,
     },
-    {'icon': IconsPath.profilePrivacy, 'title': 'Privacy Policy'},
+    {
+      'icon': IconsPath.profilePrivacy,
+      'title': 'Privacy Policy',
+      'route': AppRoutes.termsView,
+    },
   ];
 }

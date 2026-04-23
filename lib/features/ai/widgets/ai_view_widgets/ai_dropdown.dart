@@ -18,7 +18,7 @@ class AiDropdown extends GetWidget<AiController> {
       child: GestureDetector(
         onTap: () => controller.toggleDropdown(context),
         child: SharedContainer(
-          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+          padding: EdgeInsets.all(4.r),
           color: isDark ? AppColors.boxColor : AppColors.primaryColor,
           radius: 33.33.r,
           border: Border.all(color: AppColors.whiteColor, width: 0.83),

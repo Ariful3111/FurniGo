@@ -81,7 +81,9 @@ class CustomProductText extends StatelessWidget {
         CustomPrimaryText(
           text: price,
           fontSize: 12.sp,
-          color: isDark ? Color(0xFF989898) : AppColors.buttonTextColor,
+          color: isDark
+              ? AppColors.darkSecondaryTextColor
+              : AppColors.buttonTextColor,
         ),
       ],
     );

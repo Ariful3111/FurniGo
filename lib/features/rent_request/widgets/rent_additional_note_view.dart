@@ -11,14 +11,14 @@ class RentAdditionalNoteView extends GetView<RentAdditionalNoteController> {
 
   @override
   Widget build(BuildContext context) {
-        bool isDark = Theme.of(context).brightness == Brightness.dark;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomPrimaryText(
           text: 'Additional Notes',
           fontWeight: FontWeight.w600,
-          color: AppColors.darkColor,
+          color: isDark ? AppColors.whiteColor : AppColors.darkColor,
         ),
         SizedBox(height: 26.h),
         myField(

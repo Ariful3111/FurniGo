@@ -9,6 +9,7 @@ class ProfileUserImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SizedBox(
       width: MediaQuery.widthOf(context),
       height: 150.h,
@@ -32,7 +33,9 @@ class ProfileUserImage extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(
                   width: 4.r,
-                  color: AppColors.secondaryColor.withValues(alpha: 0.2),
+                  color: isDark
+                      ? AppColors.primaryBorderColor
+                      : AppColors.secondaryColor.withValues(alpha: 0.2),
                 ),
               ),
               child: Image.asset(
@@ -68,6 +71,7 @@ class ProfileUserImage extends StatelessWidget {
               ImagesPath.container,
               height: 128.h,
               width: 128.w,
+              color: isDark ? AppColors.darkColor.withValues(alpha: 0.5) : null,
             ),
           ),
         ],

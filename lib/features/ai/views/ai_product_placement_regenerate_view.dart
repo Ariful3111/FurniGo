@@ -6,7 +6,7 @@ import 'package:zb_dezign/features/ai/controller/ai_product_placement_regenerate
 import 'package:zb_dezign/features/ai/widgets/ai_generate_button.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_header.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_button.dart';
-import 'package:zb_dezign/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_image.dart';
+import 'package:zb_dezign/features/ai/widgets/ai_product_placement_regenerate/ai_product_placement_regenerate_image.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 

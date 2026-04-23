@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:zb_dezign/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart';
+import 'package:zb_dezign/features/ai/widgets/ai_view_widgets/ai_user_image_overlay.dart';
+import 'package:zb_dezign/features/category/controller/category_controller.dart';
 import 'package:zb_dezign/features/credit_balance/models/credit_transaction_model.dart';
 
 class AiController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  RxString selectedMonth = 'This Month'.obs;
+  CategoryController categoryController = Get.find();
+
   final List<CreditTransaction> creditItems = [
     CreditTransaction(
       title: "Room interior design",
@@ -53,6 +56,7 @@ class AiController extends GetxController
       amount: -20,
     ),
   ];
+
   OverlayEntry? overlayEntry;
   final LayerLink layerLink = LayerLink();
 
@@ -71,49 +75,58 @@ class AiController extends GetxController
   }
 
   OverlayEntry _createOverlay(BuildContext context) {
+    final Size screenSize = MediaQuery.sizeOf(context);
+
     return OverlayEntry(
-      builder: (context) => Stack(
-        children: [
-          GestureDetector(
-            onTap: closeDropdown,
-            child: Container(color: Colors.transparent),
-          ),
-          Positioned(
-            width: 300.w,
-            child: CompositedTransformFollower(
-              link: layerLink,
-              offset: Offset(-120, 50.h),
-              showWhenUnlinked: false,
-              child: AiDropdownCredit(),
-            ),
-          ),
-        ],
-      ),
+      builder: (overlayContext) {
+        return AiUserImageOverlay(
+          screenSize: screenSize,
+          layerLink: layerLink,
+          onDismiss: closeDropdown,
+        );
+      },
     );
   }
 
   late AnimationController animationController;
-
   RxDouble progress = 0.0.obs;
+
+  void getArgument({
+    required String title,
+    required String sub,
+    required int index,
+  }) {
+    title = categoryController.aiOption[index]['title'];
+    sub = categoryController.aiOption[index]['sub'];
+  }
 
   @override
   void onInit() {
     super.onInit();
-
+    final args = Get.arguments;
+    if (args is Map) {
+      final int index = args['index'] ?? 0;
+      if (index < categoryController.aiOption.length) {
+        getArgument(
+          title: args['title'] ?? '',
+          sub: args['sub'] ?? '',
+          index: index,
+        );
+      }
+    }
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
     );
-
     animationController.addListener(() {
       progress.value = animationController.value;
     });
-
     animationController.repeat();
   }
 
   @override
   void onClose() {
+    closeDropdown();
     animationController.dispose();
     super.onClose();
   }

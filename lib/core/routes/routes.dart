@@ -70,6 +70,8 @@ import 'package:zb_dezign/features/shop/bindings/shop_bindings.dart';
 import 'package:zb_dezign/features/shop/views/shop_view.dart';
 import 'package:zb_dezign/features/support/bindings/support_bindings.dart';
 import 'package:zb_dezign/features/support/views/support_view.dart';
+import 'package:zb_dezign/features/terms/bindings/terms_bindings.dart';
+import 'package:zb_dezign/features/terms/views/terms_view.dart';
 import 'package:zb_dezign/features/transaction/bindings/transaction_bindings.dart';
 import 'package:zb_dezign/features/transaction/views/transaction_details_view.dart';
 import 'package:zb_dezign/features/transaction/views/transaction_view.dart';
@@ -285,5 +287,10 @@ final List<GetPage> appRoutes = [
     name: AppRoutes.contactUsView,
     page: () => ContactUsView(),
     binding: ContactUsBindings(),
+  ),
+  GetPage(
+    name: AppRoutes.termsView,
+    page: () => TermsView(),
+    binding: TermsBindings(),
   ),
 ];
