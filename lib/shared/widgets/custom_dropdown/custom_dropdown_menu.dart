@@ -145,7 +145,7 @@ class CustomDropdownMenu extends StatelessWidget {
               AppColors.shadowColor.withValues(alpha: 0.1),
             ),
           ),
-          alignmentOffset: offset ?? Offset(70, 0),
+          alignmentOffset: offset ?? Offset(0, 0),
           onSelected: onSelect,
           dropdownMenuEntries: DropdownMenuItems().dropdownMenuItem(
             option: option,

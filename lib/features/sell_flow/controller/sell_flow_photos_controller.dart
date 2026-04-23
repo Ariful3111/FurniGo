@@ -6,7 +6,7 @@ import 'package:zb_dezign/core/utils/image_picker.dart';
 class SellFlowPhotosController extends GetxController {
   final ImagePicker picker = ImagePicker();
   RxList<XFile?> images = List<XFile?>.filled(6, null).obs;
-  final isProductPhotosExpanded = true.obs;
+  final RxBool isProductPhotosExpanded = true.obs;
   final additionalPhotos = <XFile>[].obs;
   final isExpanded = true.obs;
   final purchasePriceController = TextEditingController();

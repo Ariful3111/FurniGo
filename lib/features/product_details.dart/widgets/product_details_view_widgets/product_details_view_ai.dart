@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/product_details.dart/controller/product_details_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -14,9 +15,19 @@ class ProductDetailsViewAi extends GetWidget<ProductDetailsController> {
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: () {
-          controller.isAi.value = !controller.isAi.value;
-        },
+        onTap: controller.isAi.value
+            ? () {
+                Get.toNamed(
+                  AppRoutes.aiProductPlacementView,
+                  arguments: {
+                    'title': 'Product Placement',
+                    'sub': 'Flexible living starts with flexible furniture.',
+                  },
+                );
+              }
+            : () {
+                controller.isAi.value = true;
+              },
         child: SharedContainer(
           padding: EdgeInsets.all(2.w),
           radius: 8.r,

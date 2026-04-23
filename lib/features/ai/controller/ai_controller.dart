@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:zb_dezign/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart';
+import 'package:zb_dezign/features/ai/widgets/ai_view_widgets/ai_user_image_overlay.dart';
+import 'package:zb_dezign/features/category/controller/category_controller.dart';
 import 'package:zb_dezign/features/credit_balance/models/credit_transaction_model.dart';
 
 class AiController extends GetxController
     with GetSingleTickerProviderStateMixin {
   RxString selectedMonth = 'This Month'.obs;
+  CategoryController categoryController = Get.find();
 
   final List<CreditTransaction> creditItems = [
     CreditTransaction(
@@ -74,12 +75,11 @@ class AiController extends GetxController
   }
 
   OverlayEntry _createOverlay(BuildContext context) {
-    // Capture screen size here — safe inside a valid BuildContext.
     final Size screenSize = MediaQuery.sizeOf(context);
 
     return OverlayEntry(
       builder: (overlayContext) {
-        return _AiOverlayContent(
+        return AiUserImageOverlay(
           screenSize: screenSize,
           layerLink: layerLink,
           onDismiss: closeDropdown,
@@ -88,13 +88,26 @@ class AiController extends GetxController
     );
   }
 
-  // ── Animation ──────────────────────────────────────────────────────────────
   late AnimationController animationController;
   RxDouble progress = 0.0.obs;
+
+  void getArgument({
+    required String title,
+    required String sub,
+    required int index,
+  }) {
+    title = categoryController.aiOption[index]['title'];
+    sub = categoryController.aiOption[index]['sub'];
+  }
 
   @override
   void onInit() {
     super.onInit();
+    getArgument(
+      title: Get.arguments.toString(),
+      sub: Get.arguments.toString(),
+      index: Get.arguments,
+    );
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
@@ -113,48 +126,3 @@ class AiController extends GetxController
   }
 }
 
-/// Separate StatelessWidget for the overlay content.
-/// This avoids putting a Stack with unbounded children directly inside the
-/// OverlayEntry builder lambda, which can confuse the layout system.
-class _AiOverlayContent extends StatelessWidget {
-  final Size screenSize;
-  final LayerLink layerLink;
-  final VoidCallback onDismiss;
-
-  const _AiOverlayContent({
-    required this.screenSize,
-    required this.layerLink,
-    required this.onDismiss,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // ── Tap-outside barrier ─────────────────────────────────────────────
-        // Use an explicit SizedBox with finite dimensions instead of
-        // SizedBox.expand — the overlay is not constrained, so .expand
-        // causes an infinite-size layout error.
-        GestureDetector(
-          onTap: onDismiss,
-          child: SizedBox(
-            width: screenSize.width,
-            height: screenSize.height,
-            child: ColoredBox(color: Colors.transparent),
-          ),
-        ),
-
-        // ── Dropdown anchored to the trigger ───────────────────────────────
-        Positioned(
-          width: 300.w,
-          child: CompositedTransformFollower(
-            link: layerLink,
-            offset: Offset(-120, 50.h),
-            showWhenUnlinked: false,
-            child: const AiDropdownCredit(),
-          ),
-        ),
-      ],
-    );
-  }
-}

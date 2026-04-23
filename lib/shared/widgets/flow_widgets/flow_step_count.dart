@@ -14,9 +14,10 @@ class FlowStepCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomPrimaryText(
       text: 'Step $currentPage of $totalPage',
-      color: AppColors.greyColor,
+      color: isDark ? AppColors.primaryBorderColor : AppColors.greyColor,
       fontSize: 14.sp,
       fontWeight: FontWeight.w400,
     );

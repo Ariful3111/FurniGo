@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
+import 'package:zb_dezign/features/ai/controller/ai_controller.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_view_widgets/ai_user_credit.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/flow_widgets/flow_header.dart';
 
-class AiHeader extends StatelessWidget {
+class AiHeader extends GetView<AiController> {
   const AiHeader({super.key});
 
   @override

@@ -13,6 +13,7 @@ class PurchaseReceiptImage extends GetWidget<SellFlowPhotosController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       border: Border.all(width: 1, color: AppColors.grayBorderColor),
       radius: 16.r,
@@ -20,13 +21,18 @@ class PurchaseReceiptImage extends GetWidget<SellFlowPhotosController> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(IconsPath.download, height: 32.h,width: 32.w, color: AppColors.greyColor),
+          Image.asset(
+            IconsPath.download,
+            height: 32.h,
+            width: 32.w,
+            color: isDark ? AppColors.primaryBorderColor : AppColors.greyColor,
+          ),
           SizedBox(height: 20.h),
           CustomPrimaryText(
             text: 'Upload your receipts here, or click to browse',
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.greyColor,
+            color: isDark ? AppColors.primaryBorderColor : AppColors.greyColor,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 8.h),
@@ -34,7 +40,9 @@ class PurchaseReceiptImage extends GetWidget<SellFlowPhotosController> {
             text: 'PDF, JPG, PNG up to 10MB each',
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.lightGreyColor,
+            color: isDark
+                ? AppColors.primaryBorderColor
+                : AppColors.lightGreyColor,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 20.h),
