@@ -81,7 +81,7 @@ class OrderStatus extends StatelessWidget {
                       ],
                     ),
                   ),
-                  isCurrentStatus: firstIndex,
+                  color: firstIndex ? Color(0xFF00C950) : Color(0xFFD1D5DC),
                   isLast: (order.statusHistories?.length ?? 0) - 1 == index,
                 ),
               );

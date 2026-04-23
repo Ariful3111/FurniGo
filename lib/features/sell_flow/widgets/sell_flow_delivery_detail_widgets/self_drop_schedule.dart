@@ -13,6 +13,7 @@ class SelfDropSchedule extends GetWidget<SellFlowDeliveryController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -20,7 +21,7 @@ class SelfDropSchedule extends GetWidget<SellFlowDeliveryController> {
           text: 'Drop-off Schedule',
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
-          color: AppColors.titleTextColor,
+          color: isDark ? AppColors.whiteColor : AppColors.titleTextColor,
         ),
         SizedBox(height: 4.h),
         CustomPrimaryText(
@@ -28,14 +29,16 @@ class SelfDropSchedule extends GetWidget<SellFlowDeliveryController> {
               'Choose when you plan to drop off your furniture at our warehouse.',
           fontSize: 12.sp,
           fontWeight: FontWeight.w400,
-          color: AppColors.titleTextColor,
+          color: isDark
+              ? AppColors.primaryBorderColor
+              : AppColors.titleTextColor,
         ),
         SizedBox(height: 15.h),
         CustomPrimaryText(
           text: 'Select Date',
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
-          color: AppColors.darkTextColor,
+          color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
         ),
         SizedBox(height: 8.h),
         CustomDateField(
@@ -56,10 +59,10 @@ class SelfDropSchedule extends GetWidget<SellFlowDeliveryController> {
           text: 'Preferred Time Period*',
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
-          color: AppColors.titleTextColor,
+          color: isDark ? AppColors.whiteColor : AppColors.titleTextColor,
         ),
         SizedBox(height: 12.h),
-        SelfDropScheduleDate()
+        SelfDropScheduleDate(),
       ],
     );
   }

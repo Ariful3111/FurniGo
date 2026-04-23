@@ -23,7 +23,7 @@ class AiProductPlacementView extends StatelessWidget {
             image: DecorationImage(image: AssetImage(ImagesPath.placement),fit: BoxFit.cover),
           ),
           SizedBox(height: 20.h,),
-          AiProductPlacementRoom()
+          // AiProductPlacementRoom()
         ],
       ),
     );

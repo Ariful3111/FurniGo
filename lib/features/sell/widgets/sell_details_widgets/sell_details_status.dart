@@ -1,19 +1,26 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide StepState;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/sell/controller/sell_details_controller.dart';
+import 'package:zb_dezign/features/sell/widgets/sell_details_widgets/sell_details_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class SellDetailsStatus extends GetWidget<SellDetailsController> {
-  const SellDetailsStatus({super.key});
+
+  final String? sellStatus;
+
+  const SellDetailsStatus({super.key, required this.sellStatus});
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final helper = SellDetailsHelper();
+
+    final List<TimelineStep> steps = controller.stepsFor(sellStatus);
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Column(
@@ -26,66 +33,52 @@ class SellDetailsStatus extends GetWidget<SellDetailsController> {
             color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
           ),
           SizedBox(height: 18.h),
-          ...List.generate(controller.status.length, (index) {
-            final item = controller.status[index];
-            final isStatus = item['status'] == true;
+          ...List.generate(steps.length, (index) {
+            final TimelineStep step = steps[index];
+            final bool isFirst = index == 0;
+            final bool isLast  = index == steps.length - 1;
+            final Color beforeColor = isFirst
+                ? Colors.transparent
+                : helper.lineColor(steps[index - 1].state);
+            final Color afterColor = helper.lineColor(step.state);
+
             return SizedBox(
-              height: 85.h,
+              height: 95.h,
               child: TimelineTile(
+                axis: TimelineAxis.vertical,
+                alignment: TimelineAlign.start,
+                isFirst: isFirst,
+                isLast: isLast,
                 indicatorStyle: IndicatorStyle(
-                  height: 40.h,
-                  width: 40.w,
-                  padding: EdgeInsets.symmetric(vertical: 12.h),
-                  indicator: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isStatus
-                          ? Color(0xFF21D19F)
-                          : AppColors.primaryColor,
-                    ),
-                    child: Center(
-                      child: isStatus
-                          ? Image.asset(
-                              IconsPath.mark,
-                              height: 24.h,
-                              width: 24.w,
-                              color: AppColors.whiteColor,
-                            )
-                          : CustomPrimaryText(
-                              text: '${index + 1}',
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.whiteColor,
-                            ),
-                    ),
-                  ),
+                  width: 44.w,
+                  height: 44.w,
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
                   indicatorXY: 0.0,
+                  indicator: helper.indicator(step.state, index),
                 ),
-                beforeLineStyle: LineStyle(
-                  color: isStatus ? Color(0xFF21D19F) : Color(0xFFCDCDCD),
-                  thickness: 2.w,
-                ),
-                isFirst: index == 0 ? true : false,
-                isLast: controller.status.length - 1 == index
-                    ? true
-                    : false,
+                beforeLineStyle: LineStyle(color: beforeColor, thickness: 2.w),
+                afterLineStyle:  LineStyle(color: afterColor,  thickness: 2.w),
                 endChild: Padding(
-                  padding: EdgeInsets.only(left: 12.w,top: 10.h),
+                  padding: EdgeInsets.only(left: 16.w, top: 8.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CustomPrimaryText(
-                        text: item['title'],
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
+                        text: step.title,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
                         color: isDark
                             ? AppColors.whiteColor
                             : AppColors.titleColor,
                       ),
                       SizedBox(height: 4.h),
                       CustomPrimaryText(
-                        text: isStatus ? 'Dec 10, 2024' : 'Pending',
-                        fontSize: 14.sp,
+                        // Show the date when done, 'Pending' otherwise
+                        text: step.state == StepState.done
+                            ? (step.date ?? '')
+                            : 'Pending',
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w400,
                         color: isDark
                             ? AppColors.primaryBorderColor
@@ -97,7 +90,8 @@ class SellDetailsStatus extends GetWidget<SellDetailsController> {
               ),
             );
           }),
-          CustomDivider()
+          SizedBox(height: 8.h),
+          CustomDivider(),
         ],
       ),
     );

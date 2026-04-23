@@ -34,8 +34,10 @@ class RentalsActiveInstallment extends StatelessWidget {
             height: 40.h,
             child: CustomPaymentTimeline(
               isFirst: index == 0 ? true : false,
-              isCurrentStatus: items[index]["active"] == true,
-              isLast: items.length-1==index?true:false,
+              color: items[index]["active"] == true
+                  ? Color(0xFF00C950)
+                  : Color(0xFFD1D5DC),
+              isLast: items.length - 1 == index ? true : false,
               endChild: Padding(
                 padding: EdgeInsets.only(left: 12.w),
                 child: Row(

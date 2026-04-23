@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/ai/controller/ai_product_placement_regenerate_controller.dart';
-import 'package:zb_dezign/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_regenerate_dropdown_item.dart';
+import 'package:zb_dezign/features/ai/widgets/ai_product_placement_regenerate/ai_product_placement_regenerate_dropdown_item.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class AiProductPlacementRegenerateDropdown
@@ -15,9 +15,13 @@ class AiProductPlacementRegenerateDropdown
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(() {
       return PopupMenuButton(
-        offset: Offset(0, 40.h),
+        offset: Offset(80, 17.h),
+        elevation: 0,
+        color: Colors.transparent,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(24.r),
         ),
         itemBuilder: (context) => [
           PopupMenuItem(
@@ -31,7 +35,7 @@ class AiProductPlacementRegenerateDropdown
           decoration: BoxDecoration(
             color: isDark
                 ? AppColors.whiteColor.withValues(alpha: 0.2)
-                : AppColors.darkColor.withValues(alpha: 0.2),
+                : AppColors.labelColor.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(8.r),
           ),
           child: Row(
@@ -39,13 +43,14 @@ class AiProductPlacementRegenerateDropdown
             children: [
               CustomPrimaryText(
                 text: controller.selectedLabel,
-                fontSize: 12.sp,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
                 color: AppColors.whiteColor,
               ),
-              SizedBox(width: 4.w),
+              SizedBox(width: 6.w),
               Icon(
-                Icons.keyboard_arrow_down,
-                size: 14.sp,
+                Icons.keyboard_arrow_down_rounded,
+                size: 18.sp,
                 color: AppColors.whiteColor,
               ),
             ],

@@ -23,16 +23,15 @@ class SellDetails extends GetView<SellDetailsController> {
   @override
   Widget build(BuildContext context) {
     final SellModel sellModel = Get.arguments as SellModel;
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return CustomContainer(
       child: ListView(
         children: [
           SellHelper().sellHeader(
             isDark: isDark,
             context: context,
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => Navigator.pop(context),
             icon: IconsPath.back,
           ),
           SizedBox(height: 32.h),
@@ -46,9 +45,7 @@ class SellDetails extends GetView<SellDetailsController> {
                     CustomPrimaryText(
                       text: sellModel.id ?? '',
                       fontWeight: FontWeight.w600,
-                      color: isDark
-                          ? AppColors.whiteColor
-                          : AppColors.labelColor,
+                      color: isDark ? AppColors.whiteColor : AppColors.labelColor,
                     ),
                     SizedBox(width: 8.w),
                     CustomTableStatus(status: sellModel.status ?? ''),
@@ -66,12 +63,13 @@ class SellDetails extends GetView<SellDetailsController> {
                 SizedBox(height: 20.h),
                 CustomDivider(),
                 SizedBox(height: 25.h),
-                SellDetailsStatus(),
+                SellDetailsStatus(sellStatus: sellModel.status),
                 SizedBox(height: 25.h),
                 SellDetailsSummery(),
               ],
             ),
           ),
+
           if (sellModel.status == 'Offer Ready')
             Padding(
               padding: EdgeInsets.only(top: 12.h),
@@ -84,24 +82,23 @@ class SellDetails extends GetView<SellDetailsController> {
                         ? AppColors.whiteColor.withValues(alpha: 0.3)
                         : null,
                     context: context,
-                    builder: (context) {
-                      return CustomPaymentDialog(
-                        title: 'Card Information',
-                        sub: 'Receive your payment.',
-                        buttonText: 'Done',
-                        cardList: controller.cardList,
-                        selectedCard: controller.selectedCard,
-                        onSelect: (value) {
-                          if (value != null) {
-                            controller.selectedCard.value = value;
-                          }
-                        },
-                      );
-                    },
+                    builder: (context) => CustomPaymentDialog(
+                      title: 'Card Information',
+                      sub: 'Receive your payment.',
+                      buttonText: 'Done',
+                      cardList: controller.cardList,
+                      selectedCard: controller.selectedCard,
+                      onSelect: (value) {
+                        if (value != null) {
+                          controller.selectedCard.value = value;
+                        }
+                      },
+                    ),
                   );
                 },
               ),
             ),
+
           if (sellModel.status == 'Accepted')
             Padding(
               padding: EdgeInsets.only(top: 12.h),

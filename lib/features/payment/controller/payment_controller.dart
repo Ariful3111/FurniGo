@@ -8,15 +8,17 @@ class PaymentController extends GetxController {
   TextEditingController cardController = TextEditingController();
   TextEditingController expiryController = TextEditingController();
   TextEditingController cvvController = TextEditingController();
+  ScrollController scrollController = ScrollController();
   RxBool isEdit = false.obs;
   @override
-  void onClose() {
+  void dispose() {
     nameController.dispose();
     bsbController.dispose();
     accountController.dispose();
     cardController.dispose();
     expiryController.dispose();
     cvvController.dispose();
-    super.onClose();
+    scrollController.dispose();
+    super.dispose();
   }
 }

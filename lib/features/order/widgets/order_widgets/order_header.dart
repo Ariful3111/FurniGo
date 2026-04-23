@@ -44,7 +44,13 @@ class OrderHeader extends GetWidget<OrderController> {
                     padding: EdgeInsets.only(right: 8.w),
                     child: InkWell(
                       onTap: () {
-                        controller.isSearch.value = !controller.isSearch.value;
+                        if (controller.searchController.text.isEmpty) {
+                          controller.isSearch.value =
+                              !controller.isSearch.value;
+                        } else {
+                          // ignore: avoid_print
+                          print('search user input');
+                        }
                       },
                       child: Image.asset(
                         IconsPath.search,
