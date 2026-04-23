@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/images_path.dart';
 import 'package:zb_dezign/features/ai/widgets/ai_header.dart';
-import 'package:zb_dezign/features/ai/widgets/ai_product_placement_widgets/ai_product_placement_room.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
