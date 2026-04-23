@@ -103,11 +103,17 @@ class AiController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    getArgument(
-      title: Get.arguments.toString(),
-      sub: Get.arguments.toString(),
-      index: Get.arguments,
-    );
+    final args = Get.arguments;
+    if (args is Map) {
+      final int index = args['index'] ?? 0;
+      if (index < categoryController.aiOption.length) {
+        getArgument(
+          title: args['title'] ?? '',
+          sub: args['sub'] ?? '',
+          index: index,
+        );
+      }
+    }
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
@@ -125,4 +131,3 @@ class AiController extends GetxController
     super.onClose();
   }
 }
-
