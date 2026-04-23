@@ -29,11 +29,11 @@
 
 ## Update Summary
 **Changes Made**
-- Added comprehensive AI credit dropdown widget system with overlay-based dropdown functionality
-- Integrated AI credit management with existing credit balance infrastructure
-- Enhanced transaction handling with AI-specific credit item management
-- Added AI dropdown upgrade functionality for credit package upgrades
-- Expanded credit system integration across AI interface components
+- Complete architectural overhaul from fl_chart-based bar chart to custom cylinder-based visualization system
+- CreditChart widget now uses CustomPaint and CustomPainter classes for sophisticated gradient effects, lighting simulations, and custom cylinder rendering
+- Implementation eliminates external dependencies in favor of custom rendering capabilities with enhanced visual aesthetics
+- Active/inactive cylinder states with advanced gradient effects and lighting simulations
+- Custom cylinder rendering with realistic 3D-like appearance using multiple gradient layers
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -41,17 +41,18 @@
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [AI Credit Integration](#ai-credit-integration)
-7. [Dependency Analysis](#dependency-analysis)
-8. [Performance Considerations](#performance-considerations)
-9. [Troubleshooting Guide](#troubleshooting-guide)
-10. [Conclusion](#conclusion)
+6. [Custom Cylinder Visualization System](#custom-cylinder-visualization-system)
+7. [AI Credit Integration](#ai-credit-integration)
+8. [Dependency Analysis](#dependency-analysis)
+9. [Performance Considerations](#performance-considerations)
+10. [Troubleshooting Guide](#troubleshooting-guide)
+11. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the Credit Balance System, focusing on credit transactions, top-up mechanisms, and usage tracking. The system has been enhanced with AI credit dropdown widgets that provide seamless credit management integration within AI interface components. It explains the responsibilities of the credit controller for transaction processing, balance calculations, and history management. It documents the credit models for transaction records, balance updates, and financial tracking. It covers the credit view components for balance display, transaction history, and credit management interfaces. It also documents the credit binding configurations for dependency injection and service initialization, and the credit widget components for balance visualization, transaction forms, and status indicators. Finally, it addresses the integration between the credit system and user profile for a seamless credit management experience, including AI-specific credit dropdown functionality.
+This document describes the Credit Balance System, focusing on credit transactions, top-up mechanisms, and usage tracking. The system has been enhanced with a revolutionary custom cylinder-based visualization system that replaces the previous fl_chart dependency with sophisticated CustomPaint and CustomPainter implementations. The new system provides advanced gradient effects, lighting simulations, and realistic 3D-like cylinder rendering with active/inactive states. It explains the responsibilities of the credit controller for transaction processing, balance calculations, and history management. It documents the credit models for transaction records, balance updates, and financial tracking. It covers the credit view components for balance display, transaction history, and credit management interfaces. It also documents the credit binding configurations for dependency injection and service initialization, and the credit widget components for balance visualization, transaction forms, and status indicators. Finally, it addresses the integration between the credit system and user profile for a seamless credit management experience, including AI-specific credit dropdown functionality.
 
 ## Project Structure
-The Credit Balance System is organized by feature with dedicated controller, models, bindings, views, and widgets. The system now includes AI integration through specialized dropdown widgets that leverage the existing credit infrastructure. Routing integrates the credit balance view with its binding and supports AI interface navigation.
+The Credit Balance System is organized by feature with dedicated controller, models, bindings, views, and widgets. The system now includes AI integration through specialized dropdown widgets that leverage the existing credit infrastructure. The architecture has been completely redesigned around custom cylinder visualization technology. Routing integrates the credit balance view with its binding and supports AI interface navigation.
 
 ```mermaid
 graph TB
@@ -79,6 +80,12 @@ AICredit["AiUserCredit"]
 AIH["AiHeader"]
 AIV["AiView"]
 end
+subgraph "Custom Visualization Engine"
+CP["CustomPaint"]
+CPA["_CylinderPainter"]
+CA["Active Cylinder Rendering"]
+CI["Inactive Cylinder Rendering"]
+end
 R["Routes"] --> V
 R --> AIV
 V --> W1
@@ -99,6 +106,10 @@ AIDC --> AIDU
 AICredit --> AID
 AIH --> AICredit
 AIV --> AIH
+W6 --> CP
+CP --> CPA
+CPA --> CA
+CPA --> CI
 ```
 
 **Diagram sources**
@@ -110,7 +121,7 @@ AIV --> AIH
 - [credit_items.dart:10-81](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_items.dart#L10-L81)
 - [credit_usage_card.dart:9-37](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_usage_card.dart#L9-L37)
 - [credit_headar.dart:7-37](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_headar.dart#L7-L37)
-- [credit_chart.dart:9-126](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L126)
+- [credit_chart.dart:9-353](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L353)
 - [credit_transaction_list.dart:10-121](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_list.dart#L10-L121)
 - [credit_transaction_item.dart:8-73](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_item.dart#L8-L73)
 - [credit_transaction_model.dart:1-11](file://lib/features/credit_balance/models/credit_transaction_model.dart#L1-L11)
@@ -137,12 +148,14 @@ AIV --> AIH
 - CreditChartModel: Represents a data point for the usage chart with month and value.
 - CreditBalanceBindings: Provides dependency injection via lazy loading for the controller.
 - Views and Widgets: Compose the credit balance display, purchase section, usage card, charts, and transaction lists.
+- **Custom Cylinder Visualization System**: Advanced CustomPaint implementation with CustomPainter for creating realistic 3D-like cylinders with gradient effects and lighting simulations.
 - **AI Integration Components**: AiController manages AI-specific credit items and dropdown overlay functionality. AiDropdown provides credit display with dropdown trigger. AiDropdownCredit creates the overlay content with credit usage visualization. AiDropdownUpgrade offers credit package upgrade functionality.
 
 Key responsibilities:
 - Transaction processing: Represented by the transaction model and list rendering.
 - Balance calculations: Not implemented in code; placeholder balance is shown in widgets.
 - History management: Rendered via transaction list and items.
+- **Custom Visualization**: Advanced cylinder rendering with active/inactive states, gradient effects, and lighting simulations.
 - **AI Credit Management**: Handles AI-specific credit item display and dropdown overlay positioning.
 
 **Section sources**
@@ -150,18 +163,20 @@ Key responsibilities:
 - [credit_transaction_model.dart:1-11](file://lib/features/credit_balance/models/credit_transaction_model.dart#L1-L11)
 - [credit_chart_model.dart:1-6](file://lib/features/credit_balance/models/credit_chart_model.dart#L1-L6)
 - [credit_balance_bindings.dart:4-9](file://lib/features/credit_balance/bindings/credit_balance_bindings.dart#L4-L9)
+- [credit_chart.dart:120-352](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L120-L352)
 - [ai_controller.dart:7-94](file://lib/features/ai/controller/ai_controller.dart#L7-L94)
 - [ai_dropdown.dart:10-70](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown.dart#L10-L70)
 - [ai_dropdown_credit.dart:12-88](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart#L12-L88)
 - [ai_dropdown_upgrade.dart:8-49](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown_upgrade.dart#L8-L49)
 
 ## Architecture Overview
-The system follows a layered architecture with enhanced AI integration:
+The system follows a layered architecture with enhanced AI integration and a revolutionary custom visualization engine:
 - View layer: CreditBalanceView composes widgets for balance, purchase section, and usage card.
-- Widget layer: Reusable widgets encapsulate UI concerns (balance display, chart, transaction list).
+- Widget layer: Reusable widgets encapsulate UI concerns (balance display, custom cylinder chart, transaction list).
 - Model layer: Immutable data models for transactions and chart data.
 - Controller layer: State management for selections and reactive updates.
 - Binding layer: Dependency injection for the controller.
+- **Custom Visualization Layer**: Advanced CustomPaint and CustomPainter implementation for sophisticated cylinder rendering with gradient effects and lighting simulations.
 - **AI Integration Layer**: Specialized controllers and widgets for AI interface credit management with overlay-based dropdown functionality.
 
 ```mermaid
@@ -178,15 +193,24 @@ B -.-> J["CreditBalanceController"]
 C -.-> J
 E -.-> J
 K["CreditBalanceBindings"] --> J
-subgraph "AI Integration"
-L["AiController"] --> M["AiDropdown"]
-M --> N["AiDropdownCredit"]
-N --> O["AiDropdownUpgrade"]
-P["AiUserCredit"] --> M
-Q["AiHeader"] --> P
-R["AiView"] --> Q
-S["AiBindings"] --> L
+subgraph "Custom Visualization Engine"
+L["CustomPaint"] --> M["_CylinderPainter"]
+M --> N["Active Cylinder Rendering"]
+M --> O["Inactive Cylinder Rendering"]
+N --> P["Multi-gradient Effects"]
+N --> Q["Lighting Simulations"]
+O --> R["Subtle Gradient Effects"]
 end
+subgraph "AI Integration"
+S["AiController"] --> T["AiDropdown"]
+T --> U["AiDropdownCredit"]
+U --> V["AiDropdownUpgrade"]
+W["AiUserCredit"] --> T
+X["AiHeader"] --> W
+Y["AiView"] --> X
+Z["AiBindings"] --> S
+end
+G --> L
 ```
 
 **Diagram sources**
@@ -196,11 +220,12 @@ end
 - [credit_items.dart:10-81](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_items.dart#L10-L81)
 - [credit_usage_card.dart:9-37](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_usage_card.dart#L9-L37)
 - [credit_headar.dart:7-37](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_headar.dart#L7-L37)
-- [credit_chart.dart:9-126](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L126)
+- [credit_chart.dart:9-353](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L353)
 - [credit_transaction_list.dart:10-121](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_list.dart#L10-L121)
 - [credit_transaction_item.dart:8-73](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_item.dart#L8-L73)
 - [credit_balance_controller.dart:3-7](file://lib/features/credit_balance/controller/credit_balance_controller.dart#L3-L7)
 - [credit_balance_bindings.dart:4-9](file://lib/features/credit_balance/bindings/credit_balance_bindings.dart#L4-L9)
+- [credit_chart.dart:120-352](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L120-L352)
 - [ai_controller.dart:7-94](file://lib/features/ai/controller/ai_controller.dart#L7-L94)
 - [ai_dropdown.dart:10-70](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown.dart#L10-L70)
 - [ai_dropdown_credit.dart:12-88](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart#L12-L88)
@@ -386,22 +411,28 @@ UI->>Ctrl : Update selectedCard
 - [credit_headar.dart:7-37](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_headar.dart#L7-L37)
 
 ### CreditChart Widget
-- Purpose: Bar chart visualizing monthly credit usage.
+- Purpose: Custom cylinder-based visualization system replacing fl_chart dependency.
 - Data: Hardcoded CreditChartModel entries for demonstration.
+- **Updated**: Complete architectural overhaul from fl_chart-based bar chart to custom cylinder rendering.
 
 ```mermaid
 flowchart TD
 Init(["Init chart data"]) --> BuildModel["Create CreditChartModel list"]
-BuildModel --> ConfigureChart["Configure BarChartData"]
-ConfigureChart --> Render["Render BarChart widget"]
+BuildModel --> ConfigureChart["Configure CustomPaint with _CylinderPainter"]
+ConfigureChart --> Render["Render CustomPaint widget with cylinder bars"]
+Render --> ActiveState["Active cylinder rendering"]
+Render --> InactiveState["Inactive cylinder rendering"]
+ActiveState --> MultiGradient["Multi-layer gradient effects"]
+ActiveState --> Lighting["Lighting simulation effects"]
+InactiveState --> SubtleGradient["Subtle gradient effects"]
 ```
 
 **Diagram sources**
-- [credit_chart.dart:9-126](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L126)
+- [credit_chart.dart:9-353](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L353)
 - [credit_chart_model.dart:1-6](file://lib/features/credit_balance/models/credit_chart_model.dart#L1-L6)
 
 **Section sources**
-- [credit_chart.dart:9-126](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L126)
+- [credit_chart.dart:9-353](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L353)
 - [credit_chart_model.dart:1-6](file://lib/features/credit_balance/models/credit_chart_model.dart#L1-L6)
 
 ### CreditTransactionList Widget
@@ -417,6 +448,105 @@ ConfigureChart --> Render["Render BarChart widget"]
 
 **Section sources**
 - [credit_transaction_item.dart:8-73](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_item.dart#L8-L73)
+
+## Custom Cylinder Visualization System
+
+### CreditChart Widget Architecture
+The CreditChart widget has undergone a complete architectural transformation from fl_chart-based bar charts to a sophisticated custom cylinder rendering system. This new system eliminates external dependencies while providing enhanced visual aesthetics and interactive capabilities.
+
+**Key Features:**
+- **CustomPaint Integration**: Uses Flutter's CustomPaint widget for precise control over rendering
+- **CustomPainter Implementation**: Dedicated _CylinderPainter class handles all drawing operations
+- **Active/Inactive States**: Dynamic rendering based on selection state with different visual treatments
+- **Advanced Gradient Effects**: Multi-layer gradient systems for realistic 3D appearance
+- **Lighting Simulations**: Sophisticated lighting effects simulating real-world illumination
+- **Responsive Design**: Adapts to theme brightness (light/dark mode support)
+
+```mermaid
+classDiagram
+class CreditChart {
++CreditChartModel[] data
++int maxY
++int selectedIndex
++build(context)
+}
+class _CylinderBar {
++String label
++int value
++double fillRatio
++bool isSelected
++bool isDark
++build(context)
+}
+class _CylinderPainter {
++double fillRatio
++bool isSelected
++paint(canvas, size)
++shouldRepaint(old)
++_drawActiveCylinder()
++_drawInactiveCylinder()
+}
+class CreditChartModel {
++String month
++int value
+}
+CreditChart --> _CylinderBar : "creates"
+_CylinderBar --> _CylinderPainter : "uses"
+CreditChart --> CreditChartModel : "manages"
+```
+
+**Diagram sources**
+- [credit_chart.dart:8-353](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L8-L353)
+- [credit_chart_model.dart:1-6](file://lib/features/credit_balance/models/credit_chart_model.dart#L1-L6)
+
+### _CylinderPainter Implementation
+The _CylinderPainter class is the core of the custom visualization system, implementing sophisticated rendering techniques for both active and inactive cylinder states.
+
+**Active Cylinder Rendering (_drawActiveCylinder):**
+- **Multi-gradient Background**: Dark blue gradient base with horizontal linear gradients
+- **Smoky Layer Effects**: Three radial gradient layers creating atmospheric effects
+- **Light Streak Simulation**: Vertical gradient streak for glass-like reflection
+- **Realistic 3D Elements**: Top and bottom elliptical caps with metallic borders
+- **Complex Path Clipping**: Precise clipping for proper gradient application
+
+**Inactive Cylinder Rendering (_drawInactiveCylinder):**
+- **Subtle Gradient System**: Light gray gradients for neutral appearance
+- **Simple Elliptical Caps**: Basic top and bottom caps without complex effects
+- **Minimal Borders**: Simple stroke borders for structural definition
+
+**Rendering Pipeline:**
+1. Calculate cylinder dimensions and clipping regions
+2. Apply appropriate gradient shaders based on state
+3. Draw body, caps, and borders with precision
+4. Handle theme adaptation for light/dark modes
+5. Optimize repaint performance with shouldRepaint override
+
+**Section sources**
+- [credit_chart.dart:120-352](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L120-L352)
+
+### Advanced Visual Effects
+The custom cylinder system implements several advanced visual effects that surpass traditional chart rendering:
+
+**Gradient Layering:**
+- Horizontal linear gradients for cylindrical appearance
+- Radial gradients for atmospheric and lighting effects
+- Multi-color transitions for depth perception
+- Alpha channel manipulation for transparency effects
+
+**Lighting Simulation:**
+- Directional light streaks for realistic reflections
+- Multi-angle gradient blending for 3D depth
+- Shadow casting through gradient transitions
+- Surface texture simulation through gradient variations
+
+**Material Properties:**
+- Metallic surface appearance through gradient combinations
+- Glass-like transparency effects
+- Realistic edge highlighting and shadowing
+- Responsive color adaptation to theme changes
+
+**Section sources**
+- [credit_chart.dart:161-347](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L161-L347)
 
 ## AI Credit Integration
 
@@ -482,7 +612,7 @@ Controller->>Controller : Insert overlay
 - Purpose: Creates the main content of the AI credit dropdown overlay.
 - Features:
   - Displays credit usage header with coin icon and balance.
-  - Shows credit chart visualization.
+  - Shows credit chart visualization using the new custom cylinder system.
   - Renders scrollable transaction list using CreditTransactionItem widgets.
   - Includes upgrade button at the bottom for credit package upgrades.
 - Integration: Utilizes existing CreditChart and CreditTransactionItem widgets from credit balance system.
@@ -490,7 +620,7 @@ Controller->>Controller : Insert overlay
 ```mermaid
 flowchart TD
 Start(["Build AiDropdownCredit"]) --> Header["Render credit usage header"]
-Header --> Chart["Render CreditChart widget"]
+Header --> Chart["Render CreditChart widget (Custom Cylinder)"]
 Chart --> Scroll["Create scrollable container"]
 Scroll --> Transactions["Generate CreditTransactionItem list"]
 Transactions --> Upgrade["Render AiDropdownUpgrade button"]
@@ -499,12 +629,12 @@ Upgrade --> End(["Complete"])
 
 **Diagram sources**
 - [ai_dropdown_credit.dart:12-88](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart#L12-L88)
-- [credit_chart.dart:9-126](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L126)
+- [credit_chart.dart:9-353](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L353)
 - [credit_transaction_item.dart:8-73](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_item.dart#L8-L73)
 
 **Section sources**
 - [ai_dropdown_credit.dart:12-88](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart#L12-L88)
-- [credit_chart.dart:9-126](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L126)
+- [credit_chart.dart:9-353](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L9-L353)
 - [credit_transaction_item.dart:8-73](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_item.dart#L8-L73)
 
 ### AiDropdownUpgrade Widget
@@ -545,7 +675,9 @@ Upgrade --> End(["Complete"])
 - Routing integrates the credit balance view with its binding and supports AI interface navigation.
 - The view depends on widgets; widgets depend on models and controller.
 - Binding provides controller instantiation for dependency injection.
+- **Custom Visualization Dependencies**: CreditChart widget depends on CustomPaint and CustomPainter classes for rendering.
 - **AI Integration Dependencies**: AiController depends on CreditTransaction model and uses overlay positioning for dropdown functionality.
+- **External Dependencies**: fl_chart remains as a dependency despite the architectural change, though it's no longer actively used in the codebase.
 
 ```mermaid
 graph LR
@@ -555,6 +687,8 @@ View --> Widgets["Widgets"]
 AIView --> AIWidgets["AI Widgets"]
 Widgets --> Models["Models"]
 Widgets --> Controller["CreditBalanceController"]
+Widgets --> CustomPaint["CustomPaint"]
+CustomPaint --> CustomPainter["_CylinderPainter"]
 AIWidgets --> AIController["AiController"]
 AIController --> Models
 Binding["credit_balance_bindings.dart"] --> Controller
@@ -568,17 +702,21 @@ AIBinding["ai_bindings.dart"] --> AIController
 - [ai_view.dart:7-26](file://lib/features/ai/views/ai_view.dart#L7-L26)
 - [credit_balance_bindings.dart:4-9](file://lib/features/credit_balance/bindings/credit_balance_bindings.dart#L4-L9)
 - [ai_bindings.dart:4-10](file://lib/features/ai/bindings/ai_bindings.dart#L4-L10)
+- [credit_chart.dart:120-352](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L120-L352)
 
 **Section sources**
 - [routes.dart:199-202](file://lib/core/routes/routes.dart#L199-L202)
 - [routes.dart:249-252](file://lib/core/routes/routes.dart#L249-L252)
 - [credit_balance_bindings.dart:4-9](file://lib/features/credit_balance/bindings/credit_balance_bindings.dart#L4-L9)
 - [ai_bindings.dart:4-10](file://lib/features/ai/bindings/ai_bindings.dart#L4-L10)
+- [credit_chart.dart:120-352](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L120-L352)
 
 ## Performance Considerations
 - Widget composition: Prefer lightweight StatelessWidgets for static content to minimize rebuild costs.
 - Lists: Use ListView.builder for large transaction lists to avoid unnecessary widget creation.
-- Charts: Keep chart data small and immutable to prevent frequent recomputation.
+- **Custom Visualization Performance**: CustomPaint and CustomPainter provide efficient rendering with optimized shouldRepaint logic.
+- **Gradient Optimization**: Multi-layer gradients are computed once per paint operation, minimizing repeated calculations.
+- **Theme Adaptation**: Automatic theme switching without performance penalties through built-in Flutter theme system.
 - Reactive state: Limit excessive reactive updates by batching controller state changes.
 - **AI Overlay Performance**: Overlay entries should be properly disposed to prevent memory leaks.
 - **AI Credit Data**: Predefined credit items are efficient but consider pagination for large transaction histories.
@@ -588,6 +726,10 @@ AIBinding["ai_bindings.dart"] --> AIController
 - Transaction list not rendering: Confirm the transaction list length and itemBuilder are correctly configured.
 - Payment dialog not selecting card: Ensure the dialog passes back the selected card and the controller updates selectedCard.
 - Icons not displaying: Confirm asset paths in icons_path.dart match actual assets.
+- **Custom Cylinder Rendering Issues**: Verify CustomPaint widget is properly sized and CustomPainter is receiving correct parameters.
+- **Gradient Effects Not Appearing**: Check that gradient shaders are being created with valid color values and proper bounds.
+- **Lighting Simulation Problems**: Ensure gradient directions and alpha values are correctly configured for desired lighting effects.
+- **Theme Adaptation Failures**: Verify theme brightness detection and color adaptation logic in _CylinderPainter.
 - **AI Dropdown not appearing**: Verify overlay entry is properly created and inserted, and layerLink is correctly passed to CompositedTransformTarget.
 - **AI Credit items not showing**: Ensure AiController is properly injected and creditItems list contains valid CreditTransaction objects.
 - **AI Upgrade button not working**: Check that AiDropdownUpgrade widget is properly positioned and receives user interaction events.
@@ -595,9 +737,14 @@ AIBinding["ai_bindings.dart"] --> AIController
 **Section sources**
 - [credit_balance_controller.dart:3-7](file://lib/features/credit_balance/controller/credit_balance_controller.dart#L3-L7)
 - [credit_transaction_list.dart:10-121](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_list.dart#L10-L121)
+- [credit_chart.dart:120-352](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_chart.dart#L120-L352)
 - [ai_controller.dart:58-94](file://lib/features/ai/controller/ai_controller.dart#L58-L94)
 - [ai_dropdown_credit.dart:12-88](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart#L12-L88)
 - [icons_path.dart:109-111](file://lib/core/constant/icons_path.dart#L109-L111)
 
 ## Conclusion
-The Credit Balance System provides a modular structure for managing credit balances, presenting usage analytics, and enabling top-ups. The system has been significantly enhanced with AI credit dropdown widgets that seamlessly integrate credit management functionality within AI interface components. The current implementation focuses on UI composition and reactive state for selection and card choice, with AI-specific credit item management and overlay-based dropdown functionality. Future enhancements should integrate backend APIs for real-time balance updates, transaction processing, and financial tracking, while maintaining the existing widget and model abstractions. The AI integration demonstrates successful cross-feature collaboration, enabling users to manage credits directly from AI interface contexts.
+The Credit Balance System provides a modular structure for managing credit balances, presenting usage analytics, and enabling top-ups. The system has been significantly enhanced with a revolutionary custom cylinder-based visualization system that eliminates external dependencies while providing sophisticated gradient effects, lighting simulations, and realistic 3D-like cylinder rendering. The new implementation uses CustomPaint and CustomPainter classes to create advanced visual effects with active/inactive states, multi-layer gradient systems, and responsive theme adaptation.
+
+The system has been enhanced with AI credit dropdown widgets that seamlessly integrate credit management functionality within AI interface components. The current implementation focuses on UI composition and reactive state for selection and card choice, with AI-specific credit item management and overlay-based dropdown functionality. The custom visualization system demonstrates advanced Flutter rendering capabilities while maintaining excellent performance characteristics.
+
+Future enhancements should integrate backend APIs for real-time balance updates, transaction processing, and financial tracking, while maintaining the existing widget and model abstractions. The AI integration demonstrates successful cross-feature collaboration, enabling users to manage credits directly from AI interface contexts. The custom cylinder visualization system represents a significant architectural achievement in Flutter development, showcasing the power of CustomPaint for creating sophisticated UI components.
