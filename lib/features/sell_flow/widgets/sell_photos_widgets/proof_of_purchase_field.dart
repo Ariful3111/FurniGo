@@ -33,6 +33,7 @@ class ProofOfPurchaseField extends GetWidget<SellFlowPhotosController> {
           controller: controller.purchaseDateController,
           onTap: () => DatePicker.pickDate(
             context: context,
+            lastDate: DateTime.now(),
             onDateSelected: (date) {
               String formattedDate =
                   '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';

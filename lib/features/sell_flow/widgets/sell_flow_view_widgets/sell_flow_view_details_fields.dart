@@ -19,13 +19,14 @@ class SellFlowViewDetailsFields extends StatelessWidget {
       children: [
         title(text: "Item category *", isDark: isDark),
         SizedBox(height: 8.h),
-        SellFlowViewDropdown(item: item,),
+        SellFlowViewDropdown(item: item),
         SizedBox(height: 12.h),
         title(text: "Brand", isDark: isDark),
         SizedBox(height: 8.h),
         field(
           controller: item.brandController,
           labelText: "e.g., IKEA, Freedom, Custom",
+          isDark: isDark,
         ),
         SizedBox(height: 12.h),
         title(text: "Dimensions", isDark: isDark),
@@ -33,25 +34,30 @@ class SellFlowViewDetailsFields extends StatelessWidget {
         field(
           controller: item.dimensionController,
           labelText: "e.g., 200cm x 90cm x 80cm (L x W x H)",
+          isDark: isDark,
         ),
         SizedBox(height: 6.h),
         title(
           text: "Add length x width x height for a more accurate quote.",
           fontSize: 14.sp,
           fontWeight: FontWeight.w400,
-          color: AppColors.greyColor,
+          color: isDark ? AppColors.primaryBorderColor : AppColors.greyColor,
           isDark: isDark,
         ),
         SizedBox(height: 12.h),
         title(text: "Age (if known)", isDark: isDark),
         SizedBox(height: 8.h),
-        field(controller: item.ageController, labelText: "e.g., 2 years"),
+        field(
+          controller: item.ageController,
+          labelText: "e.g., 2 years",
+          isDark: isDark,
+        ),
         SizedBox(height: 6.h),
         title(
           text: "If you're not sure, leave it blank.",
           fontSize: 14.sp,
           fontWeight: FontWeight.w400,
-          color: AppColors.greyColor,
+          color: isDark ? AppColors.primaryBorderColor : AppColors.greyColor,
           isDark: isDark,
         ),
         SizedBox(height: 12.h),
@@ -62,9 +68,10 @@ class SellFlowViewDetailsFields extends StatelessWidget {
           labelText:
               "Describe any scratches, stains, missing parts, repairs...",
           maxLines: 3,
-          fillColor:isDark? AppColors.labelColor:Color(0xFFF1F1F1),
-          labelColor: Color(0xFF6B7280),
+          fillColor: isDark ? AppColors.labelColor : Color(0xFFF1F1F1),
+          labelColor: isDark ? AppColors.primaryBorderColor : Color(0xFF6B7280),
           isAlignLabelWithHint: true,
+          isDark: isDark,
         ),
         SizedBox(height: 20.h),
       ],
@@ -89,6 +96,7 @@ class SellFlowViewDetailsFields extends StatelessWidget {
   Widget field({
     required TextEditingController controller,
     required String labelText,
+    required bool isDark,
     int? maxLines,
     Color? fillColor,
     Color? labelColor,
@@ -97,7 +105,9 @@ class SellFlowViewDetailsFields extends StatelessWidget {
     return CustomTextFormField(
       controller: controller,
       labelText: labelText,
-      labelColor: labelColor ?? Color(0xFF99A1AF),
+      labelColor: isDark
+          ? labelColor ?? AppColors.primaryBorderColor
+          : labelColor ?? Color(0xFF99A1AF),
       labelFontSize: 14.sp,
       labelFontWeight: FontWeight.w400,
       maxLines: maxLines,

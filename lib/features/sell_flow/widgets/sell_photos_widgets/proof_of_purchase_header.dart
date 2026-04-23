@@ -53,7 +53,7 @@ class ProofOfPurchaseHeader extends GetWidget<SellFlowPhotosController> {
           text: 'Upload receipts or documents to help verify brand and value.',
           fontSize: 12.sp,
           fontWeight: FontWeight.w400,
-          color: AppColors.greyColor,
+          color: isDark ? AppColors.primaryBorderColor : AppColors.greyColor,
         ),
       ],
     );
