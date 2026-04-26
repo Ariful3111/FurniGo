@@ -141,7 +141,7 @@ class ProductDetailsCart extends GetWidget<ProductDetailsController> {
         width: 55.w,
         height: 49.h,
         decoration: _boxDecoration(),
-        child: Icon(icon, size: 20.sp),
+        child: Icon(icon, size: 20.sp,color: AppColors.labelColor,),
       ),
     );
   }

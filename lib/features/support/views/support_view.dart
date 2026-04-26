@@ -9,6 +9,7 @@ import 'package:zb_dezign/features/support/widgets/support_recent_ticket.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -25,11 +26,10 @@ class SupportView extends StatelessWidget {
           CustomAppbar(
             title: 'Support Center',
             onDrawerTap: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) {
-                  return CustomDrawer();
-                },
+                dialog: CustomDrawer(),
+                isDark: isDark,
               );
             },
           ),

@@ -10,6 +10,7 @@ import 'package:zb_dezign/features/dashboard/widgets/dashboard_widget/dashboard_
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_banner.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_quick_action/custom_quick_action.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -19,6 +20,7 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return CustomContainer(
       child: SingleChildScrollView(
         child: Column(
@@ -26,11 +28,10 @@ class DashboardView extends StatelessWidget {
             CustomAppbar(
               title: 'Dashboard',
               onDrawerTap: () {
-                showDialog(
+                CustomDialogAnimation().showAnimatedDialog(
                   context: context,
-                  builder: (context) {
-                    return CustomDrawer();
-                  },
+                  dialog: CustomDrawer(),
+                  isDark: isDark,
                 );
               },
             ),
@@ -52,6 +53,7 @@ class DashboardView extends StatelessWidget {
             DashboardReminders(),
             SizedBox(height: 12.h),
             DashboardMembershipNotice(),
+            SizedBox(height: 90.h),
           ],
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:zb_dezign/features/payment/widgets/eft_payments.dart';
 import 'package:zb_dezign/features/payment/widgets/payment_method.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -24,11 +25,10 @@ class PaymentView extends GetView<PaymentController> {
           CustomAppbar(
             title: 'Payment Method',
             onDrawerTap: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) {
-                  return CustomDrawer();
-                },
+                dialog: CustomDrawer(),
+                isDark: isDark,
               );
             },
           ),
@@ -57,7 +57,7 @@ class PaymentView extends GetView<PaymentController> {
           ),
           SizedBox(height: 16.h),
           PaymentMethod(),
-          SizedBox(height: 12.h,),
+          SizedBox(height: 12.h),
           EftPayments(),
         ],
       ),

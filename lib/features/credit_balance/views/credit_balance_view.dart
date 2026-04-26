@@ -6,6 +6,7 @@ import 'package:zb_dezign/features/credit_balance/widgets/credit_balance_view_wi
 import 'package:zb_dezign/features/credit_balance/widgets/credit_balance_view_widgets/credit_usage_card.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -22,11 +23,10 @@ class CreditBalanceView extends StatelessWidget {
           CustomAppbar(
             title: 'Credit Balance',
             onDrawerTap: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) {
-                  return CustomDrawer();
-                },
+                dialog: CustomDrawer(),
+                isDark: isDark,
               );
             },
           ),
@@ -59,7 +59,7 @@ class CreditBalanceView extends StatelessWidget {
           CreditBalance(),
           SizedBox(height: 20.h),
           CreditSection(),
-          SizedBox(height: 20.h,),
+          SizedBox(height: 20.h),
           CreditUsageCard(),
         ],
       ),

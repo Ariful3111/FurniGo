@@ -69,7 +69,6 @@ class ProductDetailsTab extends GetWidget<ProductDetailsController> {
                   begin: Offset(0.1, 0.0),
                   end: Offset.zero,
                 ).animate(animation);
-
                 return SlideTransition(
                   position: offsetAnimation,
                   child: FadeTransition(opacity: animation, child: child),

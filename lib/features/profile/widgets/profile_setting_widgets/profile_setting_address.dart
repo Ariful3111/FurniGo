@@ -5,6 +5,7 @@ import 'package:zb_dezign/features/profile/widgets/profile_setting_widgets/add_n
 import 'package:zb_dezign/features/profile/widgets/profile_setting_widgets/profile_setting_address_list.dart';
 import 'package:zb_dezign/features/profile/widgets/profile_setting_widgets/profile_settings_header.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_secondary_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
 class ProfileSettingAddress extends StatelessWidget {
@@ -12,6 +13,7 @@ class ProfileSettingAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
       radius: 16.r,
       padding: EdgeInsets.all(20.r),
@@ -29,9 +31,10 @@ class ProfileSettingAddress extends StatelessWidget {
             text: 'Add Address',
             icon: IconsPath.add,
             onPressed: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) => AddNewAddressDialog(),
+                dialog: AddNewAddressDialog(),
+                isDark: isDark,
               );
             },
           ),

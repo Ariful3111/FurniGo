@@ -66,14 +66,16 @@ class CustomTableStatus extends StatelessWidget {
             : AppColors.rejectedTextColor;
         break;
       case '2nd installment: Upcoming':
-        bgColor = const Color(0xFFFFE7D3);
-        textColor = const Color(0xFFFF8D28);
+        bgColor =  Color(0xFFFFE7D3);
+        textColor =  Color(0xFFFF8D28);
         break;
       case 'Resolved':
         bgColor = isDark
             ? AppColors.darkCompleteBgColor
             : AppColors.completeBgColor;
-        textColor = isDark ? AppColors.darkTextColor : AppColors.whiteColor;
+        textColor = isDark
+            ? AppColors.primaryBorderColor
+            : AppColors.whiteColor;
         break;
       default:
         bgColor = AppColors.fieldColor;

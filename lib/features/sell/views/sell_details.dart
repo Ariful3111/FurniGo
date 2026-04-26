@@ -11,6 +11,7 @@ import 'package:zb_dezign/features/sell/widgets/sell_details_widgets/sell_detail
 import 'package:zb_dezign/features/sell/widgets/sell_helper.dart';
 import 'package:zb_dezign/features/sell/widgets/sell_offer_ready_widgets/sell_offer_ready.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_table/custom_table_status.dart';
@@ -45,7 +46,9 @@ class SellDetails extends GetView<SellDetailsController> {
                     CustomPrimaryText(
                       text: sellModel.id ?? '',
                       fontWeight: FontWeight.w600,
-                      color: isDark ? AppColors.whiteColor : AppColors.labelColor,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.labelColor,
                     ),
                     SizedBox(width: 8.w),
                     CustomTableStatus(status: sellModel.status ?? ''),
@@ -77,12 +80,9 @@ class SellDetails extends GetView<SellDetailsController> {
                 amount: sellModel.offer ?? '',
                 onPayment: () {
                   Navigator.pop(context);
-                  showDialog(
-                    barrierColor: isDark
-                        ? AppColors.whiteColor.withValues(alpha: 0.3)
-                        : null,
+                  CustomDialogAnimation().showAnimatedDialog(
                     context: context,
-                    builder: (context) => CustomPaymentDialog(
+                    dialog: CustomPaymentDialog(
                       title: 'Card Information',
                       sub: 'Receive your payment.',
                       buttonText: 'Done',
@@ -94,6 +94,7 @@ class SellDetails extends GetView<SellDetailsController> {
                         }
                       },
                     ),
+                    isDark: isDark,
                   );
                 },
               ),

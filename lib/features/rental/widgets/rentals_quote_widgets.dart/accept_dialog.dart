@@ -6,6 +6,7 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/rental/controllers/rental_quotes_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -57,22 +58,18 @@ class AcceptDialog extends GetWidget<RentalQuotesController> {
                     text: 'Proceed to pay',
                     onPressed: () {
                       Navigator.pop(context);
-                      showDialog(
+                      CustomDialogAnimation().showAnimatedDialog(
                         context: context,
-                        barrierColor: isDark
-                            ? AppColors.whiteColor.withValues(alpha: 0.3)
-                            : null,
-                        builder: (context) {
-                          return CustomPaymentDialog(
-                            cardList: controller.cardList,
-                            selectedCard: controller.selectedCard,
-                            onSelect: (value) {
-                              if (value != null) {
-                                controller.selectedCard.value = value;
-                              }
-                            },
-                          );
-                        },
+                        dialog: CustomPaymentDialog(
+                          cardList: controller.cardList,
+                          selectedCard: controller.selectedCard,
+                          onSelect: (value) {
+                            if (value != null) {
+                              controller.selectedCard.value = value;
+                            }
+                          },
+                        ),
+                        isDark: isDark,
                       );
                     },
                     fontSize: 12.sp,

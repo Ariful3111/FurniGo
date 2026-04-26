@@ -6,6 +6,7 @@ import 'package:zb_dezign/features/dashboard_ai_design/controller/dashboard_ai_d
 import 'package:zb_dezign/features/dashboard_ai_design/widgets/dashboard_ai_design_view_widgets/dashboard_ai_design_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -23,11 +24,10 @@ class DashboardAiDesignView extends GetView<DashboardAiDesignController> {
           CustomAppbar(
             title: 'AI Designs',
             onDrawerTap: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) {
-                  return CustomDrawer();
-                },
+                dialog: CustomDrawer(),
+                isDark: isDark,
               );
             },
           ),
