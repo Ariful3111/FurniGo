@@ -9,7 +9,6 @@ import 'package:zb_dezign/features/order/widgets/order_widgets/order_item.dart';
 import 'package:zb_dezign/features/order/widgets/order_widgets/order_status.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
@@ -20,7 +19,6 @@ class OrderView extends GetView<OrderController> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(() {
       return CustomContainer(
         child: controller.isLoading.value
@@ -30,10 +28,11 @@ class OrderView extends GetView<OrderController> {
                   CustomAppbar(
                     title: 'Order',
                     onDrawerTap: () {
-                      CustomDialogAnimation().showAnimatedDialog(
+                      showDialog(
                         context: context,
-                        dialog: CustomDrawer(),
-                        isDark: isDark,
+                        builder: (context) {
+                          return CustomDrawer();
+                        },
                       );
                     },
                   ),

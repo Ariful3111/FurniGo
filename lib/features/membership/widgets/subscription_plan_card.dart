@@ -11,7 +11,6 @@ import 'package:zb_dezign/features/membership/widgets/most_popular_plan.dart';
 import 'package:zb_dezign/features/membership/widgets/subscription_plan_feature.dart';
 import 'package:zb_dezign/features/membership/widgets/subscription_plan_price.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -108,41 +107,42 @@ class SubscriptionPlanCard extends GetWidget<SubscriptionController> {
                     ),
                   ],
                 ),
-              if (isExpireSoon) ExpireSoonButton(),
-              if (isExpire) ExpiredButton(),
+                if(isExpireSoon)ExpireSoonButton(),
+                if(isExpire)ExpiredButton(),
             ],
           ),
           SizedBox(height: 20.h),
           CustomPrimaryButton(
             text: isActive ? 'Renew Now' : data["buttonText"],
             onPressed: () {
-              CustomDialogAnimation().showAnimatedDialog(
+              showDialog(
                 context: context,
-                dialog: CustomPaymentDialog(
-                  height: 400.h,
-                  title: 'Confirm Your Subscription',
-                  sub: 'You are one step away from exclusive benefits.',
-                  priceText: 'Price:',
-                  icon: IconsPath.success,
-                  successTitle:
-                      'Payment Successful!\nYou are currently into Design Plan 🎉',
-                  successHeight: 350.h,
-                  price: CustomSpanText(
-                    title: '\$10',
-                    fontSize: 20.sp,
-                    color: isDark
-                        ? AppColors.whiteColor
-                        : AppColors.primaryColor,
-                    fontWeight: FontWeight.w600,
-                    spanText: '/AUD per month',
-                  ),
-                  cardList: ['13265456', '654366565'],
-                  selectedCard: controller.selectedCard,
-                  onSelect: (value) {
-                    controller.selectedCard.value = value!;
-                  },
-                ),
-                isDark: isDark,
+                builder: (context) {
+                  return CustomPaymentDialog(
+                    height: 400.h,
+                    title: 'Confirm Your Subscription',
+                    sub: 'You are one step away from exclusive benefits.',
+                    priceText: 'Price:',
+                    icon: IconsPath.success,
+                    successTitle:
+                        'Payment Successful!\nYou are currently into Design Plan 🎉',
+                    successHeight: 350.h,
+                    price: CustomSpanText(
+                      title: '\$10',
+                      fontSize: 20.sp,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.primaryColor,
+                      fontWeight: FontWeight.w600,
+                      spanText: '/AUD per month',
+                    ),
+                    cardList: ['13265456', '654366565'],
+                    selectedCard: controller.selectedCard,
+                    onSelect: (value) {
+                      controller.selectedCard.value = value!;
+                    },
+                  );
+                },
               );
             },
             textColor: isActive

@@ -45,7 +45,7 @@ class ProfileViews extends GetView<ProfileController> {
                           fontSize: 16.sp,
                           borderRadius: BorderRadius.circular(12.r),
                         ),
-                  SizedBox(height: 90.h),
+                  SizedBox(height: 20.h),
                 ],
               );
       }),

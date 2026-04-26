@@ -8,87 +8,44 @@ import 'package:zb_dezign/features/auth/widgets/onboarding_header.dart';
 class OnboardingView extends GetView<OnboardingController> {
   const OnboardingView({super.key});
 
-  static const double _parallaxFactor = 0.28;
-
   @override
   Widget build(BuildContext context) {
-    final double screenW = MediaQuery.sizeOf(context).width;
-    final double screenH = MediaQuery.sizeOf(context).height;
-
     return Scaffold(
       body: PageView.builder(
         controller: controller.pageController,
         itemCount: controller.onboardingItems.length,
-        onPageChanged: (value) => controller.currentIndex.value = value,
+        onPageChanged: (value) {
+          controller.currentIndex.value = value;
+        },
+        scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           final item = controller.onboardingItems[index];
-          final bool isFirstPage = index == 0;
-          return AnimatedBuilder(
-            animation: controller.pageController,
-            builder: (context, _) {
-              final double page = controller.pageController.hasClients
-                  ? (controller.pageController.page ?? index.toDouble())
-                  : index.toDouble();
-              final double bgOffset =
-                  (index - page) * screenW * _parallaxFactor;
-              return Stack(
-                children: [
-                  ClipRect(
-                    child: OverflowBox(
-                      maxWidth: screenW * (1 + _parallaxFactor * 2),
-                      alignment: Alignment.center,
-                      child: Transform.translate(
-                        offset: Offset(bgOffset, 0),
-                        child: Image.asset(
-                          item['image'] as String,
-                          width: screenW * (1 + _parallaxFactor * 2),
-                          height: screenH,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 40.h,
-                    ),
-                    child: Column(
-                      children: [
-                        Obx(
-                          () => OnboardingHeader(
-                            pageKey: controller.currentIndex.value,
-                          ),
-                        ),
-                        if (isFirstPage) ...[
-                          const Spacer(),
-                          // Obx(
-                          //   () => OnboardingRotatableImage(
-                          //     imagePath:
-                          //         (item['foregroundImage'] ?? item['image'])
-                          //             as String,
-                          //     pageKey: controller.currentIndex.value,
-                          //   ),
-                          // ),
-                          SizedBox(height: 24.h),
-                        ] else
-                          const Spacer(),
-                        Obx(() {
-                          final isLast =
-                              controller.currentIndex.value ==
-                              controller.onboardingItems.length - 1;
-                          return OnboardingFooter(
-                            title: item['title'] as String,
-                            subTitle: item['subTitle'] as String,
-                            isLast: isLast,
-                            pageKey: controller.currentIndex.value,
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            },
+          return Container(
+            height: MediaQuery.heightOf(context),
+            width: MediaQuery.widthOf(context),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(item['image']),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: Column(
+              children: [
+                OnboardingHeader(),
+                Spacer(),
+                Obx(() {
+                  final isLast =
+                      controller.currentIndex.value ==
+                      controller.onboardingItems.length - 1;
+                  return OnboardingFooter(
+                    title: item['title'],
+                    subTitle: item['subTitle'],
+                    isLast: isLast,
+                  );
+                }),
+              ],
+            ),
           );
         },
       ),

@@ -31,43 +31,38 @@ class DashboardAiDesignTable extends GetWidget<DashboardAiDesignController> {
               )
               .toList();
           final expandedFlag = controller.expandedList.toList();
-          return AnimatedSize(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            child: CustomTable(
-              key: ValueKey(controller.selectedIndex.value),
-              rows: tableRows,
-              id: 'id',
-              status: 'type',
-              isStatus: false,
-              title: 'title',
-              expandedList: expandedFlag,
-              onExpand: (index) {
-                controller.expandedList[index] = !controller.expandedList[index];
-              },
-              buildExpanded: (index, row) {
-                final AiDesignModel aiDesignModel = row['model'] as AiDesignModel;
-                return DashboardAiDesignTableExpanded(aiDesignModel: aiDesignModel);
-              },
-              headerList: controller.aiTableColumn,
-              action: SizedBox.shrink(),
-              actionBuilder: (index, row) {
-                final AiDesignModel aiDesignModel = row['model'] as AiDesignModel;
-                return FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: CustomSecondaryButton(
-                    text: 'View Details',
-                    icon: IconsPath.view,
-                    onPressed: () {
-                      Get.toNamed(
-                        AppRoutes.dashboardAiDesignDetailsView,
-                        arguments: aiDesignModel,
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+          return CustomTable(
+            rows: tableRows,
+            id: 'id',
+            status: 'type',
+            isStatus: false,
+            title: 'title',
+            expandedList: expandedFlag,
+            onExpand: (index) {
+              controller.expandedList[index] = !controller.expandedList[index];
+            },
+            buildExpanded: (index, row) {
+              final AiDesignModel aiDesignModel = row['model'] as AiDesignModel;
+              return DashboardAiDesignTableExpanded(aiDesignModel: aiDesignModel);
+            },
+            headerList: controller.aiTableColumn,
+            action: SizedBox.shrink(),
+            actionBuilder: (index, row) {
+              final AiDesignModel aiDesignModel = row['model'] as AiDesignModel;
+              return FittedBox(
+                fit: BoxFit.scaleDown,
+                child: CustomSecondaryButton(
+                  text: 'View Details',
+                  icon: IconsPath.view,
+                  onPressed: () {
+                    Get.toNamed(
+                      AppRoutes.dashboardAiDesignDetailsView,
+                      arguments: aiDesignModel,
+                    );
+                  },
+                ),
+              );
+            },
           );
         }),
       ],

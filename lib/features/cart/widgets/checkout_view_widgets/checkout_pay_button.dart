@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_success_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -12,13 +11,13 @@ class CheckoutPayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
-        CustomDialogAnimation().showAnimatedDialog(
+        showDialog(
           context: context,
-          dialog: CustomPaymentSuccessDialog(icon: IconsPath.success),
-          isDark: isDark,
+          builder: (context) {
+            return CustomPaymentSuccessDialog(icon: IconsPath.success,);
+          },
         );
       },
       child: SharedContainer(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
-import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_ai_design_step.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_ai_slider.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_product_placement_place.dart';
@@ -53,16 +51,7 @@ class HomeAiDesign extends StatelessWidget {
                 SizedBox(height: 12.h),
                 HomeProductPlacementPlace(
                   text: 'Make Your Interior Design',
-                  onTap: () {
-                    Get.toNamed(
-                      AppRoutes.aiInteriorDesignView,
-                      arguments: {
-                        'title': 'Interior Design',
-                        'sub':
-                            'Transform Your Room With AI.',
-                      },
-                    );
-                  },
+                  onTap: () {},
                 ),
               ],
             ),

@@ -6,7 +6,6 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/credit_balance/controller/credit_balance_controller.dart';
 import 'package:zb_dezign/features/credit_balance/widgets/credit_balance_view_widgets/credit_items.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -76,17 +75,18 @@ class CreditSection extends GetWidget<CreditBalanceController> {
               CustomPrimaryButton(
                 text: "Proceed to Payment",
                 onPressed: () {
-                  CustomDialogAnimation().showAnimatedDialog(
+                  showDialog(
                     context: context,
-                    dialog: CustomPaymentDialog(
-                      cardList: controller.cardList,
-                      selectedCard: controller.selectedCard,
-                      onSelect: (value) {
-                        controller.selectedCard.value = value!;
-                      },
-                      icon: IconsPath.success,
-                    ),
-                    isDark: isDark,
+                    builder: (context) {
+                      return CustomPaymentDialog(
+                        cardList: controller.cardList,
+                        selectedCard: controller.selectedCard,
+                        onSelect: (value) {
+                          controller.selectedCard.value = value!;
+                        },
+                        icon: IconsPath.success,
+                      );
+                    },
                   );
                 },
                 boxShadow: [
