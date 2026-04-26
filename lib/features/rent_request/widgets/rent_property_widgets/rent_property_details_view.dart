@@ -6,6 +6,7 @@ import 'package:zb_dezign/features/rent_request/controllers/rent_property_detail
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/add_item_dialog.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/rent_property_details_list.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/flow_widgets/flow_page_count.dart';
 import 'package:zb_dezign/features/rent_request/widgets/property_add_button.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_property_widgets/property_details_field.dart';
@@ -14,8 +15,7 @@ import 'package:zb_dezign/shared/widgets/shared_container.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentPropertyDetailsView extends GetView<RentPropertyDetailsController> {
-
-  const RentPropertyDetailsView({super.key,});
+  const RentPropertyDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class RentPropertyDetailsView extends GetView<RentPropertyDetailsController> {
           CustomPrimaryText(
             text: 'Property Details',
             fontWeight: FontWeight.w600,
-            color: isDark?AppColors.whiteColor: AppColors.darkColor,
+            color: isDark ? AppColors.whiteColor : AppColors.darkColor,
           ),
           SizedBox(height: 20.h),
           PropertyDetailsField(),
@@ -46,7 +46,7 @@ class RentPropertyDetailsView extends GetView<RentPropertyDetailsController> {
           CustomPrimaryText(
             text: 'Space Breakdown',
             fontSize: 16.sp,
-            color: isDark?AppColors.whiteColor: AppColors.darkTextColor,
+            color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
           ),
           SizedBox(height: 16.h),
           RentPropertyDetailsList(),
@@ -54,9 +54,9 @@ class RentPropertyDetailsView extends GetView<RentPropertyDetailsController> {
           PropertyAddButton(
             text: 'Add Item',
             onTap: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) => AddItemDialog(
+                dialog: AddItemDialog(
                   onTap: () {
                     final text = controller.itemController.text.trim();
                     if (text.isEmpty) {
@@ -68,6 +68,7 @@ class RentPropertyDetailsView extends GetView<RentPropertyDetailsController> {
                   },
                   controller: controller.itemController,
                 ),
+                isDark: isDark,
               );
             },
           ),

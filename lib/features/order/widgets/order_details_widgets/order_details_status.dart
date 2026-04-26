@@ -7,6 +7,7 @@ import 'package:zb_dezign/features/order/controllers/order_review_controller.dar
 import 'package:zb_dezign/features/order/models/orders_model.dart';
 import 'package:zb_dezign/shared/extensions/extractors/estimate_delivery_extractor.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_rating_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -79,28 +80,24 @@ class OrderDetailsStatus extends GetWidget<OrderReviewController> {
               CustomPrimaryButton(
                 text: 'Add Review',
                 onPressed: () {
-                  showDialog(
-                    barrierColor: isDark
-                        ? AppColors.whiteColor.withValues(alpha: 0.2)
-                        : null,
+                  CustomDialogAnimation().showAnimatedDialog(
                     context: context,
-                    builder: (context) {
-                      return Obx(
-                        () => CustomRatingDialog(
-                          onSubmitTap: () async {
-                            await controller.submitReview(
-                              orderID: order.id ?? '',
-                            );
-                          },
-                          rating: controller.rating.value,
-                          textEditingController: controller.ratingController,
-                          onRatingUpdate: (double value) {
-                            controller.rating.value = value;
-                          },
-                          isLoading: controller.isLoading.value,
-                        ),
-                      );
-                    },
+                    dialog: Obx(
+                      () => CustomRatingDialog(
+                        onSubmitTap: () async {
+                          await controller.submitReview(
+                            orderID: order.id ?? '',
+                          );
+                        },
+                        rating: controller.rating.value,
+                        textEditingController: controller.ratingController,
+                        onRatingUpdate: (double value) {
+                          controller.rating.value = value;
+                        },
+                        isLoading: controller.isLoading.value,
+                      ),
+                    ),
+                    isDark: isDark,
                   );
                 },
               ),

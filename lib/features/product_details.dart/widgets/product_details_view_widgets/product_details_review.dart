@@ -7,6 +7,7 @@ import 'package:zb_dezign/features/product_details.dart/controller/product_detai
 import 'package:zb_dezign/features/product_details.dart/widgets/product_details_view_widgets/product_details_review_card.dart';
 import 'package:zb_dezign/shared/extensions/formatters/date_formatter.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_rating_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -79,9 +80,9 @@ class ProductDetailsReview extends GetWidget<ProductDetailsController> {
           CustomPrimaryButton(
             text: 'Submit Your Review',
             onPressed: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) => Obx(
+                dialog: Obx(
                   () => CustomRatingDialog(
                     onSubmitTap: () {},
                     rating: controller.rating.value,
@@ -92,6 +93,7 @@ class ProductDetailsReview extends GetWidget<ProductDetailsController> {
                     isLoading: controller.isLoading.value,
                   ),
                 ),
+                isDark: isDark,
               );
             },
             width: 200.w,

@@ -7,6 +7,7 @@ import 'package:zb_dezign/features/rent_request/models/rent_appliance_model.dart
 import 'package:zb_dezign/features/rent_request/widgets/add_item_dialog.dart';
 import 'package:zb_dezign/features/rent_request/widgets/property_add_button.dart';
 import 'package:zb_dezign/features/rent_request/widgets/property_details_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentApplianceWidgetsDetails extends GetWidget<RentApplianceController> {
@@ -15,7 +16,7 @@ class RentApplianceWidgetsDetails extends GetWidget<RentApplianceController> {
 
   @override
   Widget build(BuildContext context) {
-        bool isDark = Theme.of(context).brightness == Brightness.dark;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Obx(
       () => Column(
@@ -25,7 +26,7 @@ class RentApplianceWidgetsDetails extends GetWidget<RentApplianceController> {
           CustomPrimaryText(
             text: 'Selected Appliance:',
             fontSize: 14.sp,
-            color: isDark? AppColors.whiteColor: AppColors.darkColor,
+            color: isDark ? AppColors.whiteColor : AppColors.darkColor,
           ),
           SizedBox(height: 12.h),
           ...List.generate(model.applianceItems.length, (index) {
@@ -60,9 +61,9 @@ class RentApplianceWidgetsDetails extends GetWidget<RentApplianceController> {
           PropertyAddButton(
             text: 'Add More',
             onTap: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) => AddItemDialog(
+                dialog: AddItemDialog(
                   onTap: () {
                     final text = controller.itemController.text.trim();
                     if (text.isEmpty) {
@@ -74,6 +75,7 @@ class RentApplianceWidgetsDetails extends GetWidget<RentApplianceController> {
                   },
                   controller: controller.itemController,
                 ),
+                isDark: isDark,
               );
             },
           ),

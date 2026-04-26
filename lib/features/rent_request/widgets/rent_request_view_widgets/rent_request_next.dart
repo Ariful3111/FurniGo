@@ -5,6 +5,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rent_request/controllers/rent_step_controller.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_helper.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_submit_dialog.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
@@ -13,6 +14,7 @@ class RentRequestNext extends GetWidget<RentStepController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Obx(() {
       final isLastStep =
           controller.currentIndex.value == controller.totalSteps - 1;
@@ -21,9 +23,10 @@ class RentRequestNext extends GetWidget<RentStepController> {
           ? RentHelper.myButton(
               color: AppColors.acceptButtonColor,
               onTap: () {
-                showDialog(
+                CustomDialogAnimation().showAnimatedDialog(
                   context: context,
-                  builder: (context) => const RentSubmitDialog(),
+                  dialog: RentSubmitDialog(),
+                  isDark: isDark,
                 );
               },
               child: CustomPrimaryText(

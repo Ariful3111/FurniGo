@@ -5,6 +5,7 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/transaction/controller/transaction_controller.dart';
 import 'package:zb_dezign/features/transaction/widgets/transaction_view_widgets/transaction_calender.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -17,11 +18,10 @@ class TransactionViewTableFilter extends GetWidget<TransactionController> {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
-        showDialog(
+        CustomDialogAnimation().showAnimatedDialog(
           context: context,
-          builder: (context) {
-            return TransactionCalender();
-          },
+          dialog: TransactionCalender(),
+          isDark: isDark,
         );
       },
       child: Row(

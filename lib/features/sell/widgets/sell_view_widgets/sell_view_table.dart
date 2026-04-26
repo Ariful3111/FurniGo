@@ -31,30 +31,35 @@ class SellViewTable extends GetWidget<SellController> {
               )
               .toList();
           final expandedFlag = controller.expandedList.toList();
-          return CustomTable(
-            rows: tableRows,
-            id: 'id',
-            status: 'status',
-            title: 'title',
-            expandedList: expandedFlag,
-            onExpand: (index) {
-              controller.expandedList[index] =
-                  !controller.expandedList[index];
-            },
-            buildExpanded: (index, row) {
-              final SellModel sellModel = row['model'] as SellModel;
-              return SellTableExpanded(sellModel: sellModel);
-            },
-            headerList: controller.sellTableColumn,
-            action: SizedBox.shrink(),
-            actionBuilder: (index, row) {
-              final SellModel sellModel = row['model'] as SellModel;
-              return CustomTableActionButton(
-                onTap: () {
-                  Get.toNamed(AppRoutes.sellDetails, arguments: sellModel);
-                },
-              );
-            },
+          return AnimatedSize(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            child: CustomTable(
+              key: ValueKey(controller.selectedIndex.value),
+              rows: tableRows,
+              id: 'id',
+              status: 'status',
+              title: 'title',
+              expandedList: expandedFlag,
+              onExpand: (index) {
+                controller.expandedList[index] =
+                    !controller.expandedList[index];
+              },
+              buildExpanded: (index, row) {
+                final SellModel sellModel = row['model'] as SellModel;
+                return SellTableExpanded(sellModel: sellModel);
+              },
+              headerList: controller.sellTableColumn,
+              action: SizedBox.shrink(),
+              actionBuilder: (index, row) {
+                final SellModel sellModel = row['model'] as SellModel;
+                return CustomTableActionButton(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.sellDetails, arguments: sellModel);
+                  },
+                );
+              },
+            ),
           );
         }),
       ],

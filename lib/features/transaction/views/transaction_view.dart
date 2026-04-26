@@ -6,6 +6,7 @@ import 'package:zb_dezign/features/transaction/controller/transaction_controller
 import 'package:zb_dezign/features/transaction/widgets/transaction_view_widgets/transaction_view_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_appbar.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
+import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -23,11 +24,10 @@ class TransactionView extends GetView<TransactionController> {
           CustomAppbar(
             title: 'Transaction',
             onDrawerTap: () {
-              showDialog(
+              CustomDialogAnimation().showAnimatedDialog(
                 context: context,
-                builder: (context) {
-                  return CustomDrawer();
-                },
+                dialog: CustomDrawer(),
+                isDark: isDark,
               );
             },
           ),
