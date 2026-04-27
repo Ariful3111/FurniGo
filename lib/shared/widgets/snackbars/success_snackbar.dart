@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
+import 'package:zb_dezign/core/theme/theme_controller.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class SuccessSnackbar {
@@ -16,7 +17,9 @@ class SuccessSnackbar {
         borderRadius: 16.r,
         margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: Get.find<ThemeController>().isDarkMode.value
+            ? AppColors.labelColor
+            : AppColors.whiteColor,
         leftBarIndicatorColor: Colors.transparent,
         borderColor: Colors.transparent,
         borderWidth: 0,

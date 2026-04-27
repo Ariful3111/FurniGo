@@ -26,19 +26,28 @@ class CustomMonthDropdownController extends GetxController {
   }
 
   void _openDropdown(BuildContext context) {
-    isOpen.value = true;
     _overlayEntry = _buildOverlayEntry(context);
     Overlay.of(context).insert(_overlayEntry!);
+
+    Future.delayed(const Duration(milliseconds: 10), () {
+      isOpen.value = true;
+    });
   }
 
-  void closeDropdown() {
+  void closeDropdown() async {
     isOpen.value = false;
+
+    await Future.delayed(const Duration(milliseconds: 400)); // match animation
+
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
 
-  void selectOption(String option) {
+  void selectOption(String option) async {
     selectedOption.value = option;
+
+    await Future.delayed(const Duration(milliseconds: 100));
+
     closeDropdown();
   }
 
