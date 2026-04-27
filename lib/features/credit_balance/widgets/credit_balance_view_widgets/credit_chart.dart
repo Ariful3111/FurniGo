@@ -20,7 +20,9 @@ class CreditChart extends GetWidget<CreditBalanceController> {
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
       border: Border.all(
         width: 1.r,
-        color: isDark ? AppColors.darkBorderColor : AppColors.primaryBorderColor,
+        color: isDark
+            ? AppColors.darkBorderColor
+            : AppColors.primaryBorderColor,
       ),
       radius: 16.r,
       boxShadow: [
@@ -49,7 +51,9 @@ class CreditChart extends GetWidget<CreditBalanceController> {
                   fillRatio: fillRatio,
                   isSelected: isSelected,
                   isDark: isDark,
-                  onTap: () => controller.selectIndex(index),
+                  onTap: () {
+                    controller.selectedIndex.value = index;
+                  },
                 ),
               );
             }).toList(),

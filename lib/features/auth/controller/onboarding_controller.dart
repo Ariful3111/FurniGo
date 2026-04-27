@@ -10,16 +10,6 @@ class OnboardingController extends GetxController {
   RxDouble dragOffset = 0.0.obs;
   final double maxDragDistance = 45;
   RxInt activeArrow = 0.obs;
-
-  // ── NEW: 360° foreground image rotation ─────────────────────────────────────
-  RxDouble rotationAngle = 0.0.obs;
-  static const double _rotationSensitivity = 0.012;
-
-  void updateRotation(double deltaX) {
-    rotationAngle.value += deltaX * _rotationSensitivity;
-  }
-  // ────────────────────────────────────────────────────────────────────────────
-
   List colorList = [
     AppColors.primaryBG,
     AppColors.primaryBG.withOpacity(0.6),
@@ -82,8 +72,6 @@ class OnboardingController extends GetxController {
       'image': Get.find<ThemeController>().isDarkMode.value
           ? ImagesPath.darkOnboarding1
           : ImagesPath.onboarding1,
-      // No separate foregroundImage asset — OnboardingRotatableImage will
-      // fall back to 'image' automatically (see onboarding_view.dart).
       'title': 'Design, Buy & Rent Furniture Effortlessly',
       'subTitle':
           'Shop premium furniture, rent collections, and visualize everything in your own space with AI & AR.',

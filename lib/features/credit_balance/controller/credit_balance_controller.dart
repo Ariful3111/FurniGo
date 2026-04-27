@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zb_dezign/features/credit_balance/models/credit_chart_model.dart';
 
@@ -7,7 +6,6 @@ class CreditBalanceController extends GetxController {
   List<String> cardList = ['25144654564', '6546546464', '365465464456'];
   RxString selectedCard = ''.obs;
   late final RxInt selectedIndex;
-  final ScrollController scrollController = ScrollController();
   final List<CreditChartModel> chartData = [
     CreditChartModel("Jun\n2026", 40),
     CreditChartModel("Jul\n2026", 60),
@@ -19,24 +17,24 @@ class CreditBalanceController extends GetxController {
   ];
 
   static const List<String> _monthAbbr = [
-    'jan', 'feb', 'mar', 'apr', 'may', 'jun',
-    'jul', 'aug', 'sep', 'oct', 'nov', 'dec',
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'may',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'oct',
+    'nov',
+    'dec',
   ];
 
   @override
   void onInit() {
     super.onInit();
     selectedIndex = RxInt(_resolveCurrentMonthIndex());
-  }
-
-  @override
-  void onClose() {
-    scrollController.dispose();
-    super.onClose();
-  }
-
-  void selectIndex(int index) {
-    selectedIndex.value = index;
   }
 
   int _resolveCurrentMonthIndex() {
@@ -52,5 +50,4 @@ class CreditBalanceController extends GetxController {
     }
     return chartData.length - 1;
   }
-
 }
