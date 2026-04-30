@@ -21,38 +21,28 @@ class BottomNavDashboardItem extends GetWidget<BottomNavController> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 70.w,
-            height: 70.h,
+            width: 72.w,
+            height: 72.h,
             decoration: BoxDecoration(
               color: isDark ? AppColors.labelColor : AppColors.whiteColor,
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Container(
-                width: 52.w,
-                height: 52.h,
+                width: 60.w,
+                height: 60.h,
                 padding: EdgeInsets.all(14.r),
                 decoration: ShapeDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: isDark
-                        ? [Color(0xFFBBA0EB), Color(0xFFAE45FA)]
-                        : [AppColors.primaryColor, Color(0xFF3A00A0)],
-                    stops: [0, 1],
-                  ),
+                  gradient: isDark
+                      ? AppColors.darkPrimaryGradient
+                      : LinearGradient(
+                          begin: Alignment(-0.10, 0.83),
+                          end: Alignment(1.66, -0.19),
+                          colors: [Color(0xFF15003A), Color(0xFF3900A0)],
+                        ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100.r),
                   ),
-                  shadows: [
-                    BoxShadow(
-                      offset: Offset(0, 4),
-                      blurRadius: 20,
-                      color: isDark
-                          ? Color(0xFF4B0FF2).withValues(alpha: 0.15)
-                          : Color(0xFF5006D0).withValues(alpha: 0.15),
-                    ),
-                  ],
                 ),
                 child: Image.asset(
                   IconsPath.dashboardNav,

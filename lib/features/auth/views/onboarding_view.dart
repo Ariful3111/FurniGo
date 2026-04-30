@@ -22,7 +22,6 @@ class OnboardingView extends GetView<OnboardingController> {
         onPageChanged: (value) => controller.currentIndex.value = value,
         itemBuilder: (context, index) {
           final item = controller.onboardingItems[index];
-          final bool isFirstPage = index == 0;
           return AnimatedBuilder(
             animation: controller.pageController,
             builder: (context, _) {
@@ -59,19 +58,7 @@ class OnboardingView extends GetView<OnboardingController> {
                             pageKey: controller.currentIndex.value,
                           ),
                         ),
-                        if (isFirstPage) ...[
-                          const Spacer(),
-                          // Obx(
-                          //   () => OnboardingRotatableImage(
-                          //     imagePath:
-                          //         (item['foregroundImage'] ?? item['image'])
-                          //             as String,
-                          //     pageKey: controller.currentIndex.value,
-                          //   ),
-                          // ),
-                          SizedBox(height: 24.h),
-                        ] else
-                          const Spacer(),
+                        Spacer(),
                         Obx(() {
                           final isLast =
                               controller.currentIndex.value ==

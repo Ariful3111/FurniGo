@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/features/rental/controllers/rental_quotes_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/accept_dialog.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_reject_dialog.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_quote_widgets.dart/revision_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
@@ -55,17 +54,25 @@ class RentalQuotesCalculationAmount extends GetWidget<RentalQuotesController> {
                   text: isRevisionMode ? 'Request Revision' : 'Accept',
                   onPressed: isRevisionMode
                       ? () {
-                          CustomDialogAnimation().showAnimatedDialog(
+                          showDialog(
+                            barrierColor: isDark
+                                ? AppColors.whiteColor.withValues(alpha: 0.3)
+                                : null,
                             context: context,
-                            dialog: RevisionDialog(),
-                            isDark: isDark,
+                            builder: (context) {
+                              return RevisionDialog();
+                            },
                           );
                         }
                       : () {
-                          CustomDialogAnimation().showAnimatedDialog(
+                          showDialog(
+                            barrierColor: isDark
+                                ? AppColors.whiteColor.withValues(alpha: 0.3)
+                                : null,
                             context: context,
-                            dialog: AcceptDialog(),
-                            isDark: isDark,
+                            builder: (context) {
+                              return AcceptDialog();
+                            },
                           );
                         },
                   fontSize: 12.sp,
@@ -77,10 +84,14 @@ class RentalQuotesCalculationAmount extends GetWidget<RentalQuotesController> {
                   height: 40.h,
                   text: 'Decline',
                   onPressed: () {
-                    CustomDialogAnimation().showAnimatedDialog(
+                    showDialog(
                       context: context,
-                      dialog: CustomRejectDialog(),
-                      isDark: isDark,
+                      barrierColor: isDark
+                          ? AppColors.whiteColor.withValues(alpha: 0.3)
+                          : null,
+                      builder: (context) {
+                        return CustomRejectDialog();
+                      },
                     );
                   },
                   fontSize: 12.sp,

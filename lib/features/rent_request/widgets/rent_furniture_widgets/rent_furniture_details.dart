@@ -8,7 +8,6 @@ import 'package:zb_dezign/features/rent_request/widgets/add_item_dialog.dart';
 import 'package:zb_dezign/features/rent_request/widgets/property_add_button.dart';
 import 'package:zb_dezign/features/rent_request/widgets/property_details_container.dart';
 import 'package:zb_dezign/features/rent_request/widgets/rent_furniture_widgets/rent_furniture_preference.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 
 class RentFurnitureDetails extends GetWidget<RentFurnitureController> {
@@ -54,9 +53,9 @@ class RentFurnitureDetails extends GetWidget<RentFurnitureController> {
           PropertyAddButton(
             text: 'Add More',
             onTap: () {
-              CustomDialogAnimation().showAnimatedDialog(
+              showDialog(
                 context: context,
-                dialog: AddItemDialog(
+                builder: (context) => AddItemDialog(
                   controller: controller.itemController,
                   onTap: () {
                     final text = controller.itemController.text.trim();
@@ -68,7 +67,6 @@ class RentFurnitureDetails extends GetWidget<RentFurnitureController> {
                     Navigator.pop(context);
                   },
                 ),
-                isDark: isDark,
               );
             },
           ),

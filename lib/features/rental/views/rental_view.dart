@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:zb_dezign/features/rental/controllers/rental_controller.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_view_widgets/rental_table.dart';
 import 'package:zb_dezign/features/rental/widgets/rentals_helper.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_loadings/button_loading.dart';
 import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dart';
@@ -25,10 +24,9 @@ class RentalView extends GetView<RentalController> {
           CustomAppbar(
             title: 'Rental',
             onDrawerTap: () {
-              CustomDialogAnimation().showAnimatedDialog(
+              showDialog(
                 context: context,
-                dialog: CustomDrawer(),
-                isDark: isDark,
+                builder: (context) => CustomDrawer(),
               );
             },
           ),

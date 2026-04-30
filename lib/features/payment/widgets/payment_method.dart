@@ -5,7 +5,6 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/payment/widgets/add_payment_method_dialog.dart';
 import 'package:zb_dezign/features/payment/widgets/payment_header.dart';
 import 'package:zb_dezign/features/payment/widgets/payment_method_item.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_divider.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
@@ -53,10 +52,11 @@ class PaymentMethod extends StatelessWidget {
             icon2: IconsPath.add,
             buttonText: 'Add Card',
             onTap: () {
-              CustomDialogAnimation().showAnimatedDialog(
+              showDialog(
                 context: context,
-                dialog: AddPaymentMethodDialog(),
-                isDark: isDark,
+                builder: (context) {
+                  return AddPaymentMethodDialog();
+                },
               );
             },
           ),

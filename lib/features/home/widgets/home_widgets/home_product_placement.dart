@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/core/constant/images_path.dart';
-import 'package:zb_dezign/core/routes/app_routes.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_product_placement_button.dart';
 import 'package:zb_dezign/features/home/widgets/home_widgets/home_product_placement_place.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -17,7 +15,7 @@ class HomeProductPlacement extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SharedContainer(
-      color: isDark ? Color(0xFF101010) : Color(0xFFF5F5F5),
+      color:isDark?Color(0xFF101010): Color(0xFFF5F5F5),
       padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
       radius: 0.r,
       child: Column(
@@ -30,10 +28,7 @@ class HomeProductPlacement extends StatelessWidget {
           SizedBox(height: 16.h),
           SharedContainer(
             padding: EdgeInsets.all(12.r),
-            border: Border.all(
-              width: 1.r,
-              color: isDark ? AppColors.darkBorderColor : AppColors.borderColor,
-            ),
+            border: Border.all(width: 1.r, color:isDark?AppColors.darkBorderColor: AppColors.borderColor),
             child: Column(
               children: [
                 Container(
@@ -97,16 +92,7 @@ class HomeProductPlacement extends StatelessWidget {
                 SizedBox(height: 12.h),
                 HomeProductPlacementPlace(
                   text: 'Place Your Product',
-                  onTap: () {
-                    Get.toNamed(
-                      AppRoutes.aiProductPlacementView,
-                      arguments: {
-                        'title': 'Product Placement',
-                        'sub':
-                            'Flexible living starts with flexible furniture.',
-                      },
-                    );
-                  },
+                  onTap: () {},
                 ),
               ],
             ),

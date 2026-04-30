@@ -10,16 +10,6 @@ class OnboardingController extends GetxController {
   RxDouble dragOffset = 0.0.obs;
   final double maxDragDistance = 45;
   RxInt activeArrow = 0.obs;
-
-  // ── NEW: 360° foreground image rotation ─────────────────────────────────────
-  RxDouble rotationAngle = 0.0.obs;
-  static const double _rotationSensitivity = 0.012;
-
-  void updateRotation(double deltaX) {
-    rotationAngle.value += deltaX * _rotationSensitivity;
-  }
-  // ────────────────────────────────────────────────────────────────────────────
-
   List colorList = [
     AppColors.primaryBG,
     AppColors.primaryBG.withOpacity(0.6),
@@ -60,14 +50,14 @@ class OnboardingController extends GetxController {
 
   void endDrag({required bool isLast}) {
     if (dragOffset.value > maxDragDistance * 0.8) {
-      Future.delayed(const Duration(milliseconds: 200), () {
+      Future.delayed(Duration(milliseconds: 200), () {
         if (pageController.hasClients && !isLast) {
           pageController.nextPage(
-            duration: const Duration(milliseconds: 300),
+            duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
         }
-        Future.delayed(const Duration(milliseconds: 500), () {
+        Future.delayed(Duration(milliseconds: 500), () {
           dragOffset.value = 0.0;
         });
       });
@@ -82,8 +72,6 @@ class OnboardingController extends GetxController {
       'image': Get.find<ThemeController>().isDarkMode.value
           ? ImagesPath.darkOnboarding1
           : ImagesPath.onboarding1,
-      // No separate foregroundImage asset — OnboardingRotatableImage will
-      // fall back to 'image' automatically (see onboarding_view.dart).
       'title': 'Design, Buy & Rent Furniture Effortlessly',
       'subTitle':
           'Shop premium furniture, rent collections, and visualize everything in your own space with AI & AR.',
@@ -121,16 +109,15 @@ class OnboardingController extends GetxController {
           'Unlock discounts, free collections, and\nbusiness rental solutions with flexible plans.',
     },
   ];
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   void onInit() {
     super.onInit();
     startArrowAnimation();
-  }
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
   }
 }

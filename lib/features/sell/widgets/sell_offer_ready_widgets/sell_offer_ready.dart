@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_success_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_reject_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -12,11 +11,7 @@ import 'package:zb_dezign/shared/widgets/shared_container.dart';
 class SellOfferReady extends StatelessWidget {
   final String amount;
   final VoidCallback onPayment;
-  const SellOfferReady({
-    super.key,
-    required this.amount,
-    required this.onPayment,
-  });
+  const SellOfferReady({super.key, required this.amount, required this.onPayment});
 
   @override
   Widget build(BuildContext context) {
@@ -67,23 +62,24 @@ class SellOfferReady extends StatelessWidget {
                 child: CustomPrimaryButton(
                   text: 'Accept',
                   onPressed: () {
-                    CustomDialogAnimation().showAnimatedDialog(
+                    showDialog(
                       context: context,
-                      dialog: CustomPaymentSuccessDialog(
-                        height: 340.h,
-                        icon: IconsPath.success,
-                        title: 'Thank you for accepting.',
-                        sub:
-                            'Kindly add your account information to receive payment',
-                        widget: Padding(
-                          padding: EdgeInsets.only(top: 12.h),
-                          child: CustomPrimaryButton(
-                            text: 'Add account information',
-                            onPressed: onPayment,
+                      builder: (context) {
+                        return CustomPaymentSuccessDialog(
+                          height: 340.h,
+                          icon: IconsPath.success,
+                          title: 'Thank you for accepting.',
+                          sub:
+                              'Kindly add your account information to receive payment',
+                          widget: Padding(
+                            padding: EdgeInsets.only(top: 12.h),
+                            child: CustomPrimaryButton(
+                              text: 'Add account information',
+                              onPressed: onPayment,
+                            ),
                           ),
-                        ),
-                      ),
-                      isDark: isDark,
+                        );
+                      },
                     );
                   },
                 ),
@@ -93,10 +89,11 @@ class SellOfferReady extends StatelessWidget {
                 child: CustomPrimaryButton(
                   text: 'Decline',
                   onPressed: () {
-                    CustomDialogAnimation().showAnimatedDialog(
+                    showDialog(
                       context: context,
-                      dialog: CustomRejectDialog(),
-                      isDark: isDark,
+                      builder: (context) {
+                        return CustomRejectDialog();
+                      },
                     );
                   },
                   backgroundColor: AppColors.whiteColor,

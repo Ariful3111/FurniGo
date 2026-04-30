@@ -7,22 +7,21 @@ import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/dashboard/controller/dashboard_payment_controller.dart';
 import 'package:zb_dezign/features/dashboard/widgets/dashboard_payment_widgets/dashboard_payment_schedule_helper.dart';
 import 'package:zb_dezign/shared/widgets/custom_button/custom_primary_button.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dialog/custom_payment_dialog.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
 import 'package:zb_dezign/shared/widgets/custom_timeline/custom_payment_timeline.dart';
 import 'package:zb_dezign/shared/widgets/shared_container.dart';
 
+
+
 class DashboardPaymentSchedule extends GetWidget<DashboardPaymentController> {
   const DashboardPaymentSchedule({super.key});
 
+ 
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final LineStyle thinLine = LineStyle(
-      thickness: 1.5.w,
-      color: Color(0xFFDADADA),
-    );
+    final LineStyle thinLine = LineStyle(thickness: 1.5.w, color: Color(0xFFDADADA));
     return SharedContainer(
       padding: EdgeInsets.all(20.r),
       radius: 20.sp,
@@ -37,13 +36,9 @@ class DashboardPaymentSchedule extends GetWidget<DashboardPaymentController> {
             color: isDark ? AppColors.whiteColor : AppColors.darkTextColor,
           ),
           SizedBox(height: 14.h),
-          ...List.generate(DashboardPaymentScheduleHelper.items.length, (
-            index,
-          ) {
+          ...List.generate(DashboardPaymentScheduleHelper.items.length, (index) {
             final item = DashboardPaymentScheduleHelper.items[index];
-            final dotColor = DashboardPaymentScheduleHelper().dotColor(
-              item.state,
-            );
+            final dotColor = DashboardPaymentScheduleHelper().dotColor(item.state);
             final double dotSize = item.state == PaymentState.future
                 ? 10.w
                 : 12.w;
@@ -51,8 +46,7 @@ class DashboardPaymentSchedule extends GetWidget<DashboardPaymentController> {
               height: 50.h,
               child: CustomPaymentTimeline(
                 isFirst: index == 0,
-                isLast:
-                    index == DashboardPaymentScheduleHelper.items.length - 1,
+                isLast: index == DashboardPaymentScheduleHelper.items.length - 1,
                 color: dotColor,
 
                 indicator: Container(
@@ -69,10 +63,7 @@ class DashboardPaymentSchedule extends GetWidget<DashboardPaymentController> {
                 afterLineStyle: thinLine,
                 endChild: Padding(
                   padding: EdgeInsets.only(left: 10.w),
-                  child: DashboardPaymentScheduleHelper().rowContent(
-                    item,
-                    isDark,
-                  ),
+                  child: DashboardPaymentScheduleHelper().rowContent(item, isDark),
                 ),
               ),
             );
@@ -81,9 +72,12 @@ class DashboardPaymentSchedule extends GetWidget<DashboardPaymentController> {
           CustomPrimaryButton(
             text: 'Pay Early',
             onPressed: () {
-              CustomDialogAnimation().showAnimatedDialog(
+              showDialog(
+                barrierColor: isDark
+                    ? AppColors.whiteColor.withValues(alpha: 0.3)
+                    : null,
                 context: context,
-                dialog: CustomPaymentDialog(
+                builder: (context) => CustomPaymentDialog(
                   icon: IconsPath.success,
                   cardList: controller.cardList,
                   selectedCard: controller.selectedCard,
@@ -91,7 +85,6 @@ class DashboardPaymentSchedule extends GetWidget<DashboardPaymentController> {
                     if (value != null) controller.selectedCard.value = value;
                   },
                 ),
-                isDark: isDark,
               );
             },
           ),

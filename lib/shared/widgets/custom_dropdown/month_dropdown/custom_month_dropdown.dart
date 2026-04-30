@@ -12,7 +12,6 @@ class CustomMonthDropdown extends GetView<CustomMonthDropdownController> {
 
   @override
   Widget build(BuildContext context) {
-
     if (!Get.isRegistered<CustomMonthDropdownController>()) {
       Get.put(CustomMonthDropdownController());
     }
@@ -24,30 +23,45 @@ class CustomMonthDropdown extends GetView<CustomMonthDropdownController> {
         behavior: HitTestBehavior.opaque,
         child: Obx(
           () => SharedContainer(
-            padding: EdgeInsets.symmetric(
-              vertical: 4.18.h,
-              horizontal: 8.35.w,
-            ),
+            padding: EdgeInsets.symmetric(vertical: 4.18.h, horizontal: 8.35.w),
             radius: 32.67.r,
-            color: isDark
-                ? AppColors.darkColor
-                : AppColors.primaryBorderColor,
+            color: isDark ? AppColors.darkColor : AppColors.primaryBorderColor,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomPrimaryText(
-                  text: controller.selectedOption.value,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: isDark
-                      ? AppColors.primaryBorderColor
-                      : AppColors.labelColor,
-                  textOverflow: TextOverflow.ellipsis,
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) {
+                    final offsetAnimation = Tween<Offset>(
+                      begin: const Offset(0, 0.3),
+                      end: Offset.zero,
+                    ).animate(animation);
+
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: CustomPrimaryText(
+                    key: ValueKey(controller.selectedOption.value),
+                    text: controller.selectedOption.value,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark
+                        ? AppColors.primaryBorderColor
+                        : AppColors.labelColor,
+                    textOverflow: TextOverflow.ellipsis,
+                  ),
                 ),
+
                 SizedBox(width: 2.w),
                 AnimatedRotation(
                   turns: controller.isOpen.value ? 0.5 : 0.0,
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 400), // slower
+                  curve: Curves.easeOutExpo,
                   child: Image.asset(
                     IconsPath.downArrow,
                     height: 8.53.h,

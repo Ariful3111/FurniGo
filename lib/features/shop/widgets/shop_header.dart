@@ -5,7 +5,6 @@ import 'package:zb_dezign/core/constant/colors.dart';
 import 'package:zb_dezign/core/constant/icons_path.dart';
 import 'package:zb_dezign/features/shop/controller/shop_controller.dart';
 import 'package:zb_dezign/features/shop/widgets/shop_search_filter.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_dropdown/custom_dropdown_menu.dart';
 import 'package:zb_dezign/shared/widgets/custom_form_field/custom_text_form_field.dart';
 import 'package:zb_dezign/shared/widgets/custom_text/custom_primary_text.dart';
@@ -47,10 +46,11 @@ class ShopHeader extends GetWidget<ShopController> {
             SizedBox(width: 12.w),
             GestureDetector(
               onTap: () {
-                CustomDialogAnimation().showAnimatedDialog(
+                showDialog(
                   context: context,
-                  dialog: ShopSearchFilter(),
-                  isDark: isDark,
+                  builder: (context) {
+                    return ShopSearchFilter();
+                  },
                 );
               },
               child: SharedContainer(

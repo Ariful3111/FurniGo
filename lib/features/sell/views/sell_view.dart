@@ -5,7 +5,6 @@ import 'package:zb_dezign/features/sell/controller/sell_controller.dart';
 import 'package:zb_dezign/features/sell/widgets/sell_helper.dart';
 import 'package:zb_dezign/features/sell/widgets/sell_view_widgets/sell_view_table.dart';
 import 'package:zb_dezign/shared/widgets/custom_container.dart';
-import 'package:zb_dezign/shared/widgets/custom_dialog/custom_dialog_animation.dart';
 import 'package:zb_dezign/shared/widgets/custom_drawer/custom_drawer.dart';
 import 'package:zb_dezign/shared/widgets/custom_pagination/custom_pagination.dart';
 
@@ -22,10 +21,11 @@ class SellView extends GetView<SellController> {
             context: context,
             isDark: isDark,
             onTap: () {
-              CustomDialogAnimation().showAnimatedDialog(
+              showDialog(
                 context: context,
-                dialog: CustomDrawer(),
-                isDark: isDark,
+                builder: (context) {
+                  return CustomDrawer();
+                },
               );
             },
           ),

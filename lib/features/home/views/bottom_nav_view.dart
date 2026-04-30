@@ -16,82 +16,69 @@ class BottomNavView extends GetView<BottomNavController> {
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return Material(
-      color: Colors.transparent,
-      child: Obx(
-        () => Stack(
+    return Obx(
+      () => Scaffold(
+        body: Stack(
+          children: [controller.pages[controller.selectedIndex.value]],
+        ),
+        bottomNavigationBar: Stack(
+          alignment: Alignment.bottomCenter,
+          clipBehavior: Clip.none,
           children: [
-            controller.pages[controller.selectedIndex.value],
-            Positioned(
-              bottom: 25.h,
-              left: 25.w,
-              right: 25.w,
-              child: Stack(
-                alignment: Alignment.center,
-                clipBehavior: Clip.none,
+            Container(
+              margin: EdgeInsets.all(25.r),
+              width: MediaQuery.widthOf(context),
+              height: 66.h,
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.labelColor : AppColors.whiteColor,
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.darkColor,
+                    blurRadius: 20,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: MediaQuery.widthOf(context),
-                    height: 66.h,
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? AppColors.labelColor
-                          : AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(12.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.darkColor.withValues(
-                            alpha: 0.25,
-                          ),
-                          blurRadius: 20,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: BottomNavItems(
-                            icon: IconsPath.home,
-                            label: 'Home',
-                            index: 0,
-                          ),
-                        ),
-                        Expanded(
-                          child: BottomNavItems(
-                            icon: IconsPath.categoryNav,
-                            label: 'Category',
-                            index: 1,
-                          ),
-                        ),
-                        Expanded(child: SizedBox()),
-                        Expanded(
-                          child: Obx(() {
-                            final cartController =
-                                Get.find<CartController>();
-                            final count =
-                                cartController.carts.value?.items?.length ??
-                                0;
-                            return BottomNavCartItem(
-                              key: ValueKey(count),
-                              icon: IconsPath.cart,
-                              label: 'Cart',
-                              index: 3,
-                              badgeCount: count.toString(),
-                            );
-                          }),
-                        ),
-                        Expanded(child: BottomNavProfileItem(index: 4)),
-                      ],
+                  Expanded(
+                    child: BottomNavItems(
+                      icon: IconsPath.home,
+                      label: 'Home',
+                      index: 0,
                     ),
                   ),
-                  Positioned(bottom: 20.h, child: BottomNavDashboardItem()),
+                  Expanded(
+                    child: BottomNavItems(
+                      icon: IconsPath.categoryNav,
+                      label: 'Category',
+                      index: 1,
+                    ),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Expanded(
+                    child: Obx(() {
+                      final cartController = Get.find<CartController>();
+                      final count =
+                          cartController.carts.value?.items?.length ?? 0;
+                      return BottomNavCartItem(
+                        key: ValueKey(count),
+                        icon: IconsPath.cart,
+                        label: 'Cart',
+                        index: 3,
+                        badgeCount: count.toString(),
+                      );
+                    }),
+                  ),
+                  Expanded(child: BottomNavProfileItem(index: 4)),
                 ],
               ),
             ),
+            Positioned(bottom: 50.h, child: BottomNavDashboardItem()),
           ],
         ),
       ),

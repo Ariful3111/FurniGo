@@ -116,7 +116,7 @@ class AiController extends GetxController
     }
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: 3),
     );
     animationController.addListener(() {
       progress.value = animationController.value;
