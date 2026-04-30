@@ -30,6 +30,8 @@
 - [profile_setting_address_list.dart](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_address_list.dart)
 - [add_new_address_dialog.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog.dart)
 - [add_new_address_dialog_fields.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_fields.dart)
+- [add_new_address_dialog_address_type.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_address_type.dart)
+- [add_new_dialog_helper.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_dialog_helper.dart)
 - [profile_settings_notifications.dart](file://lib/features/profile/widgets/profile_setting_widgets/profile_settings_notifications.dart)
 - [error_snackbar.dart](file://lib/shared/widgets/snackbars/error_snackbar.dart)
 - [custom_primary_button.dart](file://lib/shared/widgets/custom_button/custom_primary_button.dart)
@@ -41,27 +43,36 @@
 - [logout_controller.dart](file://lib/features/auth/controller/logout_controller.dart)
 </cite>
 
+## Update Summary
+**Changes Made**
+- Added new address type selection functionality with radio button interface
+- Introduced reusable dialog helper component for consistent form layouts
+- Enhanced address management workflow with improved user experience
+- Updated address model to support address type categorization (home/work)
+- Integrated new components into the existing profile settings architecture
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
 3. [Core Components](#core-components)
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
-6. [Dependency Analysis](#dependency-analysis)
-7. [Performance Considerations](#performance-considerations)
-8. [Troubleshooting Guide](#troubleshooting-guide)
-9. [Conclusion](#conclusion)
+6. [Enhanced Address Management System](#enhanced-address-management-system)
+7. [Dependency Analysis](#dependency-analysis)
+8. [Performance Considerations](#performance-considerations)
+9. [Troubleshooting Guide](#troubleshooting-guide)
+10. [Conclusion](#conclusion)
 
 ## Introduction
-This document describes the Profile Management system, covering user profile creation and editing workflows, user information management, and profile settings interface. It explains the responsibilities of the profile controller for data fetching, validation, and updates, details the profile settings controller for managing user preferences and notifications, and documents the profile view components including user information display, profile image handling, and interactive elements. It also covers the profile setting widgets for address management, personal information editing, and notification preferences, including the user address model structure, validation rules, and data persistence mechanisms. Finally, it addresses the integration between profile views and controllers for a seamless user experience.
+This document describes the Profile Management system, covering user profile creation and editing workflows, user information management, and profile settings interface. The system has been enhanced with advanced address management capabilities including address type selection (home/work), reusable UI components for form layouts, and improved user experience for address creation and management. It explains the responsibilities of the profile controller for data fetching, validation, and updates, details the profile settings controller for managing user preferences and notifications, and documents the profile view components including user information display, profile image handling, and interactive elements. It also covers the enhanced profile setting widgets for address management, personal information editing, and notification preferences, including the user address model structure with address type support, validation rules, and data persistence mechanisms. Finally, it addresses the integration between profile views and controllers for a seamless user experience.
 
 ## Project Structure
-The Profile Management feature is organized under the features/profile module with clear separation of concerns:
+The Profile Management feature is organized under the features/profile module with clear separation of concerns and enhanced address management capabilities:
 - Controllers: encapsulate state and orchestrate data operations
 - Repositories: abstract network/database operations
 - Models: define data structures for user profiles and addresses
 - Views: present UI and coordinate with controllers
-- Widgets: reusable UI components for profile and settings screens
+- Widgets: reusable UI components for profile and settings screens, including enhanced address management components
 
 ```mermaid
 graph TB
@@ -99,6 +110,9 @@ PSI["ProfileSettingInfo"]
 PSA["ProfileSettingAddress"]
 PSAL["ProfileSettingAddressList"]
 ANAD["AddNewAddressDialog"]
+ANADF["AddNewAddressDialogFields"]
+ANADAT["AddNewAddressDialogAddressType"]
+ANDH["AddNewDialogHelper"]
 PSN["ProfileSettingsNotifications"]
 end
 end
@@ -109,6 +123,8 @@ PUC --> UPM
 PSC --> PSN
 PAC --> PVI
 AAC --> AAR
+AAC --> ANDH
+AAC --> ANADAT
 DAC --> DAR
 GUAC --> GUAR
 UAC --> UAR
@@ -119,9 +135,11 @@ PV --> PVI
 PSV --> PSI
 PSV --> PSA
 PSV --> PSN
-PSI --> PUC
 PSA --> PSAL
 PSA --> ANAD
+ANAD --> ANADF
+ANADF --> ANADAT
+ANADF --> ANDH
 ```
 
 **Diagram sources**
@@ -129,7 +147,7 @@ PSA --> ANAD
 - [profile_update_controller.dart:1-28](file://lib/features/profile/controllers/profile_update_controller.dart#L1-L28)
 - [profile_setting_controller.dart:1-27](file://lib/features/profile/controllers/profile_setting_controller.dart#L1-L27)
 - [profile_options_controller.dart](file://lib/features/profile/controllers/profile_options_controller.dart)
-- [add_address_controller.dart](file://lib/features/profile/controllers/add_address_controller.dart)
+- [add_address_controller.dart:1-112](file://lib/features/profile/controllers/add_address_controller.dart#L1-L112)
 - [delete_address_controller.dart](file://lib/features/profile/controllers/delete_address_controller.dart)
 - [get_user_address_controller.dart](file://lib/features/profile/controllers/get_user_address_controller.dart)
 - [update_address_controller.dart](file://lib/features/profile/controllers/update_address_controller.dart)
@@ -148,7 +166,10 @@ PSA --> ANAD
 - [profile_setting_info.dart:1-40](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_info.dart#L1-L40)
 - [profile_setting_address.dart:1-45](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_address.dart#L1-L45)
 - [profile_setting_address_list.dart](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_address_list.dart)
-- [add_new_address_dialog.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog.dart)
+- [add_new_address_dialog.dart:1-80](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog.dart#L1-L80)
+- [add_new_address_dialog_fields.dart:1-98](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_fields.dart#L1-L98)
+- [add_new_address_dialog_address_type.dart:1-84](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_address_type.dart#L1-L84)
+- [add_new_dialog_helper.dart:1-102](file://lib/features/profile/widgets/profile_setting_widgets/add_new_dialog_helper.dart#L1-L102)
 - [profile_settings_notifications.dart](file://lib/features/profile/widgets/profile_setting_widgets/profile_settings_notifications.dart)
 
 **Section sources**
@@ -159,7 +180,7 @@ PSA --> ANAD
 - [profile_setting_view.dart:1-64](file://lib/features/profile/views/profile_setting_view.dart#L1-L64)
 
 ## Core Components
-This section outlines the primary components involved in profile management and their responsibilities.
+This section outlines the primary components involved in profile management and their responsibilities, including the enhanced address management system.
 
 - ProfileController
   - Fetches user profile data via repository
@@ -174,34 +195,42 @@ This section outlines the primary components involved in profile management and 
   - Holds notification preferences as reactive lists
   - Provides default notification settings
 
+- AddAddressController (Enhanced)
+  - Manages address creation workflow with enhanced validation
+  - Handles address type selection (home/work) and default address setting
+  - Integrates with AddNewDialogHelper for consistent form layouts
+  - Supports phone number extraction and validation
+
 - Repositories
   - Encapsulate network/database operations for profile and address management
   - Return Either-like results for success/failure handling
 
 - Models
   - UserProfileModel: defines user profile structure
-  - UserAddressModel: defines address list and individual address fields
+  - UserAddressModel: defines address list and individual address fields with type support
 
 - Views and Widgets
   - ProfileViews: renders profile screen with user info, image, and actions
   - ProfileSettingView: renders profile & settings screen with info, addresses, and notifications
-  - Reusable widgets handle specific UI segments (user info, addresses, notifications)
+  - Enhanced address management widgets handle specific UI segments with improved user experience
+  - AddNewDialogHelper provides reusable UI components for consistent form layouts
 
 **Section sources**
 - [profile_controller.dart:6-31](file://lib/features/profile/controllers/profile_controller.dart#L6-L31)
 - [profile_update_controller.dart:5-27](file://lib/features/profile/controllers/profile_update_controller.dart#L5-L27)
 - [profile_setting_controller.dart:3-26](file://lib/features/profile/controllers/profile_setting_controller.dart#L3-L26)
+- [add_address_controller.dart:7-112](file://lib/features/profile/controllers/add_address_controller.dart#L7-L112)
 - [user_profile_model.dart:1-72](file://lib/core/data/global_models/user_profile_model.dart#L1-L72)
 - [user_address_model.dart:1-93](file://lib/features/profile/models/user_address_model.dart#L1-L93)
 - [profile_views.dart:15-57](file://lib/features/profile/views/profile_views.dart#L15-L57)
 - [profile_setting_view.dart:13-63](file://lib/features/profile/views/profile_setting_view.dart#L13-L63)
 
 ## Architecture Overview
-The Profile Management system follows a layered architecture:
+The Profile Management system follows a layered architecture with enhanced address management capabilities:
 - Presentation Layer: Views and Widgets
-- Controller Layer: State and UI logic
+- Controller Layer: State and UI logic, including enhanced address management
 - Repository Layer: Data access abstraction
-- Model Layer: Data structures
+- Model Layer: Data structures with address type support
 
 ```mermaid
 graph TB
@@ -211,12 +240,18 @@ PSV["ProfileSettingView"]
 PUI["ProfileUserInfo"]
 PSI["ProfileSettingInfo"]
 PSA["ProfileSettingAddress"]
+PSAL["ProfileSettingAddressList"]
+ANAD["AddNewAddressDialog"]
+ANADF["AddNewAddressDialogFields"]
+ANADAT["AddNewAddressDialogAddressType"]
+ANDH["AddNewDialogHelper"]
 PSN["ProfileSettingsNotifications"]
 end
 subgraph "Controllers"
 PC["ProfileController"]
 PUC["ProfileUpdateController"]
 PSC["ProfileSettingController"]
+AAC["AddAddressController"]
 end
 subgraph "Repositories"
 GPR["GetProfileRepository"]
@@ -232,13 +267,18 @@ end
 PV --> PC
 PSV --> PUC
 PSV --> PSC
+PSV --> AAC
 PC --> GPR
 GPR --> UPM
 PSI --> PUC
-PSA --> AAR
-PSA --> DAR
-PSA --> GUAR
-PSA --> UAR
+PSA --> PSAL
+PSA --> ANAD
+ANAD --> ANADF
+ANADF --> ANADAT
+ANADF --> ANDH
+AAC --> AAR
+AAC --> ANDH
+AAC --> ANADAT
 UAM --> AAR
 UAM --> DAR
 UAM --> GUAR
@@ -251,6 +291,7 @@ UAM --> UAR
 - [profile_controller.dart:6-31](file://lib/features/profile/controllers/profile_controller.dart#L6-L31)
 - [profile_update_controller.dart:5-27](file://lib/features/profile/controllers/profile_update_controller.dart#L5-L27)
 - [profile_setting_controller.dart:3-26](file://lib/features/profile/controllers/profile_setting_controller.dart#L3-L26)
+- [add_address_controller.dart:7-112](file://lib/features/profile/controllers/add_address_controller.dart#L7-L112)
 - [get_profile_repo.dart](file://lib/features/profile/repositories/get_profile_repo.dart)
 - [add_address_repo.dart](file://lib/features/profile/repositories/add_address_repo.dart)
 - [delete_address_repo.dart](file://lib/features/profile/repositories/delete_address_repo.dart)
@@ -410,24 +451,47 @@ TogglePrefs --> Persist["Persist Changes"]
 - [profile_setting_info.dart:11-39](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_info.dart#L11-L39)
 - [profile_setting_address.dart:10-44](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_address.dart#L10-L44)
 
-### Address Management Widgets and Data Persistence
-Address management includes:
-- ProfileSettingAddress: container with add button and address list
-- ProfileSettingAddressList: renders saved addresses
-- AddNewAddressDialog and AddNewAddressDialogFields: capture new address details
-- Controllers and Repositories for CRUD operations on addresses
+### Enhanced Address Management System
+The enhanced address management system includes several new components that improve the user experience and code reusability:
+
+#### AddNewDialogHelper - Reusable UI Components
+Provides consistent form layout components for address dialogs:
+- `buildRadioOption`: Creates styled radio button options with visual feedback
+- `title`: Standardized title text styling
+- `text`: Consistent text styling for labels
+- `field`: Unified form field component with custom styling
+
+#### AddNewAddressDialogAddressType - Address Type Selection
+Handles address type selection with radio buttons for home/work addresses:
+- Radio button interface for address type selection
+- Default address checkbox with reactive state management
+- Integration with AddNewDialogHelper for consistent styling
+- Loading state management during address creation
+
+#### Enhanced Address Creation Workflow
+The AddAddressController now includes:
+- Address type selection (home/work) with reactive state
+- Default address setting capability
+- Improved phone number validation and extraction
+- Better error handling and user feedback
 
 ```mermaid
 sequenceDiagram
 participant View as "ProfileSettingAddress"
 participant Dialog as "AddNewAddressDialog"
 participant Fields as "AddNewAddressDialogFields"
+participant AddressType as "AddNewAddressDialogAddressType"
+participant Helper as "AddNewDialogHelper"
 participant Controller as "AddAddressController"
 participant Repo as "AddAddressRepo"
-participant Model as "UserAddressModel"
 View->>Dialog : "showDialog()"
 Dialog->>Fields : "render form fields"
+Fields->>Helper : "use reusable components"
+Fields->>AddressType : "render address type selection"
+AddressType->>Helper : "use radio option component"
+AddressType->>Controller : "handle address type selection"
 Fields-->>Controller : "submit(addressData)"
+Controller->>Controller : "validate fields"
 Controller->>Repo : "execute(addressData)"
 Repo-->>Controller : "Either<Error, Success>"
 Controller-->>View : "refresh address list"
@@ -435,42 +499,44 @@ Controller-->>View : "refresh address list"
 
 **Diagram sources**
 - [profile_setting_address.dart:10-44](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_address.dart#L10-L44)
-- [add_new_address_dialog.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog.dart)
-- [add_new_address_dialog_fields.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_fields.dart)
-- [add_address_controller.dart](file://lib/features/profile/controllers/add_address_controller.dart)
+- [add_new_address_dialog.dart:1-80](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog.dart#L1-80)
+- [add_new_address_dialog_fields.dart:1-98](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_fields.dart#L1-98)
+- [add_new_address_dialog_address_type.dart:1-84](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_address_type.dart#L1-84)
+- [add_new_dialog_helper.dart:1-102](file://lib/features/profile/widgets/profile_setting_widgets/add_new_dialog_helper.dart#L1-102)
+- [add_address_controller.dart:7-112](file://lib/features/profile/controllers/add_address_controller.dart#L7-112)
 - [add_address_repo.dart](file://lib/features/profile/repositories/add_address_repo.dart)
-- [user_address_model.dart:1-93](file://lib/features/profile/models/user_address_model.dart#L1-L93)
 
 **Section sources**
-- [profile_setting_address.dart:10-44](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_address.dart#L10-L44)
-- [profile_setting_address_list.dart](file://lib/features/profile/widgets/profile_setting_widgets/profile_setting_address_list.dart)
-- [add_new_address_dialog.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog.dart)
-- [add_new_address_dialog_fields.dart](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_fields.dart)
-- [add_address_controller.dart](file://lib/features/profile/controllers/add_address_controller.dart)
-- [add_address_repo.dart](file://lib/features/profile/repositories/add_address_repo.dart)
-- [user_address_model.dart:1-93](file://lib/features/profile/models/user_address_model.dart#L1-L93)
+- [add_new_address_dialog_address_type.dart:1-84](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_address_type.dart#L1-84)
+- [add_new_dialog_helper.dart:1-102](file://lib/features/profile/widgets/profile_setting_widgets/add_new_dialog_helper.dart#L1-102)
+- [add_new_address_dialog_fields.dart:1-98](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_fields.dart#L1-98)
+- [add_address_controller.dart:7-112](file://lib/features/profile/controllers/add_address_controller.dart#L7-112)
 
 ### User Address Model Structure and Validation Rules
-The UserAddressModel supports nested Address entries with the following fields:
+The UserAddressModel supports nested Address entries with enhanced type support:
 - id, userId, name, phone
 - addressLine1, addressLine2, city, state, postalCode, country
-- isDefault, type, createdAt, updatedAt
+- isDefault, type (home/work), createdAt, updatedAt
 
-Validation rules (as inferred from field types and naming):
+Enhanced validation rules:
 - Required fields for new addresses: name, phone, addressLine1, city, state, postalCode, country
-- Optional fields: addressLine2, type, isDefault
+- Address type validation: must be either 'home' or 'work'
+- Optional fields: addressLine2, isDefault
+- Phone validation: extracts digits and requires minimum length of 10
 - Consistency: userId should match authenticated user ID
 - Defaults: isDefault indicates primary address
 
 Data persistence mechanisms:
 - Serialization/deserialization via toJson/fromJson
 - Repository methods handle network requests and responses
+- Enhanced phone number handling with country code support
 
 **Section sources**
 - [user_address_model.dart:24-92](file://lib/features/profile/models/user_address_model.dart#L24-L92)
+- [add_address_controller.dart:46-71](file://lib/features/profile/controllers/add_address_controller.dart#L46-L71)
 
 ## Dependency Analysis
-This section maps dependencies among controllers, repositories, and models to understand coupling and cohesion.
+This section maps dependencies among controllers, repositories, and models to understand coupling and cohesion, including the new address management components.
 
 ```mermaid
 graph LR
@@ -482,11 +548,16 @@ PSC["ProfileSettingController"] --> PSN["ProfileSettingsNotifications"]
 PAC["ProfileOptionsController"] --> PVI["ProfileViewItems"]
 AAC["AddAddressController"] --> AAR["AddAddressRepo"]
 AAC --> UAM["UserAddressModel"]
+AAC --> ANDH["AddNewDialogHelper"]
+AAC --> ANADAT["AddNewAddressDialogAddressType"]
 DAC["DeleteAddressController"] --> DAR["DeleteAddressRepo"]
 GUAC["GetUserAddressController"] --> GUAR["GetUserAddressRepo"]
 GUAC --> UAM
 UAC["UpdateAddressController"] --> UAR["UpdateAddressRepo"]
 UAC --> UAM
+ANAD["AddNewAddressDialog"] --> ANADF["AddNewAddressDialogFields"]
+ANADF --> ANADAT["AddNewAddressDialogAddressType"]
+ANADF --> ANDH["AddNewDialogHelper"]
 ```
 
 **Diagram sources**
@@ -494,7 +565,7 @@ UAC --> UAM
 - [profile_update_controller.dart:5-27](file://lib/features/profile/controllers/profile_update_controller.dart#L5-L27)
 - [profile_setting_controller.dart:3-26](file://lib/features/profile/controllers/profile_setting_controller.dart#L3-L26)
 - [profile_options_controller.dart](file://lib/features/profile/controllers/profile_options_controller.dart)
-- [add_address_controller.dart](file://lib/features/profile/controllers/add_address_controller.dart)
+- [add_address_controller.dart:7-112](file://lib/features/profile/controllers/add_address_controller.dart#L7-L112)
 - [delete_address_controller.dart](file://lib/features/profile/controllers/delete_address_controller.dart)
 - [get_user_address_controller.dart](file://lib/features/profile/controllers/get_user_address_controller.dart)
 - [update_address_controller.dart](file://lib/features/profile/controllers/update_address_controller.dart)
@@ -505,6 +576,10 @@ UAC --> UAM
 - [update_address_repo.dart](file://lib/features/profile/repositories/update_address_repo.dart)
 - [user_profile_model.dart:1-72](file://lib/core/data/global_models/user_profile_model.dart#L1-L72)
 - [user_address_model.dart:1-93](file://lib/features/profile/models/user_address_model.dart#L1-L93)
+- [add_new_address_dialog.dart:1-80](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog.dart#L1-80)
+- [add_new_address_dialog_fields.dart:1-98](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_fields.dart#L1-98)
+- [add_new_address_dialog_address_type.dart:1-84](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_address_type.dart#L1-84)
+- [add_new_dialog_helper.dart:1-102](file://lib/features/profile/widgets/profile_setting_widgets/add_new_dialog_helper.dart#L1-102)
 
 **Section sources**
 - [profile_controller.dart:6-31](file://lib/features/profile/controllers/profile_controller.dart#L6-L31)
@@ -518,6 +593,8 @@ UAC --> UAM
 - Lazy loading: Profile data is fetched on controller initialization to avoid blocking UI.
 - Minimal widget rebuilds: Obx wrappers around specific UI segments reduce recomposition.
 - Network efficiency: Repository methods should cache and debounce frequent operations where applicable.
+- Enhanced address management: Reusable components reduce code duplication and improve performance.
+- Radio button optimization: Address type selection uses reactive state to minimize unnecessary rebuilds.
 
 ## Troubleshooting Guide
 Common issues and resolutions:
@@ -530,6 +607,15 @@ Common issues and resolutions:
 
 - Address dialog not closing
   - Ensure dialog is closed after successful submission in the controller
+  - Verify AddNewAddressDialogAddressType properly handles save operation
+
+- Address type selection not working
+  - Confirm addressType reactive variable is properly initialized
+  - Check AddNewDialogHelper radio option styling and interaction
+
+- Phone validation failing
+  - Verify phone number extraction logic handles country codes correctly
+  - Ensure minimum length validation meets international standards
 
 - Notification preferences not persisting
   - Confirm reactive state updates and persistence layer integration
@@ -538,6 +624,8 @@ Common issues and resolutions:
 - [profile_controller.dart:13-24](file://lib/features/profile/controllers/profile_controller.dart#L13-L24)
 - [profile_update_controller.dart:20-27](file://lib/features/profile/controllers/profile_update_controller.dart#L20-L27)
 - [profile_setting_controller.dart:3-26](file://lib/features/profile/controllers/profile_setting_controller.dart#L3-L26)
+- [add_new_address_dialog_address_type.dart:23-47](file://lib/features/profile/widgets/profile_setting_widgets/add_new_address_dialog_address_type.dart#L23-L47)
+- [add_address_controller.dart:46-71](file://lib/features/profile/controllers/add_address_controller.dart#L46-L71)
 
 ## Conclusion
-The Profile Management system integrates controllers, repositories, models, views, and widgets to deliver a cohesive user experience for viewing and editing profiles, managing addresses, and configuring preferences. The architecture emphasizes separation of concerns, reactive state management, and modular UI components, enabling maintainability and scalability.
+The Profile Management system integrates controllers, repositories, models, views, and widgets to deliver a cohesive user experience for viewing and editing profiles, managing addresses, and configuring preferences. The enhanced address management system introduces reusable UI components, improved address type selection, and better user experience through consistent form layouts. The architecture emphasizes separation of concerns, reactive state management, modular UI components, and code reusability, enabling maintainability and scalability. The new AddNewDialogHelper component provides a foundation for consistent form layouts across the application, while the enhanced address management workflow improves user experience and code maintainability.
