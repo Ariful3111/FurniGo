@@ -14,14 +14,17 @@ class AiProductPlacementView extends StatelessWidget {
       child: ListView(
         children: [
           AiHeader(),
-          SizedBox(height: 20.h,),
+          SizedBox(height: 20.h),
           SharedContainer(
             width: MediaQuery.widthOf(context),
             height: 237.h,
             padding: EdgeInsets.zero,
-            image: DecorationImage(image: AssetImage(ImagesPath.placement),fit: BoxFit.cover),
+            image: DecorationImage(
+              image: AssetImage(ImagesPath.placement),
+              fit: BoxFit.cover,
+            ),
           ),
-          SizedBox(height: 20.h,),
+          SizedBox(height: 20.h),
           // AiProductPlacementRoom()
         ],
       ),

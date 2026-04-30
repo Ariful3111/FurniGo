@@ -28,11 +28,12 @@
 - [lib/features/sell/views/sell_view.dart](file://lib/features/sell/views/sell_view.dart)
 - [lib/features/sell/views/sell_details.dart](file://lib/features/sell/views/sell_details.dart)
 - [lib/features/sell/widgets/sell_helper.dart](file://lib/features/sell/widgets/sell_helper.dart)
+- [lib/features/sell/widgets/sell_details_widgets/sell_details_helper.dart](file://lib/features/sell/widgets/sell_details_widgets/sell_details_helper.dart)
+- [lib/features/sell/widgets/sell_details_widgets/sell_details_status.dart](file://lib/features/sell/widgets/sell_details_widgets/sell_details_status.dart)
+- [lib/features/sell/widgets/sell_details_widgets/sell_details_summery.dart](file://lib/features/sell/widgets/sell_details_widgets/sell_details_summery.dart)
 - [lib/features/sell/widgets/sell_view_widgets/sell_view_table.dart](file://lib/features/sell/widgets/sell_view_widgets/sell_view_table.dart)
 - [lib/features/sell/widgets/sell_view_widgets/sell_view_table_filter.dart](file://lib/features/sell/widgets/sell_view_widgets/sell_view_table_filter.dart)
 - [lib/features/sell/widgets/sell_view_widgets/sell_table_expanded.dart](file://lib/features/sell/widgets/sell_view_widgets/sell_table_expanded.dart)
-- [lib/features/sell/widgets/sell_details_widgets/sell_details_status.dart](file://lib/features/sell/widgets/sell_details_widgets/sell_details_status.dart)
-- [lib/features/sell/widgets/sell_details_widgets/sell_details_summery.dart](file://lib/features/sell/widgets/sell_details_widgets/sell_details_summery.dart)
 - [lib/features/sell/widgets/sell_accept_widgets/sell_accept.dart](file://lib/features/sell/widgets/sell_accept_widgets/sell_accept.dart)
 - [lib/features/sell/widgets/sell_accept_widgets/sell_pending_payment.dart](file://lib/features/sell/widgets/sell_accept_widgets/sell_pending_payment.dart)
 - [lib/features/sell/widgets/sell_accept_widgets/sell_recive_payment.dart](file://lib/features/sell/widgets/sell_accept_widgets/sell_recive_payment.dart)
@@ -84,6 +85,14 @@
 - [lib/shared/widgets/shared_container.dart](file://lib/shared/widgets/shared_container.dart)
 </cite>
 
+## Update Summary
+**Changes Made**
+- Enhanced Sell Details Helper with improved step indicator styling using timeline_tile package
+- Added sophisticated color-coded step indicators with teal, deep navy, and light gray schemes
+- Implemented enhanced user flow management with better visual progress tracking
+- Integrated timeline visualization for multi-step sell processes
+- Added improved status tracking with date display for completed steps
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
@@ -102,6 +111,8 @@ This document describes the Sell Furniture System within the ZB-DEZINE Flutter a
 - Sell Flow: A guided, multi-step process for creating listings, uploading photos, selecting delivery options, and submitting for review.
 
 The documentation also outlines view components, widget libraries, business logic for pricing strategies, commission calculations, buyer verification, and payment processing, along with user roles and permissions across the sales funnel.
+
+**Updated** Enhanced with improved step indicator styling and user flow management through the sell_details_helper.dart component.
 
 ## Project Structure
 The project follows a modular structure with feature-based organization. Key areas relevant to the Sell Furniture System:
@@ -254,6 +265,102 @@ UTILS --> SELL_FLOW_PHOTOS_CONTROLLER
 
 ## Detailed Component Analysis
 
+### Enhanced Sell Details Helper
+**Updated** The sell_details_helper.dart component now provides sophisticated step indicator styling for multi-step processes using the timeline_tile package.
+
+- **Step Indicator Styling**
+  - Teal circle (completed steps): `_kDoneColor = Color(0xFF21D19F)`
+  - Deep navy circle (current step): `_kCurrentColor = Color(0xFF1E1B4B)`
+  - Light gray circle (future steps): `_kFutureColor = Color(0xFFE8E8E8)`
+  - Teal connector line (completed): `_kDoneLine = Color(0xFF21D19F)`
+  - Gray connector line (pending): `_kPendingLine = Color(0xFFCDCDCD)`
+
+- **Indicator Implementation**
+  - Completed steps show white checkmark icon
+  - Current steps display white bold step number
+  - Future steps show dark gray step number
+  - All indicators use 44x44 circular design with centered content
+
+- **Timeline Integration**
+  - Seamlessly integrates with SellDetailsStatus widget
+  - Provides color-coded connectors between steps
+  - Supports dynamic step state management
+
+```mermaid
+classDiagram
+class SellDetailsHelper {
++indicator(state, index) Widget
++lineColor(state) Color
+-_kDoneColor : Color
+-_kCurrentColor : Color
+-_kFutureColor : Color
+-_kDoneLine : Color
+-_kPendingLine : Color
+}
+class TimelineStep {
++title : String
++state : StepState
++date : String?
+}
+class StepState {
+<<enumeration>>
+done
+current
+future
+}
+SellDetailsHelper --> TimelineStep : "creates indicators for"
+TimelineStep --> StepState : "uses"
+```
+
+**Diagram sources**
+- [lib/features/sell/widgets/sell_details_widgets/sell_details_helper.dart](file://lib/features/sell/widgets/sell_details_widgets/sell_details_helper.dart)
+- [lib/features/sell/controller/sell_details_controller.dart](file://lib/features/sell/controller/sell_details_controller.dart)
+
+**Section sources**
+- [lib/features/sell/widgets/sell_details_widgets/sell_details_helper.dart:1-62](file://lib/features/sell/widgets/sell_details_widgets/sell_details_helper.dart#L1-L62)
+
+### Enhanced Sell Details Status Component
+**Updated** The SellDetailsStatus component now utilizes the enhanced SellDetailsHelper for improved visual progress tracking.
+
+- **Timeline Visualization**
+  - Uses timeline_tile package for professional step-by-step progression
+  - Dynamic connector colors based on step completion state
+  - Responsive design with proper spacing and alignment
+
+- **Enhanced User Experience**
+  - Clear visual indication of current step position
+  - Date display for completed steps (e.g., "Dec 10, 2024")
+  - Pending status for upcoming steps
+  - Dark/light theme compatibility
+
+- **Integration Features**
+  - Automatic connector color calculation
+  - Proper first/last step handling
+  - Consistent styling across all step states
+
+```mermaid
+sequenceDiagram
+participant User as "User"
+participant SellDetails as "SellDetails"
+participant StatusWidget as "SellDetailsStatus"
+participant Helper as "SellDetailsHelper"
+User->>SellDetails : View Listing Details
+SellDetails->>StatusWidget : Render Status Timeline
+StatusWidget->>Helper : Request Step Indicator
+Helper-->>StatusWidget : Return Styled Indicator
+StatusWidget->>Helper : Calculate Connector Colors
+Helper-->>StatusWidget : Return Color Codes
+StatusWidget-->>User : Display Enhanced Timeline
+```
+
+**Diagram sources**
+- [lib/features/sell/views/sell_details.dart](file://lib/features/sell/views/sell_details.dart)
+- [lib/features/sell/widgets/sell_details_widgets/sell_details_status.dart](file://lib/features/sell/widgets/sell_details_widgets/sell_details_status.dart)
+- [lib/features/sell/widgets/sell_details_widgets/sell_details_helper.dart](file://lib/features/sell/widgets/sell_details_widgets/sell_details_helper.dart)
+
+**Section sources**
+- [lib/features/sell/widgets/sell_details_widgets/sell_details_status.dart:1-99](file://lib/features/sell/widgets/sell_details_widgets/sell_details_status.dart#L1-L99)
+
 ### Sell Feature
 The Sell feature manages product listings, status tracking, and seller dashboard interactions.
 
@@ -271,7 +378,7 @@ The Sell feature manages product listings, status tracking, and seller dashboard
 - Widgets
   - sell_helper.dart: Provides reusable header components and shared UI elements.
   - sell_view_widgets: Contains table rendering, filters, and expanded rows for listing details.
-  - sell_details_widgets: Status timeline and summary cards for detailed view.
+  - sell_details_widgets: Status timeline and summary cards for detailed view with enhanced step indicators.
   - sell_accept_widgets: Acceptance and payment-related UI for accepted listings.
   - sell_offer_ready_widgets: Offer-ready actions and payment dialogs.
 
@@ -295,6 +402,12 @@ class SellDetailsController {
 +List summary
 +String[] cardList
 +RxString selectedCard
++stepsFor(status) TimelineStep[]
+}
+class TimelineStep {
++title : String
++state : StepState
++date : String?
 }
 class SellModel {
 +String id
@@ -313,6 +426,7 @@ class SellDetails {
 }
 SellView --> SellController : "uses"
 SellDetails --> SellDetailsController : "uses"
+SellDetailsController --> TimelineStep : "manages"
 SellController --> SellModel : "manages"
 ```
 
@@ -325,10 +439,10 @@ SellController --> SellModel : "manages"
 
 **Section sources**
 - [lib/features/sell/controller/sell_controller.dart:1-167](file://lib/features/sell/controller/sell_controller.dart#L1-L167)
-- [lib/features/sell/controller/sell_details_controller.dart:1-20](file://lib/features/sell/controller/sell_details_controller.dart#L1-L20)
+- [lib/features/sell/controller/sell_details_controller.dart:1-55](file://lib/features/sell/controller/sell_details_controller.dart#L1-L55)
 - [lib/features/sell/models/sell_model.dart:1-19](file://lib/features/sell/models/sell_model.dart#L1-L19)
 - [lib/features/sell/views/sell_view.dart:1-45](file://lib/features/sell/views/sell_view.dart#L1-L45)
-- [lib/features/sell/views/sell_details.dart:1-115](file://lib/features/sell/views/sell_details.dart#L1-L115)
+- [lib/features/sell/views/sell_details.dart:1-111](file://lib/features/sell/views/sell_details.dart#L1-L111)
 
 ### Sell Flow Feature
 The Sell Flow feature provides a guided, multi-step process for creating and submitting furniture listings.
@@ -393,7 +507,7 @@ The system leverages shared widgets and custom UI components to maintain consist
 - Sell-Specific Widgets
   - Sell helper provides consistent headers and navigation elements.
   - Sell view widgets encapsulate table rendering, filtering, and expanded rows.
-  - Sell details widgets present status timelines and summary cards.
+  - Sell details widgets present status timelines and summary cards with enhanced step indicators.
 
 - Sell Flow Widgets
   - Flow header, page count, and step count indicate progress.
@@ -470,6 +584,13 @@ This section documents the business logic and workflows implemented in the syste
 
 - Transaction Finalization
   - Transaction completion is indicated by status updates (e.g., received, delivered). No explicit transaction finalization logic exists beyond status transitions.
+
+- Enhanced Status Tracking
+  **Updated** Improved step-based status tracking with visual timeline indicators:
+  - Submitted: Completed step with date display
+  - In Review: Current step with active styling
+  - Offer Ready: Future step with pending status
+  - Color-coded connectors show progression through steps
 
 ```mermaid
 flowchart TD
@@ -590,16 +711,24 @@ APP --> GOOGLE_SIGNIN
   - Custom containers and shared widgets promote reuse but should minimize unnecessary rebuilds by leveraging reactive variables effectively.
 - Navigation
   - Route management via app routes ensures predictable navigation and reduces coupling between views.
+- Enhanced Timeline Performance
+  **Updated** The timeline_tile integration is optimized for performance with:
+  - Efficient indicator caching
+  - Minimal rebuilds on state changes
+  - Responsive design adjustments
 
 ## Troubleshooting Guide
 - Common Issues
   - Missing or invalid authentication state can prevent access to sell features. Verify Firebase authentication initialization and user session.
   - Image upload failures may occur due to device permissions or storage limitations. Ensure proper permission handling and fallbacks.
   - Pagination and filtering may not update correctly if reactive variables are not refreshed after data changes.
+  - Timeline indicators may not render properly if timeline_tile package is not installed or configured correctly.
 
 - Debugging Tips
-  - Use GetX’s built-in logging and observables to inspect state changes during sell and sell flow operations.
+  - Use GetX's built-in logging and observables to inspect state changes during sell and sell flow operations.
   - Validate network requests using the provided network utilities and check for error models.
+  - Verify timeline tile configuration if step indicators appear incorrectly.
+  - Check color scheme compatibility in dark/light theme modes.
 
 **Section sources**
 - [lib/core/data/global_models/error_model.dart](file://lib/core/data/global_models/error_model.dart)
@@ -608,16 +737,25 @@ APP --> GOOGLE_SIGNIN
 - [lib/core/data/networks/post_without_response.dart](file://lib/core/data/networks/post_without_response.dart)
 
 ## Conclusion
-The Sell Furniture System provides a structured foundation for managing furniture listings and guiding sellers through a multi-step creation process. While the current implementation focuses on UI components, controllers, and basic state management, it lays the groundwork for integrating advanced features such as buyer verification, negotiation, commission calculations, and end-to-end payment processing. The modular architecture and shared widget library facilitate future enhancements and maintain consistency across the application.
+The Sell Furniture System provides a structured foundation for managing furniture listings and guiding sellers through a multi-step creation process. The enhanced sell_details_helper.dart component significantly improves the user experience by providing sophisticated step indicator styling and enhanced status tracking through timeline visualization. While the current implementation focuses on UI components, controllers, and basic state management, it lays the groundwork for integrating advanced features such as buyer verification, negotiation, commission calculations, and end-to-end payment processing. The modular architecture and shared widget library facilitate future enhancements and maintain consistency across the application.
+
+**Updated** The addition of timeline-based step indicators with color-coded visual feedback represents a significant improvement in user flow management and progress tracking.
 
 ## Appendices
 - Asset and Icon References
   - Color palette and icon paths are centralized for consistent theming across sell and sell flow components.
 - Theme and Typography
   - Theme controller and app theme ensure uniform appearance and responsive scaling using flutter_screenutil.
+- Enhanced Timeline Integration
+  **Updated** The timeline_tile package integration provides professional-grade step visualization with:
+  - Consistent 44x44 indicator sizing
+  - Color-coded step states (completed, current, future)
+  - Dynamic connector colors based on step progression
+  - Responsive design for various screen sizes
 
 **Section sources**
 - [lib/core/constant/colors.dart](file://lib/core/constant/colors.dart)
 - [lib/core/constant/icons_path.dart](file://lib/core/constant/icons_path.dart)
 - [lib/core/theme/app_theme.dart](file://lib/core/theme/app_theme.dart)
 - [lib/core/theme/theme_controller.dart](file://lib/core/theme/theme_controller.dart)
+- [pubspec.yaml:52](file://pubspec.yaml#L52)

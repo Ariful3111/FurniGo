@@ -51,6 +51,16 @@
 - [date_formatter.dart](file://lib/shared/extensions/formatters/date_formatter.dart)
 - [dimension_formatter.dart](file://lib/shared/extensions/formatters/dimension_formatter.dart)
 - [estimate_delivery_extractor.dart](file://lib/shared/extensions/extractors/estimate_delivery_extractor.dart)
+- [custom_dropdown_menu.dart](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart)
+- [dropdown_menu_item.dart](file://lib/shared/widgets/custom_dropdown/dropdown_menu_item.dart)
+- [dropdown_input_decoration.dart](file://lib/shared/widgets/custom_dropdown/dropdown_input_decoration.dart)
+- [custom_payment_dropdown.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart)
+- [custom_payment_dropdown_item.dart](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart)
+- [custom_month_dropdown.dart](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart)
+- [custom_month_dropdown_controller.dart](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart)
+- [custom_month_dropdown_item.dart](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart)
+- [custom_month_dropdown_menu.dart](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart)
+- [custom_month_dropdown_overlay.dart](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart)
 - [rent_request_next.dart](file://lib/features/rent_request/widgets/rent_request_view_widgets/rent_request_next.dart)
 - [rent_step_controller.dart](file://lib/features/rent_request/controllers/rent_step_controller.dart)
 - [storage_service.dart](file://lib/core/data/local/storage_service.dart)
@@ -58,15 +68,17 @@
 - [step_zero_repo.dart](file://lib/features/rent_request/repositories/step_zero_repo.dart)
 - [rent_helper.dart](file://lib/features/rent_request/widgets/rent_helper.dart)
 - [rent_submit_dialog.dart](file://lib/features/rent_request/widgets/rent_submit_dialog.dart)
+- [ai_dropdown_credit.dart](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart)
+- [credit_transaction_list.dart](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_list.dart)
 </cite>
 
 ## Update Summary
 **Changes Made**
-- Added documentation for four new reusable UI components: CustomProductDesign, CustomProductText, CustomScrollbar, and ShippingMembershipCard
-- Integrated these components into the existing component architecture with theme-aware styling
-- Enhanced product display and shopping experience with specialized components for product design visualization and membership benefits
-- Added comprehensive dependency analysis for the new UI components
-- Updated component composition patterns to include these new specialized components
+- Added comprehensive documentation for the new month-specific dropdown functionality
+- Documented four new components: CustomMonthDropdown, CustomMonthDropdownController, CustomMonthDropdownItem, CustomMonthDropdownMenu, and CustomMonthDropdownOverlay
+- Integrated the month dropdown system into the existing dropdown architecture
+- Added usage examples in AI features and credit balance components
+- Enhanced dropdown component ecosystem with specialized month selection functionality
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -75,17 +87,18 @@
 4. [Architecture Overview](#architecture-overview)
 5. [Detailed Component Analysis](#detailed-component-analysis)
 6. [Product Attributes System](#product-attributes-system)
-7. [New Specialized Components](#new-specialized-components)
-8. [Dependency Analysis](#dependency-analysis)
-9. [Performance Considerations](#performance-considerations)
-10. [Troubleshooting Guide](#troubleshooting-guide)
-11. [Conclusion](#conclusion)
-12. [Appendices](#appendices)
+7. [New Month Dropdown System](#new-month-dropdown-system)
+8. [Dropdown Component Ecosystem](#dropdown-component-ecosystem)
+9. [Dependency Analysis](#dependency-analysis)
+10. [Performance Considerations](#performance-considerations)
+11. [Troubleshooting Guide](#troubleshooting-guide)
+12. [Conclusion](#conclusion)
+13. [Appendices](#appendices)
 
 ## Introduction
 This document describes the shared components and utility systems in ZB-DEZINE. It focuses on reusable UI components such as custom buttons, form fields, dialogs, loading indicators, pagination, and specialized components for product display and membership benefits. It also covers validation and formatting utilities, helper extensions, and extension methods. The guide explains component architecture, prop interfaces, event handling, customization options, composition patterns, accessibility considerations, responsive design, and guidelines for extending existing components and building new shared utilities.
 
-**Updated** Enhanced with comprehensive documentation for four new specialized UI components: CustomProductDesign for product visualization, CustomProductText for product information display, CustomScrollbar for enhanced scrolling experience, and ShippingMembershipCard for membership promotion. These components significantly expand the application's capability to showcase products and communicate membership benefits.
+**Updated** Enhanced with comprehensive documentation for the new month-specific dropdown system, providing standardized month selection functionality across the application. The month dropdown complements the existing dropdown ecosystem with specialized functionality for time-based filtering and reporting.
 
 ## Project Structure
 The shared components live under the shared directory, organized by feature families:
@@ -99,6 +112,7 @@ The shared components live under the shared directory, organized by feature fami
 - widgets/custom_product_text: Product information display component.
 - widgets/custom_scrollbar: Enhanced scrollbar component.
 - widgets/shipping_membership_card: Membership promotion component.
+- widgets/custom_dropdown: Comprehensive dropdown system including month-specific dropdown.
 - features/product_details: Product customization system with attributes and options.
 - features/rent_request: Complete rental request flow with step navigation and async operations.
 - extensions/validators: Validation helpers for common inputs.
@@ -125,6 +139,18 @@ SC["SharedContainer"]
 CPT["CustomPrimaryText"]
 CST["CustomSpanText"]
 CWT["CustomWhiteText"]
+end
+subgraph "Dropdown System"
+CMD["CustomMonthDropdown"]
+CMDC["CustomMonthDropdownController"]
+CMDD["CustomMonthDropdownMenu"]
+CMDO["CustomMonthDropdownOverlay"]
+CMDI["CustomMonthDropdownItem"]
+CDD["CustomDropdownMenu"]
+CDI["DropdownMenuItems"]
+DID["DropdownInputDecoration"]
+CPD2["CustomPaymentDropdown"]
+CPDI["CustomPaymentDropdownItem"]
 end
 subgraph "Specialized Components"
 CPD2["CustomProductDesign"]
@@ -177,6 +203,16 @@ SC --> AC
 CPT --> AC
 CST --> AC
 CWT --> AC
+CMD --> AC
+CMDC --> AC
+CMDD --> AC
+CMDO --> AC
+CMDI --> AC
+CDD --> AC
+CDI --> AC
+DID --> AC
+CPD2 --> AC
+CPDI --> AC
 CPD2 --> AC
 CPT2 --> AC
 CSB --> AC
@@ -209,6 +245,16 @@ PAC --> RNN
 - [custom_primary_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L43)
 - [custom_span_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_span_text.dart#L1-L43)
 - [custom_white_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_white_text.dart#L1-L43)
+- [custom_month_dropdown.dart:1-67](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart#L1-L67)
+- [custom_month_dropdown_controller.dart:1-55](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart#L1-L55)
+- [custom_month_dropdown_menu.dart:1-62](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart#L1-L62)
+- [custom_month_dropdown_overlay.dart:1-33](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart#L1-L33)
+- [custom_month_dropdown_item.dart:1-72](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart#L1-L72)
+- [custom_dropdown_menu.dart:1-161](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart#L1-L161)
+- [dropdown_menu_item.dart:1-61](file://lib/shared/widgets/custom_dropdown/dropdown_menu_item.dart#L1-L61)
+- [dropdown_input_decoration.dart:1-53](file://lib/shared/widgets/custom_dropdown/dropdown_input_decoration.dart#L1-L53)
+- [custom_payment_dropdown.dart:1-166](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart#L1-L166)
+- [custom_payment_dropdown_item.dart:1-87](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart#L1-L87)
 - [custom_product_design.dart:1-104](file://lib/shared/widgets/custom_product_design.dart#L1-L104)
 - [custom_product_text.dart:1-90](file://lib/shared/widgets/custom_product_text.dart#L1-L90)
 - [custom_scrollbar.dart:1-30](file://lib/shared/widgets/custom_scrollbar.dart#L1-L30)
@@ -338,27 +384,42 @@ This section summarizes the reusable UI components and their primary responsibil
   - Key props: text, fontSize, fontWeight, textAlign, textOverflow, maxLine.
   - Behavior: High contrast white text for dark theme backgrounds.
 
-**Updated** Added four new specialized components for enhanced product display and user experience.
+**Updated** Enhanced dropdown system with comprehensive month-specific functionality and improved dropdown architecture.
 
-- CustomProductDesign
-  - Purpose: Product visualization component with favorite functionality and promotional badges.
-  - Key props: onFavorite (VoidCallback), icon (String?), color (Color?).
-  - Behavior: Card-style product display with overlay favorite button, promotional badge, and tap-to-view functionality.
+- CustomMonthDropdown
+  - Purpose: Month selection dropdown with animated rotation and theme-aware styling.
+  - Key props: None (uses controller state internally).
+  - Behavior: Tap-to-open dropdown with animated chevron indicator; integrates with overlay system.
 
-- CustomProductText
-  - Purpose: Product information display with color swatches and pricing.
-  - Key props: color (List<Color>), title (String), price (String).
-  - Behavior: Product title with color circle swatches, plus count for extra colors, and price display.
+- CustomMonthDropdownController
+  - Purpose: Controller managing month dropdown state and options.
+  - Key props: selectedOption (RxString), isOpen (RxBool), options (List<String>).
+  - Behavior: Manages dropdown open/close state, option selection, and overlay entry lifecycle.
 
-- CustomScrollbar
-  - Purpose: Enhanced scrollbar with theme-aware styling and smooth animations.
-  - Key props: scrollController (ScrollController), child (Widget).
-  - Behavior: Custom raw scrollbar with gradient track and animated thumb visibility.
+- CustomMonthDropdownMenu
+  - Purpose: Menu component displaying month options with selection indicators.
+  - Key props: None (uses controller state internally).
+  - Behavior: Renders month options with selected state highlighting and checkmark indicators.
 
-- ShippingMembershipCard
-  - Purpose: Membership promotion card with gradient background and call-to-action.
-  - Key props: None (const).
-  - Behavior: Promotional card highlighting free shipping benefits and membership pricing.
+- CustomMonthDropdownItem
+  - Purpose: Individual month option item with selection styling.
+  - Key props: label (String), isSelected (bool), isLast (bool), isDark (bool), onTap (VoidCallback).
+  - Behavior: Styled list item with selection background, border styling, and checkmark indicator.
+
+- CustomMonthDropdownOverlay
+  - Purpose: Overlay component positioning dropdown menu relative to trigger.
+  - Key props: None (uses controller state internally).
+  - Behavior: Handles overlay positioning, click-outside dismissal, and CompositedTransform linking.
+
+- CustomDropdownMenu
+  - Purpose: General-purpose dropdown menu with extensive customization.
+  - Key props: option (List), onSelect (Function), isSelect (RxString), label (String), styling props.
+  - Behavior: Comprehensive dropdown with theme-aware styling, custom decoration, and extensive customization.
+
+- CustomPaymentDropdownMenu
+  - Purpose: Payment method selection dropdown with brand icons and radio buttons.
+  - Key props: cardList (List<String>), selectedCard (RxString), onSelect (Function), styling props.
+  - Behavior: Specialized dropdown for payment methods with brand icon integration and radio button selection.
 
 **Section sources**
 - [custom_primary_button.dart:6-74](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L6-L74)
@@ -380,10 +441,13 @@ This section summarizes the reusable UI components and their primary responsibil
 - [custom_primary_text.dart:8-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L8-L43)
 - [custom_span_text.dart:8-43](file://lib/shared/widgets/custom_text/custom_span_text.dart#L8-L43)
 - [custom_white_text.dart:8-43](file://lib/shared/widgets/custom_text/custom_white_text.dart#L8-L43)
-- [custom_product_design.dart:11-104](file://lib/shared/widgets/custom_product_design.dart#L11-L104)
-- [custom_product_text.dart:7-90](file://lib/shared/widgets/custom_product_text.dart#L7-L90)
-- [custom_scrollbar.dart:5-30](file://lib/shared/widgets/custom_scrollbar.dart#L5-L30)
-- [shipping_membership_card.dart:7-82](file://lib/shared/widgets/shipping_membership_card.dart#L7-L82)
+- [custom_month_dropdown.dart:10-67](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart#L10-L67)
+- [custom_month_dropdown_controller.dart:5-55](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart#L5-L55)
+- [custom_month_dropdown_menu.dart:8-62](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart#L8-L62)
+- [custom_month_dropdown_overlay.dart:7-33](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart#L7-L33)
+- [custom_month_dropdown_item.dart:6-72](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart#L6-L72)
+- [custom_dropdown_menu.dart:11-161](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart#L11-L161)
+- [custom_payment_dropdown.dart:11-166](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart#L11-L166)
 
 ## Architecture Overview
 The shared components follow a consistent pattern:
@@ -393,7 +457,7 @@ The shared components follow a consistent pattern:
 - Reactive updates: Pagination uses GetX reactive integers for current page.
 - Async operation support: Enhanced with loading states and error handling for network operations.
 
-**Updated** The architecture now includes four new specialized components that extend the system's capabilities for product display, user interaction, and membership promotion. These components maintain consistency with the existing theme-aware approach while adding new functionality for enhanced user experience.
+**Updated** The architecture now includes a comprehensive dropdown system with specialized month selection functionality. The month dropdown follows the same GetX reactive pattern as other components but adds overlay positioning and CompositedTransform linking for precise menu placement.
 
 ```mermaid
 classDiagram
@@ -585,70 +649,95 @@ class CustomWhiteText {
 +TextOverflow? textOverflow
 +int? maxLine
 }
-class CustomProductDesign {
-+VoidCallback onFavorite
-+String? icon
-+Color? color
+class CustomMonthDropdown {
 +build() Widget
 }
-class CustomProductText {
-+Color[] color
-+String title
-+String price
+class CustomMonthDropdownController {
++RxString selectedOption
++RxBool isOpen
++String[] options
++LayerLink layerLink
++toggleDropdown() void
++selectOption() void
++closeDropdown() void
+}
+class CustomMonthDropdownMenu {
 +build() Widget
 }
-class CustomScrollbar {
-+ScrollController scrollController
-+Widget child
+class CustomMonthDropdownItem {
++String label
++bool isSelected
++bool isLast
++bool isDark
++VoidCallback onTap
 +build() Widget
 }
-class ShippingMembershipCard {
+class CustomMonthDropdownOverlay {
 +build() Widget
 }
-class AttributeOptionChip {
-+int attributeIndex
-+int optionIndex
-+AttributeOption option
-+build() Widget
+class CustomDropdownMenu {
++List option
++Function(String?) onSelect
++RxString isSelect
++String label
++Color? selectedTrailingIconColor
++Color? trailingIconColor
++Offset? offset
++double? borderWidth
++double? focusBorderWidth
++double? borderRadius
++double? focusBorderRadius
++EdgeInsets? expandedInsets
++EdgeInsets? contentPadding
++TextAlign? textAlign
++double? fontSize
++double? height
++double? width
++TextStyle? textStyle
++Color? fillColor
++Color? textColor
++Color? labelColor
++InputBorder? enableBorder
++InputBorder? focusBorder
++double? selectedTrailingIconHeight
++double? selectedTrailingIconWidth
++double? trailingIconHeight
++double? trailingIconWidth
++double? menuFontSize
++double? labelFontSize
++AlignmentGeometry? alignmentGeometry
++Color? borderColor
 }
-class AttributeOptionsList {
-+int attributeIndex
-+build() Widget
-}
-class ProductAccordionItem {
-+int index
-+build() Widget
-}
-class ProductAttributesController {
-+ProductAttributesRepository productAttributesRepository
-+Rxn~ProductAttributesModel~ productsAttributes
-+RxBool isLoading
-+RxList~bool~ isOpen
-+getProductsAttributes() Future~void~
-+togglExpand() void
-}
-class ProductAttributesModel {
-+ProductAttribute[] data
-}
-class ProductAttribute {
-+num productAttributeId
-+num attributeId
-+String name
-+AttributeOption[] options
-}
-class AttributeOption {
-+num productAttributeOptionId
-+num optionId
-+String name
-+dynamic image
-+String productImage
-+num price
-+num stock
-+bool isDefault
-}
-class ProductAttributesRepository {
-+GetNetwork getNetwork
-+execute() Future~Either~
+class CustomPaymentDropdownMenu {
++String[] cardList
++RxString selectedCard
++Function(String?) onSelect
++String? hintText
++String? label
++Color? fillColor
++Color? textColor
++Color? labelColor
++double? height
++double? width
++EdgeInsets? contentPadding
++EdgeInsets? entryPadding
++double? fontSize
++double? menuFontSize
++double? borderWidth
++double? focusBorderWidth
++double? borderRadius
++double? focusBorderRadius
++InputBorder? enableBorder
++InputBorder? focusBorder
++Offset? offset
++double? trailingIconHeight
++double? trailingIconWidth
++Color? trailingIconColor
++double? selectedTrailingIconHeight
++double? selectedTrailingIconWidth
++Color? selectedTrailingIconColor
++String brandIconPath
++Color? borderColor
 }
 CustomPrimaryButton --> AppColors : "uses"
 CustomSecondaryButton --> AppColors : "uses"
@@ -661,21 +750,21 @@ OtherField --> AppColors : "uses"
 ButtonLoading --> AppColors : "uses"
 CustomPaymentDialog --> AppColors : "uses"
 CustomContainer --> AppColors : "uses"
-CustomProductDesign --> AppColors : "uses"
-CustomProductText --> AppColors : "uses"
-CustomScrollbar --> AppColors : "uses"
-ShippingMembershipCard --> AppColors : "uses"
+CustomMonthDropdown --> AppColors : "uses"
+CustomMonthDropdownController --> AppColors : "uses"
+CustomMonthDropdownMenu --> AppColors : "uses"
+CustomMonthDropdownItem --> AppColors : "uses"
+CustomMonthDropdownOverlay --> AppColors : "uses"
+CustomDropdownMenu --> AppColors : "uses"
+CustomPaymentDropdownMenu --> AppColors : "uses"
 SharedContainer --> AppColors : "uses"
 CustomPrimaryText --> AppColors : "uses"
 CustomSpanText --> AppColors : "uses"
 CustomWhiteText --> AppColors : "uses"
-AttributeOptionChip --> SharedContainer : "uses"
-AttributeOptionChip --> CustomPrimaryText : "uses"
-AttributeOptionsList --> AttributeOptionChip : "composes"
-ProductAccordionItem --> AttributeOptionsList : "composes"
-ProductAttributesController --> ProductAttributesRepository : "uses"
-ProductAttributesController --> ProductAttributesModel : "manages"
-ProductAttributesRepository --> ProductAttributesModel : "fetches"
+CustomMonthDropdown --> CustomMonthDropdownController : "uses"
+CustomMonthDropdownMenu --> CustomMonthDropdownController : "uses"
+CustomMonthDropdownItem --> CustomMonthDropdownController : "uses"
+CustomMonthDropdownOverlay --> CustomMonthDropdownController : "uses"
 ```
 
 **Diagram sources**
@@ -698,16 +787,13 @@ ProductAttributesRepository --> ProductAttributesModel : "fetches"
 - [custom_primary_text.dart:8-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L8-L43)
 - [custom_span_text.dart:8-43](file://lib/shared/widgets/custom_text/custom_span_text.dart#L8-L43)
 - [custom_white_text.dart:8-43](file://lib/shared/widgets/custom_text/custom_white_text.dart#L8-L43)
-- [custom_product_design.dart:11-104](file://lib/shared/widgets/custom_product_design.dart#L11-L104)
-- [custom_product_text.dart:7-90](file://lib/shared/widgets/custom_product_text.dart#L7-L90)
-- [custom_scrollbar.dart:5-30](file://lib/shared/widgets/custom_scrollbar.dart#L5-L30)
-- [shipping_membership_card.dart:7-82](file://lib/shared/widgets/shipping_membership_card.dart#L7-L82)
-- [attribute_option_chip.dart:9-73](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L9-L73)
-- [attribute_options_list.dart:7-33](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L7-L33)
-- [product_accordion_item.dart:11-123](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L11-L123)
-- [products_attributes_controller.dart:6-41](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L6-L41)
-- [product_attributes_model.dart:9-101](file://lib/features/product_details.dart/models/product_attributes_model.dart#L9-L101)
-- [product_attributes_repo.dart:7-22](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L7-L22)
+- [custom_month_dropdown.dart:10-67](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart#L10-L67)
+- [custom_month_dropdown_controller.dart:5-55](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart#L5-L55)
+- [custom_month_dropdown_menu.dart:8-62](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart#L8-L62)
+- [custom_month_dropdown_overlay.dart:7-33](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart#L7-L33)
+- [custom_month_dropdown_item.dart:6-72](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart#L6-L72)
+- [custom_dropdown_menu.dart:11-161](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart#L11-L161)
+- [custom_payment_dropdown.dart:11-166](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart#L11-L166)
 - [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
 
 ## Detailed Component Analysis
@@ -1045,132 +1131,227 @@ Usage example pattern
 - [custom_white_text.dart:8-43](file://lib/shared/widgets/custom_text/custom_white_text.dart#L8-L43)
 - [colors.dart:3-117](file://lib/core/constant/colors.dart#L3-L117)
 
-### CustomProductDesign
-**Updated** New specialized component for product visualization.
+### CustomMonthDropdown
+**Updated** New specialized component for month selection functionality.
 
 - Props interface
-  - Interaction: onFavorite (VoidCallback), icon (String?), color (Color?).
+  - None (uses controller state internally).
 - Behavior
-  - Card-style product display with theme-aware styling.
-  - Overlay favorite button with customizable icon and color.
-  - Promotional badge ("New Arrival") with theme-aware colors.
-  - Tap-to-view functionality with navigation to product details.
-  - Image asset display with BoxFit.fill and circular clipping.
+  - Tap-to-open dropdown with animated chevron indicator.
+  - Integrates with CustomMonthDropdownController for state management.
+  - Uses CompositedTransformTarget for overlay positioning.
+  - Theme-aware styling with rotation animation for chevron.
 - Visual Elements
-  - Fixed dimensions: 196.w x 200.h with 12.r padding.
-  - Favorite button: 28.w x 28.h with 6.r radius, positioned at top-right.
-  - Promotional badge: 20.r radius container with "New Arrival" text.
-  - Product image: 136.w x 120.h with circular border radius.
+  - Fixed dimensions: 8.35.w x 4.18.h padding with 32.67.r border radius.
+  - Chevron icon: 10.96.w x 8.53.h with AnimatedRotation based on isOpen state.
+  - Text: CustomPrimaryText with 12.sp font size and theme-aware color.
 - Integration
-  - Uses SharedContainer for badge styling.
-  - Integrates CustomPrimaryText for promotional text.
-  - Implements Get routing for product details navigation.
+  - Automatically registers controller if not already registered.
+  - Uses GetView mixin for reactive state access.
+  - Integrates with overlay system via LayerLink.
 - Accessibility and responsiveness
   - Uses screen-aware units (w/h/r) for consistent sizing.
   - Theme-aware color selection for both light and dark modes.
+  - Animated chevron provides visual feedback for state changes.
 
 Usage example pattern
-- Use in product grids, featured products, and promotional sections.
-- Implement favorite functionality with callback handling.
+- Use in AI features and credit balance screens for time-based filtering.
+- Combine with CustomMonthDropdownController for state management.
 
 **Section sources**
-- [custom_product_design.dart:11-104](file://lib/shared/widgets/custom_product_design.dart#L11-L104)
-- [shared_container.dart:5-57](file://lib/shared/widgets/shared_container.dart#L5-L57)
-- [custom_primary_text.dart:8-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L8-L43)
+- [custom_month_dropdown.dart:10-67](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart#L10-L67)
 
-### CustomProductText
-**Updated** New specialized component for product information display.
+### CustomMonthDropdownController
+**Updated** New controller for managing month dropdown state and options.
+
+- State Management
+  - selectedOption: RxString with default "This Month".
+  - isOpen: RxBool for dropdown open/close state.
+  - options: List<String> containing predefined month options.
+- Lifecycle Management
+  - layerLink: LayerLink for CompositedTransform positioning.
+  - overlayEntry: OverlayEntry for dropdown menu positioning.
+- Core Methods
+  - toggleDropdown: Opens dropdown if closed, closes if open.
+  - selectOption: Updates selected option and closes dropdown.
+  - closeDropdown: Removes overlay entry and resets state.
+  - _openDropdown: Creates and inserts overlay entry.
+  - _buildOverlayEntry: Creates overlay entry with CustomMonthDropdownOverlay.
+- Integration
+  - Extends GetxController for reactive state management.
+  - Used by CustomMonthDropdown and CustomMonthDropdownMenu components.
+  - Properly handles overlay cleanup in onClose method.
+
+Usage example pattern
+- Use as a singleton controller managed by Get framework.
+- Access reactive state in UI components via GetView.
+
+**Section sources**
+- [custom_month_dropdown_controller.dart:5-55](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart#L5-L55)
+
+### CustomMonthDropdownMenu
+**Updated** New menu component for displaying month options.
 
 - Props interface
-  - Product data: color (List<Color>), title (String), price (String).
+  - None (uses controller state internally).
 - Behavior
-  - Product title with theme-aware color based on brightness.
-  - Dynamic color swatch display with positioning and stacking.
-  - Plus count display for extra colors beyond the third swatch.
-  - Price display with theme-aware color and font sizing.
-  - Flexible layout with title and color swatches on the same line.
+  - Renders month options as CustomMonthDropdownItem components.
+  - Uses Obx for reactive state updates.
+  - Applies theme-aware styling with shadow and border radius.
 - Visual Elements
-  - Title text: 12.sp font size with 500 fontWeight.
-  - Color swatches: 12.w x 12.w circles with 1.r border.
-  - Plus count: "+N" text for extra colors beyond 3.
-  - Price text: 12.sp font size with 500 fontWeight.
-- Integration Logic
-  - Uses List.generate for dynamic swatch creation.
-  - Implements Positioned for precise swatch placement.
-  - Supports up to 3 visible swatches with overflow indication.
+  - Fixed width: 130.w with 12.r border radius.
+  - Shadow: 16 blur radius with 6 offset and 0.15 alpha black.
+  - Border: 1 width with theme-aware color.
+  - Items: Dynamic list built from controller.options with selection state.
+- Integration
+  - Uses controller.options.asMap() for indexed iteration.
+  - Calls controller.selectOption for item selection.
+  - Integrates with CustomMonthDropdownItem for individual item rendering.
 - Accessibility and responsiveness
   - Uses screen-aware units for consistent sizing.
-  - Theme-aware color selection for optimal readability.
-  - Proper spacing with 8.w horizontal gap between title and swatches.
+  - Theme-aware colors for both light and dark modes.
+  - Proper spacing and alignment for all items.
 
 Usage example pattern
-- Use alongside CustomProductDesign in product listings.
-- Display product information in cart items and order summaries.
+- Use as child of CustomMonthDropdownOverlay for positioning.
+- Combine with CustomMonthDropdownController for state management.
 
 **Section sources**
-- [custom_product_text.dart:7-90](file://lib/shared/widgets/custom_product_text.dart#L7-L90)
+- [custom_month_dropdown_menu.dart:8-62](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart#L8-L62)
 
-### CustomScrollbar
-**Updated** New specialized component for enhanced scrolling experience.
+### CustomMonthDropdownItem
+**Updated** New individual item component for month dropdown options.
 
 - Props interface
-  - Scrolling: scrollController (ScrollController), child (Widget).
+  - label: String for display text.
+  - isSelected: bool for selection state styling.
+  - isLast: bool for border styling on last item.
+  - isDark: bool for theme-aware styling.
+  - onTap: VoidCallback for item selection.
 - Behavior
-  - Custom raw scrollbar with theme-aware styling.
-  - Gradient track with animated visibility states.
-  - Smooth thumb movement with rounded corners.
-  - Responsive thickness and radius based on screen density.
+  - Tap gesture triggers parent onTap callback.
+  - Applies selection background with theme-aware alpha values.
+  - Adds bottom border for all items except the last one.
+  - Displays checkmark icon for selected items.
 - Visual Elements
-  - Track: gradient from labelColor to buttonBorderColor in light mode.
-  - Thumb: theme-aware color with 12.r radius and 3.83.w thickness.
-  - Rounded corners: 8.r radius for smooth appearance.
+  - Padding: 14.w horizontal, 10.h vertical.
+  - Selection background: 0.15 alpha for dark theme, 0.08 alpha for light theme.
+  - Border: 0.5 width with theme-aware color for non-last items.
+  - Checkmark: 14.sp size with theme-aware color.
 - Integration
-  - Wraps any scrollable content with enhanced scrollbar.
-  - Maintains native scroll behavior while adding visual enhancement.
+  - Used by CustomMonthDropdownMenu for item rendering.
+  - Receives selection state from controller.
+  - Integrates with CustomPrimaryText for label display.
 - Accessibility and responsiveness
-  - Uses screen-aware units for consistent sizing across devices.
-  - Animated visibility for better user experience.
-  - Proper touch target sizing for thumb interaction.
+  - Uses screen-aware units for consistent sizing.
+  - Theme-aware colors for both light and dark modes.
+  - Proper touch target sizing with full-width container.
 
 Usage example pattern
-- Use with ListView, GridView, and other scrollable widgets.
-- Enhance user experience in long content lists and product catalogs.
+- Use within CustomMonthDropdownMenu for individual option rendering.
+- Combine with controller.selectOption for selection handling.
 
 **Section sources**
-- [custom_scrollbar.dart:5-30](file://lib/shared/widgets/custom_scrollbar.dart#L5-L30)
+- [custom_month_dropdown_item.dart:6-72](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart#L6-L72)
 
-### ShippingMembershipCard
-**Updated** New specialized component for membership promotion.
+### CustomMonthDropdownOverlay
+**Updated** New overlay component for positioning dropdown menu.
 
 - Props interface
-  - Presentation: None (const).
+  - None (uses controller state internally).
 - Behavior
-  - Gradient background card with theme-aware colors.
-  - Promotional content highlighting free shipping benefits.
-  - Membership pricing information display.
-  - Call-to-action with arrow icon.
-  - Shadow effect for depth and visual appeal.
+  - Handles click-outside dismissal via translucent gesture detector.
+  - Uses CompositedTransformFollower for precise menu positioning.
+  - Offsets menu by 36.h below trigger element.
+  - Integrates with LayerLink for transform coordination.
 - Visual Elements
-  - Gradient: From labelColor to light blue in light mode.
-  - Padding: 16.w all around with 16.r border radius.
-  - Icon: Info icon with 20.h x 20.w dimensions.
-  - Layout: Row with icon, text content, and arrow.
-  - Text: "Members get FREE shipping" (16.sp, 600 fontWeight).
-  - Pricing: "$12.00" (14.sp, 500 fontWeight) with right alignment.
+  - Full-screen transparent GestureDetector for click-outside handling.
+  - CompositedTransformFollower with showWhenUnlinked false.
+  - Align with top-left alignment for menu positioning.
 - Integration
-  - Designed for product details and shopping cart screens.
-  - Can be integrated with membership promotion flows.
+  - Created by CustomMonthDropdownController._buildOverlayEntry.
+  - Uses CustomMonthDropdownMenu as child component.
+  - Integrates with CustomMonthDropdown for trigger element.
 - Accessibility and responsiveness
-  - High contrast text for readability.
-  - Proper spacing and alignment for both light and dark themes.
-  - Touch-friendly layout with clear call-to-action.
+  - Translucent gesture detection for proper click handling.
+  - CompositedTransform ensures smooth positioning.
+  - Proper z-order management with overlay system.
 
 Usage example pattern
-- Use in product details pages to promote membership benefits.
-- Display in shopping cart and checkout flows for conversion.
+- Use as overlay wrapper for dropdown menus.
+- Combine with CustomMonthDropdownController for state management.
 
 **Section sources**
-- [shipping_membership_card.dart:7-82](file://lib/shared/widgets/shipping_membership_card.dart#L7-L82)
+- [custom_month_dropdown_overlay.dart:7-33](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart#L7-L33)
+
+### CustomDropdownMenu
+**Updated** Enhanced general-purpose dropdown with comprehensive customization.
+
+- Props interface
+  - Core: option (List), onSelect (Function), isSelect (RxString), label (String).
+  - Styling: selectedTrailingIconColor, trailingIconColor, offset, borderWidth.
+  - Layout: expandedInsets, contentPadding, textAlign, fontSize, height, width.
+  - Typography: textStyle, fillColor, textColor, labelColor, borderColor.
+  - Borders: enableBorder, focusBorder, focusBorderWidth, borderRadius, focusBorderRadius.
+- Behavior
+  - Comprehensive dropdown with theme-aware styling and extensive customization.
+  - Integrates with DropdownInputDecoration for consistent styling.
+  - Uses Google Fonts with Montserrat font family.
+  - Supports custom label widgets via CustomPrimaryText.
+- Visual Elements
+  - Trailing icons: Custom down/up arrows with theme-aware coloring.
+  - Menu styling: Maximum size constraint and shadow effects.
+  - Background: Theme-aware color with rounded corners.
+- Integration
+  - Uses DropdownMenuItems for option rendering.
+  - Integrates with CustomPrimaryText for label display.
+  - Supports custom input decoration via DropdownInputDecoration.
+- Accessibility and responsiveness
+  - Uses screen-aware units for consistent sizing.
+  - Theme-aware colors for both light and dark modes.
+  - Proper spacing and alignment for all elements.
+
+Usage example pattern
+- Use for general-purpose dropdown selection with extensive customization.
+- Combine with DropdownInputDecoration for consistent styling.
+
+**Section sources**
+- [custom_dropdown_menu.dart:11-161](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart#L11-L161)
+
+### CustomPaymentDropdownMenu
+**Updated** Specialized dropdown for payment method selection.
+
+- Props interface
+  - Core: cardList (List<String>), selectedCard (RxString), onSelect (Function).
+  - Styling: brandIconPath, fillColor, textColor, labelColor, borderColor.
+  - Layout: height, width, contentPadding, entryPadding, fontSize, menuFontSize.
+  - Borders: borderWidth, focusBorderWidth, borderRadius, focusBorderRadius.
+  - Icons: trailingIconHeight, trailingIconWidth, trailingIconColor.
+  - Selected state: selectedTrailingIconHeight, selectedTrailingIconWidth, selectedTrailingIconColor.
+- Behavior
+  - Specialized dropdown for payment method selection with brand icon integration.
+  - Uses CustomPaymentDropdownItem for option rendering.
+  - Integrates with CustomRadioButton for selection handling.
+  - Supports custom brand icon path for different payment providers.
+- Visual Elements
+  - Brand icons: 28.w x 18.h with custom brandIconPath.
+  - Radio buttons: CustomRadioButton for selection indication.
+  - Entry styling: Selection background with theme-aware colors.
+- Integration
+  - Uses CustomPaymentDropdownItem for option rendering.
+  - Integrates with CustomRadioButton for selection state.
+  - Supports custom brand icons for different payment methods.
+- Accessibility and responsiveness
+  - Uses screen-aware units for consistent sizing.
+  - Theme-aware colors for both light and dark modes.
+  - Proper spacing and alignment for brand icons and text.
+
+Usage example pattern
+- Use for payment method selection in checkout flows.
+- Combine with CustomRadioButton for radio button selection.
+
+**Section sources**
+- [custom_payment_dropdown.dart:11-166](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart#L11-L166)
 
 ## Product Attributes System
 **Updated** Comprehensive system for product customization and attribute management.
@@ -1303,93 +1484,166 @@ Usage example pattern
 **Section sources**
 - [estimate_delivery_extractor.dart:5-39](file://lib/shared/extensions/extractors/estimate_delivery_extractor.dart#L5-L39)
 
-## New Specialized Components
-**Updated** Four new reusable UI components that significantly enhance the application's functionality and user experience.
+## New Month Dropdown System
+**Updated** Comprehensive month-specific dropdown functionality that enhances the application's filtering capabilities.
 
-### CustomProductDesign
-- Purpose: Product visualization component with favorite functionality and promotional badges.
+### CustomMonthDropdown
+- Purpose: Month selection dropdown with animated rotation and theme-aware styling.
 - Key Features:
-  - Card-style product display with theme-aware styling.
-  - Overlay favorite button with customizable icon and color.
-  - Promotional badge ("New Arrival") with dynamic positioning.
-  - Tap-to-view functionality with navigation integration.
-  - Image asset display with circular clipping and BoxFit.fill.
+  - Tap-to-open functionality with animated chevron indicator.
+  - Integration with CustomMonthDropdownController for state management.
+  - CompositedTransformTarget for precise overlay positioning.
+  - Theme-aware color selection for both light and dark modes.
 - Integration Points:
-  - Works seamlessly with CustomProductText for complete product information.
-  - Integrates with Get routing for product details navigation.
-  - Uses SharedContainer and CustomPrimaryText for consistent styling.
+  - Automatically registers controller if not already present.
+  - Uses GetView mixin for reactive state access.
+  - Integrates with overlay system via LayerLink.
 - Usage Patterns:
-  - Featured product displays in home and category screens.
-  - Product grids in shopping experiences.
-  - Promotional sections highlighting new arrivals.
+  - Time-based filtering in AI features and credit balance screens.
+  - Reporting and analytics with standardized month selection.
+  - User preference settings for date range selection.
 
-### CustomProductText
-- Purpose: Product information display with color swatches and pricing.
+### CustomMonthDropdownController
+- Purpose: Controller managing month dropdown state and options.
 - Key Features:
-  - Dynamic color swatch display with precise positioning.
-  - Plus count for extra colors beyond the third swatch.
-  - Flexible layout with title and color swatches on the same line.
-  - Theme-aware color selection for optimal readability.
+  - Reactive state management with GetX (RxString, RxBool).
+  - Predefined month options: Today, This Week, This Month, Last Month, This Year.
+  - Overlay entry lifecycle management with proper cleanup.
+  - LayerLink integration for CompositedTransform positioning.
+- Integration Points:
+  - Singleton controller managed by Get framework.
+  - Used by all month dropdown components for state coordination.
+  - Handles overlay cleanup in onClose method.
+- Usage Patterns:
+  - Centralized state management for month dropdown functionality.
+  - Reactive updates across all dependent components.
+
+### CustomMonthDropdownMenu
+- Purpose: Menu component displaying month options with selection indicators.
+- Key Features:
+  - Dynamic option rendering from controller.options.
+  - Theme-aware styling with shadow and border radius.
   - Responsive sizing with screen-aware units.
+  - Integration with CustomMonthDropdownItem for individual rendering.
 - Integration Points:
-  - Designed to pair with CustomProductDesign for complete product cards.
-  - Uses List.generate for efficient swatch rendering.
-  - Implements Positioned for precise color swatch placement.
+  - Uses Obx for reactive state updates.
+  - Built with ClipRRect for rounded corners.
+  - Integrates with CustomMonthDropdownOverlay for positioning.
 - Usage Patterns:
-  - Product listings in grids and lists.
-  - Cart items and order summaries.
-  - Product comparison and filtering interfaces.
+  - Primary menu component for month selection interface.
+  - Standardized dropdown menu with consistent styling.
 
-### CustomScrollbar
-- Purpose: Enhanced scrollbar component with theme-aware styling and smooth animations.
+### CustomMonthDropdownItem
+- Purpose: Individual month option item with selection styling.
 - Key Features:
-  - Custom raw scrollbar with gradient track and animated visibility.
-  - Smooth thumb movement with rounded corners and responsive sizing.
-  - Theme-aware colors for both light and dark modes.
-  - Maintains native scroll behavior while adding visual enhancement.
+  - Selection state highlighting with theme-aware alpha values.
+  - Bottom border styling for all items except the last one.
+  - Checkmark indicator for selected items.
+  - Full-width touch target for accessibility.
 - Integration Points:
-  - Compatible with all scrollable widgets (ListView, GridView, SingleChildScrollView).
-  - Wraps existing scrollable content without changing behavior.
-  - Uses screen-aware units for consistent sizing across devices.
+  - Used exclusively by CustomMonthDropdownMenu.
+  - Receives selection state from controller.
+  - Integrates with CustomPrimaryText for label display.
 - Usage Patterns:
-  - Long content lists and product catalogs.
-  - Settings and preference screens with extensive options.
-  - Forms and data entry interfaces with scrolling content.
+  - Individual option rendering within month dropdown menu.
+  - Standardized item styling with selection feedback.
 
-### ShippingMembershipCard
-- Purpose: Membership promotion card highlighting shipping benefits and pricing.
+### CustomMonthDropdownOverlay
+- Purpose: Overlay component positioning dropdown menu relative to trigger.
 - Key Features:
-  - Gradient background with theme-aware colors.
-  - Promotional content with clear call-to-action.
-  - Membership pricing information display.
-  - Shadow effect for depth and visual appeal.
-  - High contrast text for readability in both themes.
+  - Click-outside dismissal via translucent gesture detection.
+  - CompositedTransformFollower for precise menu positioning.
+  - LayerLink integration for transform coordination.
+  - Offset positioning with 36.h vertical offset.
 - Integration Points:
-  - Designed for product details and shopping cart screens.
-  - Can be integrated with membership promotion flows.
-  - Uses CustomPrimaryText for consistent typography.
+  - Created by CustomMonthDropdownController._buildOverlayEntry.
+  - Uses CustomMonthDropdownMenu as child component.
+  - Integrates with CustomMonthDropdown for trigger element.
 - Usage Patterns:
-  - Product details pages to promote membership benefits.
-  - Shopping cart and checkout flows for conversion.
-  - Landing pages and promotional banners.
+  - Overlay wrapper for dropdown positioning.
+  - Standardized overlay system for dropdown menus.
 
 **Section sources**
-- [custom_product_design.dart:11-104](file://lib/shared/widgets/custom_product_design.dart#L11-L104)
-- [custom_product_text.dart:7-90](file://lib/shared/widgets/custom_product_text.dart#L7-L90)
-- [custom_scrollbar.dart:5-30](file://lib/shared/widgets/custom_scrollbar.dart#L5-L30)
-- [shipping_membership_card.dart:7-82](file://lib/shared/widgets/shipping_membership_card.dart#L7-L82)
+- [custom_month_dropdown.dart:10-67](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart#L10-L67)
+- [custom_month_dropdown_controller.dart:5-55](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart#L5-L55)
+- [custom_month_dropdown_menu.dart:8-62](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart#L8-L62)
+- [custom_month_dropdown_overlay.dart:7-33](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart#L7-L33)
+- [custom_month_dropdown_item.dart:6-72](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart#L6-L72)
+
+## Dropdown Component Ecosystem
+**Updated** Comprehensive dropdown system with specialized month selection functionality.
+
+### Dropdown Architecture Overview
+The dropdown system consists of three main layers:
+- Trigger Components: CustomMonthDropdown and CustomDropdownMenu
+- Controller Layer: CustomMonthDropdownController and state management
+- Menu Components: CustomMonthDropdownMenu, CustomMonthDropdownItem, and CustomMonthDropdownOverlay
+
+### Component Relationships
+```mermaid
+graph TB
+subgraph "Trigger Layer"
+CMD["CustomMonthDropdown"]
+CDD["CustomDropdownMenu"]
+CPD["CustomPaymentDropdownMenu"]
+end
+subgraph "Controller Layer"
+CMDC["CustomMonthDropdownController"]
+end
+subgraph "Menu Layer"
+CMDD["CustomMonthDropdownMenu"]
+CMDO["CustomMonthDropdownOverlay"]
+CMDI["CustomMonthDropdownItem"]
+CDI["DropdownMenuItems"]
+CPDI["CustomPaymentDropdownItem"]
+end
+subgraph "Styling Layer"
+DID["DropdownInputDecoration"]
+end
+CMD --> CMDC
+CDD --> DID
+CPD --> CPDI
+CMDC --> CMDD
+CMDD --> CMDO
+CMDD --> CMDI
+CMDO --> CMD
+```
+
+**Diagram sources**
+- [custom_month_dropdown.dart:10-67](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart#L10-L67)
+- [custom_month_dropdown_controller.dart:5-55](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart#L5-L55)
+- [custom_month_dropdown_menu.dart:8-62](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart#L8-L62)
+- [custom_month_dropdown_overlay.dart:7-33](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart#L7-L33)
+- [custom_month_dropdown_item.dart:6-72](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart#L6-L72)
+- [custom_dropdown_menu.dart:11-161](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart#L11-L161)
+- [dropdown_menu_item.dart:7-61](file://lib/shared/widgets/custom_dropdown/dropdown_menu_item.dart#L7-L61)
+- [dropdown_input_decoration.dart:5-53](file://lib/shared/widgets/custom_dropdown/dropdown_input_decoration.dart#L5-L53)
+- [custom_payment_dropdown.dart:11-166](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart#L11-L166)
+- [custom_payment_dropdown_item.dart:8-87](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart#L8-L87)
+
+### Usage Examples in Application
+- AI Features: CustomMonthDropdown integrated into AiDropdownCredit for credit usage filtering.
+- Credit Balance: CustomMonthDropdown used in CreditTransactionList for transaction history filtering.
+- General Forms: CustomDropdownMenu provides standard dropdown functionality across the application.
+- Payment Selection: CustomPaymentDropdownMenu handles payment method selection with brand icons.
+
+**Section sources**
+- [ai_dropdown_credit.dart:13-105](file://lib/features/ai/widgets/ai_view_widgets/ai_dropdown_credit.dart#L13-L105)
+- [credit_transaction_list.dart:10-88](file://lib/features/credit_balance/widgets/credit_balance_view_widgets/credit_transaction_list.dart#L10-L88)
+- [custom_dropdown_menu.dart:11-161](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart#L11-L161)
+- [custom_payment_dropdown.dart:11-166](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart#L11-L166)
 
 ## Dependency Analysis
 Shared components depend on:
 - AppColors for theme-aware colors.
 - Flutter SDK and third-party packages for UI and utilities.
-- GetX for reactive state in pagination, rental request flow, and product attributes.
+- GetX for reactive state in pagination, rental request flow, product attributes, and month dropdown system.
 - ScreenUtil for responsive sizing.
 - GetStorage for persistent storage in rental request flow.
 - CachedNetworkImage for efficient image loading in product attributes.
 - Google Fonts for typography consistency.
 
-**Updated** Enhanced dependency graph with four new specialized components and their integration points.
+**Updated** Enhanced dependency graph with comprehensive dropdown system including month-specific functionality and overlay positioning.
 
 ```mermaid
 graph LR
@@ -1408,15 +1662,20 @@ AC --> SC["SharedContainer"]
 AC --> CPT["CustomPrimaryText"]
 AC --> CST["CustomSpanText"]
 AC --> CWT["CustomWhiteText"]
-AC --> CPD2["CustomProductDesign"]
-AC --> CPT2["CustomProductText"]
-AC --> CSB["CustomScrollbar"]
-AC --> SMC["ShippingMembershipCard"]
-AC --> AOC["AttributeOptionChip"]
-AC --> PAI["ProductAccordionItem"]
+AC --> CMD["CustomMonthDropdown"]
+AC --> CMDC["CustomMonthDropdownController"]
+AC --> CMDD["CustomMonthDropdownMenu"]
+AC --> CMDO["CustomMonthDropdownOverlay"]
+AC --> CMDI["CustomMonthDropdownItem"]
+AC --> CDD["CustomDropdownMenu"]
+AC --> CDI["DropdownMenuItems"]
+AC --> DID["DropdownInputDecoration"]
+AC --> CPD2["CustomPaymentDropdownMenu"]
+AC --> CPDI["CustomPaymentDropdownItem"]
 G["GetX (RxInt/RxString/RxBool)"] --> CP["CustomPagination"]
 G --> RSC["RentStepController"]
 G --> PAC["ProductAttributesController"]
+G --> CMDC
 SU["flutter_screenutil"] --> CPB
 SU --> CSB
 SU --> CRB
@@ -1432,10 +1691,11 @@ SU --> SC
 SU --> CPT
 SU --> CST
 SU --> CWT
-SU --> CPD2
-SU --> CPT2
-SU --> CSB
-SU --> PAI
+SU --> CMD
+SU --> CMDD
+SU --> CMDO
+SU --> CMDI
+SU --> CDD
 SP["flutter_spinkit"] --> BL
 GF["google_fonts"] --> CTFF
 GF --> CPT
@@ -1471,12 +1731,16 @@ PAR --> GN["GetNetwork"]
 - [custom_primary_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_primary_text.dart#L1-L43)
 - [custom_span_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_span_text.dart#L1-L43)
 - [custom_white_text.dart:1-43](file://lib/shared/widgets/custom_text/custom_white_text.dart#L1-L43)
-- [custom_product_design.dart:1-104](file://lib/shared/widgets/custom_product_design.dart#L1-L104)
-- [custom_product_text.dart:1-90](file://lib/shared/widgets/custom_product_text.dart#L1-L90)
-- [custom_scrollbar.dart:1-30](file://lib/shared/widgets/custom_scrollbar.dart#L1-L30)
-- [shipping_membership_card.dart:1-82](file://lib/shared/widgets/shipping_membership_card.dart#L1-L82)
-- [attribute_option_chip.dart:1-73](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L1-L73)
-- [product_accordion_item.dart:1-123](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L1-L123)
+- [custom_month_dropdown.dart:1-67](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart#L1-L67)
+- [custom_month_dropdown_controller.dart:1-55](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart#L1-L55)
+- [custom_month_dropdown_menu.dart:1-62](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart#L1-L62)
+- [custom_month_dropdown_overlay.dart:1-33](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart#L1-L33)
+- [custom_month_dropdown_item.dart:1-72](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart#L1-L72)
+- [custom_dropdown_menu.dart:1-161](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart#L1-L161)
+- [dropdown_menu_item.dart:1-61](file://lib/shared/widgets/custom_dropdown/dropdown_menu_item.dart#L1-L61)
+- [dropdown_input_decoration.dart:1-53](file://lib/shared/widgets/custom_dropdown/dropdown_input_decoration.dart#L1-L53)
+- [custom_payment_dropdown.dart:1-166](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart#L1-L166)
+- [custom_payment_dropdown_item.dart:1-87](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart#L1-L87)
 - [products_attributes_controller.dart:1-41](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L1-L41)
 - [product_attributes_model.dart:1-101](file://lib/features/product_details.dart/models/product_attributes_model.dart#L1-L101)
 - [product_attributes_repo.dart:1-22](file://lib/features/product_details.dart/repositories/product_attributes_repo.dart#L1-L22)
@@ -1497,16 +1761,19 @@ PAR --> GN["GetNetwork"]
 - Use screen-aware units consistently to avoid layout thrashing on different screen densities.
 - Implement proper loading states during async operations to prevent UI blocking.
 - Use GetStorage for efficient key-value operations in rental request flow.
-- **Updated** Optimize image loading with CachedNetworkImage for better performance in AttributeOptionChip.
-- **Updated** Use List.generate for efficient rendering of dynamic attribute option lists.
+- **Updated** Optimize dropdown rendering with Obx wrappers for selective rebuilds.
+- **Updated** Implement proper overlay cleanup to prevent memory leaks in month dropdown system.
+- **Updated** Use LayerLink for efficient CompositedTransform positioning in dropdown overlays.
+- **Updated** Leverage Get.lazyPut for controller instantiation in dropdown system.
+- **Updated** Use List.generate for efficient rendering of dropdown options.
 - **Updated** Implement proper error handling with ErrorSnackbar for network failures.
 - **Updated** Leverage reactive state management to minimize unnecessary widget rebuilds.
-- **Updated** Use screen-aware units for all new specialized components to ensure consistent sizing.
+- **Updated** Use screen-aware units for all dropdown components to ensure consistent sizing.
 - **Updated** Implement efficient color swatch rendering in CustomProductText using Positioned widgets.
 - **Updated** Use gradient backgrounds efficiently in CustomProductDesign and ShippingMembershipCard.
 - **Updated** Maintain smooth scrollbar performance with minimal re-rendering in CustomScrollbar.
 
-**Updated** Added performance considerations for the four new specialized components including efficient rendering techniques and memory optimization.
+**Updated** Added performance considerations for the new month dropdown system including overlay management, controller instantiation, and efficient rendering techniques.
 
 ## Troubleshooting Guide
 - Buttons appear inverted in dark mode
@@ -1523,71 +1790,61 @@ PAR --> GN["GetNetwork"]
 - Loading indicator not visible
   - Check theme brightness and loadingColor; ensure the widget is rendered during async operations.
 
-**Updated** Added troubleshooting guidance for the four new specialized components.
+**Updated** Added troubleshooting guidance for the new month dropdown system and enhanced dropdown components.
 
-- CustomProductDesign not responding to taps
-  - Verify onFavorite callback is properly implemented.
-  - Check Get routing configuration for product details navigation.
-  - Ensure ImagesPath.chair asset is accessible and properly loaded.
+- CustomMonthDropdown not opening or closing
+  - Verify CustomMonthDropdownController is properly instantiated and registered.
+  - Check toggleDropdown method implementation and overlay entry creation.
+  - Ensure LayerLink is properly configured for CompositedTransform.
 
-- CustomProductText not displaying color swatches correctly
-  - Confirm color list contains valid Color objects.
-  - Check List.generate implementation for proper swatch creation.
-  - Verify Positioned widget placement calculations.
+- Month options not displaying correctly
+  - Confirm controller.options contains valid month strings.
+  - Verify CustomMonthDropdownMenu is iterating over controller.options correctly.
+  - Check CustomMonthDropdownItem isSelected logic and styling.
 
-- CustomScrollbar not visible or functional
-  - Ensure scrollController is properly initialized and attached to a scrollable widget.
-  - Check trackVisibility and thumbVisibility properties.
-  - Verify screen-aware units are correctly applied.
+- CustomMonthDropdownOverlay not positioning properly
+  - Verify LayerLink is shared between trigger and overlay components.
+  - Check CompositedTransformFollower alignment and offset configuration.
+  - Ensure overlay entry is properly inserted and removed.
 
-- ShippingMembershipCard not showing gradient properly
-  - Confirm gradient colors are valid for the current theme.
-  - Check AppColors constants for theme-specific values.
-  - Verify LinearGradient implementation with proper alignment.
+- Click-outside dismissal not working
+  - Verify GestureDetector behavior is set to translucent for overlay.
+  - Check overlay entry removal in closeDropdown method.
+  - Ensure proper overlay cleanup in controller onClose.
 
-- AttributeOptionChip not displaying images
-  - Verify option.image is not null and contains a valid URL string.
-  - Check CachedNetworkImage configuration and network connectivity.
-  - Ensure image URLs are accessible and properly formatted.
+- CustomDropdownMenu styling issues
+  - Confirm DropdownInputDecoration is properly configured.
+  - Verify theme brightness detection for color selection.
+  - Check menuStyle configuration and shadow properties.
 
-- AttributeOptionsList not rendering options
-  - Confirm controller.productsAttributes.value is not null.
-  - Verify attributeIndex is within bounds of the data array.
-  - Check that options list contains valid AttributeOption objects.
+- CustomPaymentDropdownMenu not showing brand icons
+  - Verify brandIconPath is correctly set for different payment providers.
+  - Check CustomPaymentDropdownItem integration with CustomRadioButton.
+  - Ensure proper image asset loading and sizing.
 
-- ProductAccordionItem not expanding/collapsing
-  - Ensure controller.toggleExpand is properly bound to the GestureDetector.
-  - Verify isOpen reactive list has correct length matching attribute count.
-  - Check Obx wrapper is correctly accessing controller state.
-
-- ProductAttributesController not fetching data
-  - Confirm productID argument is passed correctly via Get.arguments.
-  - Verify network connectivity and API endpoint accessibility.
-  - Check ErrorSnackbar for error messages in case of failure.
-
-- Loading state not updating
-  - Ensure isLoading reactive variable is properly toggled in getProductsAttributes.
-  - Verify Obx wrapper in ProductFurnitureCustomizedWidgets is monitoring isLoading.
-  - Check for proper error handling in Either response.
+- Dropdown options not updating reactively
+  - Confirm Obx wrappers are properly wrapping dropdown components.
+  - Verify reactive state variables are being updated correctly.
+  - Check GetView mixin usage for controller access.
 
 **Section sources**
 - [custom_primary_button.dart:39-72](file://lib/shared/widgets/custom_button/custom_primary_button.dart#L39-L72)
 - [custom_text_form_field.dart:103-187](file://lib/shared/widgets/custom_form_field/custom_text_form_field.dart#L103-L187)
 - [custom_pagination.dart:14-78](file://lib/shared/widgets/custom_pagination/custom_pagination.dart#L14-L78)
 - [button_loading.dart:20-35](file://lib/shared/widgets/custom_loadings/button_loading.dart#L20-L35)
-- [custom_product_design.dart:18-104](file://lib/shared/widgets/custom_product_design.dart#L18-L104)
-- [custom_product_text.dart:19-90](file://lib/shared/widgets/custom_product_text.dart#L19-L90)
-- [custom_scrollbar.dart:14-30](file://lib/shared/widgets/custom_scrollbar.dart#L14-L30)
-- [shipping_membership_card.dart:10-82](file://lib/shared/widgets/shipping_membership_card.dart#L10-L82)
-- [attribute_option_chip.dart:25-71](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_option_chip.dart#L25-L71)
-- [attribute_options_list.dart:12-31](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/attribute_options_list.dart#L12-L31)
-- [product_accordion_item.dart:31-62](file://lib/features/product_details.dart/widgets/product_furniture_customized_widgets/product_accordion_item.dart#L31-L62)
-- [products_attributes_controller.dart:14-39](file://lib/features/product_details.dart/controller/products_attributes_controller.dart#L14-L39)
+- [custom_month_dropdown.dart:16-67](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown.dart#L16-L67)
+- [custom_month_dropdown_controller.dart:20-55](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_controller.dart#L20-L55)
+- [custom_month_dropdown_menu.dart:13-62](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_menu.dart#L13-L62)
+- [custom_month_dropdown_overlay.dart:13-33](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_overlay.dart#L13-L33)
+- [custom_month_dropdown_item.dart:22-72](file://lib/shared/widgets/custom_dropdown/month_dropdown/custom_month_dropdown_item.dart#L22-L72)
+- [custom_dropdown_menu.dart:78-161](file://lib/shared/widgets/custom_dropdown/custom_dropdown_menu.dart#L78-L161)
+- [custom_payment_dropdown.dart:74-166](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown.dart#L74-L166)
+- [custom_payment_dropdown_item.dart:8-87](file://lib/shared/widgets/custom_dropdown/custom_payment_dropdown/custom_payment_dropdown_item.dart#L8-L87)
 
 ## Conclusion
-The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware foundation for UI development. They emphasize composability, customization, and responsiveness. Validators and formatters enable consistent data handling across the app. The enhanced rental request flow demonstrates advanced patterns for async operations, loading states, and persistent storage integration. **Updated** The four new specialized components significantly expand the application's capabilities: CustomProductDesign and CustomProductText enhance product presentation and information display, CustomScrollbar improves user interaction with scrollable content, and ShippingMembershipCard promotes membership benefits effectively. The new components maintain consistency with existing architectural patterns while introducing powerful new functionality for product visualization, user experience enhancement, and marketing promotion. The integration of GetX for state management, CachedNetworkImage for performance optimization, and comprehensive error handling demonstrates best practices for scalable and maintainable Flutter applications.
+The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware foundation for UI development. They emphasize composability, customization, and responsiveness. Validators and formatters enable consistent data handling across the app. The enhanced rental request flow demonstrates advanced patterns for async operations, loading states, and persistent storage integration. **Updated** The comprehensive dropdown system, including the new month-specific functionality, significantly expands the application's filtering and selection capabilities. The month dropdown system provides standardized month selection across AI features and credit balance screens, while the general dropdown components offer extensive customization options for various use cases. The integration of GetX for state management, overlay positioning with CompositedTransform, and comprehensive error handling demonstrates best practices for scalable and maintainable Flutter applications. The new month dropdown system showcases modern Flutter development practices with efficient overlay management, reactive state handling, and seamless integration with existing component architecture.
 
-**Updated** The addition of these specialized components showcases modern Flutter development practices with efficient rendering techniques, theme-aware styling, and seamless integration with existing system components.
+**Updated** The addition of the month dropdown system and enhanced dropdown architecture demonstrates the evolution of the shared component ecosystem, providing powerful new functionality for time-based filtering while maintaining consistency with existing architectural patterns.
 
 ## Appendices
 
@@ -1601,63 +1858,66 @@ The shared components and utilities in ZB-DEZINE provide a cohesive, theme-aware
 - **Updated** Leverage List.generate for efficient rendering of dynamic content.
 - **Updated** Use Positioned widgets for precise element placement in complex layouts.
 - **Updated** Implement gradient backgrounds efficiently with proper color management.
-- **Updated** Use screen-aware units consistently across all new specialized components.
+- **Updated** Use screen-aware units consistently across all dropdown components.
+- **Updated** Leverage Get.lazyPut for efficient controller instantiation in dropdown system.
+- **Updated** Use LayerLink for CompositedTransform positioning in overlay components.
+- **Updated** Implement proper overlay cleanup to prevent memory leaks in dropdown system.
 
-**Updated** Added composition patterns for the four new specialized components including efficient rendering techniques and theme-aware styling approaches.
+**Updated** Added composition patterns for the new month dropdown system including overlay management, controller instantiation, and efficient rendering techniques.
 
 ### Accessibility Considerations
 - Ensure sufficient color contrast in theme-aware modes.
 - Provide meaningful labels and hints for form fields.
 - Respect text scaling and use responsive units for paddings and sizes.
 - Implement proper loading states for screen readers and accessibility tools.
-- **Updated** Ensure interactive elements like AttributeOptionChip have proper touch targets.
-- **Updated** Provide semantic feedback for accordion expansion/collapse states.
-- **Updated** Support keyboard navigation for interactive attribute options.
-- **Updated** Ensure CustomProductDesign maintains proper focus handling for accessibility.
-- **Updated** Verify CustomProductText provides adequate color contrast for color swatches.
-- **Updated** Check CustomScrollbar meets accessibility standards for scrollable content.
-- **Updated** Ensure ShippingMembershipCard provides clear visual hierarchy and readable text.
+- **Updated** Ensure interactive elements like CustomMonthDropdown have proper focus handling.
+- **Updated** Provide semantic feedback for dropdown open/close states.
+- **Updated** Support keyboard navigation for dropdown options.
+- **Updated** Ensure CustomMonthDropdownItem maintains proper touch targets.
+- **Updated** Verify CustomMonthDropdownOverlay provides proper click-outside handling.
+- **Updated** Check CustomDropdownMenu accessibility with proper label and hint support.
+- **Updated** Ensure CustomPaymentDropdownMenu provides clear visual hierarchy and readable text.
 
-**Updated** Added accessibility considerations for the four new specialized components including focus handling, color contrast, and semantic feedback.
+**Updated** Added accessibility considerations for the new month dropdown system including focus handling, touch targets, and semantic feedback.
 
 ### Responsive Design Implementation
 - Use screen-aware units for sizing and spacing.
 - Avoid fixed widths; prefer flexible layouts with Spacers and centering.
 - Ensure loading indicators are appropriately sized across different screen densities.
-- **Updated** Implement responsive image sizing with CachedNetworkImage.
-- **Updated** Use Wrap widget for adaptive layout of attribute options.
+- **Updated** Implement responsive dropdown sizing with screen-aware units.
+- **Updated** Use Wrap widget for adaptive layout of dropdown options.
 - **Updated** Ensure proper spacing and alignment across different screen sizes.
-- **Updated** Use screen-aware units (w/h/r) consistently in all new specialized components.
-- **Updated** Implement proper aspect ratio handling for product design displays.
-- **Updated** Ensure color swatch rendering adapts to different screen densities.
-- **Updated** Verify scrollbar sizing scales appropriately across device types.
+- **Updated** Use screen-aware units (w/h/r) consistently in all dropdown components.
+- **Updated** Implement proper aspect ratio handling for dropdown menus.
+- **Updated** Ensure overlay positioning scales appropriately across device types.
+- **Updated** Verify dropdown styling adapts to different screen densities.
 
-**Updated** Added responsive design considerations for the four new specialized components including screen-aware units and adaptive layouts.
+**Updated** Added responsive design considerations for the new month dropdown system including screen-aware units and adaptive layouts.
 
 ### Extending Existing Components
 - Add new props to constructors with sensible defaults.
 - Keep backward compatibility by making new parameters optional.
 - Update AppColors if introducing new brand colors.
 - Implement proper error handling and loading states for async operations.
-- **Updated** Extend ProductAttributesModel with new fields using fromJson/toJson.
-- **Updated** Add new AttributeOption properties with proper JSON serialization.
-- **Updated** Implement new controller methods for additional functionality.
-- **Updated** Create new specialized components following the established pattern.
-- **Updated** Ensure new components integrate with existing theme system.
+- **Updated** Extend CustomMonthDropdownController with new month options as needed.
+- **Updated** Add new dropdown option types to existing dropdown menu systems.
+- **Updated** Implement new controller methods for additional dropdown functionality.
+- **Updated** Create new specialized dropdown components following the established pattern.
+- **Updated** Ensure new dropdown components integrate with existing theme system.
 - **Updated** Maintain consistency with screen-aware units and responsive design.
 
-**Updated** Added guidelines for extending components with async capabilities, data model enhancements, and new specialized component creation.
+**Updated** Added guidelines for extending dropdown components with new functionality and specialized dropdown creation.
 
 ### Creating New Shared Utilities
 - Place validators and formatters under extensions with clear method names.
 - Encapsulate domain-specific extractors as extensions on model types.
 - Export utilities from a central library file if needed for broader access.
 - Implement proper error handling and logging for async operations.
-- **Updated** Create new GetX controllers for reactive state management.
-- **Updated** Implement comprehensive model classes with JSON serialization.
-- **Updated** Develop repository classes for network integration and error handling.
-- **Updated** Design specialized components with theme-aware styling and responsive sizing.
-- **Updated** Ensure new components follow established architectural patterns.
-- **Updated** Implement proper testing strategies for new component functionality.
+- **Updated** Create new GetX controllers for reactive state management in dropdown system.
+- **Updated** Implement comprehensive dropdown controller classes with proper lifecycle management.
+- **Updated** Develop specialized dropdown components with theme-aware styling and responsive sizing.
+- **Updated** Ensure new dropdown components follow established architectural patterns.
+- **Updated** Implement proper overlay positioning with CompositedTransform.
+- **Updated** Create dropdown item components with selection state management.
 
-**Updated** Added guidelines for creating utilities with async and storage capabilities, including the new specialized component architecture and testing strategies.
+**Updated** Added guidelines for creating dropdown utilities with overlay management, controller instantiation, and specialized component creation.
