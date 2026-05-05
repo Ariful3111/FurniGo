@@ -32,13 +32,23 @@ FurniGo is a full-featured furniture marketplace that connects buyers, sellers, 
 ---
 ## 📸 Screenshots
 
-> Add your app screenshots here
-```
-<img src="assets/screenshots/home_light.png" width="200"/>
-<img src="assets/screenshots/home_dark.png" width="200"/>
-<img src="assets/screenshots/product.png" width="200"/>
-<img src="assets/screenshots/profile.png" width="200"/>
-```
+### Onboarding Page
+<img src="assets/screenshot/onboarding.png"/>
+
+### Authentication Page
+<img src="assets/screenshot/auth.png"/>
+
+### HomePage
+<img src="assets/screenshot/home.png"/>
+
+### Product Page
+<img src="assets/screenshot/product.png"/>
+
+### Dashboard Page
+<img src="assets/screenshot/dashboard.png"/>
+
+### Profile
+<img src="assets/screenshot/profile.png"/>
 
 ---
 
